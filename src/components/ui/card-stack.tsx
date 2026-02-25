@@ -100,7 +100,7 @@ export default function CardStack({ cards: initialCards }: CardStackProps) {
         {/* Card Stack — explicit width to prevent collapse */}
         <div
           className="relative overflow-visible w-[85vw] max-w-[900px]"
-          style={{ aspectRatio: "3/4" }}
+          style={{ aspectRatio: "16/10" }}
         >
           <ul className="relative w-full h-full m-0 p-0">
             <AnimatePresence>
