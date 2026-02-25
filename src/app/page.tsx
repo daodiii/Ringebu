@@ -7,6 +7,7 @@ import ScrollSection, { AnimatedContent } from "@/components/ScrollSection";
 import SectionDots from "@/components/SectionDots";
 import ImagePlaceholder from "@/components/ImagePlaceholder";
 import { CircularTestimonials } from "@/components/ui/circular-testimonials";
+import CardStack from "@/components/ui/card-stack";
 
 /* ──────────────────────────────────────────────
    SECTION COMPONENTS
@@ -114,20 +115,32 @@ function AboutSection() {
 function ServicesSection() {
   const services = [
     {
+      id: 1,
+      src: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=500&h=300&fit=crop",
+      alt: "Generell tannpleie",
       title: "Generell Tannpleie",
-      desc: "Undersøkelser, rengjøring og forebyggende behandling",
+      description: "Undersøkelser, rengjøring og forebyggende behandling",
     },
     {
+      id: 2,
+      src: "https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=500&h=300&fit=crop",
+      alt: "Kosmetisk tannpleie",
       title: "Kosmetisk Tannpleie",
-      desc: "Bleking, fasetter og estetiske løsninger",
+      description: "Bleking, fasetter og estetiske løsninger",
     },
     {
+      id: 3,
+      src: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=500&h=300&fit=crop",
+      alt: "Implantat",
       title: "Implantat",
-      desc: "Tannimplantater med naturlig utseende og holdbarhet",
+      description: "Tannimplantater med naturlig utseende og holdbarhet",
     },
     {
+      id: 4,
+      src: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=500&h=300&fit=crop",
+      alt: "Akutt behandling",
       title: "Akutt Behandling",
-      desc: "Rask hjelp ved tannverk og akutte problemer",
+      description: "Rask hjelp ved tannverk og akutte problemer",
     },
   ];
 
@@ -141,28 +154,9 @@ function ServicesSection() {
           </h2>
         </AnimatedContent>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8 w-full max-w-4xl">
-          {services.map((service, i) => (
-            <AnimatedContent key={service.title} delay={0.1 + i * 0.15}>
-              <div className="group bg-[var(--color-card-white)] border border-[var(--color-border)] rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-black/5">
-                <ImagePlaceholder
-                  className="w-full h-40 lg:h-48"
-                  tone={i % 2 === 0 ? "light" : "mid"}
-                  rounded="rounded-none"
-                  label={service.title}
-                />
-                <div className="p-6">
-                  <h3 className="font-serif text-lg font-bold text-[var(--color-text-dark)] mb-1">
-                    {service.title}
-                  </h3>
-                  <p className="text-sm font-sans font-light text-[var(--color-text-muted)] leading-relaxed">
-                    {service.desc}
-                  </p>
-                </div>
-              </div>
-            </AnimatedContent>
-          ))}
-        </div>
+        <AnimatedContent delay={0.2}>
+          <CardStack cards={services} />
+        </AnimatedContent>
       </div>
     </ScrollSection>
   );
