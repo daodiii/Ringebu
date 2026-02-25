@@ -52,8 +52,8 @@ export default function TreatmentAccordion({ treatment }: TreatmentAccordionProp
         onClick={() => setIsOpen(!isOpen)}
         className="w-full flex items-center gap-4 py-5 px-4 text-left cursor-pointer
                    transition-colors duration-200
-                   hover:bg-bg-warm/50 hover:border-l-3 hover:border-l-accent-gold
-                   group"
+                   border-l-3 border-l-transparent hover:border-l-accent-gold
+                   hover:bg-bg-warm/50 group"
         aria-expanded={isOpen}
       >
         <Icon className="w-5 h-5 text-accent-gold shrink-0" />
