@@ -7,7 +7,7 @@ const sections = [
   { id: "hero", label: "Hjem" },
   { id: "about", label: "Om Oss" },
   { id: "services", label: "Tjenester" },
-  { id: "gallery", label: "Galleri" },
+  { id: "team", label: "Teamet" },
   { id: "contact", label: "Kontakt" },
 ];
 

@@ -6,6 +6,7 @@ import { motion, useInView } from "framer-motion";
 import ScrollSection, { AnimatedContent } from "@/components/ScrollSection";
 import SectionDots from "@/components/SectionDots";
 import ImagePlaceholder from "@/components/ImagePlaceholder";
+import { CircularTestimonials } from "@/components/ui/circular-testimonials";
 
 /* ──────────────────────────────────────────────
    SECTION COMPONENTS
@@ -167,51 +168,60 @@ function ServicesSection() {
   );
 }
 
-function GallerySection() {
+function TeamSection() {
+  const teamMembers = [
+    {
+      name: "Dr. Lars Haugen",
+      designation: "Tannlege — Klinikksjef",
+      quote:
+        "For meg handler tannlegeyrket om å bygge tillit. Når en pasient føler seg trygg og ivaretatt, kan vi sammen skape resultater som varer. Vår klinikk er bygget på denne filosofien.",
+      src: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=1368&auto=format&fit=crop",
+    },
+    {
+      name: "Dr. Ingrid Moen",
+      designation: "Tannlege — Kosmetisk Spesialist",
+      quote:
+        "Et vakkert smil gir selvtillit. Jeg brenner for å hjelpe pasienter med å føle seg komfortable med smilet sitt, gjennom moderne estetisk tannbehandling tilpasset hver enkelt.",
+      src: "https://images.unsplash.com/photo-1594824476967-48c8b964f137?q=80&w=1368&auto=format&fit=crop",
+    },
+    {
+      name: "Dr. Erik Nordby",
+      designation: "Tannlege — Implantologi",
+      quote:
+        "Moderne implantater gir pasienter tilbake livskvalitet. Med presisjon og de nyeste teknikkene sørger vi for løsninger som både ser naturlige ut og holder i mange år.",
+      src: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=1368&auto=format&fit=crop",
+    },
+  ];
+
   return (
-    <ScrollSection id="gallery" bg="warmest">
+    <ScrollSection id="team" bg="warmest">
       <div className="container-width w-full flex flex-col items-center justify-center py-20 lg:py-0">
-        <div className="w-full max-w-6xl">
-          {/* Mosaic grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-2 h-auto lg:h-[70vh]">
-            {/* Large image — left */}
-            <AnimatedContent className="lg:col-span-3 h-[60vh] lg:h-full">
-              <ImagePlaceholder
-                className="w-full h-full"
-                tone="light"
-                rounded="rounded-xl"
-                label="Klinikk interiør"
-              />
-            </AnimatedContent>
+        <AnimatedContent className="text-center mb-8 lg:mb-12">
+          <span className="eyebrow block mb-4">Vårt Team</span>
+          <h2 className="heading-editorial text-3xl lg:text-5xl">
+            Møt tannlegene våre
+          </h2>
+        </AnimatedContent>
 
-            {/* Two stacked — right */}
-            <div className="lg:col-span-2 grid grid-cols-2 lg:grid-cols-1 gap-2 h-auto lg:h-full">
-              <AnimatedContent delay={0.2} className="h-[30vh] lg:h-full">
-                <ImagePlaceholder
-                  className="w-full h-full"
-                  tone="mid"
-                  rounded="rounded-xl"
-                  label="Behandlingsrom"
-                />
-              </AnimatedContent>
-              <AnimatedContent delay={0.4} className="h-[30vh] lg:h-full">
-                <ImagePlaceholder
-                  className="w-full h-full"
-                  tone="dark"
-                  rounded="rounded-xl"
-                  label="Utstyr"
-                />
-              </AnimatedContent>
-            </div>
-          </div>
-
-          {/* Caption */}
-          <AnimatedContent delay={0.5} className="text-center mt-6">
-            <p className="text-sm font-sans font-light italic text-[var(--color-text-muted)]">
-              Moderne fasiliteter i hjertet av Gudbrandsdalen
-            </p>
-          </AnimatedContent>
-        </div>
+        <AnimatedContent delay={0.2}>
+          <CircularTestimonials
+            testimonials={teamMembers}
+            autoplay={true}
+            colors={{
+              name: "#2C2825",
+              designation: "#B8A88A",
+              testimony: "#5C5650",
+              arrowBackground: "#2C2825",
+              arrowForeground: "#FAF8F5",
+              arrowHoverBackground: "#B8A88A",
+            }}
+            fontSizes={{
+              name: "24px",
+              designation: "14px",
+              quote: "17px",
+            }}
+          />
+        </AnimatedContent>
       </div>
     </ScrollSection>
   );
@@ -291,7 +301,7 @@ export default function Home() {
         <HeroSection />
         <AboutSection />
         <ServicesSection />
-        <GallerySection />
+        <TeamSection />
         <ContactSection />
       </div>
     </>
