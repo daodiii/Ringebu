@@ -19,12 +19,13 @@ interface Card {
 
 interface CardStackProps {
   cards: Card[];
-  showArrows?: boolean;
 }
 
-export default function CardStack({ cards: initialCards, showArrows = true }: CardStackProps) {
+export default function CardStack({ cards: initialCards }: CardStackProps) {
   const [cards, setCards] = useState<Card[]>(initialCards);
-  const [dragDirection, setDragDirection] = useState<"up" | "down" | null>(null);
+  const [dragDirection, setDragDirection] = useState<"up" | "down" | null>(
+    null
+  );
   const [showInfo, setShowInfo] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -51,10 +52,15 @@ export default function CardStack({ cards: initialCards, showArrows = true }: Ca
 
   const moveToStart = () => {
     setCards((prev) => [prev[prev.length - 1], ...prev.slice(0, -1)]);
-    setCurrentIndex((prev) => (prev - 1 + initialCards.length) % initialCards.length);
+    setCurrentIndex(
+      (prev) => (prev - 1 + initialCards.length) % initialCards.length
+    );
   };
 
-  const handleDragEnd = (_: unknown, info: { velocity: { y: number }; offset: { y: number } }) => {
+  const handleDragEnd = (
+    _: unknown,
+    info: { velocity: { y: number }; offset: { y: number } }
+  ) => {
     const velocity = info.velocity.y;
     const dy = info.offset.y;
 
@@ -81,20 +87,21 @@ export default function CardStack({ cards: initialCards, showArrows = true }: Ca
       {/* Card Stack + Arrows wrapper */}
       <div className="relative flex items-center gap-4 lg:gap-8">
         {/* Left Arrow */}
-        {showArrows && (
-          <motion.button
-            onClick={moveToStart}
-            className="hidden lg:flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-footer-bg)] hover:bg-[var(--color-accent-gold)] transition-colors duration-200 shrink-0"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            aria-label="Previous card"
-          >
-            <ChevronLeft className="w-5 h-5 text-[var(--color-bg-cream)]" />
-          </motion.button>
-        )}
+        <motion.button
+          onClick={moveToStart}
+          className="hidden lg:flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-footer-bg)] hover:bg-[var(--color-accent-gold)] transition-colors duration-200 shrink-0"
+          whileHover={{ scale: 1.1, x: -3 }}
+          whileTap={{ scale: 0.9 }}
+          aria-label="Previous card"
+        >
+          <ChevronLeft className="w-5 h-5 text-[var(--color-bg-cream)]" />
+        </motion.button>
 
-        {/* Card Stack */}
-        <div className="relative w-full max-w-md aspect-video overflow-visible">
+        {/* Card Stack — explicit width to prevent collapse */}
+        <div
+          className="relative overflow-visible"
+          style={{ width: "320px", aspectRatio: "16/9" }}
+        >
           <ul className="relative w-full h-full m-0 p-0">
             <AnimatePresence>
               {cards.map(({ id, src, alt, title, description }, i) => {
@@ -105,14 +112,14 @@ export default function CardStack({ cards: initialCards, showArrows = true }: Ca
                 return (
                   <motion.li
                     key={id}
-                    className="absolute w-full h-full list-none overflow-hidden border border-[var(--color-border)] rounded-xl"
+                    className="absolute w-full h-full list-none overflow-hidden border-2 border-[var(--color-border)]"
                     style={{
                       borderRadius: `${borderRadius}px`,
                       cursor: isFront ? "grab" : "auto",
                       touchAction: "none",
                       boxShadow: isFront
-                        ? "0 25px 50px rgba(0, 0, 0, 0.15)"
-                        : "0 15px 30px rgba(0, 0, 0, 0.08)",
+                        ? "0 25px 50px rgba(0, 0, 0, 0.2)"
+                        : "0 15px 30px rgba(0, 0, 0, 0.1)",
                       rotateX: isFront ? rotateX : 0,
                       transformPerspective: 1000,
                     }}
@@ -182,17 +189,15 @@ export default function CardStack({ cards: initialCards, showArrows = true }: Ca
         </div>
 
         {/* Right Arrow */}
-        {showArrows && (
-          <motion.button
-            onClick={moveToEnd}
-            className="hidden lg:flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-footer-bg)] hover:bg-[var(--color-accent-gold)] transition-colors duration-200 shrink-0"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            aria-label="Next card"
-          >
-            <ChevronRight className="w-5 h-5 text-[var(--color-bg-cream)]" />
-          </motion.button>
-        )}
+        <motion.button
+          onClick={moveToEnd}
+          className="hidden lg:flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-footer-bg)] hover:bg-[var(--color-accent-gold)] transition-colors duration-200 shrink-0"
+          whileHover={{ scale: 1.1, x: 3 }}
+          whileTap={{ scale: 0.9 }}
+          aria-label="Next card"
+        >
+          <ChevronRight className="w-5 h-5 text-[var(--color-bg-cream)]" />
+        </motion.button>
       </div>
 
       {/* Progress Dots */}
@@ -208,6 +213,16 @@ export default function CardStack({ cards: initialCards, showArrows = true }: Ca
             whileHover={{ scale: 1.2 }}
           />
         ))}
+      </div>
+
+      {/* Info Text */}
+      <div className="text-center">
+        <p className="text-[var(--color-text-muted)] text-xs font-sans font-light">
+          Dra opp/ned eller bruk pilene for a navigere
+        </p>
+        <p className="text-[var(--color-text-muted)]/60 text-xs font-sans mt-1">
+          Kort {currentIndex + 1} av {initialCards.length}
+        </p>
       </div>
     </div>
   );
