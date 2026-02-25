@@ -1,21 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  ArrowRight,
-  CheckCircle,
-  Crown,
-  ShieldCheck,
-  Paintbrush,
-  Heart,
-  Sparkles,
-  CircleDot,
-  Droplets,
-  AlarmClock,
-  HandHeart,
-} from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
 import GlassCard from "@/components/GlassCard";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
+import TreatmentAccordion from "@/components/TreatmentAccordion";
 
 export const metadata: Metadata = {
   title: "Behandlinger",
@@ -25,7 +14,7 @@ export const metadata: Metadata = {
 
 const treatments = [
   {
-    icon: Crown,
+    iconName: "Crown",
     title: "Kron og Bro",
     description:
       "Kroner og broer gjenoppretter skadede eller manglende tenner med holdbare, naturlig utseende restaureringer. Vi bruker moderne materialer for best mulig resultat.",
@@ -38,7 +27,7 @@ const treatments = [
     category: "Restaurering",
   },
   {
-    icon: ShieldCheck,
+    iconName: "ShieldCheck",
     title: "Forebyggende Behandling",
     description:
       "Regelmessig forebyggende behandling er nøkkelen til god tannhelse. Vi hjelper deg med å opprettholde et friskt smil gjennom undersøkelser, rens og veiledning.",
@@ -51,7 +40,7 @@ const treatments = [
     category: "Forebyggende",
   },
   {
-    icon: Paintbrush,
+    iconName: "Paintbrush",
     title: "Fyllingsterapi",
     description:
       "Moderne, tannfargede fyllinger som reparerer hull og gjenoppretter tennenes naturlige form og funksjon. Vi bruker kun de beste komposittmaterialene.",
@@ -64,7 +53,7 @@ const treatments = [
     category: "Restaurering",
   },
   {
-    icon: Heart,
+    iconName: "Heart",
     title: "Rotfylling",
     description:
       "Rotfylling redder tenner som er skadet eller infisert i nerven. Med moderne teknikker og utstyr gjennomfører vi behandlingen skånsomt og effektivt.",
@@ -77,7 +66,7 @@ const treatments = [
     category: "Restaurering",
   },
   {
-    icon: Sparkles,
+    iconName: "Sparkles",
     title: "Bleking",
     description:
       "Profesjonell tannbleking som gir deg et lysere og hvitere smil. Vi tilbyr trygge metoder tilpasset dine ønsker, enten på klinikken eller hjemme.",
@@ -90,7 +79,7 @@ const treatments = [
     category: "Kosmetisk",
   },
   {
-    icon: CircleDot,
+    iconName: "CircleDot",
     title: "Visdomstennene",
     description:
       "Visdomstenner kan skape problemer som smerter, infeksjoner og trengsel. Vi vurderer om fjerning er nødvendig og utfører inngrepet trygt og skånsomt.",
@@ -103,7 +92,7 @@ const treatments = [
     category: "Kirurgi",
   },
   {
-    icon: Droplets,
+    iconName: "Droplets",
     title: "Tannkjøtt & Tannsteinsbehandling",
     description:
       "Friskt tannkjøtt er grunnlaget for god tannhelse. Vi behandler tannkjøttsykdom og fjerner tannstein for å forebygge betennelse og tannløsning.",
@@ -116,7 +105,7 @@ const treatments = [
     category: "Forebyggende",
   },
   {
-    icon: AlarmClock,
+    iconName: "AlarmClock",
     title: "Bittskinner / Tanngnising",
     description:
       "Tanngnising og sammenbiting kan slite ned tennene og forårsake smerter i kjeve, hode og nakke. En tilpasset bittskinne beskytter tennene og lindrer plager.",
@@ -129,7 +118,7 @@ const treatments = [
     category: "Spesialbehandling",
   },
   {
-    icon: HandHeart,
+    iconName: "HandHeart",
     title: "Tannlegeskrekk",
     description:
       "Vi forstår at mange gruer seg til tannlegebesøk. Hos oss møter du et trygt, rolig miljø med ekstra tid og omsorg for å gjøre opplevelsen så behagelig som mulig.",
@@ -145,6 +134,14 @@ const treatments = [
 
 const categories = [...new Set(treatments.map((t) => t.category))];
 
+const categorySubtitles: Record<string, string> = {
+  Restaurering: "Gjenopprett og bevar tennenes form og funksjon",
+  Forebyggende: "Hold tennene friske med regelmessig pleie",
+  Kosmetisk: "Få et lysere, hvitere smil",
+  Kirurgi: "Trygg og skånsom kirurgisk behandling",
+  Spesialbehandling: "Tilpasset hjelp for spesielle behov",
+};
+
 export default function Behandlinger() {
   return (
     <>
@@ -155,60 +152,35 @@ export default function Behandlinger() {
         description="Vi tilbyr et bredt spekter av tannbehandlinger — fra forebyggende pleie til avansert kosmetisk og kirurgisk behandling."
       />
 
-      {/* Treatments grid */}
+      {/* Editorial accordion chapters */}
       <section className="py-20 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {categories.map((category) => (
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          {categories.map((category, catIndex) => (
             <AnimateOnScroll key={category} animation="fadeUp">
-              <div className="mb-16 last:mb-0">
-                <div className="flex items-center gap-4 mb-8">
-                  <span className="inline-block bg-primary-light/60 text-primary-dark px-5 py-2 rounded-full text-sm font-semibold uppercase tracking-wider">
-                    {category}
-                  </span>
-                </div>
+              <div className={`py-12 ${catIndex < categories.length - 1 ? "border-b border-accent-gold/30" : ""}`}>
+                <div className="flex flex-col md:flex-row md:gap-16">
+                  {/* Left column — category name */}
+                  <div className="md:w-[35%] mb-8 md:mb-0 md:sticky md:top-24 md:self-start">
+                    <h2
+                      className="font-serif font-bold text-text-dark"
+                      style={{ fontSize: "clamp(1.8rem, 3vw, 2.5rem)" }}
+                    >
+                      {category}
+                    </h2>
+                    <div className="w-[60px] h-[1px] bg-accent-gold mt-4 mb-3" />
+                    <p className="text-sm font-light text-text-muted">
+                      {categorySubtitles[category]}
+                    </p>
+                  </div>
 
-                <div className="grid md:grid-cols-2 gap-6">
-                  {treatments
-                    .filter((t) => t.category === category)
-                    .map((treatment, index) => (
-                      <AnimateOnScroll
-                        key={treatment.title}
-                        animation="fadeUp"
-                        delay={index * 100}
-                      >
-                        <GlassCard level={2} hover className="p-8">
-                          <div className="flex items-start gap-4 mb-4">
-                            <div className="w-14 h-14 bg-primary-light rounded-xl flex items-center justify-center shrink-0">
-                              <treatment.icon className="w-7 h-7 text-primary" />
-                            </div>
-                            <div>
-                              <span className="inline-block text-primary-dark bg-primary-light/50 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">
-                                {treatment.category}
-                              </span>
-                              <h3 className="text-xl font-bold text-foreground mt-1">
-                                {treatment.title}
-                              </h3>
-                            </div>
-                          </div>
-
-                          <p className="text-muted leading-relaxed mb-6">
-                            {treatment.description}
-                          </p>
-
-                          <ul className="space-y-2">
-                            {treatment.features.map((feature) => (
-                              <li
-                                key={feature}
-                                className="flex items-center gap-2 text-sm text-foreground/80"
-                              >
-                                <CheckCircle className="w-4 h-4 text-primary shrink-0" />
-                                {feature}
-                              </li>
-                            ))}
-                          </ul>
-                        </GlassCard>
-                      </AnimateOnScroll>
-                    ))}
+                  {/* Right column — treatment accordion rows */}
+                  <div className="md:w-[65%]">
+                    {treatments
+                      .filter((t) => t.category === category)
+                      .map((treatment) => (
+                        <TreatmentAccordion key={treatment.title} treatment={treatment} />
+                      ))}
+                  </div>
                 </div>
               </div>
             </AnimateOnScroll>

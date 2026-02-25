@@ -2,11 +2,35 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight, CheckCircle } from "lucide-react";
+import {
+  ChevronRight,
+  CheckCircle,
+  Crown,
+  ShieldCheck,
+  Paintbrush,
+  Heart,
+  Sparkles,
+  CircleDot,
+  Droplets,
+  AlarmClock,
+  HandHeart,
+} from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
+const iconMap: Record<string, LucideIcon> = {
+  Crown,
+  ShieldCheck,
+  Paintbrush,
+  Heart,
+  Sparkles,
+  CircleDot,
+  Droplets,
+  AlarmClock,
+  HandHeart,
+};
+
 interface Treatment {
-  icon: LucideIcon;
+  iconName: string;
   title: string;
   description: string;
   features: string[];
@@ -19,7 +43,7 @@ interface TreatmentAccordionProps {
 
 export default function TreatmentAccordion({ treatment }: TreatmentAccordionProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const Icon = treatment.icon;
+  const Icon = iconMap[treatment.iconName] ?? Crown;
 
   return (
     <div className="border-b border-border">
