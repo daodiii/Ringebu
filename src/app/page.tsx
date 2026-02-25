@@ -154,11 +154,10 @@ function ServicesSection() {
   return (
     <ScrollSection id="services" bg="warm">
       <div className="container-width w-full flex flex-col items-center justify-center py-20 lg:py-0">
-        <AnimatedContent className="text-center mb-12 lg:mb-16">
-          <span className="eyebrow block mb-4">Våre Tjenester</span>
-          <h2 className="heading-editorial text-3xl lg:text-5xl">
+        <AnimatedContent className="text-center mb-6">
+          <span className="text-xs font-sans font-light tracking-widest uppercase text-[var(--color-text-muted)]">
             Behandlinger tilpasset deg
-          </h2>
+          </span>
         </AnimatedContent>
 
         <AnimatedContent delay={0.2}>
