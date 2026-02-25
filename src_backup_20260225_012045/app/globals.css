@@ -1,0 +1,185 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* ── Color Palette: Apple x Linear x Aurora ── */
+  /* Base - Light Mode (Default) */
+  --color-background: #F5F5F7;
+  /* Apple-style light gray background */
+  --color-foreground: #1D1D1F;
+  /* Apple text color */
+
+  --color-surface: rgba(255, 255, 255, 0.8);
+  --color-surface-hover: rgba(255, 255, 255, 0.9);
+
+  --color-primary: #007AFF;
+  /* Apple Blue - clean, professional */
+  --color-primary-hover: #0062CC;
+  --color-primary-light: #E5F1FF;
+
+  --color-accent: #5E5CE6;
+  /* Linear/Apple Purple for subtle gradients */
+  --color-accent-subtle: #F2F2FD;
+
+  --color-success: #34C759;
+  --color-warning: #FF9500;
+  --color-error: #FF3B30;
+
+  --color-muted: #86868B;
+  --color-border: rgba(0, 0, 0, 0.1);
+
+  /* ── Gradients (Aurora) ── */
+  --color-aurora-1: #FF2D55;
+  /* Pink */
+  --color-aurora-2: #5856D6;
+  /* Purple */
+  --color-aurora-3: #007AFF;
+  /* Blue */
+
+  /* ── Typography ── */
+  --font-sans: var(--font-plus-jakarta), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: var(--font-playfair), "Georgia", serif;
+  /* Elegant headings */
+
+  /* ── Spacing ── */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 32px;
+}
+
+/* ── Reset & Base ── */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  /* Aurora subtle background mesh */
+  background-image:
+    radial-gradient(circle at 15% 50%, rgba(255, 45, 85, 0.03), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(0, 122, 255, 0.03), transparent 25%);
+}
+
+/* ── Typography Utilities ── */
+.text-balance {
+  text-wrap: balance;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  letter-spacing: -0.02em;
+}
+
+/* ── Glassmorphism System (Linear/Apple Style) ── */
+.glass {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+}
+
+.glass-hover {
+  transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.glass-hover:hover {
+  background: rgba(255, 255, 255, 0.75);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+  border-color: rgba(255, 255, 255, 0.8);
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(25px) saturate(180%);
+  -webkit-backdrop-filter: blur(25px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.05),
+    0 10px 10px -5px rgba(0, 0, 0, 0.02);
+}
+
+.glass-dark {
+  background: rgba(20, 20, 22, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+/* ── Aurora Animations ── */
+@keyframes aurora-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.aurora-text {
+  background: linear-gradient(90deg,
+      var(--color-primary) 0%,
+      var(--color-aurora-2) 50%,
+      var(--color-aurora-1) 100%);
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: aurora-flow 6s linear infinite;
+}
+
+.animate-aurora {
+  animation: aurora-flow 6s linear infinite;
+}
+
+/* ── Custom Utilities ── */
+.container-width {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.section-padding {
+  @apply py-20 sm:py-28;
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center rounded-full bg-foreground text-background px-6 py-3 text-sm font-medium transition-transform hover:scale-105 active:scale-95;
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center rounded-full bg-white text-foreground px-6 py-3 text-sm font-medium shadow-sm ring-1 ring-black/5 transition-transform hover:bg-gray-50 hover:scale-105 active:scale-95;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D1D1D6;
+  border-radius: 5px;
+  border: 2px solid var(--color-background);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8E8E93;
+}
