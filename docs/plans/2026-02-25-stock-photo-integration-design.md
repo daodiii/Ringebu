@@ -2,7 +2,7 @@
 
 ## Goal
 
-Replace all 9 `ImagePlaceholder` components on the homepage with high-resolution, royalty-free dental stock photos from Pexels. Purpose: visualize the editorial design with real imagery.
+Replace all 6 `ImagePlaceholder` components on the homepage with high-resolution, royalty-free dental stock photos from Pexels. Purpose: visualize the editorial design with real imagery.
 
 ## Photo Style
 
@@ -10,32 +10,30 @@ Warm & inviting — soft lighting, friendly faces, cozy clinic interiors. Matche
 
 ## Image Map
 
-| Slot | Section | Photo Subject | Dimensions | Filename |
-|------|---------|--------------|------------|----------|
-| 1 | Hero (right) | Friendly dentist portrait, warm lighting | 3:4, ~1200x1600 | `hero-dentist.jpg` |
-| 2 | About (left) | Welcoming clinic interior, natural light | Tall, ~1200x1800 | `about-clinic.jpg` |
-| 3 | Service card 1 | Routine checkup scene | 16:10, ~800x500 | `service-general.jpg` |
-| 4 | Service card 2 | Bright smile / whitening result | 16:10, ~800x500 | `service-cosmetic.jpg` |
-| 5 | Service card 3 | Modern implant technology | 16:10, ~800x500 | `service-implant.jpg` |
-| 6 | Service card 4 | Caring dentist with patient | 16:10, ~800x500 | `service-emergency.jpg` |
-| 7 | Gallery large | Clinic reception/waiting area | ~1200x900 | `gallery-interior.jpg` |
-| 8 | Gallery small 1 | Treatment room with chair | ~600x450 | `gallery-treatment.jpg` |
-| 9 | Gallery small 2 | Modern dental tools close-up | ~600x450 | `gallery-equipment.jpg` |
+| Slot | Section | Pexels ID | Photo Subject | Dimensions | Filename |
+|------|---------|-----------|--------------|------------|----------|
+| 1 | Hero (right) | 7578806 | Smiling doctor portrait | 3:4, ~1200x1600 | `hero-dentist.jpg` |
+| 2 | About (left) | 30902075 | Modern dental office interior | Tall, ~1200x1800 | `about-clinic.jpg` |
+| 3 | Service: Generell Tannpleie | 3845683 | Dental check-up | 16:10, ~800x500 | `service-general.jpg` |
+| 4 | Service: Kosmetisk | 6627574 | Smiling woman in dentist chair | 16:10, ~800x500 | `service-cosmetic.jpg` |
+| 5 | Service: Implantat | 6812453 | Dental equipment in clinic | 16:10, ~800x500 | `service-implant.jpg` |
+| 6 | Service: Akutt | 6529110 | Patient having dental treatment | 16:10, ~800x500 | `service-emergency.jpg` |
+
+Note: Team section already uses real Unsplash images. Contact section has no images.
 
 ## Source
 
-Pexels (free, no attribution required for use, high-res). Download via Pexels API or direct URL.
+Pexels (free, no attribution required, high-res). Download via direct URL.
 
 ## Implementation
 
-1. Download 9 photos to `/public/images/`
+1. Download 6 photos to `/public/images/`
 2. Replace `<ImagePlaceholder>` with Next.js `<Image>` in `src/app/page.tsx`
 3. Use `fill` + `object-fit: cover` to maintain current layout
 4. Set `priority` on hero image (above-the-fold)
-5. Add `placeholder="blur"` with generated `blurDataURL` for smooth loading
-6. Keep `ImagePlaceholder` component file intact as fallback
+5. Keep `ImagePlaceholder` component file intact as fallback
 
 ## Files Modified
 
-- `src/app/page.tsx` — swap 9 placeholder calls for `<Image>` components
-- `/public/images/` — add 9 new `.jpg` files
+- `src/app/page.tsx` — swap 6 placeholder calls for `<Image>` components
+- `/public/images/` — add 6 new `.jpg` files
