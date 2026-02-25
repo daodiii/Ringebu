@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 import ScrollSection, { AnimatedContent } from "@/components/ScrollSection";
 import SectionDots from "@/components/SectionDots";
-import ImagePlaceholder from "@/components/ImagePlaceholder";
+import Image from "next/image";
 import { CircularTestimonials } from "@/components/ui/circular-testimonials";
 import CardStack from "@/components/ui/card-stack";
 
@@ -51,12 +51,16 @@ function HeroSection() {
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
           >
-            <ImagePlaceholder
-              className="w-full max-w-md lg:max-w-lg aspect-[3/4] shadow-2xl shadow-black/5"
-              tone="light"
-              rounded="rounded-2xl"
-              label="Hero foto"
-            />
+            <div className="relative w-full max-w-md lg:max-w-lg aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl shadow-black/5">
+              <Image
+                src="/images/hero-dentist.jpg"
+                alt="Vennlig tannlege hos Ringebu Tannlegesenter"
+                fill
+                className="object-cover"
+                priority
+                sizes="(max-width: 1024px) 100vw, 512px"
+              />
+            </div>
           </motion.div>
         </AnimatedContent>
       </div>
@@ -73,12 +77,15 @@ function AboutSection() {
           direction="left"
           className="lg:col-span-7 flex"
         >
-          <ImagePlaceholder
-            className="w-full h-[50vh] lg:h-full"
-            tone="mid"
-            rounded="rounded-none lg:rounded-r-3xl"
-            label="Klinikk foto"
-          />
+          <div className="relative w-full h-[50vh] lg:h-full rounded-none lg:rounded-r-3xl overflow-hidden">
+            <Image
+              src="/images/about-clinic.jpg"
+              alt="Moderne tannklinikk interiør"
+              fill
+              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 60vw"
+            />
+          </div>
         </AnimatedContent>
 
         {/* Right — Text */}
@@ -116,28 +123,28 @@ function ServicesSection() {
   const services = [
     {
       id: 1,
-      src: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=500&h=300&fit=crop",
+      src: "/images/service-general.jpg",
       alt: "Generell tannpleie",
       title: "Generell Tannpleie",
       description: "Undersøkelser, rengjøring og forebyggende behandling",
     },
     {
       id: 2,
-      src: "https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=500&h=300&fit=crop",
+      src: "/images/service-cosmetic.jpg",
       alt: "Kosmetisk tannpleie",
       title: "Kosmetisk Tannpleie",
       description: "Bleking, fasetter og estetiske løsninger",
     },
     {
       id: 3,
-      src: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=500&h=300&fit=crop",
+      src: "/images/service-implant.jpg",
       alt: "Implantat",
       title: "Implantat",
       description: "Tannimplantater med naturlig utseende og holdbarhet",
     },
     {
       id: 4,
-      src: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=500&h=300&fit=crop",
+      src: "/images/service-emergency.jpg",
       alt: "Akutt behandling",
       title: "Akutt Behandling",
       description: "Rask hjelp ved tannverk og akutte problemer",
