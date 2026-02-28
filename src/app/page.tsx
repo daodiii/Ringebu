@@ -255,7 +255,7 @@ function ServicesSection() {
   return (
     <ScrollSection id="services" bg="none" className="bg-[var(--color-emerald)] lg:bg-[var(--color-bg-warm)]">
       <div className="container-width w-full flex flex-col items-center justify-center py-4 md:py-20 lg:py-0">
-        <AnimatedContent className="text-center mb-3 lg:mb-12 pt-[100px]">
+        <AnimatedContent className="text-center mb-2 lg:mb-12 pt-[20px] lg:pt-[100px]">
           <span className="eyebrow block max-lg:!text-[var(--color-bg-cream)] opacity-90 text-[10px] md:text-[12px]">
             Kvalitet i hvert smil
           </span>
@@ -277,7 +277,7 @@ function ServicesSection() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true, amount: 0.3 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="flex-none w-[85vw] md:w-[45vw] lg:w-[350px] snap-center group relative overflow-hidden rounded-[32px] bg-white/5 border border-white/10 shadow-[0_20px_50px_rgba(2,44,34,0.15)] h-[55dvh] min-h-[350px] max-h-[450px]"
+                  className="flex-none w-[85vw] md:w-[45vw] lg:w-[350px] snap-center group relative overflow-hidden rounded-[32px] bg-white/5 border border-white/10 shadow-[0_20px_50px_rgba(2,44,34,0.15)] h-[45dvh] min-h-[280px] max-h-[350px] lg:h-[55dvh] lg:min-h-[350px] lg:max-h-[450px]"
                 >
                   <div className="absolute inset-0 w-full h-full">
                     <Image
@@ -332,7 +332,7 @@ function ServicesSection() {
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              className="mt-6 md:mt-8 max-lg:-mt-[64px] text-center"
+              className="mt-3 lg:mt-8 text-center"
             >
               <Link href="/behandlinger" className="btn-primary !bg-[var(--color-accent-gold)] !text-[var(--color-emerald)] px-6 py-2.5 md:px-8 md:py-3 rounded-full font-bold text-[14px]">
                 Se alle behandlinger
@@ -382,7 +382,7 @@ function TeamSection() {
   return (
     <ScrollSection id="team" bg="none" className="bg-[var(--color-emerald)] lg:bg-[var(--color-bg-warmest)]">
       <div className="container-width w-full flex flex-col items-center justify-center py-4 md:py-20 lg:py-0">
-        <AnimatedContent className="text-center mb-3 lg:mb-12 lg:pt-[130px]">
+        <AnimatedContent className="text-center mb-3 lg:mb-4 lg:pt-[20px]">
           <span className="eyebrow block mb-2 md:mb-4 max-lg:!text-[var(--color-accent-gold)] text-[10px] md:text-[12px]">Vårt Team</span>
           <h2 className="heading-editorial max-lg:!text-[var(--color-bg-cream)]" style={{ fontSize: "clamp(1.75rem, 7vw, 3.5rem)" }}>
             <span className="lg:text-[2.1rem]">Møt tannlegene våre</span>
