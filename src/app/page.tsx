@@ -268,7 +268,7 @@ function ServicesSection() {
           <div className="flex flex-col items-center w-full">
             <div
               ref={carouselRef}
-              className="flex overflow-x-auto snap-x snap-mandatory gap-6 w-full px-4 md:px-0 pb-8 pt-4 no-scrollbar touch-pan-x relative"
+              className="flex overflow-x-auto snap-x snap-mandatory gap-6 w-full px-4 md:px-0 pb-8 pt-4 no-scrollbar touch-auto relative"
             >
               {services.map((service, index) => (
                 <motion.div
@@ -294,7 +294,7 @@ function ServicesSection() {
                   <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6 lg:p-8 flex flex-col justify-end h-full text-white">
                     <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-3">
                       <div className="w-1 h-5 md:h-6 bg-[var(--color-accent-gold)] rounded-full" />
-                      <h3 className="text-[20px] md:text-2xl font-serif font-bold text-white leading-tight">
+                      <h3 className="text-[20px] md:text-2xl font-serif font-bold !text-white leading-tight">
                         {service.title}
                       </h3>
                     </div>
