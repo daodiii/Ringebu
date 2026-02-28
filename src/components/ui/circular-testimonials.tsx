@@ -335,7 +335,7 @@ export const CircularTestimonials = ({
             grid-template-columns: 1fr 1fr;
           }
           .testimonial-content {
-            padding-left: 200px;
+            padding-left: 100px;
           }
           .arrow-buttons {
             padding-top: 0;
