@@ -5,8 +5,7 @@ import { cn } from "@/lib/utils";
 
 const sections = [
   { id: "hero", label: "Hjem" },
-  { id: "about", label: "Om Oss" },
-  { id: "services", label: "Tjenester" },
+  { id: "services", label: "Vi tilbyr" },
   { id: "team", label: "Teamet" },
   { id: "contact", label: "Kontakt" },
 ];

@@ -13,10 +13,10 @@ export default function Footer() {
           {/* Links */}
           <div className="flex items-center gap-6 text-sm font-sans font-light opacity-60">
             <Link href="/behandlinger" className="hover:opacity-100 transition-opacity">
-              Behandlinger
+              Vi tilbyr
             </Link>
             <Link href="/priser" className="hover:opacity-100 transition-opacity">
-              Priser
+              Behandlinger
             </Link>
             <Link href="/kontakt" className="hover:opacity-100 transition-opacity">
               Kontakt

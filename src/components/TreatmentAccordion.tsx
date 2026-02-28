@@ -4,33 +4,9 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ChevronRight,
-  CheckCircle,
-  Crown,
-  ShieldCheck,
-  Paintbrush,
-  Heart,
-  Sparkles,
-  CircleDot,
-  Droplets,
-  AlarmClock,
-  HandHeart,
 } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
-
-const iconMap: Record<string, LucideIcon> = {
-  Crown,
-  ShieldCheck,
-  Paintbrush,
-  Heart,
-  Sparkles,
-  CircleDot,
-  Droplets,
-  AlarmClock,
-  HandHeart,
-};
 
 interface Treatment {
-  iconName: string;
   title: string;
   description: string;
   features: string[];
@@ -43,7 +19,6 @@ interface TreatmentAccordionProps {
 
 export default function TreatmentAccordion({ treatment }: TreatmentAccordionProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const Icon = iconMap[treatment.iconName] ?? Crown;
 
   return (
     <div className="border-b border-border">
@@ -56,7 +31,6 @@ export default function TreatmentAccordion({ treatment }: TreatmentAccordionProp
                    hover:bg-bg-warm/50 group"
         aria-expanded={isOpen}
       >
-        <Icon className="w-5 h-5 text-accent-gold shrink-0" />
         <span className="font-serif text-lg font-semibold text-text-dark flex-1">
           {treatment.title}
         </span>
@@ -81,7 +55,7 @@ export default function TreatmentAccordion({ treatment }: TreatmentAccordionProp
             className="overflow-hidden"
           >
             <div className="pl-4 border-l-3 border-l-accent-gold bg-bg-warm py-6 px-4 ml-0">
-              <p className="font-sans text-base font-light leading-relaxed text-text-body mb-5">
+              <p className="font-sans text-base font-light leading-relaxed text-text-dark/80 mb-5">
                 {treatment.description}
               </p>
               <ul className="space-y-2.5">
@@ -91,9 +65,9 @@ export default function TreatmentAccordion({ treatment }: TreatmentAccordionProp
                     initial={{ opacity: 0, x: -8 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.05, duration: 0.25 }}
-                    className="flex items-center gap-2.5 text-sm font-normal text-text-dark/80"
+                    className="flex items-center gap-2.5 text-sm font-normal text-text-dark"
                   >
-                    <CheckCircle className="w-4 h-4 text-accent-gold shrink-0" />
+                    <span className="w-1.5 h-1.5 bg-accent-gold rounded-full shrink-0" />
                     {feature}
                   </motion.li>
                 ))}

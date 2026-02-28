@@ -3,11 +3,9 @@
 import React, { useState } from "react";
 import {
   motion,
-  useMotionValue,
-  useTransform,
   AnimatePresence,
 } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+
 
 interface Card {
   id: number;
@@ -23,26 +21,19 @@ interface CardStackProps {
 
 export default function CardStack({ cards: initialCards }: CardStackProps) {
   const [cards, setCards] = useState<Card[]>(initialCards);
-  const [dragDirection, setDragDirection] = useState<"up" | "down" | null>(
-    null
-  );
-  const [showInfo, setShowInfo] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const dragY = useMotionValue(0);
-  const rotateX = useTransform(dragY, [-200, 0, 200], [15, 0, -15]);
-
   // Configuration
-  const offset = 10;
-  const scaleStep = 0.06;
+  const offset = 2;
+  const scaleStep = 0.015;
   const dimStep = 0.15;
   const borderRadius = 12;
   const swipeThreshold = 50;
 
   const spring = {
     type: "spring" as const,
-    stiffness: 170,
-    damping: 26,
+    stiffness: 300,
+    damping: 35,
   };
 
   const moveToEnd = () => {
@@ -66,35 +57,26 @@ export default function CardStack({ cards: initialCards }: CardStackProps) {
 
     if (Math.abs(dy) > swipeThreshold || Math.abs(velocity) > 500) {
       if (dy < 0 || velocity < 0) {
-        setDragDirection("up");
-        setTimeout(() => {
-          moveToEnd();
-          setDragDirection(null);
-        }, 150);
+        moveToEnd();
       } else {
-        setDragDirection("down");
-        setTimeout(() => {
-          moveToStart();
-          setDragDirection(null);
-        }, 150);
+        moveToStart();
       }
     }
-    dragY.set(0);
   };
 
   return (
-    <div className="relative flex flex-col items-center gap-6">
+    <div className="relative flex flex-col items-center gap-6 mt-[20px]">
       {/* Card Stack + Arrows wrapper */}
       <div className="relative flex items-center gap-4 lg:gap-8">
         {/* Left Arrow */}
         <motion.button
           onClick={moveToStart}
-          className="hidden lg:flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-footer-bg)] hover:bg-[var(--color-accent-gold)] transition-colors duration-200 shrink-0"
+          className="hidden lg:flex items-center justify-center px-4 h-12 rounded-xl bg-[var(--color-footer-bg)] hover:bg-[var(--color-accent-gold)] transition-colors duration-200 shrink-0"
           whileHover={{ scale: 1.1, x: -3 }}
           whileTap={{ scale: 0.9 }}
           aria-label="Previous card"
         >
-          <ChevronLeft className="w-5 h-5 text-[var(--color-bg-cream)]" />
+          <span className="text-[var(--color-bg-cream)] text-xs font-sans uppercase tracking-wider font-medium">Bak</span>
         </motion.button>
 
         {/* Card Stack — explicit width to prevent collapse */}
@@ -120,15 +102,13 @@ export default function CardStack({ cards: initialCards }: CardStackProps) {
                       boxShadow: isFront
                         ? "0 25px 50px rgba(0, 0, 0, 0.2)"
                         : "0 15px 30px rgba(0, 0, 0, 0.1)",
-                      rotateX: isFront ? rotateX : 0,
-                      transformPerspective: 1000,
                     }}
                     animate={{
                       top: `${i * -offset}%`,
                       scale: 1 - i * scaleStep,
                       filter: `brightness(${brightness})`,
                       zIndex: baseZ,
-                      opacity: dragDirection && isFront ? 0 : 1,
+                      opacity: 1,
                     }}
                     exit={{
                       opacity: 0,
@@ -138,24 +118,8 @@ export default function CardStack({ cards: initialCards }: CardStackProps) {
                     transition={spring}
                     drag={isFront ? "y" : false}
                     dragConstraints={{ top: 0, bottom: 0 }}
-                    dragElastic={0.7}
-                    onDrag={(_, info) => {
-                      if (isFront) {
-                        dragY.set(info.offset.y);
-                      }
-                    }}
+                    dragElastic={0.4}
                     onDragEnd={handleDragEnd}
-                    whileDrag={
-                      isFront
-                        ? {
-                            zIndex: cards.length + 1,
-                            cursor: "grabbing",
-                            scale: 1.05,
-                          }
-                        : {}
-                    }
-                    onHoverStart={() => isFront && setShowInfo(true)}
-                    onHoverEnd={() => setShowInfo(false)}
                   >
                     <img
                       src={src}
@@ -165,22 +129,22 @@ export default function CardStack({ cards: initialCards }: CardStackProps) {
                     />
 
                     {/* Card Info Overlay */}
-                    <motion.div
-                      className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-[var(--color-footer-bg)]/80 to-transparent"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{
-                        opacity: isFront && showInfo ? 1 : 0,
-                        y: isFront && showInfo ? 0 : 20,
-                      }}
-                      transition={{ duration: 0.2 }}
+                    <div
+                      className="absolute bottom-0 left-0 right-0 px-6 py-5 bg-gradient-to-t from-black/70 via-black/40 to-transparent"
                     >
-                      <h3 className="text-[var(--color-bg-cream)] font-serif font-bold text-lg">
+                      <h3
+                        className="text-white font-serif font-bold text-3xl"
+                        style={{ textShadow: "0 2px 4px rgba(0,0,0,0.9), 0 4px 12px rgba(0,0,0,0.7), 0 0px 20px rgba(0,0,0,0.5)" }}
+                      >
                         {title}
                       </h3>
-                      <p className="text-[var(--color-bg-cream)]/80 font-sans text-sm font-light">
+                      <p
+                        className="text-white font-sans text-lg font-light mt-1"
+                        style={{ textShadow: "0 2px 4px rgba(0,0,0,0.9), 0 4px 12px rgba(0,0,0,0.7), 0 0px 20px rgba(0,0,0,0.5)" }}
+                      >
                         {description}
                       </p>
-                    </motion.div>
+                    </div>
                   </motion.li>
                 );
               })}
@@ -191,37 +155,19 @@ export default function CardStack({ cards: initialCards }: CardStackProps) {
         {/* Right Arrow */}
         <motion.button
           onClick={moveToEnd}
-          className="hidden lg:flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-footer-bg)] hover:bg-[var(--color-accent-gold)] transition-colors duration-200 shrink-0"
+          className="hidden lg:flex items-center justify-center px-4 h-12 rounded-xl bg-[var(--color-footer-bg)] hover:bg-[var(--color-accent-gold)] transition-colors duration-200 shrink-0"
           whileHover={{ scale: 1.1, x: 3 }}
           whileTap={{ scale: 0.9 }}
           aria-label="Next card"
         >
-          <ChevronRight className="w-5 h-5 text-[var(--color-bg-cream)]" />
+          <span className="text-[var(--color-bg-cream)] text-xs font-sans uppercase tracking-wider font-medium">Neste</span>
         </motion.button>
-      </div>
-
-      {/* Progress Dots */}
-      <div className="flex gap-2">
-        {initialCards.map((_, i) => (
-          <motion.div
-            key={i}
-            className={`h-1.5 rounded-full transition-all duration-300 ${
-              i === currentIndex % initialCards.length
-                ? "bg-[var(--color-accent-gold)] w-8"
-                : "bg-[var(--color-border)] w-1.5"
-            }`}
-            whileHover={{ scale: 1.2 }}
-          />
-        ))}
       </div>
 
       {/* Info Text */}
       <div className="text-center">
-        <p className="text-[var(--color-text-muted)] text-xs font-sans font-light">
+        <p className="text-[var(--color-text-muted)]/60 text-xs font-sans">
           Dra opp/ned eller bruk pilene for a navigere
-        </p>
-        <p className="text-[var(--color-text-muted)]/60 text-xs font-sans mt-1">
-          Kort {currentIndex + 1} av {initialCards.length}
         </p>
       </div>
     </div>

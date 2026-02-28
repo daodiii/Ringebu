@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
 import GlassCard from "@/components/GlassCard";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import TreatmentAccordion from "@/components/TreatmentAccordion";
+import CategoryAccordion from "@/components/CategoryAccordion";
 
 export const metadata: Metadata = {
-  title: "Behandlinger",
+  title: "Vi tilbyr",
   description:
     "Se vårt komplette utvalg av tannbehandlinger. Fra forebyggende pleie til kosmetisk behandling og spesialistbehandlinger.",
 };
@@ -147,8 +147,8 @@ export default function Behandlinger() {
     <>
       {/* Page header */}
       <PageHeader
-        subtitle="Behandlinger"
-        title="Vår ekspertise"
+        subtitle="Vårt mål er å hjelpe deg"
+        title="Vi tilbyr"
         description="Vi tilbyr et bredt spekter av tannbehandlinger — fra forebyggende pleie til avansert kosmetisk og kirurgisk behandling."
       />
 
@@ -157,31 +157,17 @@ export default function Behandlinger() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {categories.map((category, catIndex) => (
             <AnimateOnScroll key={category} animation="fadeUp">
-              <div className={`py-12 ${catIndex < categories.length - 1 ? "border-b border-accent-gold/30" : ""}`}>
-                <div className="flex flex-col md:flex-row md:gap-16">
-                  {/* Left column — category name */}
-                  <div className="md:w-[35%] mb-8 md:mb-0 md:sticky md:top-24 md:self-start">
-                    <h2
-                      className="font-serif font-bold text-text-dark"
-                      style={{ fontSize: "clamp(1.8rem, 3vw, 2.5rem)" }}
-                    >
-                      {category}
-                    </h2>
-                    <div className="w-[60px] h-[1px] bg-accent-gold mt-4 mb-3" />
-                    <p className="text-sm font-light text-text-muted">
-                      {categorySubtitles[category]}
-                    </p>
-                  </div>
-
-                  {/* Right column — treatment accordion rows */}
-                  <div className="md:w-[65%]">
-                    {treatments
-                      .filter((t) => t.category === category)
-                      .map((treatment) => (
-                        <TreatmentAccordion key={treatment.title} treatment={treatment} />
-                      ))}
-                  </div>
-                </div>
+              <div className={`md:py-12 py-2 ${catIndex < categories.length - 1 ? "border-b border-accent-gold/30" : ""}`}>
+                <CategoryAccordion
+                  category={category}
+                  subtitle={categorySubtitles[category]}
+                >
+                  {treatments
+                    .filter((t) => t.category === category)
+                    .map((treatment) => (
+                      <TreatmentAccordion key={treatment.title} treatment={treatment} />
+                    ))}
+                </CategoryAccordion>
               </div>
             </AnimateOnScroll>
           ))}
@@ -206,7 +192,6 @@ export default function Behandlinger() {
                   className="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white px-8 py-4 rounded-xl text-base font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
                 >
                   Kontakt Oss
-                  <ArrowRight className="w-5 h-5" />
                 </Link>
                 <Link
                   href="/priser"

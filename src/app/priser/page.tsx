@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Info, Phone } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
 import GlassCard from "@/components/GlassCard";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
+import CategoryAccordion from "@/components/CategoryAccordion";
 
 export const metadata: Metadata = {
-  title: "Priser",
+  title: "Behandlinger",
   description:
     "Se prislisten for tannbehandlinger hos Ringebu Tannlegesenter. Transparente priser og trygderefusjon.",
 };
@@ -134,7 +134,7 @@ export default function Priser() {
     <>
       {/* Page header */}
       <PageHeader
-        subtitle="Transparent prising"
+        subtitle="Hos oss er du trygg"
         title="Behandlinger"
         description="Vi tror på åpen og ærlig prising. Her finner du en oversikt over våre behandlingspriser."
       />
@@ -143,9 +143,9 @@ export default function Priser() {
       <section className="bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <AnimateOnScroll animation="fadeIn">
-            <GlassCard level={1} className="border-l-4 border-l-accent px-6 py-4">
+            <GlassCard level={1} className="border-l-4 border-l-emerald px-6 py-4">
               <div className="flex items-start sm:items-center gap-3">
-                <Info className="w-5 h-5 text-accent shrink-0 mt-0.5 sm:mt-0" />
+                {/* Info icon removed */}
                 <p className="text-sm text-foreground/80">
                   <strong>Merk:</strong> Prisene er veiledende og kan variere
                   avhengig av behandlingens omfang. Barn og ungdom under 18 år har
@@ -165,37 +165,35 @@ export default function Priser() {
           <div className="space-y-12">
             {priceCategories.map((category, catIndex) => (
               <AnimateOnScroll key={category.title} animation="fadeUp" delay={catIndex * 0.1}>
-                <div>
-                  <div className="flex items-center gap-4 mb-6">
-                    <span className="inline-block bg-primary-light/60 text-primary-dark px-5 py-2 rounded-full text-sm font-semibold uppercase tracking-wider">
-                      {category.title}
-                    </span>
-                    <div className="flex-1 h-px bg-gray-200" />
-                  </div>
-
-                  <GlassCard level={2} className="overflow-hidden">
-                    {category.items.map((item, index) => (
-                      <div
-                        key={item.name}
-                        className={`flex items-center justify-between px-6 py-4 ${index !== category.items.length - 1
+                <div className={`md:py-8 py-2 ${catIndex < priceCategories.length - 1 ? "border-b border-accent-gold/30" : ""}`}>
+                  <CategoryAccordion
+                    category={category.title}
+                    subtitle=""
+                  >
+                    <GlassCard level={2} className="overflow-hidden">
+                      {category.items.map((item, index) => (
+                        <div
+                          key={item.name}
+                          className={`flex items-center justify-between px-6 py-4 ${index !== category.items.length - 1
                             ? "border-b border-surface-dark/50"
                             : ""
-                          } hover:bg-white/50 transition-colors`}
-                      >
-                        <div>
-                          <p className="font-medium text-foreground">
-                            {item.name}
-                          </p>
-                          <p className="text-sm text-muted">{item.description}</p>
+                            } hover:bg-white/50 transition-colors`}
+                        >
+                          <div>
+                            <p className="font-medium text-foreground">
+                              {item.name}
+                            </p>
+                            <p className="text-sm text-muted">{item.description}</p>
+                          </div>
+                          {item.price && (
+                            <p className="font-bold text-primary whitespace-nowrap ml-4">
+                              {item.price}
+                            </p>
+                          )}
                         </div>
-                        {item.price && (
-                          <p className="font-bold text-primary whitespace-nowrap ml-4">
-                            {item.price}
-                          </p>
-                        )}
-                      </div>
-                    ))}
-                  </GlassCard>
+                      ))}
+                    </GlassCard>
+                  </CategoryAccordion>
                 </div>
               </AnimateOnScroll>
             ))}
@@ -270,13 +268,11 @@ export default function Priser() {
                   className="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white px-8 py-4 rounded-xl text-base font-semibold transition-all duration-300 shadow-lg"
                 >
                   Kontakt Oss
-                  <ArrowRight className="w-5 h-5" />
                 </Link>
                 <a
                   href="tel:+4761280412"
                   className="inline-flex items-center justify-center gap-2 border-2 border-primary text-primary hover:bg-primary hover:text-white px-8 py-4 rounded-xl text-base font-semibold transition-all duration-300"
                 >
-                  <Phone className="w-5 h-5" />
                   61 28 04 12
                 </a>
               </div>

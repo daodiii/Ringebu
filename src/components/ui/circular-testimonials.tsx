@@ -6,7 +6,6 @@ import React, {
   useMemo,
   useCallback,
 } from "react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface Testimonial {
@@ -245,7 +244,7 @@ export const CircularTestimonials = ({
               onMouseLeave={() => setHoverPrev(false)}
               aria-label="Previous"
             >
-              <ArrowLeft size={20} color={colorArrowFg} />
+              <span>Forrige</span>
             </button>
             <button
               className="arrow-button next-button"
@@ -257,7 +256,7 @@ export const CircularTestimonials = ({
               onMouseLeave={() => setHoverNext(false)}
               aria-label="Next"
             >
-              <ArrowRight size={20} color={colorArrowFg} />
+              <span>Neste</span>
             </button>
           </div>
         </div>
@@ -314,15 +313,22 @@ export const CircularTestimonials = ({
           padding-top: 2.5rem;
         }
         .arrow-button {
-          width: 2.5rem;
+          width: auto;
+          min-width: 5rem;
+          padding: 0 1rem;
           height: 2.5rem;
-          border-radius: 50%;
+          border-radius: 0.75rem;
           display: flex;
           align-items: center;
           justify-content: center;
           cursor: pointer;
           transition: background-color 0.3s;
           border: none;
+          color: white;
+          font-family: var(--font-plus-jakarta), sans-serif;
+          font-size: 0.75rem;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
         }
         @media (min-width: 768px) {
           .testimonial-grid {

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { MapPin, Phone, Mail, Clock, ArrowRight } from "lucide-react";
+
 import PageHeader from "@/components/PageHeader";
 import GlassCard from "@/components/GlassCard";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
@@ -35,15 +35,56 @@ export default function Kontakt() {
                 send en e-post, eller stikk innom klinikken.
               </p>
 
-              {/* Contact cards */}
-              <div className="space-y-4">
+              {/* Contact cards - Mobile layout */}
+              <div className="flex flex-col gap-3 sm:hidden mb-10 w-full max-w-[340px] mx-auto">
+                <AnimateOnScroll animation="fadeUp" delay={0}>
+                  <a href="tel:+4761280412" className="bg-[#033b2e] border border-white/10 rounded-xl py-3.5 px-5 flex items-center justify-between active:bg-[#044233] transition-colors shadow-md">
+                    <span className="text-[var(--color-accent-gold)] font-medium text-sm">Telefon:</span>
+                    <span className="text-white text-[15px] font-medium">61 28 04 12</span>
+                  </a>
+                </AnimateOnScroll>
+                <AnimateOnScroll animation="fadeUp" delay={0.1}>
+                  <a href="mailto:post@ringebutann.no" className="bg-[#033b2e] border border-white/10 rounded-xl py-3.5 px-5 flex items-center justify-between active:bg-[#044233] transition-colors shadow-md">
+                    <span className="text-[var(--color-accent-gold)] font-medium text-sm">E-post:</span>
+                    <span className="text-white text-[15px] font-medium">post@ringebutann.no</span>
+                  </a>
+                </AnimateOnScroll>
+                <AnimateOnScroll animation="fadeUp" delay={0.2}>
+                  <a
+                    href="https://www.google.com/maps/search/?api=1&query=Jernbanegata+4,+2630+Ringebu"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block"
+                  >
+                    <div className="bg-[#033b2e] border border-white/10 rounded-xl py-3.5 px-4 flex flex-col items-center text-center justify-center shadow-md active:bg-[#044233] transition-colors">
+                      <span className="text-[var(--color-accent-gold)] font-semibold text-[11px] uppercase tracking-widest mb-1.5 opacity-90">
+                        Adresse
+                      </span>
+                      <span className="text-white text-[15px] font-medium">
+                        Jernbanegata 4, 2630 Ringebu
+                      </span>
+                      <span className="text-[var(--color-accent-gold)] text-[11px] mt-1.5 opacity-80">
+                        Trykk her for veibeskrivelse
+                      </span>
+                    </div>
+                  </a>
+                </AnimateOnScroll>
+                <AnimateOnScroll animation="fadeUp" delay={0.3}>
+                  <div className="bg-[#033b2e] border border-white/10 rounded-xl py-3.5 px-4 flex flex-col items-center text-center justify-center shadow-md">
+                    <span className="text-[var(--color-accent-gold)] font-semibold text-[11px] uppercase tracking-widest mb-1.5 opacity-90">Åpningstider</span>
+                    <span className="text-white text-[14px] font-medium leading-relaxed">
+                      Man–Fre: 08:00–15:30 <br /> Tirs, Tors: 08:00–17:00
+                    </span>
+                  </div>
+                </AnimateOnScroll>
+              </div>
+
+              {/* Contact cards - Desktop layout */}
+              <div className="hidden sm:block space-y-4">
                 <AnimateOnScroll animation="fadeUp" delay={0}>
                   <a href="tel:+4761280412" className="block">
                     <GlassCard level={2} hover className="p-6">
                       <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 bg-primary-light rounded-xl flex items-center justify-center shrink-0">
-                          <Phone className="w-6 h-6 text-primary" />
-                        </div>
                         <div>
                           <h3 className="font-bold text-foreground mb-1">Telefon</h3>
                           <p className="text-primary font-semibold text-lg">
@@ -62,9 +103,6 @@ export default function Kontakt() {
                   <a href="mailto:post@ringebutann.no" className="block">
                     <GlassCard level={2} hover className="p-6">
                       <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 bg-primary-light rounded-xl flex items-center justify-center shrink-0">
-                          <Mail className="w-6 h-6 text-primary" />
-                        </div>
                         <div>
                           <h3 className="font-bold text-foreground mb-1">E-post</h3>
                           <p className="text-primary font-semibold">
@@ -80,29 +118,35 @@ export default function Kontakt() {
                 </AnimateOnScroll>
 
                 <AnimateOnScroll animation="fadeUp" delay={0.2}>
-                  <GlassCard level={2} hover className="p-6">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-primary-light rounded-xl flex items-center justify-center shrink-0">
-                        <MapPin className="w-6 h-6 text-primary" />
+                  <a
+                    href="https://www.google.com/maps/search/?api=1&query=Jernbanegata+4,+2630+Ringebu"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block"
+                  >
+                    <GlassCard level={2} hover className="p-6">
+                      <div className="flex items-start gap-4">
+                        <div>
+                          <h3 className="font-bold text-foreground mb-1">
+                            Adresse
+                          </h3>
+                          <p className="text-foreground/80">Jernbanegata 4</p>
+                          <p className="text-foreground/80">2630 Ringebu</p>
+                          <p className="text-[var(--color-emerald)] text-xs font-semibold mt-2">
+                            Trykk her for veibeskrivelse
+                          </p>
+                          <p className="text-muted text-sm mt-1">
+                            Enkel parkering rett utenfor klinikken
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <h3 className="font-bold text-foreground mb-1">Adresse</h3>
-                        <p className="text-foreground/80">Jernbanegata 4</p>
-                        <p className="text-foreground/80">2630 Ringebu</p>
-                        <p className="text-muted text-sm mt-1">
-                          Enkel parkering rett utenfor klinikken
-                        </p>
-                      </div>
-                    </div>
-                  </GlassCard>
+                    </GlassCard>
+                  </a>
                 </AnimateOnScroll>
 
                 <AnimateOnScroll animation="fadeUp" delay={0.3}>
                   <GlassCard level={2} hover className="p-6">
                     <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-primary-light rounded-xl flex items-center justify-center shrink-0">
-                        <Clock className="w-6 h-6 text-primary" />
-                      </div>
                       <div>
                         <h3 className="font-bold text-foreground mb-2">
                           Åpningstider
@@ -152,28 +196,7 @@ export default function Kontakt() {
 
             {/* Map + Emergency */}
             <div className="space-y-6">
-              {/* Map */}
-              <AnimateOnScroll animation="fadeIn">
-                <GlassCard level={2} className="overflow-hidden">
-                  <div className="aspect-[4/3] relative">
-                    <iframe
-                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1876.5!2d10.165!3d61.526!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNjHCsDMxJzMzLjYiTiAxMMKwMDknNTQuMCJF!5e0!3m2!1sno!2sno!4v1"
-                      className="absolute inset-0 w-full h-full"
-                      style={{ border: 0 }}
-                      allowFullScreen
-                      loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
-                      title="Kart til Ringebu Tannlegesenter"
-                    />
-                  </div>
-                  <div className="p-4 bg-background">
-                    <p className="text-sm text-muted flex items-center gap-2">
-                      <MapPin className="w-4 h-4 text-primary" />
-                      Jernbanegata 4, 2630 Ringebu
-                    </p>
-                  </div>
-                </GlassCard>
-              </AnimateOnScroll>
+
 
               {/* Emergency info */}
               <AnimateOnScroll animation="fadeUp" delay={0.1}>
@@ -201,7 +224,7 @@ export default function Kontakt() {
               {/* Booking CTA */}
               <AnimateOnScroll animation="fadeUp" delay={0.2}>
                 <GlassCard level={3} className="p-8 bg-primary/90 text-white">
-                  <h3 className="text-xl font-bold mb-3">Bestill time</h3>
+                  <h3 className="text-xl font-bold mb-3 !text-white">Bestill time</h3>
                   <p className="text-white/80 leading-relaxed mb-6">
                     Den enkleste måten å bestille time er å ringe oss direkte.
                     Vårt vennlige personale hjelper deg med å finne en tid som
@@ -211,7 +234,6 @@ export default function Kontakt() {
                     href="tel:+4761280412"
                     className="inline-flex items-center justify-center gap-2 bg-white/20 hover:bg-white/30 text-white px-6 py-3 rounded-xl text-base font-semibold transition-all duration-300 shadow-lg"
                   >
-                    <Phone className="w-5 h-5" />
                     Ring 61 28 04 12
                   </a>
                 </GlassCard>

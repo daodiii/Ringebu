@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
@@ -8,9 +9,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { href: "/", label: "Hjem" },
-  { href: "/behandlinger", label: "Behandlinger" },
-  { href: "/priser", label: "Priser" },
+  { href: "/behandlinger", label: "Vi tilbyr" },
+  { href: "/priser", label: "Behandlinger" },
   { href: "/kontakt", label: "Kontakt" },
 ];
 
@@ -41,31 +41,35 @@ export default function Navbar() {
     <>
       <nav
         className={cn(
-          "fixed top-0 inset-x-0 z-50 transition-all duration-500",
-          scrolled
-            ? "bg-[var(--color-bg-cream)]/80 backdrop-blur-xl border-b border-[var(--color-border)]/50"
-            : "bg-transparent"
+          "fixed top-0 inset-x-0 z-50 transition-all duration-500 bg-[var(--color-bg-cream)]/95 backdrop-blur-md border-b border-[var(--color-border)]/50"
         )}
       >
         <div className="container-width flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="relative z-50">
-            <span className="font-serif text-xl font-bold text-[var(--color-text-dark)] tracking-tight">
-              Ringebu
-            </span>
+          <Link href="/" className="relative z-50 h-12 flex items-center gap-2.5">
+            <Image
+              src="/images/logo.png"
+              alt="Ringebu Tannklinikk Logo"
+              width={150}
+              height={80}
+              className="h-full w-auto object-contain"
+              priority
+            />
+            <div className="flex flex-col justify-center text-[var(--color-emerald)] font-serif font-bold tracking-[0.02em] uppercase leading-none">
+              <span className="text-[1.25rem] mb-0.5">RINGEBU</span>
+              <span className="text-[1.25rem]">TANNLEGESENTER</span>
+            </div>
           </Link>
 
           {/* Desktop Links — centered */}
-          <div className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+          <div className="hidden md:flex items-center gap-4 absolute left-1/2 -translate-x-1/2">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "text-sm font-sans font-light tracking-wide transition-colors duration-300",
-                  pathname === link.href
-                    ? "text-[var(--color-text-dark)]"
-                    : "text-[var(--color-text-muted)] hover:text-[var(--color-text-dark)]"
+                  "btn-nav",
+                  pathname === link.href && "active"
                 )}
               >
                 {link.label}
@@ -75,12 +79,14 @@ export default function Navbar() {
 
           {/* Right — CTA + mobile toggle */}
           <div className="flex items-center gap-4">
-            <Link
-              href="/kontakt"
-              className="hidden md:inline-flex btn-primary text-sm px-6 py-2.5"
-            >
-              Bestill Time
-            </Link>
+            <div className="hidden md:block">
+              <Link
+                href="/kontakt"
+                className="btn-nav"
+              >
+                Bestill Time
+              </Link>
+            </div>
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               className="md:hidden p-2 text-[var(--color-text-dark)] relative z-50"
@@ -115,7 +121,7 @@ export default function Navbar() {
                   className={cn(
                     "text-3xl font-serif font-bold tracking-tight transition-colors",
                     pathname === link.href
-                      ? "text-[var(--color-accent-gold)]"
+                      ? "text-[var(--color-emerald)]"
                       : "text-[var(--color-text-dark)]"
                   )}
                 >

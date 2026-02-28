@@ -21,7 +21,7 @@ export default function PageHeader({
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <GlassCard level={3} className="inline-block px-10 py-10 md:px-16 md:py-12">
-          <p className="text-primary font-semibold text-sm uppercase tracking-[0.15em] mb-3">
+          <p className="text-accent-gold font-semibold text-sm uppercase tracking-[0.15em] mb-3">
             {subtitle}
           </p>
           <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-foreground mb-4">

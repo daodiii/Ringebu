@@ -8,13 +8,14 @@ interface ScrollSectionProps {
   children: React.ReactNode;
   className?: string;
   id?: string;
-  bg?: "cream" | "warm" | "warmest";
+  bg?: "cream" | "warm" | "warmest" | "none";
 }
 
 const bgMap = {
   cream: "bg-[var(--color-bg-cream)]",
   warm: "bg-[var(--color-bg-warm)]",
   warmest: "bg-[var(--color-bg-warmest)]",
+  none: "",
 };
 
 export default function ScrollSection({
