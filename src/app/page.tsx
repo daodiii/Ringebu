@@ -332,7 +332,7 @@ function ServicesSection() {
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              className="mt-6 md:mt-8 text-center"
+              className="mt-6 md:mt-8 max-lg:-mt-[64px] text-center"
             >
               <Link href="/behandlinger" className="btn-primary !bg-[var(--color-accent-gold)] !text-[var(--color-emerald)] px-6 py-2.5 md:px-8 md:py-3 rounded-full font-bold text-[14px]">
                 Se alle behandlinger
@@ -382,7 +382,7 @@ function TeamSection() {
   return (
     <ScrollSection id="team" bg="none" className="bg-[var(--color-emerald)] lg:bg-[var(--color-bg-warmest)]">
       <div className="container-width w-full flex flex-col items-center justify-center py-4 md:py-20 lg:py-0">
-        <AnimatedContent className="text-center mb-3 lg:mb-12 lg:pt-[80px]">
+        <AnimatedContent className="text-center mb-3 lg:mb-12 lg:pt-[130px]">
           <span className="eyebrow block mb-2 md:mb-4 max-lg:!text-[var(--color-accent-gold)] text-[10px] md:text-[12px]">Vårt Team</span>
           <h2 className="heading-editorial max-lg:!text-[var(--color-bg-cream)]" style={{ fontSize: "clamp(1.75rem, 7vw, 3.5rem)" }}>
             <span className="lg:text-[2.1rem]">Møt tannlegene våre</span>
