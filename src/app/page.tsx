@@ -255,7 +255,7 @@ function ServicesSection() {
   return (
     <ScrollSection id="services" bg="none" className="bg-[var(--color-emerald)] lg:bg-[var(--color-bg-warm)]">
       <div className="container-width w-full flex flex-col items-center justify-center py-4 md:py-20 lg:py-0">
-        <AnimatedContent className="text-center mb-3 lg:mb-12 pt-[25px]">
+        <AnimatedContent className="text-center mb-3 lg:mb-12 pt-[50px]">
           <span className="eyebrow block max-lg:!text-[var(--color-bg-cream)] opacity-90 text-[10px] md:text-[12px]">
             Kvalitet i hvert smil
           </span>
@@ -382,7 +382,7 @@ function TeamSection() {
   return (
     <ScrollSection id="team" bg="none" className="bg-[var(--color-emerald)] lg:bg-[var(--color-bg-warmest)]">
       <div className="container-width w-full flex flex-col items-center justify-center py-4 md:py-20 lg:py-0">
-        <AnimatedContent className="text-center mb-3 lg:mb-12 lg:pt-[25px]">
+        <AnimatedContent className="text-center mb-3 lg:mb-12 lg:pt-[30px]">
           <span className="eyebrow block mb-2 md:mb-4 max-lg:!text-[var(--color-accent-gold)] text-[10px] md:text-[12px]">Vårt Team</span>
           <h2 className="heading-editorial max-lg:!text-[var(--color-bg-cream)]" style={{ fontSize: "clamp(1.75rem, 7vw, 3.5rem)" }}>
             <span className="lg:text-[2.1rem]">Møt tannlegene våre</span>
