@@ -1,285 +1,224 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-import PageHeader from "@/components/PageHeader";
-import GlassCard from "@/components/GlassCard";
-import AnimateOnScroll from "@/components/AnimateOnScroll";
-import CategoryAccordion from "@/components/CategoryAccordion";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Behandlinger",
-  description:
-    "Se prislisten for tannbehandlinger hos Ringebu Tannlegesenter. Transparente priser og trygderefusjon.",
-};
+import { useState } from "react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { ChevronDown, Calendar, Phone, Info } from "lucide-react";
 
 const priceCategories = [
   {
     title: "Undersøkelse & Kontroll",
     items: [
-      {
-        name: "Undersøkelse med 2 røntgenbilder, enkel rens og skriftlig kostnadsoverslag",
-        description: "Fullstendig tannhelsesjekk",
-        price: "",
-      },
-      {
-        name: "Studentrabatt / studentpris på undersøkelse",
-        description: "Gyldig med studentbevis",
-        price: "",
-      },
-      {
-        name: "Enkel etterkontroll",
-        description: "Etter kirurgiske inngrep, periodontal behandling og oralmedisinske undersøkelser",
-        price: "",
-      },
-      {
-        name: "Omfattende etterkontroll",
-        description: "Etter kirurgiske inngrep og oralmedisinske undersøkelser",
-        price: "",
-      },
+      { name: "Undersøkelse med 2 røntgenbilder, enkel rens og skriftlig kostnadsoverslag", description: "Fullstendig tannhelsesjekk" },
+      { name: "Studentrabatt / studentpris på undersøkelse", description: "Gyldig med studentbevis" },
+      { name: "Enkel etterkontroll", description: "Etter kirurgiske inngrep og periodontal behandling" },
+      { name: "Omfattende etterkontroll", description: "Etter kirurgiske inngrep og oralmedisinske undersøkelser" },
     ],
   },
   {
     title: "Fyllinger",
     items: [
-      {
-        name: "Fylling – liten",
-        description: "Én flate",
-        price: "",
-      },
-      {
-        name: "Fylling – mellomstor",
-        description: "To flater",
-        price: "",
-      },
-      {
-        name: "Fylling – stor",
-        description: "Tre eller flere flater",
-        price: "",
-      },
+      { name: "Fylling – liten", description: "Én flate" },
+      { name: "Fylling – mellomstor", description: "To flater" },
+      { name: "Fylling – stor", description: "Tre eller flere flater" },
     ],
   },
   {
     title: "Rotbehandling",
     items: [
-      {
-        name: "Rotfylling – 1 rotkanal",
-        description: "Tann med én rotkanal",
-        price: "",
-      },
-      {
-        name: "Rotfylling – 2 rotkanaler",
-        description: "Tann med to rotkanaler",
-        price: "",
-      },
-      {
-        name: "Rotfylling – 3 til 4 rotkanaler",
-        description: "Tann med tre til fire rotkanaler",
-        price: "",
-      },
+      { name: "Rotfylling – 1 rotkanal", description: "Tann med én rotkanal" },
+      { name: "Rotfylling – 2 rotkanaler", description: "Tann med to rotkanaler" },
+      { name: "Rotfylling – 3 til 4 rotkanaler", description: "Tann med tre til fire rotkanaler" },
     ],
   },
   {
     title: "Tannkjøttbehandling (Periodonti)",
     items: [
-      {
-        name: "Periodontal behandling og rehabilitering etter periodontitt",
-        description: "Behandling og oppfølging av tannkjøttsykdom",
-        price: "",
-      },
-      {
-        name: "Behandling av marginal periodontitt",
-        description: "Behandling av tannkjøttbetennelse",
-        price: "",
-      },
-      {
-        name: "Fiksering av tenner",
-        description: "Stabilisering av løse tenner",
-        price: "",
-      },
-      {
-        name: "Tillegg for kirurgiske inngrep ved behandling av marginal periodontitt",
-        description: "Kirurgisk tilleggsbehandling",
-        price: "",
-      },
+      { name: "Periodontal behandling og rehabilitering", description: "Behandling og oppfølging av tannkjøttsykdom" },
+      { name: "Behandling av marginal periodontitt", description: "Behandling av tannkjøttbetennelse" },
+      { name: "Fiksering av tenner", description: "Stabilisering av løse tenner" },
+      { name: "Kirurgisk tilleggsbehandling", description: "Ved behandling av marginal periodontitt" },
     ],
   },
   {
     title: "Krone & Protetikk",
     items: [
-      {
-        name: "Fullkrone",
-        description: "Hel krone over tann",
-        price: "",
-      },
+      { name: "Fullkrone", description: "Hel krone over tann" },
     ],
   },
   {
     title: "Kirurgi & Tannfjerning",
     items: [
-      {
-        name: "Ukomplisert ekstraksjon av tann eller rot",
-        description: "Enkel fjerning av tann",
-        price: "",
-      },
-      {
-        name: "Kirurgisk fjerning av retinert tann eller dyptliggende rot",
-        description: "Kirurgisk fjerning av visdomstann o.l.",
-        price: "",
-      },
+      { name: "Ukomplisert ekstraksjon", description: "Enkel fjerning av tann eller rot" },
+      { name: "Kirurgisk fjerning", description: "Fjerning av retinert tann eller dyptliggende rot" },
     ],
   },
 ];
 
 export default function Priser() {
-  return (
-    <>
-      {/* Page header */}
-      <PageHeader
-        subtitle="Hos oss er du trygg"
-        title="Behandlinger"
-        description="Vi tror på åpen og ærlig prising. Her finner du en oversikt over våre behandlingspriser."
-      />
+  const [openCategory, setOpenCategory] = useState<string | null>(priceCategories[0].title);
 
-      {/* Info banner */}
-      <section className="bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <AnimateOnScroll animation="fadeIn">
-            <GlassCard level={1} className="border-l-4 border-l-emerald px-6 py-4">
-              <div className="flex items-start sm:items-center gap-3">
-                {/* Info icon removed */}
-                <p className="text-sm text-foreground/80">
-                  <strong>Merk:</strong> Prisene er veiledende og kan variere
-                  avhengig av behandlingens omfang. Barn og ungdom under 18 år har
-                  rett på gratis tannbehandling gjennom den offentlige
-                  tannhelsetjenesten. Vi gir alltid et prisoverslag før behandling
-                  starter.
-                </p>
-              </div>
-            </GlassCard>
-          </AnimateOnScroll>
+  return (
+    <main className="pt-20">
+      {/* Header */}
+      <section className="bg-[var(--color-emerald-950)] py-20 md:py-28">
+        <div className="container-width text-center">
+          <span className="text-emerald-300 text-sm font-sans font-600 uppercase tracking-[0.15em] mb-4 block">
+            Priser
+          </span>
+          <h1 className="heading-display text-white mb-5">
+            Våre behandlingspriser
+          </h1>
+          <p className="text-lg text-emerald-100/70 font-sans font-300 max-w-xl mx-auto">
+            Vi tror på åpen og ærlig prising. Her finner du en oversikt over
+            våre behandlingspriser.
+          </p>
         </div>
       </section>
 
-      {/* Price tables */}
-      <section className="py-20 bg-background">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="space-y-12">
-            {priceCategories.map((category, catIndex) => (
-              <AnimateOnScroll key={category.title} animation="fadeUp" delay={catIndex * 0.1}>
-                <div className={`md:py-8 py-2 ${catIndex < priceCategories.length - 1 ? "border-b border-accent-gold/30" : ""}`}>
-                  <CategoryAccordion
-                    category={category.title}
-                    subtitle=""
-                  >
-                    <GlassCard level={2} className="overflow-hidden">
-                      {category.items.map((item, index) => (
-                        <div
-                          key={item.name}
-                          className={`flex items-center justify-between px-6 py-4 ${index !== category.items.length - 1
-                            ? "border-b border-surface-dark/50"
-                            : ""
-                            } hover:bg-white/50 transition-colors`}
-                        >
-                          <div>
-                            <p className="font-medium text-foreground">
-                              {item.name}
-                            </p>
-                            <p className="text-sm text-muted">{item.description}</p>
-                          </div>
-                          {item.price && (
-                            <p className="font-bold text-primary whitespace-nowrap ml-4">
-                              {item.price}
-                            </p>
-                          )}
-                        </div>
-                      ))}
-                    </GlassCard>
-                  </CategoryAccordion>
-                </div>
-              </AnimateOnScroll>
-            ))}
+      {/* Info Banner */}
+      <section className="bg-[var(--color-emerald-50)] py-5">
+        <div className="container-width max-w-5xl">
+          <div className="flex items-start gap-3">
+            <Info className="size-5 text-[var(--color-emerald-600)] shrink-0 mt-0.5" />
+            <p className="text-sm text-[var(--color-emerald-800)] font-sans font-300">
+              <strong className="font-600">Merk:</strong> Prisene er veiledende og kan variere
+              avhengig av behandlingens omfang. Barn og ungdom under 18 år har
+              rett på gratis tannbehandling gjennom den offentlige tannhelsetjenesten.
+              Vi gir alltid et prisoverslag før behandling starter.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* Payment info */}
-      <section className="py-16 bg-surface">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-8">
-            <AnimateOnScroll animation="fadeUp">
-              <GlassCard level={2} className="p-8">
-                <h3 className="text-xl font-bold text-foreground mb-4">
-                  Betalingsinformasjon
-                </h3>
-                <ul className="space-y-3 text-muted">
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary font-bold mt-0.5">•</span>
-                    Betaling skjer ved endt behandling
+      {/* Price Tables */}
+      <section className="section-padding bg-white">
+        <div className="container-width max-w-5xl">
+          <div className="space-y-3">
+            {priceCategories.map((category) => {
+              const isOpen = openCategory === category.title;
+              return (
+                <motion.div
+                  key={category.title}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                >
+                  <div className={`rounded-2xl border transition-all duration-300 ${
+                    isOpen ? "border-[var(--color-emerald-200)] bg-white shadow-sm" : "border-[var(--color-border)]"
+                  }`}>
+                    <button
+                      onClick={() => setOpenCategory(isOpen ? null : category.title)}
+                      className="w-full text-left px-6 py-5 flex items-center justify-between"
+                    >
+                      <h3 className="font-heading font-600 text-lg text-[var(--color-emerald-900)]">
+                        {category.title}
+                      </h3>
+                      <ChevronDown
+                        className={`size-5 text-[var(--color-text-muted)] transition-transform duration-300 ${
+                          isOpen ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+
+                    {isOpen && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="px-6 pb-5"
+                      >
+                        <div className="border-t border-[var(--color-border)] pt-4 space-y-0">
+                          {category.items.map((item, idx) => (
+                            <div
+                              key={item.name}
+                              className={`py-4 ${
+                                idx < category.items.length - 1
+                                  ? "border-b border-[var(--color-border)]/50"
+                                  : ""
+                              }`}
+                            >
+                              <div className="font-sans font-500 text-[var(--color-text-primary)]">
+                                {item.name}
+                              </div>
+                              <div className="text-sm text-[var(--color-text-muted)] font-sans font-300 mt-0.5">
+                                {item.description}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Payment Info */}
+      <section className="section-padding bg-[var(--color-stone-50)]">
+        <div className="container-width max-w-5xl">
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="card p-8">
+              <h3 className="font-heading font-600 text-xl text-[var(--color-emerald-900)] mb-5">
+                Betalingsinformasjon
+              </h3>
+              <ul className="space-y-3">
+                {[
+                  "Betaling skjer ved endt behandling",
+                  "Vi aksepterer kort, Vipps og kontant",
+                  "Avbetalingsordninger kan avtales",
+                  "Trygderefusjon for stønadberettigede behandlinger",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2 text-[var(--color-text-secondary)] font-sans font-300">
+                    <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-emerald-500)] mt-2.5 shrink-0" />
+                    {item}
                   </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary font-bold mt-0.5">•</span>
-                    Vi aksepterer kort, Vipps og kontant
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary font-bold mt-0.5">•</span>
-                    Avbetalingsordninger kan avtales
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary font-bold mt-0.5">•</span>
-                    Trygderefusjon for stønadberettigede behandlinger
-                  </li>
-                </ul>
-              </GlassCard>
-            </AnimateOnScroll>
-            <AnimateOnScroll animation="fadeUp" delay={0.1}>
-              <GlassCard level={2} className="p-8">
-                <h3 className="text-xl font-bold text-foreground mb-4">
-                  Trygderefusjon
-                </h3>
-                <p className="text-muted leading-relaxed mb-4">
-                  Enkelte tannbehandlinger gir rett til refusjon fra HELFO. Vi
-                  hjelper deg med å sende refusjonskrav, slik at du får tilbake
-                  det du har krav på.
-                </p>
-                <p className="text-muted leading-relaxed">
-                  Spør oss gjerne om dette ved bestilling av time, så informerer
-                  vi deg om dine rettigheter.
-                </p>
-              </GlassCard>
-            </AnimateOnScroll>
+                ))}
+              </ul>
+            </div>
+
+            <div className="card p-8">
+              <h3 className="font-heading font-600 text-xl text-[var(--color-emerald-900)] mb-5">
+                Trygderefusjon
+              </h3>
+              <p className="text-[var(--color-text-secondary)] font-sans font-300 leading-relaxed mb-4">
+                Enkelte tannbehandlinger gir rett til refusjon fra HELFO. Vi
+                hjelper deg med å sende refusjonskrav, slik at du får tilbake
+                det du har krav på.
+              </p>
+              <p className="text-[var(--color-text-secondary)] font-sans font-300 leading-relaxed">
+                Spør oss gjerne om dette ved bestilling av time, så informerer
+                vi deg om dine rettigheter.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-background">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimateOnScroll animation="scaleIn">
-            <GlassCard level={3} className="p-10 text-center">
-              <h2 className="text-3xl font-bold text-foreground mb-4">
-                Har du spørsmål om priser?
-              </h2>
-              <p className="text-muted text-lg mb-8">
-                Ring oss for et uforpliktende prisoverslag eller bestill en
-                konsultasjon.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link
-                  href="/kontakt"
-                  className="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white px-8 py-4 rounded-xl text-base font-semibold transition-all duration-300 shadow-lg"
-                >
-                  Kontakt Oss
-                </Link>
-                <a
-                  href="tel:+4761280412"
-                  className="inline-flex items-center justify-center gap-2 border-2 border-primary text-primary hover:bg-primary hover:text-white px-8 py-4 rounded-xl text-base font-semibold transition-all duration-300"
-                >
-                  61 28 04 12
-                </a>
-              </div>
-            </GlassCard>
-          </AnimateOnScroll>
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-emerald-800)] via-[var(--color-emerald-700)] to-[var(--color-emerald-600)]" />
+        <div className="relative z-10 container-width py-16 text-center">
+          <h2 className="heading-section text-white mb-4">
+            Har du spørsmål om priser?
+          </h2>
+          <p className="text-lg text-emerald-100/80 font-sans font-300 max-w-lg mx-auto mb-8">
+            Ring oss for et uforpliktende prisoverslag eller bestill en konsultasjon.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link href="/kontakt" className="btn-primary bg-white text-[var(--color-emerald-800)] hover:bg-emerald-50 px-8 py-4">
+              <Calendar className="size-5" />
+              Kontakt oss
+            </Link>
+            <a href="tel:61280412" className="btn-secondary px-8 py-4">
+              <Phone className="size-5" />
+              Ring 61 28 04 12
+            </a>
+          </div>
         </div>
       </section>
-    </>
+    </main>
   );
 }

@@ -1,155 +1,116 @@
 @import "tailwindcss";
 
 @theme inline {
-  /* ── Editorial Warm Neutral Palette ── */
-  --color-bg-cream: #FAF8F5;
-  --color-bg-warm: #F7F4F0;
-  --color-bg-warmest: #F3EFE9;
-  --color-text-dark: #2C2825;
-  --color-text-body: #5C5650;
-  --color-text-muted: #8A847D;
-  --color-accent-gold: #D4AF37;
-  /* Set to emerald for consistent green theme */
-  --color-emerald: #022C22;
-  --color-card-white: #FFFEFB;
-  --color-placeholder: #E8E4DF;
-  --color-placeholder-mid: #DDD8D2;
-  --color-placeholder-dark: #D5CFC8;
-  --color-border: #E8E4DF;
-  --color-footer-bg: #2C2825;
+  /* ── Emerald Green Palette ── */
+  --color-emerald-50: #ecfdf5;
+  --color-emerald-100: #d1fae5;
+  --color-emerald-200: #a7f3d0;
+  --color-emerald-300: #6ee7b7;
+  --color-emerald-400: #34d399;
+  --color-emerald-500: #10b981;
+  --color-emerald-600: #059669;
+  --color-emerald-700: #047857;
+  --color-emerald-800: #065f46;
+  --color-emerald-900: #064e3b;
+  --color-emerald-950: #022c22;
 
-  /* Keep these for subpages that still use them */
-  --color-background: #FAF8F5;
-  --color-foreground: #2C2825;
+  /* ── Warm Neutrals ── */
+  --color-stone-50: #fafaf9;
+  --color-stone-100: #f5f5f4;
+  --color-stone-200: #e7e5e4;
+  --color-stone-300: #d6d3d1;
+  --color-stone-400: #a8a29e;
+  --color-stone-500: #78716c;
+  --color-stone-600: #57534e;
+  --color-stone-700: #44403c;
+  --color-stone-800: #292524;
+  --color-stone-900: #1c1917;
+
+  /* ── Semantic Colors ── */
+  --color-bg: #ffffff;
+  --color-bg-mint: #f0fdf4;
+  --color-bg-warm: #fafaf9;
+  --color-bg-cream: #FAF8F5;
+  --color-text-primary: #1c1917;
+  --color-text-secondary: #57534e;
+  --color-text-muted: #a8a29e;
+  --color-accent: #059669;
+  --color-accent-dark: #047857;
+  --color-accent-light: #d1fae5;
+  --color-border: #e7e5e4;
+  --color-amber: #f59e0b;
+
+  /* ── Legacy aliases for sub-pages ── */
+  --color-emerald: #022C22;
   --color-primary: #022C22;
   --color-primary-dark: #011d17;
   --color-primary-light: #064E3B;
-  /* Set to emerald for consistent green theme */
-  --color-muted: #8A847D;
+  --color-background: #ffffff;
+  --color-foreground: #1c1917;
+  --color-muted: #a8a29e;
+  --color-accent-gold: #059669;
+  --color-card-white: #ffffff;
+  --color-footer-bg: #022c22;
+  --color-text-dark: #1c1917;
+  --color-text-body: #57534e;
+  --color-bg-warmest: #f5f5f4;
+  --color-placeholder: #e7e5e4;
+  --color-placeholder-mid: #d6d3d1;
+  --color-placeholder-dark: #a8a29e;
 
   /* ── Typography ── */
-  --font-sans: var(--font-plus-jakarta), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-serif: var(--font-playfair), "Georgia", serif;
+  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
+  --font-heading: var(--font-fraunces), Georgia, serif;
+  --font-serif: var(--font-fraunces), Georgia, serif;
 
   /* ── Spacing ── */
   --radius-sm: 8px;
   --radius-md: 12px;
-  --radius-lg: 20px;
-  --radius-xl: 32px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-2xl: 32px;
+  --radius-full: 9999px;
 }
 
 /* ── Reset & Base ── */
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
 }
 
 body {
-  background-color: var(--color-bg-cream);
-  color: var(--color-text-dark);
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
   font-family: var(--font-sans);
   overflow-x: hidden;
+  line-height: 1.6;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-serif);
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
   letter-spacing: -0.02em;
-  color: var(--color-emerald);
+  line-height: 1.15;
 }
 
-/* ── Scroll Snap Container ── */
-.snap-container {
-  height: 100dvh;
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
-  -webkit-overflow-scrolling: touch;
+/* ── Section Layouts ── */
+.section-padding {
+  padding: 5rem 0;
 }
 
-.snap-section {
-  min-height: 100dvh;
-  scroll-snap-align: start;
-  position: relative;
+@media (min-width: 768px) {
+  .section-padding {
+    padding: 7rem 0;
+  }
 }
 
-/* ── Editorial Typography ── */
-.eyebrow {
-  font-family: var(--font-sans);
-  font-size: 12px;
-  font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  color: var(--color-accent-gold);
+@media (min-width: 1024px) {
+  .section-padding {
+    padding: 8rem 0;
+  }
 }
 
-.heading-editorial {
-  font-family: var(--font-serif);
-  font-size: clamp(2.5rem, 5vw, 5rem);
-  font-weight: 700;
-  line-height: 1.1;
-  color: var(--color-emerald);
-}
-
-.body-editorial {
-  font-family: var(--font-sans);
-  font-size: clamp(1rem, 1.1vw, 1.125rem);
-  font-weight: 300;
-  line-height: 1.8;
-  color: var(--color-text-body);
-}
-
-/* ── Buttons ── */
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 9999px;
-  background-color: var(--color-emerald);
-  color: var(--color-bg-cream);
-  padding: 14px 32px;
-  font-family: var(--font-sans);
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  transition: all 0.3s ease;
-  border: none;
-  cursor: pointer;
-}
-
-.btn-primary:hover {
-  background-color: #011d17;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(2, 44, 34, 0.15);
-}
-
-.btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 9999px;
-  background-color: transparent;
-  color: var(--color-emerald);
-  padding: 14px 32px;
-  font-family: var(--font-sans);
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  transition: all 0.3s ease;
-  border: 1px solid var(--color-emerald);
-  cursor: pointer;
-}
-
-.btn-secondary:hover {
-  background-color: var(--color-emerald);
-  color: var(--color-bg-cream);
-  transform: translateY(-1px);
-}
-
-/* ── Utilities ── */
+/* ── Container ── */
 .container-width {
   max-width: 80rem;
   margin-left: auto;
@@ -172,100 +133,226 @@ h6 {
   }
 }
 
-/* ── Decorative Line ── */
-.gold-line {
-  width: 60px;
-  height: 1px;
-  background-color: var(--color-accent-gold);
-}
-
-/* ── Scrollbar ── */
-.snap-container::-webkit-scrollbar {
-  width: 0px;
-}
-
-.snap-container::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-/* Hide scrollbar for Chrome, Safari and Opera */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-/* Hide scrollbar for IE, Edge and Firefox */
-.no-scrollbar {
-  -ms-overflow-style: none;
-  /* IE and Edge */
-  scrollbar-width: none;
-  /* Firefox */
-}
-
-/* ── Selection ── */
-/* ── Custom Nav Button (from Uiverse.io) ── */
-.btn-nav {
-  --color: var(--color-emerald);
-  --color2: var(--color-bg-cream);
-  padding: 0.6em 1.4em;
-  background-color: transparent;
-  border-radius: 6px;
-  border: 0.5px solid var(--color);
-  transition: 0.5s;
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-  z-index: 1;
-  font-weight: 400;
-  font-size: 14px;
+/* ── Typography Classes ── */
+.eyebrow {
   font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
   text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-emerald-600);
+}
+
+.heading-display {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.heading-section {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.heading-editorial {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.body-large {
+  font-family: var(--font-sans);
+  font-size: clamp(1.05rem, 1.2vw, 1.2rem);
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--color-text-secondary);
+}
+
+.body-editorial {
+  font-family: var(--font-sans);
+  font-size: clamp(1rem, 1.1vw, 1.125rem);
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--color-text-secondary);
+}
+
+/* ── Buttons ── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  background-color: var(--color-emerald-600);
+  color: white;
+  padding: 0.875rem 2rem;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-emerald-700);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(5, 150, 105, 0.3);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.15);
+  color: white;
+  padding: 0.875rem 2rem;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+}
+
+.btn-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  background-color: transparent;
+  color: var(--color-emerald-700);
+  padding: 0.875rem 2rem;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1.5px solid var(--color-emerald-600);
+  cursor: pointer;
+}
+
+.btn-outline:hover {
+  background-color: var(--color-emerald-600);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(5, 150, 105, 0.2);
+}
+
+/* ── Nav Button ── */
+.btn-nav {
+  --color: var(--color-emerald-950);
+  --color2: white;
+  padding: 0.5em 1.2em;
+  background-color: transparent;
+  border-radius: 9999px;
+  border: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 0.9375rem;
+  font-family: var(--font-sans);
   color: var(--color);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  letter-spacing: 0.05em;
-}
-
-.btn-nav::after,
-.btn-nav::before {
-  content: '';
-  display: block;
-  height: 100%;
-  width: 100%;
-  transform: skew(90deg) translate(-50%, -50%);
-  position: absolute;
-  inset: 50%;
-  left: 25%;
-  z-index: -1;
-  transition: 0.5s ease-out;
-  background-color: var(--color);
-}
-
-.btn-nav::before {
-  top: -50%;
-  left: -25%;
-  transform: skew(90deg) rotate(180deg) translate(-50%, -50%);
-}
-
-.btn-nav:hover::before {
-  transform: skew(45deg) rotate(180deg) translate(-50%, -50%);
-}
-
-.btn-nav:hover::after {
-  transform: skew(45deg) translate(-50%, -50%);
 }
 
 .btn-nav:hover {
-  color: var(--color2);
-}
-
-.btn-nav:active {
-  filter: brightness(0.7);
-  transform: scale(0.98);
+  color: var(--color-emerald-600);
+  background-color: var(--color-emerald-50);
 }
 
 .btn-nav.active {
-  background-color: var(--color);
-  color: var(--color2);
+  color: var(--color-emerald-700);
+  background-color: var(--color-emerald-50);
+  font-weight: 500;
+}
+
+/* ── Cards ── */
+.card {
+  background: white;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover {
+  border-color: var(--color-emerald-200);
+  box-shadow: 0 20px 60px rgba(5, 150, 105, 0.08);
+  transform: translateY(-4px);
+}
+
+/* ── Scrollbar ── */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ── Selection ── */
+::selection {
+  background-color: var(--color-emerald-200);
+  color: var(--color-emerald-950);
+}
+
+/* ── Gradient Text ── */
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-emerald-600), var(--color-emerald-400));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Decorative ── */
+.accent-line {
+  width: 3rem;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-emerald-500), var(--color-emerald-300));
+  border-radius: 9999px;
+}
+
+.gold-line {
+  width: 60px;
+  height: 1px;
+  background-color: var(--color-emerald-500);
+}
+
+/* ── Snap Container (legacy) ── */
+.snap-container {
+  height: 100dvh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.snap-section {
+  min-height: 100dvh;
+  scroll-snap-align: start;
+  position: relative;
+}
+
+.snap-container::-webkit-scrollbar {
+  width: 0px;
 }

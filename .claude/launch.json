@@ -3,7 +3,7 @@
   "configurations": [
     {
       "name": "dev",
-      "runtimeExecutable": "node",
+      "runtimeExecutable": "/usr/local/bin/node",
       "runtimeArgs": ["./node_modules/.bin/next", "dev"],
       "port": 3000
     }

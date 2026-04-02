@@ -1,247 +1,265 @@
-import type { Metadata } from "next";
+"use client";
 
-import PageHeader from "@/components/PageHeader";
-import GlassCard from "@/components/GlassCard";
-import AnimateOnScroll from "@/components/AnimateOnScroll";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import {
+  Phone,
+  Mail,
+  MapPin,
+  Clock,
+  AlertTriangle,
+  Calendar,
+} from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Kontakt Oss",
-  description:
-    "Kontakt Ringebu Tannlegesenter for timebestilling eller spørsmål. Vi er her for å hjelpe deg.",
-};
+const openingHours = [
+  { day: "Mandag", hours: "08:00 – 15:30" },
+  { day: "Tirsdag", hours: "08:00 – 17:00" },
+  { day: "Onsdag", hours: "08:00 – 15:30" },
+  { day: "Torsdag", hours: "09:00 – 17:00" },
+  { day: "Fredag", hours: "08:00 – 15:30" },
+  { day: "Lørdag – Søndag", hours: "Stengt", closed: true },
+];
+
+function FadeIn({
+  children,
+  delay = 0,
+  className = "",
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay, duration: 0.5 }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 export default function Kontakt() {
   return (
-    <>
-      {/* Page header */}
-      <PageHeader
-        subtitle="Vi er her for deg"
-        title="Kontakt Oss"
-        description="Har du spørsmål eller ønsker å bestille time? Ta kontakt med oss — vi hjelper deg gjerne."
-      />
+    <main className="pt-20">
+      {/* Header */}
+      <section className="bg-[var(--color-emerald-950)] py-20 md:py-28">
+        <div className="container-width text-center">
+          <span className="text-emerald-300 text-sm font-sans font-600 uppercase tracking-[0.15em] mb-4 block">
+            Kontakt
+          </span>
+          <h1 className="heading-display text-white mb-5">Kontakt oss</h1>
+          <p className="text-lg text-emerald-100/70 font-sans font-300 max-w-xl mx-auto">
+            Har du spørsmål eller ønsker å bestille time? Vi er her for å hjelpe
+            deg.
+          </p>
+        </div>
+      </section>
 
-      {/* Contact content */}
-      <section className="py-20 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12">
-            {/* Contact info */}
+      {/* Contact Content */}
+      <section className="section-padding bg-white">
+        <div className="container-width">
+          <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+            {/* Contact Info */}
             <div>
-              <h2 className="text-3xl font-bold text-foreground mb-2">
-                Ta kontakt
-              </h2>
-              <div className="gold-divider w-16 mb-6" />
-              <p className="text-muted text-lg mb-10 leading-relaxed">
-                Vi ønsker å gjøre det enkelt for deg å nå oss. Ring oss direkte,
-                send en e-post, eller stikk innom klinikken.
-              </p>
+              <FadeIn>
+                <h2 className="heading-section mb-3">Ta kontakt</h2>
+                <p className="body-large mb-10">
+                  Vi ønsker å gjøre det enkelt for deg å nå oss. Ring oss
+                  direkte, send en e-post, eller stikk innom klinikken.
+                </p>
+              </FadeIn>
 
-              {/* Contact cards - Mobile layout */}
-              <div className="flex flex-col gap-3 sm:hidden mb-10 w-full max-w-[340px] mx-auto">
-                <AnimateOnScroll animation="fadeUp" delay={0}>
-                  <a href="tel:+4761280412" className="bg-[#033b2e] border border-white/10 rounded-xl py-3.5 px-5 flex items-center justify-between active:bg-[#044233] transition-colors shadow-md">
-                    <span className="text-[var(--color-accent-gold)] font-medium text-sm">Telefon:</span>
-                    <span className="text-white text-[15px] font-medium">61 28 04 12</span>
-                  </a>
-                </AnimateOnScroll>
-                <AnimateOnScroll animation="fadeUp" delay={0.1}>
-                  <a href="mailto:post@ringebutann.no" className="bg-[#033b2e] border border-white/10 rounded-xl py-3.5 px-5 flex items-center justify-between active:bg-[#044233] transition-colors shadow-md">
-                    <span className="text-[var(--color-accent-gold)] font-medium text-sm">E-post:</span>
-                    <span className="text-white text-[15px] font-medium">post@ringebutann.no</span>
-                  </a>
-                </AnimateOnScroll>
-                <AnimateOnScroll animation="fadeUp" delay={0.2}>
-                  <a
-                    href="https://www.google.com/maps/search/?api=1&query=Jernbanegata+4,+2630+Ringebu"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block"
-                  >
-                    <div className="bg-[#033b2e] border border-white/10 rounded-xl py-3.5 px-4 flex flex-col items-center text-center justify-center shadow-md active:bg-[#044233] transition-colors">
-                      <span className="text-[var(--color-accent-gold)] font-semibold text-[11px] uppercase tracking-widest mb-1.5 opacity-90">
-                        Adresse
-                      </span>
-                      <span className="text-white text-[15px] font-medium">
-                        Jernbanegata 4, 2630 Ringebu
-                      </span>
-                      <span className="text-[var(--color-accent-gold)] text-[11px] mt-1.5 opacity-80">
-                        Trykk her for veibeskrivelse
-                      </span>
+              <div className="space-y-4">
+                <FadeIn delay={0.05}>
+                  <a href="tel:61280412" className="block card p-6 group">
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-xl bg-[var(--color-emerald-50)] flex items-center justify-center shrink-0 group-hover:bg-[var(--color-emerald-100)] transition-colors">
+                        <Phone className="size-5 text-[var(--color-emerald-600)]" />
+                      </div>
+                      <div>
+                        <h3 className="font-heading font-600 text-[var(--color-emerald-900)] mb-1">
+                          Telefon
+                        </h3>
+                        <p className="text-[var(--color-emerald-700)] font-sans font-600 text-lg">
+                          61 28 04 12
+                        </p>
+                        <p className="text-sm text-[var(--color-text-muted)] font-sans font-300 mt-1">
+                          Ring oss i åpningstiden for timebestilling
+                        </p>
+                      </div>
                     </div>
                   </a>
-                </AnimateOnScroll>
-                <AnimateOnScroll animation="fadeUp" delay={0.3}>
-                  <div className="bg-[#033b2e] border border-white/10 rounded-xl py-3.5 px-4 flex flex-col items-center text-center justify-center shadow-md">
-                    <span className="text-[var(--color-accent-gold)] font-semibold text-[11px] uppercase tracking-widest mb-1.5 opacity-90">Åpningstider</span>
-                    <span className="text-white text-[14px] font-medium leading-relaxed">
-                      Man–Fre: 08:00–15:30 <br /> Tirs, Tors: 08:00–17:00
-                    </span>
-                  </div>
-                </AnimateOnScroll>
-              </div>
+                </FadeIn>
 
-              {/* Contact cards - Desktop layout */}
-              <div className="hidden sm:block space-y-4">
-                <AnimateOnScroll animation="fadeUp" delay={0}>
-                  <a href="tel:+4761280412" className="block">
-                    <GlassCard level={2} hover className="p-6">
-                      <div className="flex items-start gap-4">
-                        <div>
-                          <h3 className="font-bold text-foreground mb-1">Telefon</h3>
-                          <p className="text-primary font-semibold text-lg">
-                            61 28 04 12
-                          </p>
-                          <p className="text-muted text-sm mt-1">
-                            Ring oss i åpningstiden for timebestilling
-                          </p>
-                        </div>
+                <FadeIn delay={0.1}>
+                  <a href="mailto:post@ringebutann.no" className="block card p-6 group">
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-xl bg-sky-50 flex items-center justify-center shrink-0 group-hover:bg-sky-100 transition-colors">
+                        <Mail className="size-5 text-sky-600" />
                       </div>
-                    </GlassCard>
-                  </a>
-                </AnimateOnScroll>
-
-                <AnimateOnScroll animation="fadeUp" delay={0.1}>
-                  <a href="mailto:post@ringebutann.no" className="block">
-                    <GlassCard level={2} hover className="p-6">
-                      <div className="flex items-start gap-4">
-                        <div>
-                          <h3 className="font-bold text-foreground mb-1">E-post</h3>
-                          <p className="text-primary font-semibold">
-                            post@ringebutann.no
-                          </p>
-                          <p className="text-muted text-sm mt-1">
-                            Vi svarer vanligvis innen 1-2 virkedager
-                          </p>
-                        </div>
+                      <div>
+                        <h3 className="font-heading font-600 text-[var(--color-emerald-900)] mb-1">
+                          E-post
+                        </h3>
+                        <p className="text-sky-700 font-sans font-600">
+                          post@ringebutann.no
+                        </p>
+                        <p className="text-sm text-[var(--color-text-muted)] font-sans font-300 mt-1">
+                          Vi svarer vanligvis innen 1–2 virkedager
+                        </p>
                       </div>
-                    </GlassCard>
+                    </div>
                   </a>
-                </AnimateOnScroll>
+                </FadeIn>
 
-                <AnimateOnScroll animation="fadeUp" delay={0.2}>
+                <FadeIn delay={0.15}>
                   <a
                     href="https://www.google.com/maps/search/?api=1&query=Jernbanegata+4,+2630+Ringebu"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block"
+                    className="block card p-6 group"
                   >
-                    <GlassCard level={2} hover className="p-6">
-                      <div className="flex items-start gap-4">
-                        <div>
-                          <h3 className="font-bold text-foreground mb-1">
-                            Adresse
-                          </h3>
-                          <p className="text-foreground/80">Jernbanegata 4</p>
-                          <p className="text-foreground/80">2630 Ringebu</p>
-                          <p className="text-[var(--color-emerald)] text-xs font-semibold mt-2">
-                            Trykk her for veibeskrivelse
-                          </p>
-                          <p className="text-muted text-sm mt-1">
-                            Enkel parkering rett utenfor klinikken
-                          </p>
-                        </div>
-                      </div>
-                    </GlassCard>
-                  </a>
-                </AnimateOnScroll>
-
-                <AnimateOnScroll animation="fadeUp" delay={0.3}>
-                  <GlassCard level={2} hover className="p-6">
                     <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-xl bg-violet-50 flex items-center justify-center shrink-0 group-hover:bg-violet-100 transition-colors">
+                        <MapPin className="size-5 text-violet-600" />
+                      </div>
                       <div>
-                        <h3 className="font-bold text-foreground mb-2">
+                        <h3 className="font-heading font-600 text-[var(--color-emerald-900)] mb-1">
+                          Adresse
+                        </h3>
+                        <p className="text-[var(--color-text-primary)] font-sans">
+                          Jernbanegata 4, 2630 Ringebu
+                        </p>
+                        <p className="text-sm text-violet-600 font-sans font-500 mt-1">
+                          Se veibeskrivelse
+                        </p>
+                        <p className="text-sm text-[var(--color-text-muted)] font-sans font-300 mt-1">
+                          Enkel parkering rett utenfor klinikken
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </FadeIn>
+
+                <FadeIn delay={0.2}>
+                  <div className="card p-6">
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center shrink-0">
+                        <Clock className="size-5 text-amber-600" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-heading font-600 text-[var(--color-emerald-900)] mb-3">
                           Åpningstider
                         </h3>
-                        <div className="space-y-1">
-                          <div className="flex justify-between gap-8">
-                            <span className="text-foreground/80">Mandag</span>
-                            <span className="text-foreground font-medium">
-                              08:00 - 15:30
-                            </span>
-                          </div>
-                          <div className="flex justify-between gap-8">
-                            <span className="text-foreground/80">Tirsdag</span>
-                            <span className="text-foreground font-medium">
-                              08:00 - 17:00
-                            </span>
-                          </div>
-                          <div className="flex justify-between gap-8">
-                            <span className="text-foreground/80">Onsdag</span>
-                            <span className="text-foreground font-medium">
-                              08:00 - 15:30
-                            </span>
-                          </div>
-                          <div className="flex justify-between gap-8">
-                            <span className="text-foreground/80">Torsdag</span>
-                            <span className="text-foreground font-medium">
-                              09:00 - 17:00
-                            </span>
-                          </div>
-                          <div className="flex justify-between gap-8">
-                            <span className="text-foreground/80">Fredag</span>
-                            <span className="text-foreground font-medium">
-                              08:00 - 15:30
-                            </span>
-                          </div>
-                          <div className="flex justify-between gap-8">
-                            <span className="text-muted">Lørdag - Søndag</span>
-                            <span className="text-muted font-medium">Stengt</span>
-                          </div>
+                        <div className="space-y-2">
+                          {openingHours.map((h) => (
+                            <div key={h.day} className="flex justify-between text-sm">
+                              <span className={h.closed ? "text-[var(--color-text-muted)]" : "text-[var(--color-text-secondary)]"}>
+                                {h.day}
+                              </span>
+                              <span className={h.closed ? "text-[var(--color-text-muted)]" : "text-[var(--color-text-primary)] font-500"}>
+                                {h.hours}
+                              </span>
+                            </div>
+                          ))}
                         </div>
                       </div>
                     </div>
-                  </GlassCard>
-                </AnimateOnScroll>
+                  </div>
+                </FadeIn>
               </div>
             </div>
 
-            {/* Map + Emergency */}
+            {/* Right Side */}
             <div className="space-y-6">
-
-
-              {/* Emergency info */}
-              <AnimateOnScroll animation="fadeUp" delay={0.1}>
-                <div className="glass-2 bg-red-50/80 rounded-2xl p-8 border border-red-200/50">
-                  <h3 className="text-xl font-bold text-red-900 mb-3">
-                    Akutt tannverk?
-                  </h3>
-                  <p className="text-red-800/80 leading-relaxed mb-4">
-                    Ved akutt tannverk i åpningstiden, ring oss på{" "}
-                    <a
-                      href="tel:+4761280412"
-                      className="font-bold text-red-900 underline"
-                    >
-                      61 28 04 12
-                    </a>{" "}
-                    for raskest mulig hjelp. Vi forsøker alltid å prioritere
-                    akutte tilfeller.
-                  </p>
-                  <p className="text-red-800/70 text-sm">
-                    Utenom åpningstid: Kontakt tannlegevakten på 116 117.
-                  </p>
+              {/* Emergency */}
+              <FadeIn delay={0.1}>
+                <div className="rounded-2xl bg-rose-50 border border-rose-200 p-8">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-xl bg-rose-100 flex items-center justify-center shrink-0">
+                      <AlertTriangle className="size-6 text-rose-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-heading font-600 text-xl text-rose-900 mb-3">
+                        Akutt tannverk?
+                      </h3>
+                      <p className="text-rose-800/80 font-sans font-300 leading-relaxed mb-4">
+                        Ved akutt tannverk i åpningstiden, ring oss på{" "}
+                        <a
+                          href="tel:61280412"
+                          className="font-600 text-rose-900 underline"
+                        >
+                          61 28 04 12
+                        </a>{" "}
+                        for raskest mulig hjelp. Vi forsøker alltid å prioritere
+                        akutte tilfeller.
+                      </p>
+                      <p className="text-rose-700/70 text-sm font-sans">
+                        Utenom åpningstid: Kontakt tannlegevakten på{" "}
+                        <a href="tel:116117" className="font-600 underline">
+                          116 117
+                        </a>
+                      </p>
+                    </div>
+                  </div>
                 </div>
-              </AnimateOnScroll>
+              </FadeIn>
 
               {/* Booking CTA */}
-              <AnimateOnScroll animation="fadeUp" delay={0.2}>
-                <GlassCard level={3} className="p-8 bg-primary/90 text-white">
-                  <h3 className="text-xl font-bold mb-3 !text-white">Bestill time</h3>
-                  <p className="text-white/80 leading-relaxed mb-6">
-                    Den enkleste måten å bestille time er å ringe oss direkte.
-                    Vårt vennlige personale hjelper deg med å finne en tid som
-                    passer.
-                  </p>
-                  <a
-                    href="tel:+4761280412"
-                    className="inline-flex items-center justify-center gap-2 bg-white/20 hover:bg-white/30 text-white px-6 py-3 rounded-xl text-base font-semibold transition-all duration-300 shadow-lg"
-                  >
-                    Ring 61 28 04 12
-                  </a>
-                </GlassCard>
-              </AnimateOnScroll>
+              <FadeIn delay={0.2}>
+                <div className="rounded-2xl bg-gradient-to-br from-[var(--color-emerald-800)] to-[var(--color-emerald-700)] p-8 text-white">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
+                      <Calendar className="size-6 text-emerald-200" />
+                    </div>
+                    <div>
+                      <h3 className="font-heading font-600 text-xl text-white mb-3">
+                        Bestill time
+                      </h3>
+                      <p className="text-emerald-100/80 font-sans font-300 leading-relaxed mb-6">
+                        Den enkleste måten å bestille time er å ringe oss
+                        direkte. Vårt vennlige personale hjelper deg med å finne
+                        en tid som passer.
+                      </p>
+                      <a
+                        href="tel:61280412"
+                        className="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white px-6 py-3 rounded-full font-sans font-500 transition-all duration-300"
+                      >
+                        <Phone className="size-4" />
+                        Ring 61 28 04 12
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </FadeIn>
+
+              {/* Map Placeholder */}
+              <FadeIn delay={0.3}>
+                <a
+                  href="https://www.google.com/maps/search/?api=1&query=Jernbanegata+4,+2630+Ringebu"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block rounded-2xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-stone-50)] aspect-[4/3] flex items-center justify-center group"
+                >
+                  <div className="text-center p-8">
+                    <MapPin className="size-12 text-[var(--color-emerald-300)] mx-auto mb-4 group-hover:text-[var(--color-emerald-500)] transition-colors" />
+                    <p className="font-heading font-600 text-[var(--color-emerald-900)] mb-1">
+                      Jernbanegata 4, 2630 Ringebu
+                    </p>
+                    <p className="text-sm text-[var(--color-emerald-600)] font-sans font-500">
+                      Åpne i Google Maps
+                    </p>
+                  </div>
+                </a>
+              </FadeIn>
             </div>
           </div>
         </div>
       </section>
-    </>
+    </main>
   );
 }

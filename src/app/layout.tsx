@@ -1,36 +1,49 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
+import { Fraunces, DM_Sans } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import "./globals.css";
 
-const plusJakarta = Plus_Jakarta_Sans({
+const fraunces = Fraunces({
   subsets: ["latin"],
-  variable: "--font-plus-jakarta",
+  variable: "--font-fraunces",
   display: "swap",
+  weight: ["300", "400", "500", "600", "700", "800"],
 });
 
-const playfair = Playfair_Display({
+const dmSans = DM_Sans({
   subsets: ["latin"],
-  variable: "--font-playfair",
+  variable: "--font-dm-sans",
   display: "swap",
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
   title: {
-    default: "Ringebu Tannlegesenter | Profesjonell Tannpleie",
+    default: "Ringebu Tannlegesenter | Din Tannlege i Ringebu",
     template: "%s | Ringebu Tannlegesenter",
   },
   description:
-    "Ringebu Tannlegesenter tilbyr moderne tannbehandling av høy kvalitet. Erfarne tannleger, siste teknologi, og fokus på din komfort. Bestill time i dag.",
+    "Ringebu Tannlegesenter tilbyr moderne tannbehandling med personlig omsorg. Erfarne tannleger, siste teknologi og fokus på din komfort. Bestill time i dag.",
   keywords: [
-    "tannlege",
-    "Ringebu",
+    "tannlege Ringebu",
     "tannlegesenter",
     "tannbehandling",
     "tannhelse",
     "Gudbrandsdalen",
+    "tannpine",
+    "tannkjøtt",
+    "tannbleking",
+    "implantater",
+    "akutt tannlege",
   ],
+  openGraph: {
+    title: "Ringebu Tannlegesenter | Din Tannlege i Ringebu",
+    description:
+      "Moderne tannbehandling med personlig omsorg i hjertet av Gudbrandsdalen.",
+    type: "website",
+    locale: "nb_NO",
+  },
 };
 
 export default function RootLayout({
@@ -39,8 +52,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="no" className={`${plusJakarta.variable} ${playfair.variable}`}>
-      <body className="antialiased font-sans min-h-screen selection:bg-[var(--color-accent-gold)]/20">
+    <html lang="no" className={`${fraunces.variable} ${dmSans.variable}`}>
+      <body className="antialiased font-sans min-h-screen">
         <Navbar />
         {children}
         <Footer />
