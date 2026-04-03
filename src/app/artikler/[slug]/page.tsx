@@ -33,7 +33,7 @@ export async function generateMetadata({
 function renderContent(paragraph: string) {
   if (paragraph.startsWith("## ")) {
     return (
-      <h2 className="font-heading font-600 text-2xl md:text-3xl text-[var(--color-emerald-900)] mt-10 mb-4">
+      <h2 className="font-heading font-600 text-2xl md:text-3xl text-[var(--color-primary)] mt-10 mb-4">
         {paragraph.replace("## ", "")}
       </h2>
     );
@@ -41,7 +41,7 @@ function renderContent(paragraph: string) {
 
   if (paragraph.startsWith("**") && paragraph.endsWith("**")) {
     return (
-      <p className="text-[var(--color-emerald-800)] font-sans font-600 text-lg mt-6 mb-2">
+      <p className="text-[var(--color-primary-dark)] font-sans font-600 text-lg mt-6 mb-2">
         {paragraph.replace(/\*\*/g, "")}
       </p>
     );
@@ -56,7 +56,7 @@ function renderContent(paragraph: string) {
             key={i}
             className="flex items-start gap-3 text-[var(--color-text-secondary)] font-sans font-300 leading-relaxed"
           >
-            <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-emerald-500)] mt-2.5 shrink-0" />
+            <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] mt-2.5 shrink-0" />
             {item.replace("- ", "")}
           </li>
         ))}
@@ -108,25 +108,25 @@ export default async function ArticlePage({
             priority
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-emerald-950)] via-[var(--color-emerald-950)]/70 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-primary)] via-[var(--color-primary)]/70 to-transparent" />
         </div>
         <div className="container-width relative -mt-24 z-10 pb-8">
           <Link
             href="/artikler"
-            className="inline-flex items-center gap-2 text-[#E8DFCF]/80 hover:text-white text-sm font-sans mb-4 transition-colors"
+            className="inline-flex items-center gap-2 text-[#FBF9F3]/80 hover:text-white text-sm font-sans mb-4 transition-colors"
           >
             <ArrowLeft className="size-4" />
             Tilbake til artikler
           </Link>
           <div className="flex items-center gap-3 mb-4">
-            <span className="inline-block px-3 py-1 rounded-full bg-[var(--color-emerald-600)] text-white text-xs font-500 font-sans">
+            <span className="inline-block px-3 py-1 rounded-full bg-[var(--color-accent)] text-white text-xs font-500 font-sans">
               {article.category}
             </span>
-            <span className="flex items-center gap-1.5 text-[#E8DFCF]/70 text-sm font-sans">
+            <span className="flex items-center gap-1.5 text-[#FBF9F3]/70 text-sm font-sans">
               <Clock className="size-4" />
               {article.readTime} lesetid
             </span>
-            <span className="flex items-center gap-1.5 text-[#E8DFCF]/70 text-sm font-sans">
+            <span className="flex items-center gap-1.5 text-[#FBF9F3]/70 text-sm font-sans">
               <Calendar className="size-4" />
               {new Date(article.date).toLocaleDateString("nb-NO", {
                 year: "numeric",
@@ -150,8 +150,8 @@ export default async function ArticlePage({
             ))}
 
             {/* CTA in article */}
-            <div className="mt-12 bg-[var(--color-emerald-50)] rounded-2xl p-8 border border-[var(--color-emerald-100)]">
-              <h3 className="font-heading font-600 text-xl text-[var(--color-emerald-900)] mb-3">
+            <div className="mt-12 bg-white rounded-2xl p-8 border border-[var(--color-border)]">
+              <h3 className="font-heading font-600 text-xl text-[var(--color-primary)] mb-3">
                 Bestill time hos Ringebu Tannlegesenter
               </h3>
               <p className="text-[var(--color-text-secondary)] font-sans font-300 mb-5">
@@ -173,7 +173,7 @@ export default async function ArticlePage({
       </section>
 
       {/* Related Articles */}
-      <section className="section-padding bg-[var(--color-stone-50)]">
+      <section className="section-padding bg-white">
         <div className="container-width">
           <h2 className="heading-section mb-8">Andre artikler</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -194,10 +194,10 @@ export default async function ArticlePage({
                     />
                   </div>
                   <div className="p-5">
-                    <span className="text-xs text-[var(--color-emerald-600)] font-sans font-500">
+                    <span className="text-xs text-[var(--color-accent)] font-sans font-500">
                       {a.category}
                     </span>
-                    <h3 className="font-heading font-600 text-base text-[var(--color-emerald-900)] mt-1 group-hover:text-[var(--color-emerald-600)] transition-colors">
+                    <h3 className="font-heading font-600 text-base text-[var(--color-primary)] mt-1 group-hover:text-[var(--color-accent)] transition-colors">
                       {a.title}
                     </h3>
                   </div>

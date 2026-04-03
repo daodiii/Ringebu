@@ -14,7 +14,7 @@ export default function ArtiklerPage() {
   return (
     <main className="pt-20">
       {/* Header */}
-      <section className="bg-[var(--color-emerald-950)] py-20 md:py-28">
+      <section className="bg-[var(--color-primary)] py-20 md:py-28">
         <div className="container-width text-center">
           <span className="text-[#C9B99A] text-sm font-sans font-600 uppercase tracking-[0.15em] mb-4 block">
             Artikler
@@ -22,7 +22,7 @@ export default function ArtiklerPage() {
           <h1 className="heading-display text-white mb-5">
             Nyttige artikler om tannhelse
           </h1>
-          <p className="text-lg text-[#F0E6D6]/70 font-sans font-300 max-w-xl mx-auto">
+          <p className="text-lg text-[#FBF9F3]/70 font-sans font-300 max-w-xl mx-auto">
             Lær mer om vanlige tannproblemer, forebygging og behandlinger.
             Kunnskap er det første steget mot bedre tannhelse.
           </p>
@@ -49,7 +49,7 @@ export default function ArtiklerPage() {
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     />
                     <div className="absolute top-4 left-4">
-                      <span className="inline-block px-3 py-1 rounded-full bg-[var(--color-emerald-600)] text-white text-xs font-500 font-sans">
+                      <span className="inline-block px-3 py-1 rounded-full bg-[var(--color-accent)] text-white text-xs font-500 font-sans">
                         {article.category}
                       </span>
                     </div>
@@ -59,13 +59,13 @@ export default function ArtiklerPage() {
                       <Clock className="size-4" />
                       <span>{article.readTime} lesetid</span>
                     </div>
-                    <h2 className="font-heading font-600 text-lg mb-3 text-[var(--color-emerald-900)] group-hover:text-[var(--color-emerald-600)] transition-colors">
+                    <h2 className="font-heading font-600 text-lg mb-3 text-[var(--color-primary)] group-hover:text-[var(--color-accent)] transition-colors">
                       {article.title}
                     </h2>
                     <p className="text-[var(--color-text-secondary)] text-sm leading-relaxed font-sans font-300 mb-4">
                       {article.excerpt}
                     </p>
-                    <span className="inline-flex items-center gap-1 text-sm font-500 text-[var(--color-emerald-600)] group-hover:gap-2 transition-all">
+                    <span className="inline-flex items-center gap-1 text-sm font-500 text-[var(--color-accent)] group-hover:gap-2 transition-all">
                       Les artikkel
                       <ArrowRight className="size-4" />
                     </span>
@@ -78,7 +78,7 @@ export default function ArtiklerPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-[var(--color-emerald-50)] py-16">
+      <section className="bg-white py-16">
         <div className="container-width text-center">
           <h2 className="heading-section mb-4">Har du spørsmål?</h2>
           <p className="body-large mb-8 max-w-lg mx-auto">

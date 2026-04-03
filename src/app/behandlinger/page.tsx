@@ -166,7 +166,7 @@ const treatments = [
   },
 ];
 
-const cardColors = { bg: "#FDFBF7", border: "#E8DFCF", dot: "#B8976A" };
+const cardColors = { bg: "#FBF9F3", border: "#e7e5e4", dot: "#C4873B" };
 
 export default function Behandlinger() {
   const [expanded, setExpanded] = useState<string | null>(null);
@@ -174,7 +174,7 @@ export default function Behandlinger() {
   return (
     <main className="pt-20">
       {/* Header */}
-      <section className="bg-[var(--color-emerald-950)] py-20 md:py-28">
+      <section className="bg-[var(--color-primary)] py-20 md:py-28">
         <div className="container-width text-center">
           <h1 className="heading-display text-white mb-5">
             Behandlinger vi tilbyr
@@ -219,7 +219,7 @@ export default function Behandlinger() {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between gap-4">
                           <div>
-                            <h3 className="font-heading font-700 text-2xl md:text-3xl text-[var(--color-emerald-900)] mb-3">
+                            <h3 className="font-heading font-700 text-2xl md:text-3xl text-[var(--color-primary)] mb-3">
                               {treatment.title}
                             </h3>
                             <p className="text-[var(--color-stone-700)] text-lg md:text-xl font-sans font-400 leading-relaxed max-w-2xl">
@@ -306,11 +306,11 @@ export default function Behandlinger() {
       </section>
 
       {/* Payment Info */}
-      <section className="section-padding bg-[var(--color-stone-50)]">
+      <section className="section-padding bg-[var(--color-bg-mint)]">
         <div className="container-width max-w-5xl">
           <div className="grid md:grid-cols-2 gap-6">
             <div className="card p-8">
-              <h3 className="font-heading font-600 text-xl text-[var(--color-emerald-900)] mb-5">
+              <h3 className="font-heading font-600 text-xl text-[var(--color-primary)] mb-5">
                 Betalingsinformasjon
               </h3>
               <ul className="space-y-3">
@@ -321,7 +321,7 @@ export default function Behandlinger() {
                   "Trygderefusjon for stønadberettigede behandlinger",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2 text-[var(--color-text-secondary)] font-sans font-400">
-                    <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-emerald-500)] mt-2.5 shrink-0" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] mt-2.5 shrink-0" />
                     {item}
                   </li>
                 ))}
@@ -329,7 +329,7 @@ export default function Behandlinger() {
             </div>
 
             <div className="card p-8">
-              <h3 className="font-heading font-600 text-xl text-[var(--color-emerald-900)] mb-5">
+              <h3 className="font-heading font-600 text-xl text-[var(--color-primary)] mb-5">
                 Trygderefusjon
               </h3>
               <p className="text-[var(--color-text-secondary)] font-sans font-400 leading-relaxed mb-4">
@@ -348,17 +348,17 @@ export default function Behandlinger() {
 
       {/* CTA */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-[var(--color-emerald-950)]" />
+        <div className="absolute inset-0 bg-[var(--color-primary)]" />
         <div className="relative z-10 container-width py-16 text-center">
           <h2 className="heading-section text-white mb-4">
             Usikker på hvilken behandling du trenger?
           </h2>
-          <p className="text-lg text-[#F0E6D6]/80 font-sans font-400 max-w-lg mx-auto mb-8">
+          <p className="text-lg text-[#FBF9F3]/80 font-sans font-400 max-w-lg mx-auto mb-8">
             Ta kontakt med oss for en uforpliktende konsultasjon. Vi hjelper deg
             med å finne den beste løsningen.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/kontakt" className="btn-primary bg-white text-[var(--color-emerald-800)] hover:bg-[#F0E6D6] px-8 py-4">
+            <Link href="/kontakt" className="btn-primary bg-white text-[var(--color-primary-dark)] hover:bg-[#FBF9F3] px-8 py-4">
               <Calendar className="size-5" />
               Kontakt oss
             </Link>

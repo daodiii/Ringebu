@@ -1,18 +1,21 @@
 @import "tailwindcss";
 
 @theme inline {
-  /* ── Warm Cream & Caramel Palette ── */
-  --color-emerald-50: #F0E6D6;
-  --color-emerald-100: #E8DFCF;
-  --color-emerald-200: #E8DFCF;
-  --color-emerald-300: #C9B99A;
-  --color-emerald-400: #C9B99A;
-  --color-emerald-500: #B8976A;
-  --color-emerald-600: #B8976A;
-  --color-emerald-700: #7A6B55;
-  --color-emerald-800: #5C4A3A;
-  --color-emerald-900: #3D3225;
-  --color-emerald-950: #3D3225;
+  /* ── Dark Anchors ── */
+  --color-primary: #6B5744;
+  --color-primary-dark: #5A4838;
+  --color-primary-light: #7A6B55;
+
+  /* ── Accent ── */
+  --color-accent: #C4873B;
+  --color-accent-hover: #A8722F;
+  --color-accent-light: #D4A04B;
+
+  /* ── Section Tints ── */
+  --color-bg-blue: #F0F4F8;
+  --color-bg-yellow: #FEFCF3;
+  --color-bg-mint: #F0F7F4;
+  --color-bg-cream: #FBF9F3;
 
   /* ── Warm Neutrals ── */
   --color-stone-50: #fafaf9;
@@ -28,35 +31,10 @@
 
   /* ── Semantic Colors ── */
   --color-bg: #ffffff;
-  --color-bg-mint: #FDFBF7;
-  --color-bg-warm: #fafaf9;
-  --color-bg-cream: #FAF8F5;
   --color-text-primary: #1c1917;
   --color-text-secondary: #57534e;
   --color-text-muted: #a8a29e;
-  --color-accent: #B8976A;
-  --color-accent-dark: #7A6B55;
-  --color-accent-light: #F0E6D6;
   --color-border: #e7e5e4;
-  --color-amber: #f59e0b;
-
-  /* ── Legacy aliases for sub-pages ── */
-  --color-emerald: #3D3225;
-  --color-primary: #3D3225;
-  --color-primary-dark: #2A2118;
-  --color-primary-light: #5C4A3A;
-  --color-background: #ffffff;
-  --color-foreground: #1c1917;
-  --color-muted: #a8a29e;
-  --color-accent-gold: #B8976A;
-  --color-card-white: #ffffff;
-  --color-footer-bg: #3D3225;
-  --color-text-dark: #1c1917;
-  --color-text-body: #57534e;
-  --color-bg-warmest: #f5f5f4;
-  --color-placeholder: #e7e5e4;
-  --color-placeholder-mid: #d6d3d1;
-  --color-placeholder-dark: #a8a29e;
 
   /* ── Typography ── */
   --font-sans: var(--font-dm-sans), system-ui, sans-serif;
@@ -140,7 +118,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  color: #B8976A;
+  color: var(--color-accent);
 }
 
 .heading-display {
@@ -189,7 +167,7 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: center;
   gap: 0.5rem;
   border-radius: 9999px;
-  background-color: #B8976A;
+  background-color: var(--color-accent);
   color: white;
   padding: 0.875rem 2rem;
   font-family: var(--font-sans);
@@ -202,9 +180,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-primary:hover {
-  background-color: #A68658;
+  background-color: var(--color-accent-hover);
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(184, 151, 106, 0.3);
+  box-shadow: 0 8px 30px rgba(196, 135, 59, 0.3);
 }
 
 .btn-secondary {
@@ -239,27 +217,27 @@ h1, h2, h3, h4, h5, h6 {
   gap: 0.5rem;
   border-radius: 9999px;
   background-color: transparent;
-  color: #7A6B55;
+  color: var(--color-primary);
   padding: 0.875rem 2rem;
   font-family: var(--font-sans);
   font-size: 0.9375rem;
   font-weight: 500;
   letter-spacing: 0.01em;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1.5px solid #B8976A;
+  border: 1.5px solid var(--color-accent);
   cursor: pointer;
 }
 
 .btn-outline:hover {
-  background-color: #B8976A;
+  background-color: var(--color-accent);
   color: white;
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(184, 151, 106, 0.2);
+  box-shadow: 0 8px 30px rgba(196, 135, 59, 0.2);
 }
 
 /* ── Nav Button ── */
 .btn-nav {
-  --color: var(--color-emerald-950);
+  --color: var(--color-primary);
   --color2: white;
   padding: 0.5em 1.2em;
   background-color: transparent;
@@ -278,13 +256,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-nav:hover {
-  color: #B8976A;
-  background-color: #F0E6D6;
+  color: var(--color-accent);
+  background-color: var(--color-bg-cream);
 }
 
 .btn-nav.active {
-  color: #7A6B55;
-  background-color: #F0E6D6;
+  color: var(--color-primary);
+  background-color: var(--color-bg-cream);
   font-weight: 500;
 }
 
@@ -297,8 +275,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .card:hover {
-  border-color: #E8DFCF;
-  box-shadow: 0 20px 60px rgba(184, 151, 106, 0.08);
+  border-color: var(--color-border);
+  box-shadow: 0 20px 60px rgba(196, 135, 59, 0.08);
   transform: translateY(-4px);
 }
 
@@ -313,13 +291,13 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ── Selection ── */
 ::selection {
-  background-color: #F0E6D6;
-  color: #3D3225;
+  background-color: var(--color-bg-cream);
+  color: var(--color-primary);
 }
 
 /* ── Gradient Text ── */
 .gradient-text {
-  background: linear-gradient(135deg, #B8976A, #C9B99A);
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-light));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -329,14 +307,14 @@ h1, h2, h3, h4, h5, h6 {
 .accent-line {
   width: 3rem;
   height: 3px;
-  background: linear-gradient(90deg, #B8976A, #C9B99A);
+  background: linear-gradient(90deg, var(--color-accent), var(--color-accent-light));
   border-radius: 9999px;
 }
 
-.gold-line {
+.accent-line-thin {
   width: 60px;
   height: 1px;
-  background-color: #B8976A;
+  background-color: var(--color-accent);
 }
 
 /* ── Snap Container (legacy) ── */

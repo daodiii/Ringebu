@@ -37,11 +37,11 @@ export default function Navbar() {
 
   const textColor = isHome && !scrolled
     ? "text-white"
-    : "text-[var(--color-emerald-950)]";
+    : "text-[var(--color-primary)]";
 
   const logoColor = isHome && !scrolled
     ? "text-white"
-    : "text-[var(--color-emerald-950)]";
+    : "text-[var(--color-primary)]";
 
   return (
     <>
@@ -71,10 +71,10 @@ export default function Navbar() {
                   pathname === link.href
                     ? isHome && !scrolled
                       ? "bg-white/20 text-white font-500"
-                      : "bg-[var(--color-emerald-50)] text-[var(--color-emerald-700)] font-500"
+                      : "bg-[var(--color-bg-cream)] text-[var(--color-primary)] font-500"
                     : isHome && !scrolled
                       ? "text-white/80 hover:text-white hover:bg-white/10"
-                      : "text-[var(--color-stone-600)] hover:text-[var(--color-emerald-700)] hover:bg-[var(--color-emerald-50)]"
+                      : "text-[var(--color-stone-600)] hover:text-[var(--color-primary)] hover:bg-[var(--color-bg-cream)]"
                 )}
               >
                 {link.label}
@@ -88,7 +88,7 @@ export default function Navbar() {
               href="tel:61280412"
               className={cn(
                 "hidden md:flex items-center gap-2 text-sm font-sans transition-colors",
-                isHome && !scrolled ? "text-white/80 hover:text-white" : "text-[var(--color-stone-500)] hover:text-[var(--color-emerald-600)]"
+                isHome && !scrolled ? "text-white/80 hover:text-white" : "text-[var(--color-stone-500)] hover:text-[var(--color-accent)]"
               )}
             >
               <Phone className="size-4" />
@@ -99,8 +99,8 @@ export default function Navbar() {
               className={cn(
                 "hidden md:inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-500 font-sans transition-all duration-300",
                 isHome && !scrolled
-                  ? "bg-white text-[var(--color-emerald-800)] hover:bg-white/90 hover:shadow-lg"
-                  : "bg-[var(--color-emerald-600)] text-white hover:bg-[var(--color-emerald-700)] hover:shadow-lg hover:shadow-[#B8976A]/20"
+                  ? "bg-white text-[var(--color-primary)] hover:bg-white/90 hover:shadow-lg"
+                  : "bg-[var(--color-accent)] text-white hover:bg-[var(--color-accent-hover)] hover:shadow-lg hover:shadow-[var(--color-accent)]/20"
               )}
             >
               Bestill time
@@ -109,7 +109,7 @@ export default function Navbar() {
               onClick={() => setMobileOpen(!mobileOpen)}
               className={cn(
                 "lg:hidden p-2 relative z-50 transition-colors",
-                mobileOpen ? "text-[var(--color-emerald-950)]" : textColor
+                mobileOpen ? "text-[var(--color-primary)]" : textColor
               )}
               aria-label="Toggle menu"
             >
@@ -143,7 +143,7 @@ export default function Navbar() {
                     className={cn(
                       "text-3xl font-heading font-600 tracking-tight transition-colors",
                       pathname === link.href
-                        ? "text-[var(--color-emerald-600)]"
+                        ? "text-[var(--color-accent)]"
                         : "text-[var(--color-stone-800)]"
                     )}
                   >

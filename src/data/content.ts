@@ -56,12 +56,12 @@ export const treatments = [
 ];
 
 export const treatmentColors: Record<string, { bg: string; text: string; icon: string }> = {
-  emerald: { bg: "bg-[#F0E6D6]", text: "text-[#5C4A3A]", icon: "text-[#B8976A]" },
-  sky:     { bg: "bg-[#F0E6D6]", text: "text-[#5C4A3A]", icon: "text-[#B8976A]" },
-  violet:  { bg: "bg-[#F0E6D6]", text: "text-[#5C4A3A]", icon: "text-[#B8976A]" },
-  rose:    { bg: "bg-[#F0E6D6]", text: "text-[#5C4A3A]", icon: "text-[#B8976A]" },
-  amber:   { bg: "bg-[#F0E6D6]", text: "text-[#5C4A3A]", icon: "text-[#B8976A]" },
-  teal:    { bg: "bg-[#F0E6D6]", text: "text-[#5C4A3A]", icon: "text-[#B8976A]" },
+  emerald: { bg: "bg-[var(--color-bg-cream)]", text: "text-[var(--color-primary)]", icon: "text-[var(--color-accent)]" },
+  sky:     { bg: "bg-[var(--color-bg-blue)]", text: "text-[var(--color-primary)]", icon: "text-[var(--color-accent)]" },
+  violet:  { bg: "bg-[var(--color-bg-mint)]", text: "text-[var(--color-primary)]", icon: "text-[var(--color-accent)]" },
+  rose:    { bg: "bg-[var(--color-bg-yellow)]", text: "text-[var(--color-primary)]", icon: "text-[var(--color-accent)]" },
+  amber:   { bg: "bg-[var(--color-bg-cream)]", text: "text-[var(--color-primary)]", icon: "text-[var(--color-accent)]" },
+  teal:    { bg: "bg-[var(--color-bg-blue)]", text: "text-[var(--color-primary)]", icon: "text-[var(--color-accent)]" },
 };
 
 /* ── Symptoms ── */
