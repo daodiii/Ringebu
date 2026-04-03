@@ -42,7 +42,8 @@ function SectionFade({
 
 function HeroSection() {
   return (
-    <section className="relative bg-white pt-28 pb-16 md:pt-36 md:pb-24 overflow-hidden">
+    <section className="relative bg-[var(--color-bg-cream)] pt-28 pb-16 md:pt-36 md:pb-24 overflow-hidden">
+      <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-primary-light)] to-[var(--color-accent)]" />
       <div className="container-width">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left: Text */}
@@ -100,60 +101,22 @@ function HeroSection() {
             </motion.div>
           </div>
 
-          {/* Right: Staggered Photo Collage */}
+          {/* Right: Single Hero Image */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="grid grid-cols-2 gap-4"
+            className="relative aspect-[4/3] rounded-2xl overflow-hidden"
           >
-            {/* Left column — offset down */}
-            <div className="flex flex-col gap-4 pt-8 lg:pt-12">
-              <div className="relative aspect-[3/4] rounded-xl overflow-hidden">
-                <Image
-                  src="/images/hero-clinic.jpg"
-                  alt="Ringebu Tannlegesenter klinikk"
-                  fill
-                  className="object-cover"
-                  style={{ objectPosition: "center 75%" }}
-                  priority
-                  sizes="(max-width: 768px) 45vw, 25vw"
-                />
-              </div>
-              <div className="relative aspect-[4/3] rounded-xl overflow-hidden">
-                <Image
-                  src="/images/dental-instruments.png"
-                  alt="Tannlegeutstyr"
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 45vw, 25vw"
-                />
-              </div>
-            </div>
-            {/* Right column — flush top */}
-            <div className="flex flex-col gap-4">
-              <div className="relative aspect-[4/3] rounded-xl overflow-hidden">
-                <Image
-                  src="/images/ringebutannMain.jpg"
-                  alt="Behandlingsrom"
-                  fill
-                  className="object-cover"
-                  style={{ objectPosition: "center 60%" }}
-                  priority
-                  sizes="(max-width: 768px) 45vw, 25vw"
-                />
-              </div>
-              <div className="relative aspect-[3/4] rounded-xl overflow-hidden">
-                <Image
-                  src="/images/clinic-sign.jpg"
-                  alt="Ringebu Tannlegesenter skilt"
-                  fill
-                  className="object-cover"
-                  style={{ objectPosition: "50% 35%" }}
-                  sizes="(max-width: 768px) 45vw, 25vw"
-                />
-              </div>
-            </div>
+            <Image
+              src="/images/ringebutannMain.jpg"
+              alt="Ringebu Tannlegesenter behandlingsrom"
+              fill
+              className="object-cover"
+              style={{ objectPosition: "center 60%" }}
+              priority
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
           </motion.div>
         </div>
       </div>
