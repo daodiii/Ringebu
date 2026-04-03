@@ -18,8 +18,6 @@ export default function Navbar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const isHome = pathname === "/";
-
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -31,17 +29,9 @@ export default function Navbar() {
     return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
 
-  const navBg = isHome && !scrolled
-    ? "bg-transparent"
-    : "bg-white/90 backdrop-blur-xl shadow-sm";
-
-  const textColor = isHome && !scrolled
-    ? "text-white"
-    : "text-[var(--color-primary)]";
-
-  const logoColor = isHome && !scrolled
-    ? "text-white"
-    : "text-[var(--color-primary)]";
+  const navBg = scrolled
+    ? "bg-white/90 backdrop-blur-xl shadow-sm"
+    : "bg-white/80 backdrop-blur-sm";
 
   return (
     <>
@@ -51,7 +41,7 @@ export default function Navbar() {
       )}>
         <div className="container-width flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className={cn("relative z-50 flex items-center gap-1", logoColor)}>
+          <Link href="/" className="relative z-50 flex items-center gap-1 text-[var(--color-primary)]">
             <div className="flex flex-col leading-none font-heading font-700 tracking-tight">
               <span className="text-xl">RINGEBU</span>
               <span className="text-[0.65rem] font-sans font-400 tracking-[0.25em] uppercase opacity-70">
@@ -69,12 +59,8 @@ export default function Navbar() {
                 className={cn(
                   "px-4 py-2 rounded-full text-[0.9375rem] font-sans transition-all duration-300",
                   pathname === link.href
-                    ? isHome && !scrolled
-                      ? "bg-white/20 text-white font-500"
-                      : "bg-[var(--color-bg-cream)] text-[var(--color-primary)] font-500"
-                    : isHome && !scrolled
-                      ? "text-white/80 hover:text-white hover:bg-white/10"
-                      : "text-[var(--color-stone-600)] hover:text-[var(--color-primary)] hover:bg-[var(--color-bg-cream)]"
+                    ? "bg-[var(--color-bg-cream)] text-[var(--color-primary)] font-500"
+                    : "text-[var(--color-stone-600)] hover:text-[var(--color-primary)] hover:bg-[var(--color-bg-cream)]"
                 )}
               >
                 {link.label}
@@ -86,22 +72,14 @@ export default function Navbar() {
           <div className="flex items-center gap-3">
             <a
               href="tel:61280412"
-              className={cn(
-                "hidden md:flex items-center gap-2 text-sm font-sans transition-colors",
-                isHome && !scrolled ? "text-white/80 hover:text-white" : "text-[var(--color-stone-500)] hover:text-[var(--color-accent)]"
-              )}
+              className="hidden md:flex items-center gap-2 text-sm font-sans transition-colors text-[var(--color-stone-500)] hover:text-[var(--color-accent)]"
             >
               <Phone className="size-4" />
               <span>61 28 04 12</span>
             </a>
             <Link
               href="/kontakt"
-              className={cn(
-                "hidden md:inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-500 font-sans transition-all duration-300",
-                isHome && !scrolled
-                  ? "bg-white text-[var(--color-primary)] hover:bg-white/90 hover:shadow-lg"
-                  : "bg-[var(--color-accent)] text-white hover:bg-[var(--color-accent-hover)] hover:shadow-lg hover:shadow-[var(--color-accent)]/20"
-              )}
+              className="hidden md:inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-500 font-sans transition-all duration-300 bg-[var(--color-accent)] text-white hover:bg-[var(--color-accent-hover)] hover:shadow-lg hover:shadow-[var(--color-accent)]/20"
             >
               Bestill time
             </Link>
@@ -109,7 +87,7 @@ export default function Navbar() {
               onClick={() => setMobileOpen(!mobileOpen)}
               className={cn(
                 "lg:hidden p-2 relative z-50 transition-colors",
-                mobileOpen ? "text-[var(--color-primary)]" : textColor
+                "text-[var(--color-primary)]"
               )}
               aria-label="Toggle menu"
             >
