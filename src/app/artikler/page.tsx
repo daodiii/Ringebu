@@ -16,13 +16,13 @@ export default function ArtiklerPage() {
       {/* Header */}
       <section className="bg-[var(--color-emerald-950)] py-20 md:py-28">
         <div className="container-width text-center">
-          <span className="text-emerald-300 text-sm font-sans font-600 uppercase tracking-[0.15em] mb-4 block">
+          <span className="text-[#C9B99A] text-sm font-sans font-600 uppercase tracking-[0.15em] mb-4 block">
             Artikler
           </span>
           <h1 className="heading-display text-white mb-5">
             Nyttige artikler om tannhelse
           </h1>
-          <p className="text-lg text-emerald-100/70 font-sans font-300 max-w-xl mx-auto">
+          <p className="text-lg text-[#F0E6D6]/70 font-sans font-300 max-w-xl mx-auto">
             Lær mer om vanlige tannproblemer, forebygging og behandlinger.
             Kunnskap er det første steget mot bedre tannhelse.
           </p>

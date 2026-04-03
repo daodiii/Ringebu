@@ -11,7 +11,6 @@ const navLinks = [
   { href: "/behandlinger", label: "Behandlinger" },
   { href: "/symptomer", label: "Symptomer" },
   { href: "/artikler", label: "Artikler" },
-  { href: "/priser", label: "Priser" },
   { href: "/kontakt", label: "Kontakt" },
 ];
 
@@ -101,7 +100,7 @@ export default function Navbar() {
                 "hidden md:inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-500 font-sans transition-all duration-300",
                 isHome && !scrolled
                   ? "bg-white text-[var(--color-emerald-800)] hover:bg-white/90 hover:shadow-lg"
-                  : "bg-[var(--color-emerald-600)] text-white hover:bg-[var(--color-emerald-700)] hover:shadow-lg hover:shadow-emerald-600/20"
+                  : "bg-[var(--color-emerald-600)] text-white hover:bg-[var(--color-emerald-700)] hover:shadow-lg hover:shadow-[#B8976A]/20"
               )}
             >
               Bestill time

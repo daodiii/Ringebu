@@ -113,7 +113,7 @@ export default async function ArticlePage({
         <div className="container-width relative -mt-24 z-10 pb-8">
           <Link
             href="/artikler"
-            className="inline-flex items-center gap-2 text-emerald-200/80 hover:text-white text-sm font-sans mb-4 transition-colors"
+            className="inline-flex items-center gap-2 text-[#E8DFCF]/80 hover:text-white text-sm font-sans mb-4 transition-colors"
           >
             <ArrowLeft className="size-4" />
             Tilbake til artikler
@@ -122,11 +122,11 @@ export default async function ArticlePage({
             <span className="inline-block px-3 py-1 rounded-full bg-[var(--color-emerald-600)] text-white text-xs font-500 font-sans">
               {article.category}
             </span>
-            <span className="flex items-center gap-1.5 text-emerald-200/70 text-sm font-sans">
+            <span className="flex items-center gap-1.5 text-[#E8DFCF]/70 text-sm font-sans">
               <Clock className="size-4" />
               {article.readTime} lesetid
             </span>
-            <span className="flex items-center gap-1.5 text-emerald-200/70 text-sm font-sans">
+            <span className="flex items-center gap-1.5 text-[#E8DFCF]/70 text-sm font-sans">
               <Calendar className="size-4" />
               {new Date(article.date).toLocaleDateString("nb-NO", {
                 year: "numeric",
