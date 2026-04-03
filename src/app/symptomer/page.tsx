@@ -12,15 +12,19 @@ export default function SymptomerPage() {
   return (
     <main className="pt-20">
       {/* Header */}
-      <section className="bg-[var(--color-primary)] py-20 md:py-28">
-        <div className="container-width text-center">
-          <span className="text-[#D4A04B] text-sm font-sans font-600 uppercase tracking-[0.15em] mb-4 block">
+      <section className="relative bg-[var(--color-primary)] py-20 md:py-28 overflow-hidden">
+        <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-primary-light)] to-[var(--color-accent)]" />
+        <div className="absolute inset-0">
+          <div className="absolute -top-[30%] -right-[15%] w-[50vw] h-[50vw] rounded-full bg-[var(--color-accent)]/8 blur-3xl" />
+        </div>
+        <div className="container-width text-center relative z-10">
+          <span className="text-[var(--color-accent-light)] text-sm font-sans font-600 uppercase tracking-[0.15em] mb-4 block">
             Symptomer
           </span>
           <h1 className="heading-display text-white mb-5">
             Vanlige symptomer du bør kjenne til
           </h1>
-          <p className="text-lg text-[#FBF9F3]/70 font-sans font-300 max-w-xl mx-auto">
+          <p className="text-lg text-white/70 font-sans font-300 max-w-xl mx-auto">
             Kjenner du igjen noen av disse symptomene? Jo tidligere du oppsøker
             tannlegen, desto enklere er behandlingen.
           </p>
@@ -40,7 +44,7 @@ export default function SymptomerPage() {
               >
                 <button
                   onClick={() => setExpanded(expanded === i ? null : i)}
-                  className="w-full text-left bg-white rounded-2xl p-8 border border-[var(--color-border)] hover:border-[var(--color-accent)] transition-all duration-300 hover:shadow-lg hover:shadow-[#C4873B]/5 group"
+                  className="w-full text-left bg-white rounded-2xl p-8 border border-[var(--color-border)] hover:border-[var(--color-accent)] transition-all duration-300 hover:shadow-lg hover:shadow-[var(--color-accent)]/5 group"
                 >
                   <div className="flex items-start gap-5">
                     <div className="w-14 h-14 rounded-2xl bg-[var(--color-bg-blue)] flex items-center justify-center shrink-0 group-hover:bg-[var(--color-accent)]/10 transition-colors">
@@ -56,7 +60,7 @@ export default function SymptomerPage() {
                             ? "bg-rose-50 text-rose-700"
                             : s.severity.includes("snarest")
                             ? "bg-amber-50 text-amber-700"
-                            : "bg-[#FBF9F3] text-[#6B5744]"
+                            : "bg-[var(--color-bg-cream)] text-[var(--color-accent)]"
                         }`}>
                           {s.severity}
                         </span>
@@ -123,12 +127,12 @@ export default function SymptomerPage() {
           <h2 className="heading-section text-white mb-4">
             Ikke vent – ta kontakt i dag
           </h2>
-          <p className="text-lg text-[#FBF9F3]/80 font-sans font-300 max-w-lg mx-auto mb-8">
+          <p className="text-lg text-white/80 font-sans font-300 max-w-lg mx-auto mb-8">
             Tidlig behandling er alltid enklere og mindre kostbart. Vi hjelper
             deg gjerne.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/kontakt" className="btn-primary bg-white text-[var(--color-primary-dark)] hover:bg-[#FBF9F3] px-8 py-4">
+            <Link href="/kontakt" className="btn-primary bg-white text-[var(--color-primary-dark)] hover:bg-[var(--color-bg-cream)] px-8 py-4">
               <Calendar className="size-5" />
               Bestill time
             </Link>

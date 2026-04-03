@@ -113,7 +113,7 @@ export default async function ArticlePage({
         <div className="container-width relative -mt-24 z-10 pb-8">
           <Link
             href="/artikler"
-            className="inline-flex items-center gap-2 text-[#FBF9F3]/80 hover:text-white text-sm font-sans mb-4 transition-colors"
+            className="inline-flex items-center gap-2 text-white/80 hover:text-white text-sm font-sans mb-4 transition-colors"
           >
             <ArrowLeft className="size-4" />
             Tilbake til artikler
@@ -122,11 +122,11 @@ export default async function ArticlePage({
             <span className="inline-block px-3 py-1 rounded-full bg-[var(--color-accent)] text-white text-xs font-500 font-sans">
               {article.category}
             </span>
-            <span className="flex items-center gap-1.5 text-[#FBF9F3]/70 text-sm font-sans">
+            <span className="flex items-center gap-1.5 text-white/70 text-sm font-sans">
               <Clock className="size-4" />
               {article.readTime} lesetid
             </span>
-            <span className="flex items-center gap-1.5 text-[#FBF9F3]/70 text-sm font-sans">
+            <span className="flex items-center gap-1.5 text-white/70 text-sm font-sans">
               <Calendar className="size-4" />
               {new Date(article.date).toLocaleDateString("nb-NO", {
                 year: "numeric",
@@ -142,7 +142,7 @@ export default async function ArticlePage({
       </section>
 
       {/* Content */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-[var(--color-bg-cream)]">
         <div className="container-width">
           <div className="max-w-3xl mx-auto">
             {article.content.map((p, i) => (
@@ -173,7 +173,7 @@ export default async function ArticlePage({
       </section>
 
       {/* Related Articles */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-[var(--color-bg-blue)]">
         <div className="container-width">
           <h2 className="heading-section mb-8">Andre artikler</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

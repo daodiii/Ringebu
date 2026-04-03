@@ -166,7 +166,7 @@ const treatments = [
   },
 ];
 
-const cardColors = { bg: "#FBF9F3", border: "#e7e5e4", dot: "#C4873B" };
+const cardColors = { bg: "var(--color-bg-cream)", border: "var(--color-border)", dot: "var(--color-accent)" };
 
 export default function Behandlinger() {
   const [expanded, setExpanded] = useState<string | null>(null);
@@ -174,8 +174,15 @@ export default function Behandlinger() {
   return (
     <main className="pt-20">
       {/* Header */}
-      <section className="bg-[var(--color-primary)] py-20 md:py-28">
-        <div className="container-width text-center">
+      <section className="relative bg-[var(--color-primary)] py-20 md:py-28 overflow-hidden">
+        <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-primary-light)] to-[var(--color-accent)]" />
+        <div className="absolute inset-0">
+          <div className="absolute -top-[30%] -right-[15%] w-[50vw] h-[50vw] rounded-full bg-[var(--color-accent)]/8 blur-3xl" />
+        </div>
+        <div className="container-width text-center relative z-10">
+          <span className="text-[var(--color-accent-light)] text-sm font-sans font-600 uppercase tracking-[0.15em] mb-4 block">
+            Våre tjenester
+          </span>
           <h1 className="heading-display text-white mb-5">
             Behandlinger vi tilbyr
           </h1>
@@ -188,7 +195,7 @@ export default function Behandlinger() {
       </section>
 
       {/* Treatments with Integrated Prices */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-[var(--color-bg-cream)]">
         <div className="container-width max-w-5xl">
           <div className="space-y-4">
             {treatments.map((treatment) => {
@@ -353,12 +360,12 @@ export default function Behandlinger() {
           <h2 className="heading-section text-white mb-4">
             Usikker på hvilken behandling du trenger?
           </h2>
-          <p className="text-lg text-[#FBF9F3]/80 font-sans font-400 max-w-lg mx-auto mb-8">
+          <p className="text-lg text-white/80 font-sans font-400 max-w-lg mx-auto mb-8">
             Ta kontakt med oss for en uforpliktende konsultasjon. Vi hjelper deg
             med å finne den beste løsningen.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/kontakt" className="btn-primary bg-white text-[var(--color-primary-dark)] hover:bg-[#FBF9F3] px-8 py-4">
+            <Link href="/kontakt" className="btn-primary bg-white text-[var(--color-primary-dark)] hover:bg-[var(--color-bg-cream)] px-8 py-4">
               <Calendar className="size-5" />
               Kontakt oss
             </Link>

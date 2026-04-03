@@ -14,15 +14,19 @@ export default function ArtiklerPage() {
   return (
     <main className="pt-20">
       {/* Header */}
-      <section className="bg-[var(--color-primary)] py-20 md:py-28">
-        <div className="container-width text-center">
-          <span className="text-[#C9B99A] text-sm font-sans font-600 uppercase tracking-[0.15em] mb-4 block">
+      <section className="relative bg-[var(--color-primary)] py-20 md:py-28 overflow-hidden">
+        <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-primary-light)] to-[var(--color-accent)]" />
+        <div className="absolute inset-0">
+          <div className="absolute -top-[30%] -right-[15%] w-[50vw] h-[50vw] rounded-full bg-[var(--color-accent)]/8 blur-3xl" />
+        </div>
+        <div className="container-width text-center relative z-10">
+          <span className="text-[var(--color-accent-light)] text-sm font-sans font-600 uppercase tracking-[0.15em] mb-4 block">
             Artikler
           </span>
           <h1 className="heading-display text-white mb-5">
             Nyttige artikler om tannhelse
           </h1>
-          <p className="text-lg text-[#FBF9F3]/70 font-sans font-300 max-w-xl mx-auto">
+          <p className="text-lg text-white/70 font-sans font-300 max-w-xl mx-auto">
             Lær mer om vanlige tannproblemer, forebygging og behandlinger.
             Kunnskap er det første steget mot bedre tannhelse.
           </p>
@@ -30,7 +34,7 @@ export default function ArtiklerPage() {
       </section>
 
       {/* Articles Grid */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-[var(--color-bg-cream)]">
         <div className="container-width">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {articles.map((article) => (
@@ -78,7 +82,7 @@ export default function ArtiklerPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-white py-16">
+      <section className="bg-[var(--color-bg-blue)] py-16">
         <div className="container-width text-center">
           <h2 className="heading-section mb-4">Har du spørsmål?</h2>
           <p className="body-large mb-8 max-w-lg mx-auto">

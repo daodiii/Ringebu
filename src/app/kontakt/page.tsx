@@ -46,13 +46,17 @@ export default function Kontakt() {
   return (
     <main className="pt-20">
       {/* Header */}
-      <section className="bg-[var(--color-primary)] py-20 md:py-28">
-        <div className="container-width text-center">
-          <span className="text-[#C9B99A] text-sm font-sans font-600 uppercase tracking-[0.15em] mb-4 block">
+      <section className="relative bg-[var(--color-primary)] py-20 md:py-28 overflow-hidden">
+        <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-primary-light)] to-[var(--color-accent)]" />
+        <div className="absolute inset-0">
+          <div className="absolute -top-[30%] -right-[15%] w-[50vw] h-[50vw] rounded-full bg-[var(--color-accent)]/8 blur-3xl" />
+        </div>
+        <div className="container-width text-center relative z-10">
+          <span className="text-[var(--color-accent-light)] text-sm font-sans font-600 uppercase tracking-[0.15em] mb-4 block">
             Kontakt
           </span>
           <h1 className="heading-display text-white mb-5">Kontakt oss</h1>
-          <p className="text-lg text-[#FBF9F3]/70 font-sans font-300 max-w-xl mx-auto">
+          <p className="text-lg text-white/70 font-sans font-300 max-w-xl mx-auto">
             Har du spørsmål eller ønsker å bestille time? Vi er her for å hjelpe
             deg.
           </p>
@@ -60,7 +64,7 @@ export default function Kontakt() {
       </section>
 
       {/* Contact Content */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-[var(--color-bg-cream)]">
         <div className="container-width">
           <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
             {/* Contact Info */}
@@ -98,14 +102,14 @@ export default function Kontakt() {
                 <FadeIn delay={0.1}>
                   <a href="mailto:post@ringebutann.no" className="block card p-6 group">
                     <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-[#FBF9F3] flex items-center justify-center shrink-0 group-hover:bg-[var(--color-border)] transition-colors">
-                        <Mail className="size-5 text-[#C4873B]" />
+                      <div className="w-12 h-12 rounded-xl bg-[var(--color-bg-cream)] flex items-center justify-center shrink-0 group-hover:bg-[var(--color-border)] transition-colors">
+                        <Mail className="size-5 text-[var(--color-accent)]" />
                       </div>
                       <div>
                         <h3 className="font-heading font-600 text-[var(--color-primary)] mb-1">
                           E-post
                         </h3>
-                        <p className="text-[#6B5744] font-sans font-600">
+                        <p className="text-[var(--color-primary-light)] font-sans font-600">
                           post@ringebutann.no
                         </p>
                         <p className="text-sm text-[var(--color-text-muted)] font-sans font-300 mt-1">
@@ -124,8 +128,8 @@ export default function Kontakt() {
                     className="block card p-6 group"
                   >
                     <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-[#FBF9F3] flex items-center justify-center shrink-0 group-hover:bg-[var(--color-border)] transition-colors">
-                        <MapPin className="size-5 text-[#C4873B]" />
+                      <div className="w-12 h-12 rounded-xl bg-[var(--color-bg-cream)] flex items-center justify-center shrink-0 group-hover:bg-[var(--color-border)] transition-colors">
+                        <MapPin className="size-5 text-[var(--color-accent)]" />
                       </div>
                       <div>
                         <h3 className="font-heading font-600 text-[var(--color-primary)] mb-1">
@@ -134,7 +138,7 @@ export default function Kontakt() {
                         <p className="text-[var(--color-text-primary)] font-sans">
                           Jernbanegata 4, 2630 Ringebu
                         </p>
-                        <p className="text-sm text-[#C4873B] font-sans font-500 mt-1">
+                        <p className="text-sm text-[var(--color-accent)] font-sans font-500 mt-1">
                           Se veibeskrivelse
                         </p>
                         <p className="text-sm text-[var(--color-text-muted)] font-sans font-300 mt-1">
@@ -148,8 +152,8 @@ export default function Kontakt() {
                 <FadeIn delay={0.2}>
                   <div className="card p-6">
                     <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-[#FBF9F3] flex items-center justify-center shrink-0">
-                        <Clock className="size-5 text-[#C4873B]" />
+                      <div className="w-12 h-12 rounded-xl bg-[var(--color-bg-cream)] flex items-center justify-center shrink-0">
+                        <Clock className="size-5 text-[var(--color-accent)]" />
                       </div>
                       <div className="flex-1">
                         <h3 className="font-heading font-600 text-[var(--color-primary)] mb-3">
