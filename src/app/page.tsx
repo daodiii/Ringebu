@@ -164,7 +164,7 @@ function TreatmentsSection() {
                 <h3 className="text-2xl md:text-3xl font-heading font-600 text-[var(--color-primary)] mb-3">
                   Kosmetisk tannpleie
                 </h3>
-                <p className="text-[var(--color-stone-700)] mb-8 leading-relaxed font-sans font-400 text-xl">
+                <p className="text-[var(--color-stone-700)] mb-8 leading-relaxed font-sans font-400 text-base">
                   Tannbleking, fasetter og estetiske behandlinger for et vakrere smil.
                   Gjenopprett selvtilliten med moderne, diskrete løsninger.
                 </p>
@@ -203,7 +203,7 @@ function TreatmentsSection() {
                 <h3 className="text-2xl md:text-3xl font-heading font-600 mb-4">
                   Profesjonell Tannbleking
                 </h3>
-                <p className="text-white/75 text-xl leading-relaxed font-sans font-400">
+                <p className="text-white/75 text-base leading-relaxed font-sans font-400">
                   Få et strålende smil med vår skånsomme, kliniske blekeprosess
                   utviklet for varige resultater.
                 </p>
@@ -232,7 +232,7 @@ function TreatmentsSection() {
                 <h3 className="text-xl md:text-2xl font-heading font-600 text-[var(--color-primary)] mb-3">
                   Forebyggende behandling
                 </h3>
-                <p className="text-[var(--color-stone-700)] text-xl leading-relaxed font-sans font-400">
+                <p className="text-[var(--color-stone-700)] text-base leading-relaxed font-sans font-400">
                   Tannrens, fluorbehandling og veiledning for å unngå fremtidige problemer.
                 </p>
               </div>
@@ -246,7 +246,7 @@ function TreatmentsSection() {
                 <h3 className="text-xl md:text-2xl font-heading font-600 text-[var(--color-primary)] mb-3">
                   Akutt tannhjelp
                 </h3>
-                <p className="text-[var(--color-stone-700)] text-xl mb-6 leading-relaxed font-sans font-400">
+                <p className="text-[var(--color-stone-700)] text-base mb-6 leading-relaxed font-sans font-400">
                   Har du fått akutt tannpine? Vi prioriterer hastehenvendelser og hjelper deg
                   raskt.
                 </p>
@@ -296,7 +296,7 @@ function TipsAndSymptomsSection() {
                 <h2 className="text-2xl md:text-3xl font-heading font-700 text-white mb-6">
                   Symptomer
                 </h2>
-                <p className="text-white/80 text-xl leading-relaxed font-sans font-400">
+                <p className="text-white/80 text-base leading-relaxed font-sans font-400">
                   Opplever du ubehag og er usikker på hva det kan være? Her får du
                   oversikt over vanlige symptomer forbundet med munnhelse.
                 </p>
@@ -339,7 +339,7 @@ function TipsAndSymptomsSection() {
                       <span className="text-lg md:text-xl font-sans font-400 text-[var(--color-primary)] group-hover:text-[var(--color-accent)] transition-colors pr-4">
                         {tip.title}
                       </span>
-                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[var(--color-bg-cream)] flex items-center justify-center group-hover:bg-[var(--color-bg-mint)] transition-colors">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[var(--color-bg-cream)] flex items-center justify-center group-hover:bg-[var(--color-bg-cream)] transition-colors">
                         <ChevronRight className="size-5 text-[var(--color-accent)]" />
                       </div>
                     </Link>
@@ -360,7 +360,7 @@ function ArticlesSection() {
   const displayArticles = articles.slice(0, 2);
 
   return (
-    <section id="artikler" className="py-12 md:py-16 bg-[var(--color-bg-mint)]">
+    <section id="artikler" className="py-12 md:py-16 bg-[var(--color-bg-blue)]">
       <div className="container-width">
         {/* Centered Divider Header */}
         <SectionFade>
@@ -422,23 +422,13 @@ function ArticlesSection() {
   );
 }
 
-/* ─────────────────────── PRE-CTA BUFFER (Cream) ─────────────────────── */
-
-function PreCTASection() {
-  return (
-    <section className="py-16 md:py-20 bg-white">
-      <div className="container-width" />
-    </section>
-  );
-}
-
 /* ─────────────────────── CTA ─────────────────────── */
 
 function CTASection() {
   return (
     <section className="relative overflow-hidden">
       {/* Background */}
-      <div className="absolute inset-0 bg-[var(--color-primary)]" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-light)]" />
       <div className="absolute inset-0">
         <div className="absolute -top-[30%] -right-[15%] w-[50vw] h-[50vw] rounded-full bg-[var(--color-accent)]/10 blur-3xl" />
         <div className="absolute -bottom-[30%] -left-[15%] w-[40vw] h-[40vw] rounded-full bg-[var(--color-accent)]/10 blur-3xl" />
@@ -481,7 +471,6 @@ export default function HomePage() {
       <TreatmentsSection />
       <TipsAndSymptomsSection />
       <ArticlesSection />
-      <PreCTASection />
       <CTASection />
     </main>
   );
