@@ -88,7 +88,7 @@ function HeroSection() {
     offset: ["start start", "end start"],
   });
   const imageScale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
-  const overlayOpacity = useTransform(scrollYProgress, [0, 1], [0.55, 0.8]);
+
   const textY = useTransform(scrollYProgress, [0, 1], [0, 80]);
 
   return (
@@ -96,28 +96,21 @@ function HeroSection() {
       {/* Background Image */}
       <motion.div className="absolute inset-0" style={{ scale: imageScale }}>
         <Image
-          src="/images/ringebutannMain.jpg"
-          alt="Ringebu Tannlegesenter - Modern tannklinikk"
+          src="/images/hero-clinic.jpg"
+          alt="Ringebu Tannlegesenter - Moderne behandlingsrom"
           fill
           className="object-cover"
+          style={{ objectPosition: "center 75%", filter: "brightness(1.05)" }}
           priority
           sizes="100vw"
         />
       </motion.div>
 
-      {/* Gradient Overlay */}
-      <motion.div
-        className="absolute inset-0"
-        style={{ opacity: overlayOpacity }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-emerald-950)] via-[var(--color-emerald-900)]/90 to-[var(--color-emerald-800)]/70" />
-      </motion.div>
-
-      {/* Decorative Elements */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute -top-[20%] -right-[10%] w-[60vw] h-[60vw] rounded-full bg-emerald-400/5 blur-3xl" />
-        <div className="absolute -bottom-[20%] -left-[10%] w-[50vw] h-[50vw] rounded-full bg-emerald-300/5 blur-3xl" />
-      </div>
+      {/* Gradient Overlay — dark on left for text, fades to reveal image on right */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: "linear-gradient(to right, rgba(4,47,46,0.85) 0%, rgba(4,47,46,0.6) 25%, rgba(4,47,46,0.2) 45%, transparent 60%)" }}
+      />
 
       {/* Content */}
       <motion.div
@@ -315,10 +308,11 @@ function TreatmentsSection() {
               </div>
               <div className="w-full md:w-1/2 aspect-video rounded-xl overflow-hidden relative">
                 <Image
-                  src="/images/service-emergency.jpg"
-                  alt="Akutt tannbehandling"
+                  src="/images/clinic-sign.jpg"
+                  alt="Ringebu Tannlegesenter skilt"
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  style={{ objectPosition: "55% 30%" }}
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
               </div>
