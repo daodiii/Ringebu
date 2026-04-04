@@ -44,7 +44,7 @@ export default function Navbar() {
           <Link href="/" className="relative z-50 flex items-center gap-1 text-[var(--color-primary)]">
             <div className="flex flex-col leading-none font-heading font-700 tracking-tight">
               <span className="text-xl">RINGEBU</span>
-              <span className="text-[0.65rem] font-sans font-400 tracking-[0.25em] uppercase opacity-70">
+              <span className="text-[0.6875rem] font-sans font-400 tracking-[0.25em] uppercase opacity-70">
                 Tannlegesenter
               </span>
             </div>
@@ -57,7 +57,7 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "px-4 py-2 rounded-full text-[0.9375rem] font-sans transition-all duration-300",
+                  "px-4 py-2 rounded-full text-sm font-sans transition-all duration-300",
                   pathname === link.href
                     ? "bg-[var(--color-bg-cream)] text-[var(--color-primary)] font-500"
                     : "text-[var(--color-stone-600)] hover:text-[var(--color-primary)] hover:bg-[var(--color-bg-cream)]"

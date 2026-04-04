@@ -342,7 +342,7 @@ function TreatmentCard({ treatment, index }: { treatment: Treatment; index: numb
           {/* Header row */}
           <div className="flex items-start justify-between gap-4 mb-4">
             <div className="flex-1">
-              <span className={`text-[10px] font-700 uppercase tracking-[0.2em] ${v.accent} block mb-2`}>
+              <span className={`text-[0.6875rem] font-700 uppercase tracking-[0.2em] ${v.accent} block mb-2`}>
                 {treatment.category}
               </span>
               <h3 className={`text-xl md:text-2xl lg:text-3xl font-heading font-700 ${v.text} leading-tight`}>
@@ -379,7 +379,7 @@ function TreatmentCard({ treatment, index }: { treatment: Treatment; index: numb
                   <div className={`grid ${hasPrices ? "md:grid-cols-2" : "grid-cols-1"} gap-5`}>
                     {/* Features */}
                     <div>
-                      <p className={`text-[10px] font-700 uppercase tracking-[0.18em] ${v.detailLabel} mb-4`}>
+                      <p className={`text-[0.6875rem] font-700 uppercase tracking-[0.18em] ${v.detailLabel} mb-4`}>
                         Hva inngår
                       </p>
                       <ul className="space-y-3">
@@ -395,7 +395,7 @@ function TreatmentCard({ treatment, index }: { treatment: Treatment; index: numb
                     {/* Prices */}
                     {hasPrices && (
                       <div className={`${v.priceBg} rounded-xl p-5 border`}>
-                        <p className={`text-[10px] font-700 uppercase tracking-[0.18em] ${v.detailLabel} mb-4`}>
+                        <p className={`text-[0.6875rem] font-700 uppercase tracking-[0.18em] ${v.detailLabel} mb-4`}>
                           Behandlinger
                         </p>
                         <div className="space-y-0">
@@ -489,7 +489,7 @@ export default function Behandlinger() {
                   "Avbetalingsordninger kan avtales",
                   "Trygderefusjon for stønadberettigede behandlinger",
                 ].map((item) => (
-                  <li key={item} className="flex items-start gap-2.5 text-[var(--color-text-secondary)] font-sans font-400 text-[15px]">
+                  <li key={item} className="flex items-start gap-2.5 text-[var(--color-text-secondary)] font-sans font-400 text-sm">
                     <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] mt-2.5 shrink-0" />
                     {item}
                   </li>

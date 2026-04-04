@@ -8,6 +8,7 @@ import {
   Phone,
   ArrowRight,
 } from "lucide-react";
+import { supportPages } from "@/data/content";
 
 /* ─────────────── Helpers ─────────────── */
 
@@ -91,17 +92,17 @@ function ExpandableItem({
         {/* Header */}
         <div className="flex items-center gap-4 p-5 md:p-6">
           <div className="flex-1 min-w-0">
-            <h3 className="font-heading font-600 text-base md:text-[17px] text-[var(--color-primary)] leading-snug">
+            <h3 className="font-heading font-600 text-base md:text-base text-[var(--color-primary)] leading-snug">
               {title}
             </h3>
             {!open && (
-              <p className="text-[13px] text-[var(--color-text-muted)] font-sans font-400 mt-0.5 line-clamp-1">
+              <p className="text-xs text-[var(--color-text-muted)] font-sans font-400 mt-0.5 line-clamp-1">
                 {preview}
               </p>
             )}
           </div>
           {badge && (
-            <span className="hidden sm:inline-block bg-[var(--color-bg-cream)] text-[var(--color-accent)] text-[10px] font-700 px-2.5 py-1 rounded-lg tracking-wide shrink-0 uppercase">
+            <span className="hidden sm:inline-block bg-[var(--color-bg-cream)] text-[var(--color-accent)] text-[0.6875rem] font-700 px-2.5 py-1 rounded-lg tracking-wide shrink-0 uppercase">
               {badge}
             </span>
           )}
@@ -128,7 +129,7 @@ function ExpandableItem({
                   {content.map((paragraph, pi) => (
                     <p
                       key={pi}
-                      className="text-[14px] md:text-[15px] text-[var(--color-text-secondary)] leading-[1.8] font-sans font-300"
+                      className="text-sm md:text-sm text-[var(--color-text-secondary)] leading-[1.8] font-sans font-300"
                     >
                       {renderBold(paragraph)}
                     </p>
@@ -161,7 +162,7 @@ function SectionNav({
               key={s.id}
               href={`#${s.id}`}
               className={`
-                px-4 py-2 rounded-lg text-[13px] font-sans font-500 whitespace-nowrap transition-all duration-200
+                px-4 py-2 rounded-lg text-xs font-sans font-500 whitespace-nowrap transition-all duration-200
                 ${
                   active === s.id
                     ? "bg-[var(--color-primary)] text-white shadow-sm"
@@ -374,75 +375,6 @@ const symptomsData = [
   },
 ];
 
-const supportData = [
-  {
-
-    title: "Barn og ungdom (0–18 år)",
-    preview: "Alle under 18 har rett til gratis tannbehandling i den offentlige tannhelsetjenesten.",
-    badge: "Gratis",
-    content: [
-      "Barn og ungdom til og med det året de fyller 18 år har rett til **gratis, nødvendig tannhelsehjelp** i den offentlige tannhelsetjenesten. Dette inkluderer undersøkelse, forebygging, fyllinger, rotbehandling og akutt behandling.",
-      "Barn kalles inn til regelmessige kontroller basert på individuell risikovurdering — fra hvert halvår (høy risiko) til hvert annet år (lav risiko). **Kjeveortopedi** (tannregulering) er et unntak: Folketrygden dekker 40–100 % avhengig av alvorlighetsgrad, opp til det året pasienten fyller 20.",
-      "Barn som oppholder seg i Norge har rett til tannbehandling **uavhengig av oppholdsstatus**. Ved akutt tannverk har barn rett til øyeblikkelig hjelp, også utenfor arbeidstid gjennom tannlegevakt. Les mer på **helsenorge.no/tannhelse**.",
-    ],
-  },
-  {
-
-    title: "Unge voksne (19–28 år)",
-    preview: "Du betaler kun 25 % av offentlige takster for nødvendig tannbehandling.",
-    badge: "75 % rabatt",
-    content: [
-      "Fra 1. juli 2025 er det lovfestet at alle unge voksne mellom 19 og 28 år har rett til nødvendig tannhelsehjelp mot en egenandel på kun **25 % av offentlige takster**. I 2026 økte takstene med 13,6 %, noe som reduserer din reelle egenbetaling ytterligere.",
-      "Rabatten gjelder kun ved **offentlige tannklinikker** drevet av fylkeskommunen. I Innlandet finner du din nærmeste klinikk på innlandetfylke.no/tjenester/tannhelse/. Ordningen dekker undersøkelse, fyllinger, rotbehandling og trekking — men **ikke kosmetisk behandling** som tannbleking.",
-      "Du har rett til behandling i den fylkeskommunen der du bor eller **midlertidig oppholder deg** (f.eks. der du studerer). Kontakt den offentlige tannklinikken direkte for timebestilling.",
-    ],
-  },
-  {
-
-    title: "HELFO-stønad",
-    preview: "15 medisinske tilstander kan gi rett til refusjon fra folketrygden for tannbehandling.",
-    badge: "Refusjon",
-    content: [
-      "Folketrygden gir stønad til tannbehandling når tannproblemene skyldes sykdom eller skade. De vanligste tilstandene er **periodontitt** (tannkjøttsykdom), **munntørrhet** (hyposalivasjon), bittanomalier, tannutviklingsforstyrrelser, tannskade ved ulykke og sterkt nedsatt egenomsorg ved kronisk sykdom.",
-      "HELFO opererer med to takstsystemer: **honorartakst** (høyere dekning, tannlegen aksepterer dette som full betaling) og **refusjonstakst** (lavere dekning, du betaler mellomlegget). Tannlegen din sender refusjonskravet direkte til HELFO — du trenger ikke søke selv.",
-      "Full oversikt over alle 15 stønadspunkter finner du på **helfo.no**. Noen tilstander krever legeerklæring. Egenandeler fra HELFO-punkt 5 og 6 teller mot frikortet (se under).",
-    ],
-  },
-  {
-
-    title: "Frikort",
-    preview: "Når du har betalt kr 3 278 i godkjente egenandeler i løpet av et år, slipper du mer.",
-    badge: "kr 3 278",
-    content: [
-      "Egenandelstaket for 2025 og 2026 er **kr 3 278**. Når du har nådd dette beløpet, utstedes frikort automatisk innen ca. 3 uker, og du slipper godkjente egenandeler resten av kalenderåret.",
-      "For tannbehandling teller kun egenandeler knyttet til **HELFO-punkt 5** (sykdommer i munn/kjeve) og **punkt 6** (periodontitt). Vanlig tannbehandling teller ikke. Andre egenandeler som teller mot frikortet: fastlege, spesialist, psykolog, sykehus, medisiner på blå resept og pasientreiser.",
-      "Du trenger ikke søke — HELFO registrerer egenandelene automatisk. Følg med på opptjeningen din på **helsenorge.no** under «Mine egenandeler». Frikortet dekker kun godkjente egenandeler, ikke mellomlegget mellom tannlegens honorar og offentlig takst.",
-    ],
-  },
-  {
-
-    title: "NAV sosialhjelp",
-    preview: "Har du ikke råd til tannlege? NAV kan dekke hele eller deler av nødvendig behandling.",
-    badge: "Behovsprøvd",
-    content: [
-      "Dersom du ikke kvalifiserer for HELFO-støtte og ikke har økonomi til å betale, kan du søke NAV om **økonomisk sosialhjelp** til tannbehandling. Ordningen er behovsprøvd — NAV vurderer din totale økonomi.",
-      "**Slik søker du:** 1) Få et behandlings- og kostnadsoverslag fra tannlegen. 2) Kontakt ditt lokale NAV-kontor. 3) Søk **før** du starter behandlingen. Du trenger: inntektsopplysninger, kontoutskrift for siste 3 måneder, dokumentasjon på boutgifter, og behandlingsplanen.",
-      "NAV dekker det som er medisinsk nødvendig — ikke kosmetisk behandling. Saksbehandlingstid er typisk inntil 4 uker. Får du avslag, kan du **klage innen 3 uker** med utfyllende dokumentasjon. Mer info på **nav.no/okonomisk-sosialhjelp**.",
-    ],
-  },
-  {
-
-    title: "Eldre og uføre",
-    preview: "Sykehjem, hjemmesykepleie eller psykisk utviklingshemming gir rett til gratis tannbehandling.",
-    badge: "Gratis",
-    content: [
-      "Beboere i **sykehjem**, personer med ukentlig **hjemmesykepleie** (min. 3 md. varighet), og alle med diagnosen **psykisk utviklingshemming** har rett til gratis tannbehandling i den offentlige tannhelsetjenesten.",
-      "Viktig skille: **hjemmesykepleie** (helsefaglige tjenester som sårstell, medisinering) utløser retten. **Hjemmehjelp** (praktisk bistand som rengjøring) gjør det ikke. Demenspasienter som mottar hjemmesykepleie har fulle rettigheter — mange kvalifiserer også gjennom HELFO punkt 14.",
-      "Kommunen melder vanligvis inn pasienter automatisk, men du kan også kontakte fylkeskommunens tannhelsetjeneste direkte. Ordningen gjelder så lenge omsorgssituasjonen varer. Les mer på **helsenorge.no/tannhelse** og **innlandetfylke.no/tjenester/tannhelse/**.",
-    ],
-  },
-];
-
 const navSections = [
   { id: "tips", label: "Tips & råd" },
   { id: "symptomer", label: "Symptomer" },
@@ -522,14 +454,14 @@ export default function InformasjonPage() {
             <div className="max-w-3xl mb-12 md:mb-16">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-0.5 rounded-full bg-[var(--color-accent)]" />
-                <span className="text-[11px] font-700 uppercase tracking-[0.22em] text-[var(--color-accent)]">
+                <span className="text-[0.6875rem] font-700 uppercase tracking-[0.22em] text-[var(--color-accent)]">
                   Tips & råd
                 </span>
               </div>
               <h2 className="heading-section text-[var(--color-primary)] mb-4">
                 Smarte tannhelsetips
               </h2>
-              <p className="text-[17px] text-[var(--color-text-secondary)] font-sans font-300 leading-relaxed max-w-xl">
+              <p className="text-base text-[var(--color-text-secondary)] font-sans font-300 leading-relaxed max-w-xl">
                 Praktiske, forskningsbaserte råd som går utover «puss to ganger
                 daglig». Fra norsk kosthold til sesongtilpasset tannpleie.
               </p>
@@ -561,14 +493,14 @@ export default function InformasjonPage() {
             <div className="max-w-3xl mb-12 md:mb-16">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-0.5 rounded-full bg-[var(--color-accent)]" />
-                <span className="text-[11px] font-700 uppercase tracking-[0.22em] text-[var(--color-accent)]">
+                <span className="text-[0.6875rem] font-700 uppercase tracking-[0.22em] text-[var(--color-accent)]">
                   Symptomer
                 </span>
               </div>
               <h2 className="heading-section text-[var(--color-primary)] mb-4">
                 Kjenner du igjen dette?
               </h2>
-              <p className="text-[17px] text-[var(--color-text-secondary)] font-sans font-300 leading-relaxed max-w-xl">
+              <p className="text-base text-[var(--color-text-secondary)] font-sans font-300 leading-relaxed max-w-xl">
                 Forstå hva kroppen prøver å fortelle deg. Hver type smerte og
                 ubehag har en årsak — og jo tidligere du handler, desto enklere
                 er løsningen.
@@ -597,7 +529,7 @@ export default function InformasjonPage() {
                   <h3 className="font-heading font-600 text-xl text-white mb-2">
                     Bekymret for et symptom?
                   </h3>
-                  <p className="text-white/70 font-sans font-300 text-[15px]">
+                  <p className="text-white/70 font-sans font-300 text-sm">
                     Tidlig behandling er alltid enklere og rimeligere. Ikke vent — ta kontakt.
                   </p>
                 </div>
@@ -625,14 +557,14 @@ export default function InformasjonPage() {
             <div className="max-w-3xl mb-12 md:mb-16">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-0.5 rounded-full bg-[var(--color-accent)]" />
-                <span className="text-[11px] font-700 uppercase tracking-[0.22em] text-[var(--color-accent)]">
+                <span className="text-[0.6875rem] font-700 uppercase tracking-[0.22em] text-[var(--color-accent)]">
                   Økonomi & rettigheter
                 </span>
               </div>
               <h2 className="heading-section text-[var(--color-primary)] mb-4">
                 Støtte til tannbehandling
               </h2>
-              <p className="text-[17px] text-[var(--color-text-secondary)] font-sans font-300 leading-relaxed max-w-xl">
+              <p className="text-base text-[var(--color-text-secondary)] font-sans font-300 leading-relaxed max-w-xl">
                 Mange har rett på hel eller delvis dekning av
                 tannlegekostnader uten å vite det. Her er en oversikt over
                 ordningene som finnes i Norge.
@@ -640,50 +572,32 @@ export default function InformasjonPage() {
             </div>
           </SectionFade>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl">
-            {supportData.map((s, i) => (
-              <ExpandableItem
-                key={s.title}
-                title={s.title}
-                preview={s.preview}
-                content={s.content}
-                badge={s.badge}
-                index={i}
-              />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 max-w-5xl">
+            {supportPages.map((sp, i) => (
+              <SectionFade key={sp.slug} delay={i * 0.06}>
+                <Link
+                  href={`/informasjon/${sp.slug}`}
+                  className="group block h-full"
+                >
+                  <div className="bg-white rounded-2xl border border-[var(--color-border)] p-7 h-full flex flex-col transition-all duration-300 hover:shadow-lg hover:shadow-[var(--color-primary)]/5 hover:-translate-y-1 cursor-pointer">
+                    <span className="inline-block self-start px-3 py-1 rounded-full bg-[var(--color-bg-cream)] text-[var(--color-accent)] text-xs font-700 font-sans tracking-wide mb-4">
+                      {sp.badge}
+                    </span>
+                    <h3 className="font-heading font-600 text-lg text-[var(--color-primary)] mb-2 group-hover:text-[var(--color-accent)] transition-colors leading-snug">
+                      {sp.shortTitle}
+                    </h3>
+                    <p className="text-sm text-[var(--color-text-secondary)] font-sans font-300 leading-relaxed mb-5 flex-1">
+                      {sp.hubSummary}
+                    </p>
+                    <div className="flex items-center gap-2 text-[var(--color-accent)] font-sans font-500 text-sm group-hover:text-[var(--color-primary)] transition-colors">
+                      Les mer
+                      <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                    </div>
+                  </div>
+                </Link>
+              </SectionFade>
             ))}
           </div>
-
-          {/* Links */}
-          <SectionFade delay={0.3}>
-            <div className="mt-14 max-w-5xl">
-              <div className="bg-white rounded-2xl border border-[var(--color-border)] p-8 md:p-10">
-                <h3 className="font-heading font-600 text-lg text-[var(--color-primary)] mb-6">
-                  Nyttige lenker
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                  {[
-                    { label: "Helsenorge — Tannhelse", href: "https://www.helsenorge.no/tannhelse/" },
-                    { label: "HELFO — Stønad tannbehandling", href: "https://www.helfo.no/tannlege/regelverk-og-takster-for-tannlege/tilstander-som-kan-gi-rett-til-stonad-til-tannbehandling" },
-                    { label: "NAV — Økonomisk sosialhjelp", href: "https://www.nav.no/okonomisk-sosialhjelp" },
-                    { label: "Innlandet — Offentlige tannklinikker", href: "https://innlandetfylke.no/tjenester/tannhelse/tannklinikker/" },
-                    { label: "HELFO — Frikort og egenandeler", href: "https://www.helfo.no/regelverk/egenandeler-for-helsetjenester" },
-                    { label: "Tannlegeforeningen", href: "https://www.tannlegeforeningen.no/" },
-                  ].map((link) => (
-                    <a
-                      key={link.label}
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-[14px] text-[var(--color-accent)] font-sans font-500 hover:text-[var(--color-accent-hover)] transition-colors group"
-                    >
-                      <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
-                      {link.label}
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </SectionFade>
         </div>
       </section>
 

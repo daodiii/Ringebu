@@ -29,7 +29,7 @@ export default function Footer() {
               <div className="font-heading font-700 text-2xl tracking-tight text-white">
                 RINGEBU
               </div>
-              <div className="font-sans text-[0.7rem] tracking-[0.25em] uppercase text-white/80 mt-0.5">
+              <div className="font-sans text-[0.6875rem] tracking-[0.25em] uppercase text-white/80 mt-0.5">
                 Tannlegesenter
               </div>
             </Link>

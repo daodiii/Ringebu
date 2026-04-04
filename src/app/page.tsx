@@ -47,10 +47,36 @@ function SectionFade({
 
 function HeroSection() {
   return (
-    <section className="relative bg-[var(--color-bg-cream)] pt-28 pb-16 md:pt-36 md:pb-24 overflow-hidden">
-      <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-primary-light)] to-[var(--color-accent)]" />
-      <div className="container-width">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+    <section className="relative min-h-[90vh] flex items-center overflow-hidden">
+      {/* Background: Valley landscape */}
+      <div className="absolute inset-0">
+        <Image
+          src="/images/hero-valley-bg.jpg"
+          alt=""
+          fill
+          className="object-cover"
+          style={{ objectPosition: "center 40%" }}
+          priority
+          sizes="100vw"
+        />
+        {/* Gradient overlay — warm brown fading from left to transparent right */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(105deg, rgba(42,24,16,0.92) 0%, rgba(42,24,16,0.82) 30%, rgba(42,24,16,0.55) 55%, rgba(42,24,16,0.25) 75%, rgba(42,24,16,0.10) 100%)",
+          }}
+        />
+        {/* Subtle noise texture for depth */}
+        <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")", backgroundRepeat: "repeat" }} />
+      </div>
+
+      {/* Top accent line */}
+      <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-[var(--color-accent)] via-[var(--color-accent-light)] to-transparent z-10" />
+
+      {/* Content */}
+      <div className="container-width relative z-10 pt-32 pb-20 md:pt-40 md:pb-28">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Left: Text */}
           <div>
             <motion.div
@@ -58,8 +84,8 @@ function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.1 }}
             >
-              <div className="accent-line mb-6" />
-              <p className="text-xs font-sans font-600 uppercase tracking-[0.2em] text-[var(--color-accent)] mb-4">
+              <div className="w-12 h-[2px] bg-[var(--color-accent)] mb-6" />
+              <p className="text-xs font-sans font-600 uppercase tracking-[0.25em] text-[var(--color-accent-light)] mb-4">
                 Ringebu Tannlegesenter
               </p>
             </motion.div>
@@ -68,17 +94,19 @@ function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.25 }}
-              className="font-heading font-700 text-4xl md:text-5xl lg:text-6xl text-[var(--color-primary)] leading-tight mb-5"
+              className="font-heading font-700 text-4xl md:text-5xl lg:text-[3.5rem] xl:text-6xl text-white leading-[1.1] mb-6"
             >
               Vi tar vare på{" "}
-              <span className="text-[var(--color-accent)]">smilet ditt</span>
+              <span className="text-[var(--color-accent-light)]">
+                smilet ditt
+              </span>
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.4 }}
-              className="text-lg md:text-xl text-[var(--color-stone-600)] font-sans font-400 leading-relaxed max-w-lg mb-8"
+              className="text-lg md:text-xl text-white/75 font-sans font-400 leading-relaxed max-w-lg mb-10"
             >
               Moderne tannbehandling med personlig omsorg i hjertet av
               Gudbrandsdalen.
@@ -88,17 +116,18 @@ function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.55 }}
-              className="flex flex-wrap gap-3"
+              className="flex flex-wrap gap-4"
             >
               <Link
                 href="/kontakt"
-                className="btn-primary px-7 py-3"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--color-accent)] text-white px-8 py-3.5 font-sans text-sm font-600 tracking-[0.01em] transition-all duration-300 hover:bg-[var(--color-accent-hover)] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[var(--color-accent)]/20 cursor-pointer"
               >
                 Bestill time
+                <ArrowRight className="size-4" />
               </Link>
               <a
                 href="tel:61280412"
-                className="btn-outline px-7 py-3"
+                className="inline-flex items-center justify-center gap-2 rounded-full border-[1.5px] border-white/30 text-white px-8 py-3.5 font-sans text-sm font-500 tracking-[0.01em] transition-all duration-300 hover:bg-white/10 hover:border-white/50 hover:-translate-y-0.5 cursor-pointer backdrop-blur-sm"
               >
                 <Phone className="size-4" />
                 Ring 61 28 04 12
@@ -106,61 +135,40 @@ function HeroSection() {
             </motion.div>
           </div>
 
-          {/* Right: Asymmetric Image Collage */}
-          <div className="grid grid-rows-[3fr_2fr] gap-2 aspect-[4/3]">
-            {/* Large top image */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="relative rounded-xl overflow-hidden"
-            >
+          {/* Right: Clinic photo card */}
+          <motion.div
+            initial={{ opacity: 0, x: 40, scale: 0.95 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            transition={{ duration: 0.9, delay: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+            className="hidden lg:block"
+          >
+            <div className="relative rounded-sm overflow-hidden shadow-2xl shadow-black/30 border border-white/10 aspect-[4/5] max-w-[340px] ml-auto">
               <Image
-                src="/images/clinic-valley.jpg"
-                alt="Utsikt over Gudbrandsdalen fra Ringebu Tannlegesenter"
+                src="/images/hero-clinic.jpg"
+                alt="Moderne behandlingsrom ved Ringebu Tannlegesenter"
                 fill
                 className="object-cover"
-                style={{ objectPosition: "center 40%" }}
-                priority
-                sizes="(max-width: 768px) 100vw, 50vw"
+                style={{ objectPosition: "center 50%" }}
+                sizes="(max-width: 1024px) 0vw, 35vw"
               />
-            </motion.div>
-            {/* Two smaller bottom images */}
-            <div className="grid grid-cols-2 gap-2">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.5 }}
-                className="relative rounded-xl overflow-hidden"
-              >
-                <Image
-                  src="/images/clinic-instruments.jpg"
-                  alt="Moderne tannlegeutstyr ved Ringebu Tannlegesenter"
-                  fill
-                  className="object-cover"
-                  style={{ objectPosition: "center 50%" }}
-                  sizes="(max-width: 768px) 50vw, 25vw"
-                />
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.65 }}
-                className="relative rounded-xl overflow-hidden"
-              >
-                <Image
-                  src="/images/ringebutannMain.jpg"
-                  alt="Ringebu Tannlegesenter behandlingsrom"
-                  fill
-                  className="object-cover"
-                  style={{ objectPosition: "center 60%" }}
-                  sizes="(max-width: 768px) 50vw, 25vw"
-                />
-              </motion.div>
+              {/* Bottom label */}
+              <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent pt-16 pb-5 px-6">
+                <p className="text-white/90 font-sans text-sm font-500 tracking-wide">
+                  Moderne utstyr &middot; Trygg behandling
+                </p>
+              </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
+
+      {/* Bottom fade to page background */}
+      <div
+        className="absolute bottom-0 inset-x-0 h-24 z-10"
+        style={{
+          background: "linear-gradient(to bottom, transparent, var(--color-bg-cream))",
+        }}
+      />
     </section>
   );
 }
@@ -211,7 +219,7 @@ function TreatmentsSection() {
                   <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-primary)]/30 to-transparent" />
                 </div>
                 <div className="p-8 md:p-10">
-                  <span className="text-[10px] font-sans font-700 tracking-[0.2em] text-[var(--color-accent)] uppercase mb-3 block">
+                  <span className="text-[0.6875rem] font-sans font-700 tracking-[0.2em] text-[var(--color-accent)] uppercase mb-3 block">
                     Grunnlaget for god tannhelse
                   </span>
                   <h3 className="text-2xl md:text-3xl font-heading font-700 text-[var(--color-primary)] mb-3">
@@ -239,7 +247,7 @@ function TreatmentsSection() {
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
                 <div className="relative z-10">
-                  <span className="text-[10px] font-700 uppercase tracking-[0.2em] text-[var(--color-accent-light)] block mb-3">
+                  <span className="text-[0.6875rem] font-700 uppercase tracking-[0.2em] text-[var(--color-accent-light)] block mb-3">
                     Kosmetisk
                   </span>
                   <h3 className="text-2xl md:text-3xl font-heading font-700 mb-4">
@@ -272,7 +280,7 @@ function TreatmentsSection() {
                   aria-hidden="true"
                 />
                 <div className="relative z-10">
-                  <span className="text-[10px] font-700 uppercase tracking-[0.2em] text-[var(--color-accent)] block mb-3">
+                  <span className="text-[0.6875rem] font-700 uppercase tracking-[0.2em] text-[var(--color-accent)] block mb-3">
                     Restaurering
                   </span>
                   <h3 className="text-xl md:text-2xl font-heading font-700 text-[var(--color-primary)] mb-3">
@@ -294,7 +302,7 @@ function TreatmentsSection() {
           <SectionFade className="md:col-span-8" delay={0.2}>
             <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-cream)] p-8 md:p-10 flex flex-col md:flex-row items-center gap-8 md:gap-12 group h-full transition-all duration-500 hover:shadow-[0_20px_60px_rgba(60,36,21,0.08)] hover:-translate-y-1">
               <div className="w-full md:w-1/2">
-                <span className="text-[10px] font-700 uppercase tracking-[0.2em] text-[var(--color-accent)] block mb-3">
+                <span className="text-[0.6875rem] font-700 uppercase tracking-[0.2em] text-[var(--color-accent)] block mb-3">
                   Hastehenvendelser
                 </span>
                 <h3 className="text-xl md:text-2xl font-heading font-700 text-[var(--color-primary)] mb-3">
@@ -418,7 +426,7 @@ function GuideSection() {
                   <div className="flex gap-6 flex-1">
                     <div className="w-1 self-stretch rounded-full bg-[var(--color-accent)] shrink-0 hidden md:block" />
                     <div>
-                      <span className="text-[10px] font-700 uppercase tracking-[0.2em] text-[var(--color-accent)] block mb-2">
+                      <span className="text-[0.6875rem] font-700 uppercase tracking-[0.2em] text-[var(--color-accent)] block mb-2">
                         Rettigheter & Økonomi
                       </span>
                       <h2 className="text-2xl md:text-3xl font-heading font-700 text-[var(--color-primary)] mb-3">
@@ -700,14 +708,14 @@ function SupportCard({
         {/* Header */}
         <div className="flex items-center gap-4 p-6">
           <div className="flex-1 min-w-0">
-            <h3 className="font-heading font-600 text-[17px] text-[var(--color-primary)]">
+            <h3 className="font-heading font-600 text-base text-[var(--color-primary)]">
               {item.title}
             </h3>
-            <p className="text-[13px] text-[var(--color-text-muted)] font-sans font-400">
+            <p className="text-xs text-[var(--color-text-muted)] font-sans font-400">
               {item.subtitle}
             </p>
           </div>
-          <span className="hidden sm:inline-block bg-[var(--color-bg-cream)] text-[var(--color-accent)] text-[11px] font-700 px-3 py-1.5 rounded-lg tracking-wide shrink-0">
+          <span className="hidden sm:inline-block bg-[var(--color-bg-cream)] text-[var(--color-accent)] text-[0.6875rem] font-700 px-3 py-1.5 rounded-lg tracking-wide shrink-0">
             {item.badge}
           </span>
           <ChevronDown
@@ -735,7 +743,7 @@ function SupportCard({
                       key={d.label}
                       className="bg-[var(--color-stone-50)] rounded-xl p-5"
                     >
-                      <p className="text-[10px] font-700 uppercase tracking-[0.18em] text-[var(--color-accent)] mb-2">
+                      <p className="text-[0.6875rem] font-700 uppercase tracking-[0.18em] text-[var(--color-accent)] mb-2">
                         {d.label}
                       </p>
                       <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed font-sans font-300">
@@ -745,12 +753,12 @@ function SupportCard({
                   ))}
                   {item.stat && (
                     <div className="flex items-center gap-3 bg-[var(--color-primary)] text-white rounded-xl px-5 py-3 mt-2">
-                      <span className="text-[13px] font-500">{item.stat.label}</span>
+                      <span className="text-xs font-500">{item.stat.label}</span>
                       <span className="font-heading font-700 text-xl text-[var(--color-accent-light)]">
                         {item.stat.value}
                       </span>
                       {item.stat.suffix && (
-                        <span className="text-[13px] font-500 text-white/80">
+                        <span className="text-xs font-500 text-white/80">
                           {item.stat.suffix}
                         </span>
                       )}
@@ -775,7 +783,7 @@ function BetalingsstotteSection() {
           <div className="text-center mb-14 md:mb-16">
             <div className="flex items-center justify-center gap-3 mb-5">
               <div className="w-10 h-0.5 rounded-full bg-[var(--color-accent)]" />
-              <span className="text-[11px] font-700 uppercase tracking-[0.22em] text-[var(--color-accent)]">
+              <span className="text-[0.6875rem] font-700 uppercase tracking-[0.22em] text-[var(--color-accent)]">
                 Økonomi & Rettigheter
               </span>
               <div className="w-10 h-0.5 rounded-full bg-[var(--color-accent)]" />
@@ -783,7 +791,7 @@ function BetalingsstotteSection() {
             <h2 className="heading-section text-[var(--color-primary)] mb-4">
               Støtte til tannbehandling
             </h2>
-            <p className="text-[17px] text-[var(--color-text-secondary)] font-sans font-300 max-w-xl mx-auto leading-relaxed">
+            <p className="text-base text-[var(--color-text-secondary)] font-sans font-300 max-w-xl mx-auto leading-relaxed">
               Visste du at mange har rett på hel eller delvis dekning av
               tannlegekostnader? Finn ut hva som gjelder for deg.
             </p>
@@ -800,7 +808,7 @@ function BetalingsstotteSection() {
         {/* CTA */}
         <SectionFade delay={0.4}>
           <div className="text-center mt-14">
-            <p className="text-[var(--color-text-secondary)] font-sans font-400 text-[15px] mb-5">
+            <p className="text-[var(--color-text-secondary)] font-sans font-400 text-sm mb-5">
               Usikker på hva du har rett på? Vi hjelper deg å finne ut av det.
             </p>
             <a
