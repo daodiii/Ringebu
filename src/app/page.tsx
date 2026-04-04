@@ -281,130 +281,119 @@ function TreatmentsSection() {
   );
 }
 
-/* ─────────────────────── GUIDE (Symptoms + Tips + Info Bento) ─────────────────────── */
+/* ─────────────────────── GUIDE (Symptoms + Tips + Info) ─────────────────────── */
 
 function GuideSection() {
-  const symptomPreviews = [
-    "Tannpine & ising",
-    "Blødende tannkjøtt",
-    "Hovne kjever",
-    "Løse tenner",
-  ];
-
-  const tipPreviews = [
-    "Kaffe, brunost og tennene dine",
-    "Munnskyll — når det hjelper",
-    "Spyttets superkrefter",
+  const tipArticles = [
+    { title: "Kaffe, brunost og tennene dine: norsk kosthold og tannhelse", href: "/informasjon" },
+    { title: "Munnskyll — når det hjelper og når du kaster bort penger", href: "/informasjon" },
+    { title: "Spyttets superkrefter: kroppens egen tannbeskyttelse", href: "/informasjon" },
   ];
 
   return (
     <section className="py-24 md:py-32 bg-[var(--color-bg-yellow)]">
       <div className="container-width">
-        {/* Section Header */}
-        <SectionFade>
-          <div className="text-center mb-14 md:mb-16">
-            <div className="flex items-center justify-center gap-3 mb-5">
-              <div className="w-10 h-0.5 rounded-full bg-[var(--color-accent)]" />
-              <span className="text-[11px] font-700 uppercase tracking-[0.22em] text-[var(--color-accent)]">
-                Veiledning
-              </span>
-              <div className="w-10 h-0.5 rounded-full bg-[var(--color-accent)]" />
-            </div>
-            <h2 className="heading-section text-[var(--color-primary)]">
-              Alt du trenger å vite
-            </h2>
-          </div>
-        </SectionFade>
+        <div className="max-w-5xl mx-auto space-y-5 md:space-y-6">
 
-        {/* Bento Grid — 3 columns, asymmetric visual weight */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 max-w-5xl mx-auto">
+          {/* ── Top row: Symptomer (left) + Tips & Råd (right) ── */}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-5 lg:gap-6">
 
-          {/* ── Symptomer — dark espresso card ── */}
-          <SectionFade>
-            <Link href="/symptomer" className="group block h-full">
-              <div className="bg-[var(--color-primary)] rounded-2xl p-7 md:p-8 h-full flex flex-col justify-between min-h-[340px] transition-all duration-300 hover:shadow-[0_20px_60px_rgba(60,36,21,0.15)] hover:-translate-y-1 cursor-pointer">
-                <div>
-                  <span className="text-[10px] font-700 uppercase tracking-[0.2em] text-[var(--color-accent-light)] block mb-3">
-                    Kjenner du igjen dette?
-                  </span>
-                  <h3 className="text-xl md:text-2xl font-heading font-700 text-white mb-6">
-                    Symptomer
-                  </h3>
-                  <ul className="space-y-3">
-                    {symptomPreviews.map((s) => (
-                      <li key={s} className="flex items-center gap-2.5 text-white/70 text-[15px] font-sans font-400">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] shrink-0" />
-                        {s}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="flex items-center gap-2 text-white font-heading font-600 text-sm mt-8 group-hover:text-[var(--color-accent-light)] transition-colors">
-                  Finn årsaken
-                  <ChevronRight className="size-4 transition-transform group-hover:translate-x-1" />
-                </div>
-              </div>
-            </Link>
-          </SectionFade>
-
-          {/* ── Informasjon — featured accent card ── */}
-          <SectionFade delay={0.1}>
-            <Link href="/informasjon" className="group block h-full">
-              <div className="relative rounded-2xl border-2 border-[var(--color-accent)]/20 bg-[var(--color-bg)] p-7 md:p-8 h-full flex flex-col justify-between min-h-[340px] transition-all duration-300 hover:shadow-[0_20px_60px_rgba(60,36,21,0.08)] hover:-translate-y-1 hover:border-[var(--color-accent)]/40 overflow-hidden cursor-pointer">
-                {/* Decorative warm gradient corner */}
-                <div className="absolute -top-24 -right-24 w-48 h-48 rounded-full bg-[var(--color-accent)]/[0.06] blur-2xl" />
-                <div className="absolute -bottom-16 -left-16 w-32 h-32 rounded-full bg-[var(--color-accent-light)]/[0.08] blur-xl" />
-                <div className="relative z-10">
-                  <span className="text-[10px] font-700 uppercase tracking-[0.2em] text-[var(--color-accent)] block mb-3">
-                    Rettigheter & Økonomi
-                  </span>
-                  <h3 className="text-xl md:text-2xl font-heading font-700 text-[var(--color-primary)] mb-4">
-                    Informasjon
-                  </h3>
-                  <p className="text-[var(--color-text-secondary)] text-[15px] leading-relaxed font-sans font-400">
-                    Støtteordninger, rettigheter og alt du lurer på om
-                    tannbehandling i Norge — samlet på ett sted.
-                  </p>
-                </div>
-                <div className="relative z-10 flex items-center gap-2 text-[var(--color-accent)] font-heading font-600 text-sm mt-8 group-hover:text-[var(--color-primary)] transition-colors">
-                  Les mer
-                  <ChevronRight className="size-4 transition-transform group-hover:translate-x-1" />
-                </div>
-              </div>
-            </Link>
-          </SectionFade>
-
-          {/* ── Tips & Råd — warm cream card with numbered list ── */}
-          <SectionFade delay={0.2}>
-            <Link href="/informasjon" className="group block h-full">
-              <div className="bg-[var(--color-bg-cream)] rounded-2xl p-7 md:p-8 h-full flex flex-col justify-between min-h-[340px] border border-[var(--color-border)] transition-all duration-300 hover:shadow-[0_20px_60px_rgba(60,36,21,0.08)] hover:-translate-y-1 cursor-pointer">
-                <div>
-                  <span className="text-[10px] font-700 uppercase tracking-[0.2em] text-[var(--color-accent)] block mb-3">
-                    Fra vårt magasin
-                  </span>
-                  <h3 className="text-xl md:text-2xl font-heading font-700 text-[var(--color-primary)] mb-6">
-                    Tips & råd
-                  </h3>
-                  <div className="space-y-4">
-                    {tipPreviews.map((tip, i) => (
-                      <div key={tip} className="flex items-start gap-3">
-                        <span className="text-[var(--color-accent)] font-heading font-700 text-sm mt-0.5 shrink-0 tabular-nums">
-                          {String(i + 1).padStart(2, "0")}
-                        </span>
-                        <span className="text-[15px] text-[var(--color-text-secondary)] font-sans font-400 leading-snug">
-                          {tip}
-                        </span>
-                      </div>
-                    ))}
+            {/* Symptomer — dark espresso card */}
+            <SectionFade className="lg:col-span-2">
+              <Link href="/symptomer" className="group block h-full">
+                <div className="bg-[var(--color-primary)] rounded-2xl p-8 md:p-10 h-full flex flex-col justify-between min-h-[360px] transition-all duration-300 hover:shadow-[0_20px_60px_rgba(60,36,21,0.15)] hover:-translate-y-1 cursor-pointer">
+                  <div>
+                    <h2 className="text-2xl md:text-3xl font-heading font-700 text-white mb-6">
+                      Symptomer
+                    </h2>
+                    <p className="text-white/75 text-base leading-relaxed font-sans font-400">
+                      Tannpine, blødende tannkjøtt eller ising i tennene? Typen smerte
+                      avslører ofte hva som er galt — og hvor raskt du bør handle.
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3 text-white font-heading font-600 mt-8 group-hover:text-[var(--color-accent-light)] transition-colors">
+                    Finn årsaken her
+                    <div className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center group-hover:bg-[var(--color-accent)]/30 transition-colors">
+                      <ChevronRight className="size-5 text-white" />
+                    </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-2 text-[var(--color-accent)] font-heading font-600 text-sm mt-8 group-hover:text-[var(--color-primary)] transition-colors">
-                  Se alle tips
-                  <ChevronRight className="size-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </SectionFade>
+
+            {/* Tips & råd — white card with article list */}
+            <SectionFade className="lg:col-span-3" delay={0.15}>
+              <div className="bg-white rounded-2xl p-8 md:p-10 h-full shadow-sm border border-[var(--color-border)]">
+                <div className="flex items-center justify-between mb-8">
+                  <h2 className="text-2xl md:text-3xl font-heading font-700 text-[var(--color-primary)]">
+                    Tips & råd
+                  </h2>
+                  <Link
+                    href="/informasjon"
+                    className="text-[var(--color-accent)] font-sans font-500 text-sm hover:underline underline-offset-4"
+                  >
+                    Se alle
+                  </Link>
+                </div>
+                <div className="divide-y divide-[var(--color-border)]">
+                  {tipArticles.map((tip, i) => (
+                    <SectionFade key={tip.title} delay={i * 0.08}>
+                      <Link
+                        href={tip.href}
+                        className="flex items-center justify-between py-6 group cursor-pointer"
+                      >
+                        <span className="text-lg md:text-xl font-sans font-400 text-[var(--color-primary)] group-hover:text-[var(--color-accent)] transition-colors pr-4">
+                          {tip.title}
+                        </span>
+                        <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[var(--color-bg-cream)] flex items-center justify-center">
+                          <ChevronRight className="size-5 text-[var(--color-accent)]" />
+                        </div>
+                      </Link>
+                    </SectionFade>
+                  ))}
+                </div>
+              </div>
+            </SectionFade>
+          </div>
+
+          {/* ── Bottom row: Informasjon — full-width featured card ── */}
+          <SectionFade delay={0.25}>
+            <Link href="/informasjon" className="group block">
+              <div className="relative rounded-2xl bg-[var(--color-bg-cream)] border border-[var(--color-border)] overflow-hidden transition-all duration-300 hover:shadow-[0_20px_60px_rgba(60,36,21,0.08)] hover:-translate-y-1 cursor-pointer">
+                {/* Decorative warm gradient blobs */}
+                <div className="absolute -top-32 -right-32 w-64 h-64 rounded-full bg-[var(--color-accent)]/[0.05] blur-3xl" />
+                <div className="absolute -bottom-20 -left-20 w-48 h-48 rounded-full bg-[var(--color-accent-light)]/[0.07] blur-2xl" />
+
+                <div className="relative z-10 p-8 md:p-10 flex flex-col md:flex-row md:items-center gap-6 md:gap-12">
+                  {/* Left: accent stripe + text */}
+                  <div className="flex gap-6 flex-1">
+                    <div className="w-1 self-stretch rounded-full bg-[var(--color-accent)] shrink-0 hidden md:block" />
+                    <div>
+                      <span className="text-[10px] font-700 uppercase tracking-[0.2em] text-[var(--color-accent)] block mb-2">
+                        Rettigheter & Økonomi
+                      </span>
+                      <h2 className="text-2xl md:text-3xl font-heading font-700 text-[var(--color-primary)] mb-3">
+                        Informasjon & støtte
+                      </h2>
+                      <p className="text-[var(--color-text-secondary)] text-base md:text-lg leading-relaxed font-sans font-400 max-w-2xl">
+                        Støtteordninger, rettigheter og alt du lurer på om tannbehandling
+                        i Norge. Barn, unge voksne, HELFO, NAV og frikort — samlet på ett sted.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Right: CTA arrow */}
+                  <div className="flex items-center gap-3 text-[var(--color-accent)] font-heading font-600 shrink-0 group-hover:text-[var(--color-primary)] transition-colors">
+                    Les mer
+                    <div className="w-12 h-12 rounded-full bg-[var(--color-accent)]/10 flex items-center justify-center group-hover:bg-[var(--color-accent)]/20 transition-colors">
+                      <ArrowRight className="size-5 text-[var(--color-accent)]" />
+                    </div>
+                  </div>
                 </div>
               </div>
             </Link>
           </SectionFade>
+
         </div>
       </div>
     </section>
@@ -786,7 +775,6 @@ export default function HomePage() {
     <main>
       <HeroSection />
       <TreatmentsSection />
-      <BetalingsstotteSection />
       <GuideSection />
       <ArticlesSection />
       <CTASection />
