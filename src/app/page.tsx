@@ -187,8 +187,7 @@ function TreatmentsSection() {
                 Skreddersydde løsninger for ditt smil
               </h2>
               <p className="body-large max-w-xl">
-                Vi kombinerer klinisk presisjon med estetisk forståelse for å gi
-                deg et resultat som føles like naturlig som det ser ut.
+                Vi gjør behandlinger som både ser og føles helt naturlige.
               </p>
             </div>
             <Link

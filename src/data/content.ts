@@ -2,17 +2,17 @@
 export const treatments = [
   {
     title: "Generell tannbehandling",
-    description: "Undersøkelser, fyllinger, rotbehandling og alt innen standard tannpleie for hele familien.",
+    description: "Undersøkelser, fyllinger, rotbehandling — alt som hører til vanlig tannbehandling for hele familien.",
     color: "emerald",
   },
   {
     title: "Kosmetisk tannpleie",
-    description: "Tannbleking, fasetter og estetiske behandlinger for et vakrere smil.",
+    description: "Tannbleking, fasetter og andre behandlinger som gir deg et hvitere, penere smil.",
     color: "sky",
   },
   {
     title: "Tannimplantater",
-    description: "Permanente erstatninger for manglende tenner som ser og føles naturlige.",
+    description: "Permanente erstatninger for tenner som mangler — ser ut og føles som dine egne.",
     color: "violet",
   },
   {
@@ -22,12 +22,12 @@ export const treatments = [
   },
   {
     title: "Forebyggende behandling",
-    description: "Tannrens, fluorbehandling og veiledning for å unngå fremtidige problemer.",
+    description: "Tannrens, fluorbehandling og gode råd så du slipper problemer senere.",
     color: "amber",
   },
   {
     title: "Rotbehandling",
-    description: "Skånsom behandling for å redde infiserte tenner og lindre smerte.",
+    description: "Redder infiserte tenner og lindrer smerte — skånsomt og trygt.",
     color: "teal",
   },
 ];
@@ -139,7 +139,7 @@ export const articles: Article[] = [
     date: "2026-03-15",
     image: "/images/service-general.jpg",
     content: [
-      "Tannpine kan variere fra mild til intens og kan ha mange ulike årsaker. Det er viktig å forstå at tannpine sjelden forsvinner av seg selv – det er kroppens måte å signalisere at noe er galt på.",
+      "Tannpine kan variere fra litt ubehag til helt uutholdelig, og årsakene er mange. Det forsvinner sjelden av seg selv — det er kroppens måte å si fra at noe er galt.",
       "## Vanlige årsaker til tannpine",
       "**Hull i tennene (karies)** er den vanligste årsaken til tannpine. Når bakterier bryter ned tannemaljen, kan de nå det sensitive dentinet og til slutt tannnerven. Jo lenger du venter med behandling, desto verre kan problemet bli.",
       "**Tannrotinfeksjon** oppstår når bakterier når inn til tannens pulpa (nerven). Dette kan forårsake intens, bankende smerte som ofte forverres om natten. Rotbehandling er vanligvis nødvendig for å redde tannen.",
@@ -163,7 +163,7 @@ export const articles: Article[] = [
     date: "2026-03-10",
     image: "/images/service-cosmetic.jpg",
     content: [
-      "Blødende tannkjøtt er et symptom som mange opplever, men som ikke bør ignoreres. Det er ofte et tegn på at tannkjøttet er betent – en tilstand som kalles gingivitt.",
+      "Mange opplever at tannkjøttet blør når de pusser tennene, og tenker at det er normalt. Det er det ikke. Blødning betyr som regel at tannkjøttet er betent — det kalles gingivitt.",
       "## Hva forårsaker blødende tannkjøtt?",
       "**Plakk og tannstein** er hovedårsakene. Når plakk samler seg langs tannkjøttranden, irriterer det tannkjøttet og fører til betennelse. Over tid kan plakk herde seg til tannstein, som bare kan fjernes av tannlegen.",
       "**Feil pusseteknikk** – å pusse for hardt eller med feil vinkel kan skade tannkjøttet og forårsake blødning. Bruk en myk tannbørste og forsiktige, sirkulære bevegelser.",
@@ -207,7 +207,7 @@ export const articles: Article[] = [
     date: "2026-02-28",
     image: "/images/service-emergency.jpg",
     content: [
-      "Tannlegeskrekk, også kalt odontofobi, rammer anslagsvis 15–20 prosent av befolkningen. For mange fører angsten til at de unngår tannlegen helt, noe som kan resultere i alvorlige tannhelseproblemer over tid.",
+      "Er du redd for tannlegen? Du er langt fra alene — mellom 15 og 20 prosent av oss kjenner på det samme. For mange blir frykten så stor at de unngår tannlegen helt, og det gjør jo bare problemene verre over tid.",
       "## Hva forårsaker tannlegeskrekk?",
       "Årsakene til tannlegeskrekk er sammensatte og individuelle. Vanlige faktorer inkluderer negative opplevelser fra barndommen, følelse av tap av kontroll, frykt for smerte, sjenanse over tannhelse, og generell angstlidelse.",
       "## Teknikker som hjelper",
@@ -252,7 +252,7 @@ export const articles: Article[] = [
     date: "2026-02-15",
     image: "/images/service-cosmetic.jpg",
     content: [
-      "Et lyst og hvitt smil gir selvtillit og kan gjøre en stor forskjell for utseendet ditt. Tannbleking er en av de mest etterspurte kosmetiske tannbehandlingene, og det finnes flere alternativer.",
+      "Hvitere tenner gir selvtillit — det merker de fleste som har prøvd. Tannbleking er noe mange spør om, og det finnes flere måter å gjøre det på.",
       "## Hvorfor blir tennene mørke?",
       "Tenner kan misfarges av mange årsaker. Ytre misfarging fra kaffe, te, rødvin og tobakk setter seg på overflaten. Indre misfarging kan skyldes aldring, medisiner, skader eller naturlig tannfarge.",
       "## Profesjonell tannbleking",
@@ -307,7 +307,7 @@ export const supportPages: SupportPage[] = [
       "Alt om gratis tannbehandling for barn og ungdom 0-18 år i Norge. Automatisk innkalling, hva som dekkes, tannregulering og akutt hjelp.",
     heroSubtitle: "0–18 år",
     intro: [
-      "I Norge har alle barn og ungdom rett på gratis tannbehandling frem til de fyller 18 år. Det er Den offentlige tannhelsetjenesten (DOT) som står for dette, og det fine er at du som forelder ikke trenger å gjøre noe spesielt — barnet ditt blir automatisk kalt inn til kontroll.",
+      "Alle barn og ungdom har gratis tannbehandling til fylte 18 år. Det skjer gjennom den offentlige tannhelsetjenesten, og det beste er: du trenger ikke gjøre noe. Barnet ditt blir kalt inn automatisk.",
       "Her har vi samlet alt du trenger å vite om tannhelsetilbudet for de yngste. Fra første tann til russetiden.",
     ],
     sections: [

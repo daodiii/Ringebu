@@ -34,8 +34,7 @@ export default function Footer() {
               </div>
             </Link>
             <p className="mt-4 text-white/90 text-sm leading-relaxed max-w-xs">
-              Moderne tannbehandling med personlig omsorg i hjertet av Gudbrandsdalen.
-              Vi tar vare på smilet ditt.
+              Moderne tannbehandling med personlig omsorg midt i Gudbrandsdalen.
             </p>
           </div>
 

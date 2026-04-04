@@ -39,7 +39,7 @@ const treatments: Treatment[] = [
     title: "Forebyggende Behandling",
     subtitle: "Grunnlaget for god tannhelse",
     description:
-      "Regelmessig forebyggende behandling er nøkkelen til et sunt smil gjennom hele livet. Vi tilbyr grundig undersøkelse, profesjonell rens og individuell veiledning.",
+      "Regelmessig forebygging holder tennene friske hele livet. Vi undersøker grundig, renser tennene og viser deg hvordan du best tar vare på dem hjemme.",
     features: [
       "Grundig tannundersøkelse med digitalt røntgen",
       "Profesjonell tannrens og polering",
@@ -62,7 +62,7 @@ const treatments: Treatment[] = [
     title: "Bleking",
     subtitle: "Et lysere, hvitere smil",
     description:
-      "Profesjonell tannbleking som gir synlige resultater — trygt, skånsomt og med langvarig effekt.",
+      "Få hvitere tenner med profesjonell bleking. Det er trygt, gjør ikke vondt, og resultatet holder lenge.",
     features: [
       "Klinikkbleking med raskt resultat",
       "Hjemmebleking med tilpassede skinner",
@@ -79,7 +79,7 @@ const treatments: Treatment[] = [
     title: "Fyllingsterapi",
     subtitle: "Moderne, usynlige fyllinger",
     description:
-      "Tannfargede komposittfyllinger som reparerer hull og gjenoppretter tennenes naturlige form og funksjon.",
+      "Fyllinger i tannfargen som fyller hull og gjør tenner hele igjen — du ser ikke forskjellen.",
     features: [
       "Tannfargede komposittfyllinger",
       "Utskifting av gamle amalgamfyllinger",
@@ -100,7 +100,7 @@ const treatments: Treatment[] = [
     title: "Kron og Bro",
     subtitle: "Holdbare restaureringer",
     description:
-      "Kroner og broer gjenoppretter skadede eller manglende tenner med naturlig utseende.",
+      "Kroner og broer erstatter eller reparerer tenner som er skadet eller borte — og ser helt naturlige ut.",
     features: [
       "Helkeramiske kroner for naturlig utseende",
       "Broer som erstatter manglende tenner",
@@ -119,7 +119,7 @@ const treatments: Treatment[] = [
     title: "Rotfylling",
     subtitle: "Redd tannen din",
     description:
-      "Rotfylling bevarer tenner som er skadet eller infisert i nerven — skånsomt og effektivt.",
+      "Rotfylling redder tenner som er skadet eller infisert. Det er ikke vondt, og du får beholde tannen.",
     features: [
       "Moderne endodontisk behandling",
       "Smertefri med god bedøvelse",
@@ -140,7 +140,7 @@ const treatments: Treatment[] = [
     title: "Visdomstennene",
     subtitle: "Vurdering og fjerning",
     description:
-      "Vi vurderer om fjerning er nødvendig og utfører inngrepet trygt og skånsomt.",
+      "Vi sjekker om visdomstennene dine trenger å fjernes, og hvis ja — gjør vi det skånsomt.",
     features: [
       "Grundig vurdering med røntgen",
       "Skånsom kirurgisk fjerning",
@@ -160,7 +160,7 @@ const treatments: Treatment[] = [
     title: "Tannkjøtt & Tannstein",
     subtitle: "Friskt tannkjøtt, sterke tenner",
     description:
-      "Friskt tannkjøtt er grunnlaget for god tannhelse. Vi behandler tannkjøttsykdom og fjerner tannstein grundig.",
+      "Sunt tannkjøtt er det viktigste for at tennene skal holde lenge. Vi fjerner tannstein og behandler tannkjøttsykdom.",
     features: [
       "Grundig fjerning av tannstein over og under tannkjøttet",
       "Behandling av gingivitt og periodontitt",
@@ -181,7 +181,7 @@ const treatments: Treatment[] = [
     title: "Bittskinner",
     subtitle: "Beskyttelse mot tanngnissing",
     description:
-      "Tanngnissing sliter ned tennene og kan forårsake smerter. En tilpasset bittskinne beskytter og lindrer.",
+      "Gnisser du tenner om natten? Det sliter dem ned og gir smerter. En bittskinne tilpasset deg beskytter og lindrer.",
     features: [
       "Individuelt tilpassede bittskinner",
       "Beskyttelse mot slitasje",
