@@ -13,8 +13,6 @@ import {
   Sparkles,
   ShieldCheck,
   Zap,
-  Heart,
-  Calendar,
   Star,
   Clock,
 } from "lucide-react";
@@ -293,9 +291,9 @@ function TreatmentsSection() {
 
 function TipsAndSymptomsSection() {
   const tipArticles = [
-    { title: "Alt du trenger å vite om fluortilskudd", href: "/artikler" },
-    { title: "Hvordan pusse tenner for maksimal effekt?", href: "/artikler" },
-    { title: "Hvorfor bruke tanntråd og mellombørste?", href: "/artikler" },
+    { title: "Kaffe, brunost og tennene dine: norsk kosthold og tannhelse", href: "/informasjon" },
+    { title: "Munnskyll — når det hjelper og når du kaster bort penger", href: "/informasjon" },
+    { title: "Spyttets superkrefter: kroppens egen tannbeskyttelse", href: "/informasjon" },
   ];
 
   return (
@@ -310,8 +308,8 @@ function TipsAndSymptomsSection() {
                   Symptomer
                 </h2>
                 <p className="text-white/80 text-base leading-relaxed font-sans font-400">
-                  Opplever du ubehag og er usikker på hva det kan være? Her får du
-                  oversikt over vanlige symptomer forbundet med munnhelse.
+                  Tannpine, blødende tannkjøtt eller ising i tennene? Typen smerte
+                  avslører ofte hva som er galt — og hvor raskt du bør handle.
                 </p>
               </div>
 
@@ -335,7 +333,7 @@ function TipsAndSymptomsSection() {
                   Tips & råd
                 </h2>
                 <Link
-                  href="/artikler"
+                  href="/informasjon"
                   className="text-[var(--color-accent)] font-sans font-500 text-sm hover:underline underline-offset-4"
                 >
                   Se alle
@@ -573,34 +571,6 @@ const supportCategories = [
       {
         label: "Viktig å vite",
         text: "Ordningen forutsetter at omsorgssituasjonen varer **mer enn 3 måneder**. Mottakere av kun praktisk bistand/hjemmehjelp kvalifiserer ikke.",
-      },
-    ],
-  },
-  {
-    icon: Heart,
-    title: "Tannlegeskrekk",
-    subtitle: "Tilpasset behandling og mulig støtte",
-    badge: "Mulig støtte",
-    details: [
-      {
-        label: "Mulig HELFO-støtte",
-        text: "Dokumentert odontofobi som har ført til **sterkt nedsatt egenomsorg** kan gi rett til refusjon via HELFO. Krever dokumentasjon fra lege eller psykolog.",
-      },
-      {
-        label: "Hos oss",
-        text: "Vi tilbyr tilpasset, skånsom behandling med **ekstra tid** og et trygt, rolig miljø. Mulighet for pauser underveis.",
-      },
-    ],
-  },
-  {
-    icon: Calendar,
-    title: "Delbetaling",
-    subtitle: "Fleksibel nedbetaling",
-    badge: "Rentefritt",
-    details: [
-      {
-        label: "Fleksibel betaling",
-        text: "Vi tilbyr **rentefri delbetaling** i 6–12 måneder. Lengre perioder (opptil 60 md.) er tilgjengelig med rente. Spør oss om mulighetene.",
       },
     ],
   },
