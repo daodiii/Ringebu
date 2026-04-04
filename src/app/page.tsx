@@ -159,105 +159,109 @@ function TreatmentsSection() {
 
         {/* Bento Grid */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-6">
-          {/* Large Featured Card - Kosmetisk */}
+          {/* Large Featured Card - Forebyggende + Image */}
           <SectionFade className="md:col-span-8">
-            <div className="rounded-2xl bg-white border border-[var(--color-border)] p-8 md:p-10 flex flex-col md:flex-row items-center gap-8 md:gap-12 group h-full transition-all duration-500 hover:shadow-xl hover:-translate-y-1">
-              <div className="w-full md:w-1/2">
-                <span className="text-xs font-sans font-700 tracking-[0.2em] text-[var(--color-accent)] uppercase mb-4 block">
-                  Topp moderne estetikk
-                </span>
-                <h3 className="text-2xl md:text-3xl font-heading font-600 text-[var(--color-primary)] mb-3">
-                  Kosmetisk tannpleie
-                </h3>
-                <p className="text-[var(--color-stone-700)] mb-8 leading-relaxed font-sans font-400 text-base">
-                  Tannbleking, fasetter og estetiske behandlinger for et vakrere smil.
-                  Gjenopprett selvtilliten med moderne, diskrete løsninger.
-                </p>
-                <Link
-                  href="/behandlinger"
-                  className="inline-flex items-center gap-2 bg-[var(--color-primary)] text-white px-8 py-3 rounded-lg font-sans font-500 hover:bg-[var(--color-primary-dark)] transition-colors"
-                >
-                  Les mer
-                </Link>
+            <Link href="/behandlinger" className="group block h-full cursor-pointer">
+              <div className="rounded-2xl bg-[var(--color-bg-cream)] border border-[var(--color-border)] overflow-hidden h-full transition-all duration-500 hover:shadow-[0_20px_60px_rgba(60,36,21,0.1)] hover:-translate-y-1">
+                <div className="relative aspect-[21/9] overflow-hidden">
+                  <Image
+                    src="/images/ringebutannMain.jpg"
+                    alt="Ringebu Tannlegesenter behandlingsrom"
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    style={{ objectPosition: "center 60%" }}
+                    sizes="(max-width: 768px) 100vw, 66vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-primary)]/30 to-transparent" />
+                </div>
+                <div className="p-8 md:p-10">
+                  <span className="text-[10px] font-sans font-700 tracking-[0.2em] text-[var(--color-accent)] uppercase mb-3 block">
+                    Grunnlaget for god tannhelse
+                  </span>
+                  <h3 className="text-2xl md:text-3xl font-heading font-700 text-[var(--color-primary)] mb-3">
+                    Forebyggende behandling
+                  </h3>
+                  <p className="text-[var(--color-text-secondary)] leading-relaxed font-sans font-400 text-base max-w-lg">
+                    Undersøkelse, profesjonell rens, fluorbehandling og personlig veiledning
+                    for å holde smilet friskt gjennom hele livet.
+                  </p>
+                </div>
               </div>
-              <div className="w-full md:w-1/2 aspect-video rounded-xl overflow-hidden relative">
+            </Link>
+          </SectionFade>
+
+          {/* Tall Dark Card - Bleking */}
+          <SectionFade className="md:col-span-4" delay={0.1}>
+            <Link href="/behandlinger" className="group block h-full cursor-pointer">
+              <div className="relative overflow-hidden rounded-2xl bg-[var(--color-primary)] p-10 md:p-12 text-white h-full min-h-[320px] md:min-h-[400px] flex flex-col justify-between transition-all duration-500 hover:shadow-[0_20px_60px_rgba(60,36,21,0.2)] hover:-translate-y-1">
                 <Image
-                  src="/images/ringebutannMain.jpg"
-                  alt="Kosmetisk tannpleie"
+                  src="/images/dental-instruments.png"
+                  alt="Profesjonelt tannlegeutstyr"
                   fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  style={{ objectPosition: "center 60%" }}
+                  className="object-cover opacity-15 transition-transform duration-700 group-hover:scale-105 scale-110"
+                  style={{ objectPosition: "center 70%" }}
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
+                <div className="relative z-10">
+                  <span className="text-[10px] font-700 uppercase tracking-[0.2em] text-[var(--color-accent-light)] block mb-3">
+                    Kosmetisk
+                  </span>
+                  <h3 className="text-2xl md:text-3xl font-heading font-700 mb-4">
+                    Profesjonell Tannbleking
+                  </h3>
+                  <p className="text-white/70 text-base leading-relaxed font-sans font-400">
+                    Få et strålende smil med vår skånsomme, kliniske blekeprosess
+                    utviklet for varige resultater.
+                  </p>
+                </div>
+                <div className="relative z-10 flex items-center gap-2 font-heading font-600 tracking-wide mt-8 text-white group-hover:text-[var(--color-accent-light)] transition-colors">
+                  Les mer
+                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                </div>
               </div>
-            </div>
+            </Link>
           </SectionFade>
 
-          {/* Tall Card - Tannbleking */}
-          <SectionFade className="md:col-span-4" delay={0.1}>
-            <div className="group relative overflow-hidden rounded-2xl bg-[var(--color-primary)] p-10 md:p-12 text-white h-full min-h-[320px] md:min-h-[400px] flex flex-col justify-between transition-all duration-500 hover:shadow-xl hover:-translate-y-1 hover:bg-[var(--color-primary-light)]">
-              <Image
-                src="/images/dental-instruments.png"
-                alt="Profesjonelt tannlegeutstyr"
-                fill
-                className="object-cover opacity-20 transition-transform duration-700 group-hover:scale-105 scale-110"
-                style={{ objectPosition: "center 70%" }}
-                sizes="(max-width: 768px) 100vw, 33vw"
-              />
-              <div className="relative z-10">
-                <h3 className="text-2xl md:text-3xl font-heading font-600 mb-4">
-                  Profesjonell Tannbleking
-                </h3>
-                <p className="text-white/75 text-base leading-relaxed font-sans font-400">
-                  Få et strålende smil med vår skånsomme, kliniske blekeprosess
-                  utviklet for varige resultater.
-                </p>
-              </div>
-              <Link
-                href="/kontakt"
-                className="relative z-10 flex items-center gap-2 font-heading font-600 tracking-wide mt-8 hover:underline underline-offset-8 transition-all"
-              >
-                Bestill time
-              </Link>
-            </div>
-          </SectionFade>
-
-          {/* Small Card - Forebyggende */}
+          {/* Accent Card - Kron og Bro */}
           <SectionFade className="md:col-span-4" delay={0.15}>
-            <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--color-bg-cream)] to-[var(--color-bg-yellow)] p-8 md:p-10 h-full flex flex-col justify-between min-h-[200px] transition-all duration-500 hover:shadow-lg hover:-translate-y-1">
-              <Image
-                src="/images/toothbrush-colorful.png"
-                alt="Fargerik tannbørste"
-                fill
-                className="object-cover opacity-15 transition-transform duration-700 group-hover:scale-105 scale-110"
-                style={{ objectPosition: "center 50%" }}
-                sizes="(max-width: 768px) 100vw, 33vw"
-              />
-              <div className="relative z-10">
-                <h3 className="text-xl md:text-2xl font-heading font-600 text-[var(--color-primary)] mb-3">
-                  Forebyggende behandling
-                </h3>
-                <p className="text-[var(--color-stone-700)] text-base leading-relaxed font-sans font-400">
-                  Tannrens, fluorbehandling og veiledning for å unngå fremtidige problemer.
-                </p>
+            <Link href="/behandlinger" className="group block h-full cursor-pointer">
+              <div className="rounded-2xl bg-gradient-to-br from-[var(--color-accent)]/[0.08] to-[var(--color-bg-cream)] border-2 border-[var(--color-accent)]/20 p-8 md:p-10 h-full flex flex-col justify-between min-h-[220px] transition-all duration-500 hover:shadow-[0_20px_60px_rgba(198,123,92,0.12)] hover:-translate-y-1 hover:border-[var(--color-accent)]/35">
+                <div>
+                  <span className="text-[10px] font-700 uppercase tracking-[0.2em] text-[var(--color-accent)] block mb-3">
+                    Restaurering
+                  </span>
+                  <h3 className="text-xl md:text-2xl font-heading font-700 text-[var(--color-primary)] mb-3">
+                    Kron, Bro & Fyllinger
+                  </h3>
+                  <p className="text-[var(--color-text-secondary)] text-base leading-relaxed font-sans font-400">
+                    Naturlig utseende restaureringer som gjenoppretter form, funksjon og selvtillit.
+                  </p>
+                </div>
+                <div className="flex items-center gap-2 text-[var(--color-accent)] font-heading font-600 text-sm mt-6 group-hover:text-[var(--color-primary)] transition-colors">
+                  Se behandlinger
+                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                </div>
               </div>
-            </div>
+            </Link>
           </SectionFade>
 
-          {/* Wide Card - Akutt */}
+          {/* Wide Card - Akutt tannhjelp */}
           <SectionFade className="md:col-span-8" delay={0.2}>
-            <div className="rounded-2xl border border-[var(--color-border)] bg-white p-8 md:p-10 flex flex-col md:flex-row items-center gap-8 md:gap-12 group h-full transition-all duration-500 hover:shadow-lg hover:-translate-y-1 hover:border-[var(--color-accent-light)]">
+            <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-cream)] p-8 md:p-10 flex flex-col md:flex-row items-center gap-8 md:gap-12 group h-full transition-all duration-500 hover:shadow-[0_20px_60px_rgba(60,36,21,0.08)] hover:-translate-y-1">
               <div className="w-full md:w-1/2">
-                <h3 className="text-xl md:text-2xl font-heading font-600 text-[var(--color-primary)] mb-3">
+                <span className="text-[10px] font-700 uppercase tracking-[0.2em] text-[var(--color-accent)] block mb-3">
+                  Hastehenvendelser
+                </span>
+                <h3 className="text-xl md:text-2xl font-heading font-700 text-[var(--color-primary)] mb-3">
                   Akutt tannhjelp
                 </h3>
-                <p className="text-[var(--color-stone-700)] text-base mb-6 leading-relaxed font-sans font-400">
+                <p className="text-[var(--color-text-secondary)] text-base mb-6 leading-relaxed font-sans font-400">
                   Har du fått akutt tannpine? Vi prioriterer hastehenvendelser og hjelper deg
                   raskt.
                 </p>
                 <a
                   href="tel:61280412"
-                  className="inline-flex items-center gap-2 border-b-2 border-[var(--color-primary)] text-[var(--color-primary)] font-heading font-600 pb-1 hover:text-[var(--color-accent)] hover:border-[var(--color-accent)] transition-colors"
+                  className="inline-flex items-center gap-2 border-b-2 border-[var(--color-primary)] text-[var(--color-primary)] font-heading font-600 pb-1 hover:text-[var(--color-accent)] hover:border-[var(--color-accent)] transition-colors cursor-pointer"
                 >
                   <Phone className="size-4" />
                   Ring vakttelefon

@@ -2,24 +2,101 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   ChevronDown,
   Calendar,
   Phone,
+  ArrowRight,
 } from "lucide-react";
+
+/* ─────────────── Types ─────────────── */
 
 interface PriceItem {
   name: string;
   description: string;
 }
 
-const treatments = [
+interface Treatment {
+  title: string;
+  subtitle: string;
+  description: string;
+  features: string[];
+  category: string;
+  prices: PriceItem[];
+  /* Visual config for bento grid */
+  variant: "dark" | "cream" | "accent" | "image";
+  span: "wide" | "tall" | "standard";
+  image?: string;
+}
+
+/* ─────────────── Data ─────────────── */
+
+const treatments: Treatment[] = [
   {
-    iconName: "Crown",
-    title: "Kron og Bro",
+    title: "Forebyggende Behandling",
+    subtitle: "Grunnlaget for god tannhelse",
     description:
-      "Kroner og broer gjenoppretter skadede eller manglende tenner med holdbare, naturlig utseende restaureringer.",
+      "Regelmessig forebyggende behandling er nøkkelen til et sunt smil gjennom hele livet. Vi tilbyr grundig undersøkelse, profesjonell rens og individuell veiledning.",
+    features: [
+      "Grundig tannundersøkelse med digitalt røntgen",
+      "Profesjonell tannrens og polering",
+      "Fluorbehandling for sterkere emalje",
+      "Individuelle råd for munnhygiene hjemme",
+    ],
+    category: "Forebyggende",
+    prices: [
+      { name: "Undersøkelse med 2 røntgenbilder, rens og kostnadsoverslag", description: "Fullstendig tannhelsesjekk" },
+      { name: "Studentrabatt på undersøkelse", description: "Gyldig med studentbevis" },
+      { name: "Enkel etterkontroll", description: "Etter kirurgiske inngrep" },
+      { name: "Omfattende etterkontroll", description: "Etter oralmedisinske undersøkelser" },
+    ],
+    variant: "image",
+    span: "wide",
+    image: "/images/ringebutannMain.jpg",
+  },
+  {
+    title: "Bleking",
+    subtitle: "Et lysere, hvitere smil",
+    description:
+      "Profesjonell tannbleking som gir synlige resultater — trygt, skånsomt og med langvarig effekt.",
+    features: [
+      "Klinikkbleking med raskt resultat",
+      "Hjemmebleking med tilpassede skinner",
+      "Skånsom behandling for emaljen",
+      "Langvarig og naturlig resultat",
+    ],
+    category: "Kosmetisk",
+    prices: [],
+    variant: "dark",
+    span: "tall",
+  },
+  {
+    title: "Fyllingsterapi",
+    subtitle: "Moderne, usynlige fyllinger",
+    description:
+      "Tannfargede komposittfyllinger som reparerer hull og gjenoppretter tennenes naturlige form og funksjon.",
+    features: [
+      "Tannfargede komposittfyllinger",
+      "Utskifting av gamle amalgamfyllinger",
+      "Smertefri behandling med lokalbedøvelse",
+      "Holdbare materialer med naturlig utseende",
+    ],
+    category: "Restaurering",
+    prices: [
+      { name: "Fylling — liten", description: "Én flate" },
+      { name: "Fylling — mellomstor", description: "To flater" },
+      { name: "Fylling — stor", description: "Tre eller flere flater" },
+    ],
+    variant: "cream",
+    span: "standard",
+  },
+  {
+    title: "Kron og Bro",
+    subtitle: "Holdbare restaureringer",
+    description:
+      "Kroner og broer gjenoppretter skadede eller manglende tenner med naturlig utseende.",
     features: [
       "Helkeramiske kroner for naturlig utseende",
       "Broer som erstatter manglende tenner",
@@ -29,50 +106,15 @@ const treatments = [
     category: "Restaurering",
     prices: [
       { name: "Fullkrone", description: "Hel krone over tann" },
-    ] as PriceItem[],
-  },
-  {
-    iconName: "ShieldCheck",
-    title: "Forebyggende Behandling",
-    description:
-      "Regelmessig forebyggende behandling er nøkkelen til god tannhelse.",
-    features: [
-      "Grundig tannundersøkelse med digitalt røntgen",
-      "Profesjonell tannrens og polering",
-      "Fluorbehandling for sterkere emalje",
-      "Individuelle råd for munnhygiene hjemme",
     ],
-    category: "Forebyggende",
-    prices: [
-      { name: "Undersøkelse med 2 røntgenbilder, enkel rens og skriftlig kostnadsoverslag", description: "Fullstendig tannhelsesjekk" },
-      { name: "Studentrabatt / studentpris på undersøkelse", description: "Gyldig med studentbevis" },
-      { name: "Enkel etterkontroll", description: "Etter kirurgiske inngrep og periodontal behandling" },
-      { name: "Omfattende etterkontroll", description: "Etter kirurgiske inngrep og oralmedisinske undersøkelser" },
-    ] as PriceItem[],
+    variant: "accent",
+    span: "standard",
   },
   {
-    iconName: "Paintbrush",
-    title: "Fyllingsterapi",
-    description:
-      "Moderne, tannfargede fyllinger som reparerer hull og gjenoppretter tennenes naturlige form og funksjon.",
-    features: [
-      "Tannfargede komposittfyllinger",
-      "Utskifting av gamle amalgamfyllinger",
-      "Smertefri behandling med lokalbedøvelse",
-      "Holdbare materialer med naturlig utseende",
-    ],
-    category: "Restaurering",
-    prices: [
-      { name: "Fylling – liten", description: "Én flate" },
-      { name: "Fylling – mellomstor", description: "To flater" },
-      { name: "Fylling – stor", description: "Tre eller flere flater" },
-    ] as PriceItem[],
-  },
-  {
-    iconName: "Heart",
     title: "Rotfylling",
+    subtitle: "Redd tannen din",
     description:
-      "Rotfylling redder tenner som er skadet eller infisert i nerven. Skånsomt og effektivt.",
+      "Rotfylling bevarer tenner som er skadet eller infisert i nerven — skånsomt og effektivt.",
     features: [
       "Moderne endodontisk behandling",
       "Smertefri med god bedøvelse",
@@ -81,28 +123,16 @@ const treatments = [
     ],
     category: "Restaurering",
     prices: [
-      { name: "Rotfylling – 1 rotkanal", description: "Tann med én rotkanal" },
-      { name: "Rotfylling – 2 rotkanaler", description: "Tann med to rotkanaler" },
-      { name: "Rotfylling – 3 til 4 rotkanaler", description: "Tann med tre til fire rotkanaler" },
-    ] as PriceItem[],
-  },
-  {
-    iconName: "Sparkles",
-    title: "Bleking",
-    description:
-      "Profesjonell tannbleking som gir deg et lysere og hvitere smil.",
-    features: [
-      "Klinikkbleking med raskt resultat",
-      "Hjemmebleking med tilpassede skinner",
-      "Skånsom behandling for emaljen",
-      "Langvarig og naturlig resultat",
+      { name: "Rotfylling — 1 rotkanal", description: "Tann med én rotkanal" },
+      { name: "Rotfylling — 2 rotkanaler", description: "Tann med to rotkanaler" },
+      { name: "Rotfylling — 3–4 rotkanaler", description: "Tann med tre til fire rotkanaler" },
     ],
-    category: "Kosmetisk",
-    prices: [] as PriceItem[],
+    variant: "cream",
+    span: "wide",
   },
   {
-    iconName: "CircleDot",
     title: "Visdomstennene",
+    subtitle: "Vurdering og fjerning",
     description:
       "Vi vurderer om fjerning er nødvendig og utfører inngrepet trygt og skånsomt.",
     features: [
@@ -114,14 +144,16 @@ const treatments = [
     category: "Kirurgi",
     prices: [
       { name: "Ukomplisert ekstraksjon", description: "Enkel fjerning av tann eller rot" },
-      { name: "Kirurgisk fjerning", description: "Fjerning av retinert tann eller dyptliggende rot" },
-    ] as PriceItem[],
+      { name: "Kirurgisk fjerning", description: "Fjerning av retinert tann" },
+    ],
+    variant: "dark",
+    span: "standard",
   },
   {
-    iconName: "Droplets",
-    title: "Tannkjøtt & Tannsteinsbehandling",
+    title: "Tannkjøtt & Tannstein",
+    subtitle: "Friskt tannkjøtt, sterke tenner",
     description:
-      "Friskt tannkjøtt er grunnlaget for god tannhelse. Vi behandler tannkjøttsykdom og fjerner tannstein.",
+      "Friskt tannkjøtt er grunnlaget for god tannhelse. Vi behandler tannkjøttsykdom og fjerner tannstein grundig.",
     features: [
       "Grundig fjerning av tannstein over og under tannkjøttet",
       "Behandling av gingivitt og periodontitt",
@@ -130,31 +162,34 @@ const treatments = [
     ],
     category: "Forebyggende",
     prices: [
-      { name: "Periodontal behandling og rehabilitering", description: "Behandling og oppfølging av tannkjøttsykdom" },
-      { name: "Behandling av marginal periodontitt", description: "Behandling av tannkjøttbetennelse" },
+      { name: "Periodontal behandling og rehabilitering", description: "Behandling av tannkjøttsykdom" },
+      { name: "Behandling av marginal periodontitt", description: "Tannkjøttbetennelse" },
       { name: "Fiksering av tenner", description: "Stabilisering av løse tenner" },
-      { name: "Kirurgisk tilleggsbehandling", description: "Ved behandling av marginal periodontitt" },
-    ] as PriceItem[],
+    ],
+    variant: "accent",
+    span: "standard",
   },
   {
-    iconName: "AlarmClock",
-    title: "Bittskinner / Tanngnising",
+    title: "Bittskinner",
+    subtitle: "Beskyttelse mot tanngnissing",
     description:
-      "Tanngnising kan slite ned tennene og forårsake smerter. En tilpasset bittskinne beskytter og lindrer.",
+      "Tanngnissing sliter ned tennene og kan forårsake smerter. En tilpasset bittskinne beskytter og lindrer.",
     features: [
       "Individuelt tilpassede bittskinner",
-      "Beskyttelse mot slitasje på tennene",
+      "Beskyttelse mot slitasje",
       "Lindring av kjevesmerter og hodepine",
       "Veiledning om årsaker og forebygging",
     ],
     category: "Spesialbehandling",
-    prices: [] as PriceItem[],
+    prices: [],
+    variant: "cream",
+    span: "standard",
   },
   {
-    iconName: "HandHeart",
     title: "Tannlegeskrekk",
+    subtitle: "Vi forstår deg",
     description:
-      "Hos oss møter du et trygt, rolig miljø med ekstra tid og omsorg.",
+      "Hos oss møter du et trygt, rolig miljø med ekstra tid og omsorg. Vi tar tannlegeskrekk på alvor.",
     features: [
       "Rolig og trygt behandlingsmiljø",
       "Ekstra tid til å bli kjent og trygg",
@@ -162,161 +197,258 @@ const treatments = [
       "Mulighet for pauser underveis",
     ],
     category: "Spesialbehandling",
-    prices: [] as PriceItem[],
+    prices: [],
+    variant: "image",
+    span: "wide",
+    image: "/images/about-clinic.jpg",
   },
 ];
 
-const cardColors = { bg: "var(--color-bg-cream)", border: "var(--color-border)", dot: "var(--color-accent)" };
+/* ─────────────── Treatment Card ─────────────── */
 
-export default function Behandlinger() {
-  const [expanded, setExpanded] = useState<string | null>(null);
+function TreatmentCard({ treatment, index }: { treatment: Treatment; index: number }) {
+  const [open, setOpen] = useState(false);
+  const hasPrices = treatment.prices.length > 0;
+
+  /* Grid span classes */
+  const spanClass =
+    treatment.span === "wide"
+      ? "md:col-span-8"
+      : treatment.span === "tall"
+      ? "md:col-span-4 md:row-span-2"
+      : "md:col-span-4";
+
+  /* Variant styles */
+  const variants = {
+    dark: {
+      bg: "bg-[var(--color-primary)]",
+      text: "text-white",
+      textMuted: "text-white/70",
+      accent: "text-[var(--color-accent-light)]",
+      border: "",
+      detailBg: "bg-white/10",
+      detailLabel: "text-[var(--color-accent-light)]",
+      detailText: "text-white/80",
+      priceBg: "bg-white/5 border-white/10",
+      chevron: "text-white/50",
+      hoverShadow: "hover:shadow-[0_20px_60px_rgba(60,36,21,0.2)]",
+    },
+    cream: {
+      bg: "bg-[var(--color-bg-cream)]",
+      text: "text-[var(--color-primary)]",
+      textMuted: "text-[var(--color-text-secondary)]",
+      accent: "text-[var(--color-accent)]",
+      border: "border border-[var(--color-border)]",
+      detailBg: "bg-white",
+      detailLabel: "text-[var(--color-accent)]",
+      detailText: "text-[var(--color-text-secondary)]",
+      priceBg: "bg-white border-[var(--color-border)]",
+      chevron: "text-[var(--color-text-muted)]",
+      hoverShadow: "hover:shadow-[0_20px_60px_rgba(60,36,21,0.08)]",
+    },
+    accent: {
+      bg: "bg-gradient-to-br from-[var(--color-accent)]/[0.08] to-[var(--color-bg-cream)]",
+      text: "text-[var(--color-primary)]",
+      textMuted: "text-[var(--color-text-secondary)]",
+      accent: "text-[var(--color-accent)]",
+      border: "border-2 border-[var(--color-accent)]/20",
+      detailBg: "bg-white",
+      detailLabel: "text-[var(--color-accent)]",
+      detailText: "text-[var(--color-text-secondary)]",
+      priceBg: "bg-white border-[var(--color-accent)]/15",
+      chevron: "text-[var(--color-accent)]",
+      hoverShadow: "hover:shadow-[0_20px_60px_rgba(198,123,92,0.12)]",
+    },
+    image: {
+      bg: "bg-[var(--color-bg-cream)]",
+      text: "text-[var(--color-primary)]",
+      textMuted: "text-[var(--color-text-secondary)]",
+      accent: "text-[var(--color-accent)]",
+      border: "border border-[var(--color-border)]",
+      detailBg: "bg-white",
+      detailLabel: "text-[var(--color-accent)]",
+      detailText: "text-[var(--color-text-secondary)]",
+      priceBg: "bg-white border-[var(--color-border)]",
+      chevron: "text-[var(--color-text-muted)]",
+      hoverShadow: "hover:shadow-[0_20px_60px_rgba(60,36,21,0.1)]",
+    },
+  };
+
+  const v = variants[treatment.variant];
 
   return (
+    <motion.div
+      className={spanClass}
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.6, delay: index * 0.06, ease: [0.25, 0.1, 0.25, 1] }}
+    >
+      <div
+        onClick={() => setOpen(!open)}
+        className={`
+          ${v.bg} ${v.border} rounded-2xl overflow-hidden cursor-pointer
+          transition-all duration-300 hover:-translate-y-1 ${v.hoverShadow}
+          h-full flex flex-col
+        `}
+      >
+        {/* Image header for image variants */}
+        {treatment.variant === "image" && treatment.image && (
+          <div className="relative aspect-[21/9] md:aspect-[3/1] overflow-hidden">
+            <Image
+              src={treatment.image}
+              alt={treatment.title}
+              fill
+              className="object-cover transition-transform duration-700 hover:scale-105"
+              style={{ objectPosition: "center 60%" }}
+              sizes="(max-width: 768px) 100vw, 66vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-primary)]/40 to-transparent" />
+          </div>
+        )}
+
+        {/* Card body */}
+        <div className="p-7 md:p-9 flex-1 flex flex-col">
+          {/* Header row */}
+          <div className="flex items-start justify-between gap-4 mb-4">
+            <div className="flex-1">
+              <span className={`text-[10px] font-700 uppercase tracking-[0.2em] ${v.accent} block mb-2`}>
+                {treatment.category}
+              </span>
+              <h3 className={`text-xl md:text-2xl lg:text-3xl font-heading font-700 ${v.text} leading-tight`}>
+                {treatment.title}
+              </h3>
+              <p className={`text-sm ${v.textMuted} font-sans font-400 mt-1`}>
+                {treatment.subtitle}
+              </p>
+            </div>
+            <ChevronDown
+              className={`size-5 ${v.chevron} transition-all duration-300 shrink-0 mt-2 ${
+                open ? "rotate-180" : ""
+              }`}
+              strokeWidth={2}
+            />
+          </div>
+
+          {/* Description */}
+          <p className={`${v.textMuted} text-base leading-relaxed font-sans font-400 mb-4 flex-1`}>
+            {treatment.description}
+          </p>
+
+          {/* Expandable details */}
+          <AnimatePresence>
+            {open && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+                className="overflow-hidden"
+              >
+                <div className={`border-t ${treatment.variant === "dark" ? "border-white/15" : "border-[var(--color-border)]"} pt-6 mt-2`}>
+                  <div className={`grid ${hasPrices ? "md:grid-cols-2" : "grid-cols-1"} gap-5`}>
+                    {/* Features */}
+                    <div>
+                      <p className={`text-[10px] font-700 uppercase tracking-[0.18em] ${v.detailLabel} mb-4`}>
+                        Hva inngår
+                      </p>
+                      <ul className="space-y-3">
+                        {treatment.features.map((f) => (
+                          <li key={f} className={`flex items-start gap-2.5 ${v.detailText} text-sm leading-relaxed font-sans font-400`}>
+                            <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] mt-2 shrink-0" />
+                            {f}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* Prices */}
+                    {hasPrices && (
+                      <div className={`${v.priceBg} rounded-xl p-5 border`}>
+                        <p className={`text-[10px] font-700 uppercase tracking-[0.18em] ${v.detailLabel} mb-4`}>
+                          Behandlinger
+                        </p>
+                        <div className="space-y-0">
+                          {treatment.prices.map((item, idx) => (
+                            <div
+                              key={item.name}
+                              className={`py-3 ${
+                                idx < treatment.prices.length - 1
+                                  ? treatment.variant === "dark"
+                                    ? "border-b border-white/10"
+                                    : "border-b border-[var(--color-border)]"
+                                  : ""
+                              }`}
+                            >
+                              <div className={`font-sans font-500 text-sm ${v.text}`}>
+                                {item.name}
+                              </div>
+                              <div className={`text-xs ${v.textMuted} font-sans font-400 mt-0.5`}>
+                                {item.description}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ─────────────── Page ─────────────── */
+
+export default function Behandlinger() {
+  return (
     <main className="pt-20">
-      {/* Header */}
+      {/* ── Header ── */}
       <section className="relative bg-[var(--color-primary)] py-20 md:py-28 overflow-hidden">
         <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-primary-light)] to-[var(--color-accent)]" />
         <div className="absolute inset-0">
           <div className="absolute -top-[30%] -right-[15%] w-[50vw] h-[50vw] rounded-full bg-[var(--color-accent)]/8 blur-3xl" />
+          <div className="absolute -bottom-[20%] -left-[10%] w-[30vw] h-[30vw] rounded-full bg-[var(--color-accent-light)]/5 blur-3xl" />
         </div>
         <div className="container-width text-center relative z-10">
           <span className="text-[var(--color-accent-light)] text-sm font-sans font-600 uppercase tracking-[0.15em] mb-4 block">
             Våre tjenester
           </span>
           <h1 className="heading-display text-white mb-5">
-            Behandlinger vi tilbyr
+            Behandlinger
           </h1>
-          <p className="text-lg text-white/80 font-sans font-400 max-w-xl mx-auto">
-            Vi tilbyr et bredt spekter av tannbehandlinger – fra forebyggende
-            pleie til avansert kosmetisk og kirurgisk behandling. Se priser
-            direkte ved hver behandling.
+          <p className="text-lg text-white/80 font-sans font-400 max-w-xl mx-auto leading-relaxed">
+            Fra forebyggende pleie til avansert kosmetisk behandling.
+            Klikk på en behandling for å se detaljer og priser.
           </p>
         </div>
       </section>
 
-      {/* Treatments with Integrated Prices */}
-      <section className="section-padding bg-[var(--color-bg-cream)]">
-        <div className="container-width max-w-5xl">
-          <div className="space-y-4">
-            {treatments.map((treatment) => {
-              const isOpen = expanded === treatment.title;
-              const hasPrices = treatment.prices.length > 0;
-              const colors = cardColors;
-
-              return (
-                <motion.div
-                  key={treatment.title}
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                >
-                  <div
-                    className="rounded-2xl border overflow-hidden transition-all duration-300 cursor-pointer"
-                    style={{ backgroundColor: colors.bg, borderColor: colors.border }}
-                    onClick={() => setExpanded(isOpen ? null : treatment.title)}
-                  >
-                    {/* Collapsed header — always visible */}
-                    <div className="flex items-start gap-5 p-6 md:p-8">
-                      {/* Left accent bar */}
-                      <div
-                        className="w-1.5 self-stretch rounded-full shrink-0 hidden md:block"
-                        style={{ backgroundColor: colors.dot }}
-                      />
-
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between gap-4">
-                          <div>
-                            <h3 className="font-heading font-700 text-2xl md:text-3xl text-[var(--color-primary)] mb-3">
-                              {treatment.title}
-                            </h3>
-                            <p className="text-[var(--color-stone-700)] text-lg md:text-xl font-sans font-400 leading-relaxed max-w-2xl">
-                              {treatment.description}
-                            </p>
-                          </div>
-                          <ChevronDown
-                            className={`size-7 mt-2 transition-transform duration-300 shrink-0`}
-                            style={{ color: colors.dot }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Expanded content */}
-                    {isOpen && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        className="px-6 md:px-8 pb-6 md:pb-8"
-                      >
-                        <div
-                          className="pt-6 md:ml-6"
-                          style={{ borderTop: `1px solid ${colors.border}` }}
-                        >
-                          <div className={`grid ${hasPrices ? "md:grid-cols-2" : "grid-cols-1"} gap-6 md:gap-8`}>
-                            {/* Features */}
-                            <div>
-                              <h4 className="font-sans font-700 text-sm uppercase tracking-[0.15em] mb-5" style={{ color: colors.dot }}>
-                                Hva inngår
-                              </h4>
-                              <ul className="space-y-4">
-                                {treatment.features.map((feature) => (
-                                  <li
-                                    key={feature}
-                                    className="flex items-start gap-3 text-[var(--color-stone-700)] font-sans font-400 text-base md:text-lg leading-relaxed"
-                                  >
-                                    <div className="w-2 h-2 rounded-full mt-1.5 shrink-0" style={{ backgroundColor: colors.dot }} />
-                                    {feature}
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-
-                            {/* Prices */}
-                            {hasPrices && (
-                              <div className="bg-white rounded-xl p-5 border" style={{ borderColor: colors.border }}>
-                                <h4 className="font-sans font-700 text-sm uppercase tracking-[0.15em] mb-5" style={{ color: colors.dot }}>
-                                  Behandlinger
-                                </h4>
-                                <div className="space-y-0">
-                                  {treatment.prices.map((item, idx) => (
-                                    <div
-                                      key={item.name}
-                                      className="py-4"
-                                      style={
-                                        idx < treatment.prices.length - 1
-                                          ? { borderBottom: `1px solid ${colors.border}` }
-                                          : undefined
-                                      }
-                                    >
-                                      <div className="font-sans font-500 text-base text-[var(--color-text-primary)]">
-                                        {item.name}
-                                      </div>
-                                      <div className="text-sm text-[var(--color-text-muted)] font-sans font-400 mt-1">
-                                        {item.description}
-                                      </div>
-                                    </div>
-                                  ))}
-                                </div>
-                              </div>
-                            )}
-                          </div>
-
-                        </div>
-                      </motion.div>
-                    )}
-                  </div>
-                </motion.div>
-              );
-            })}
+      {/* ── Bento Grid ── */}
+      <section className="py-16 md:py-24 bg-[var(--color-bg)]">
+        <div className="container-width">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-6 max-w-6xl mx-auto">
+            {treatments.map((t, i) => (
+              <TreatmentCard key={t.title} treatment={t} index={i} />
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Payment Info */}
-      <section className="section-padding bg-[var(--color-bg-mint)]">
+      {/* ── Payment Info ── */}
+      <section className="py-16 md:py-24 bg-[var(--color-bg-blue)]">
         <div className="container-width max-w-5xl">
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="card p-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-2xl border border-[var(--color-border)] p-8"
+            >
               <h3 className="font-heading font-600 text-xl text-[var(--color-primary)] mb-5">
                 Betalingsinformasjon
               </h3>
@@ -327,15 +459,21 @@ export default function Behandlinger() {
                   "Avbetalingsordninger kan avtales",
                   "Trygderefusjon for stønadberettigede behandlinger",
                 ].map((item) => (
-                  <li key={item} className="flex items-start gap-2 text-[var(--color-text-secondary)] font-sans font-400">
+                  <li key={item} className="flex items-start gap-2.5 text-[var(--color-text-secondary)] font-sans font-400 text-[15px]">
                     <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] mt-2.5 shrink-0" />
                     {item}
                   </li>
                 ))}
               </ul>
-            </div>
+            </motion.div>
 
-            <div className="card p-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="bg-white rounded-2xl border border-[var(--color-border)] p-8"
+            >
               <h3 className="font-heading font-600 text-xl text-[var(--color-primary)] mb-5">
                 Trygderefusjon
               </h3>
@@ -348,15 +486,18 @@ export default function Behandlinger() {
                 Spør oss gjerne om dette ved bestilling av time, så informerer
                 vi deg om dine rettigheter.
               </p>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* CTA */}
+      {/* ── CTA ── */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-[var(--color-primary)]" />
-        <div className="relative z-10 container-width py-16 text-center">
+        <div className="absolute inset-0">
+          <div className="absolute -top-[30%] -right-[15%] w-[50vw] h-[50vw] rounded-full bg-[var(--color-accent)]/10 blur-3xl" />
+        </div>
+        <div className="relative z-10 container-width py-16 md:py-20 text-center">
           <h2 className="heading-section text-white mb-4">
             Usikker på hvilken behandling du trenger?
           </h2>
@@ -365,11 +506,11 @@ export default function Behandlinger() {
             med å finne den beste løsningen.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/kontakt" className="btn-primary bg-white text-[var(--color-primary-dark)] hover:bg-[var(--color-bg-cream)] px-8 py-4">
+            <Link href="/kontakt" className="btn-primary bg-white text-[var(--color-primary)] hover:bg-[var(--color-bg-cream)] px-8 py-4 cursor-pointer">
               <Calendar className="size-5" />
               Kontakt oss
             </Link>
-            <a href="tel:61280412" className="btn-secondary px-8 py-4">
+            <a href="tel:61280412" className="btn-secondary px-8 py-4 cursor-pointer">
               <Phone className="size-5" />
               Ring 61 28 04 12
             </a>
