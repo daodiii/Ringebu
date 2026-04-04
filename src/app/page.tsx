@@ -1,10 +1,23 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion, useInView } from "framer-motion";
-import { ArrowRight, Phone, ChevronRight } from "lucide-react";
+import { motion, useInView, AnimatePresence } from "framer-motion";
+import {
+  ArrowRight,
+  Phone,
+  ChevronRight,
+  ChevronDown,
+  User,
+  Sparkles,
+  ShieldCheck,
+  Zap,
+  Heart,
+  Calendar,
+  Star,
+  Clock,
+} from "lucide-react";
 import {
   treatments,
   treatmentColors,
@@ -462,6 +475,315 @@ function CTASection() {
   );
 }
 
+/* ─────────────────────── BETALINGSSTØTTE ─────────────────────── */
+
+const supportCategories = [
+  {
+    icon: User,
+    title: "Barn og ungdom",
+    subtitle: "0–18 år — offentlig tannklinikk",
+    badge: "Gratis",
+    details: [
+      {
+        label: "Hvem har rett?",
+        text: "Alle barn og ungdom fra fødsel til det kalenderåret de fyller **18 år**. Automatisk innkalling fra offentlig tannklinikk i ditt område.",
+      },
+      {
+        label: "Hva dekkes?",
+        text: "All undersøkelse og behandling er **helt gratis** gjennom Den offentlige tannhelsetjenesten — unntatt tannregulering (kjeveortopedi).",
+      },
+    ],
+  },
+  {
+    icon: Sparkles,
+    title: "Unge voksne (19–28 år)",
+    subtitle: "Redusert egenandel på offentlig klinikk",
+    badge: "75 % rabatt",
+    details: [
+      {
+        label: "Hvem har rett?",
+        text: "Unge voksne fra det kalenderåret de fyller 19 til og med det kalenderåret de fyller **28 år**. Du må selv ta kontakt — det er ikke automatisk.",
+      },
+      {
+        label: "Hva koster det?",
+        text: "Du betaler kun **25 % egenandel** basert på offentlige takster. Gjelder kun på offentlige tannklinikker.",
+      },
+    ],
+    stat: { label: "Du betaler kun", value: "25 %", suffix: "av offentlige takster" },
+  },
+  {
+    icon: ShieldCheck,
+    title: "HELFO-stønad",
+    subtitle: "Refusjon fra folketrygden",
+    badge: "15 tilstander",
+    details: [
+      {
+        label: "Vanlige tilstander",
+        text: "**Periodontitt** · Munntørrhet · Bittanomalier · Tannutviklingsforstyrrelser · Tannskade ved ulykke · Nedsatt egenomsorg ved kronisk sykdom — og flere. Totalt 15 stønadspunkter.",
+      },
+      {
+        label: "Slik fungerer det",
+        text: "Du trenger ikke søke selv. **Tannlegen vurderer** om du kvalifiserer og sender kravet til HELFO på dine vegne.",
+      },
+    ],
+  },
+  {
+    icon: Star,
+    title: "Frikort",
+    subtitle: "Egenandelstak per kalenderår",
+    badge: "kr 3 278",
+    details: [
+      {
+        label: "Slik fungerer det",
+        text: "Når du har betalt over **kr 3 278** i godkjente egenandeler i løpet av et kalenderår, får du frikort automatisk innen ca. 3 uker.",
+      },
+      {
+        label: "For tannbehandling",
+        text: "Kun egenandeler for HELFO-punkt **5 og 6** (kjevesykdom og periodontitt) teller mot frikortet. Vanlig tannbehandling teller ikke.",
+      },
+    ],
+    stat: { label: "Egenandelstak 2025:", value: "kr 3 278", suffix: "" },
+  },
+  {
+    icon: Zap,
+    title: "NAV sosialhjelp",
+    subtitle: "Økonomisk støtte ved behov",
+    badge: "Behovsprøvd",
+    details: [
+      {
+        label: "Hvem kan søke?",
+        text: "Alle som **ikke har råd** til nødvendig tannbehandling og ikke kvalifiserer for andre ordninger. NAV vurderer din totale økonomi.",
+      },
+      {
+        label: "Slik søker du",
+        text: "Få et skriftlig **behandlings- og kostnadsoverslag** fra tannlegen. Søk hos ditt lokale NAV-kontor **før** du starter behandlingen.",
+      },
+    ],
+  },
+  {
+    icon: Clock,
+    title: "Eldre og uføre",
+    subtitle: "Sykehjem og hjemmesykepleie",
+    badge: "Gratis",
+    details: [
+      {
+        label: "Hvem har rett?",
+        text: "Beboere i **sykehjem**, personer med ukentlig **hjemmesykepleie** (min. 3 md. varighet), og personer med psykisk utviklingshemming.",
+      },
+      {
+        label: "Viktig å vite",
+        text: "Ordningen forutsetter at omsorgssituasjonen varer **mer enn 3 måneder**. Mottakere av kun praktisk bistand/hjemmehjelp kvalifiserer ikke.",
+      },
+    ],
+  },
+  {
+    icon: Heart,
+    title: "Tannlegeskrekk",
+    subtitle: "Tilpasset behandling og mulig støtte",
+    badge: "Mulig støtte",
+    details: [
+      {
+        label: "Mulig HELFO-støtte",
+        text: "Dokumentert odontofobi som har ført til **sterkt nedsatt egenomsorg** kan gi rett til refusjon via HELFO. Krever dokumentasjon fra lege eller psykolog.",
+      },
+      {
+        label: "Hos oss",
+        text: "Vi tilbyr tilpasset, skånsom behandling med **ekstra tid** og et trygt, rolig miljø. Mulighet for pauser underveis.",
+      },
+    ],
+  },
+  {
+    icon: Calendar,
+    title: "Delbetaling",
+    subtitle: "Fleksibel nedbetaling",
+    badge: "Rentefritt",
+    details: [
+      {
+        label: "Fleksibel betaling",
+        text: "Vi tilbyr **rentefri delbetaling** i 6–12 måneder. Lengre perioder (opptil 60 md.) er tilgjengelig med rente. Spør oss om mulighetene.",
+      },
+    ],
+  },
+];
+
+function renderBold(text: string) {
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  return parts.map((part, i) =>
+    part.startsWith("**") && part.endsWith("**") ? (
+      <strong key={i} className="font-600 text-[var(--color-text-primary)]">
+        {part.replace(/\*\*/g, "")}
+      </strong>
+    ) : (
+      <span key={i}>{part}</span>
+    )
+  );
+}
+
+function SupportCard({
+  item,
+  index,
+}: {
+  item: (typeof supportCategories)[number];
+  index: number;
+}) {
+  const [open, setOpen] = useState(false);
+  const Icon = item.icon;
+
+  return (
+    <SectionFade delay={index * 0.06}>
+      <div
+        onClick={() => setOpen(!open)}
+        className={`
+          relative bg-white rounded-2xl border overflow-hidden cursor-pointer
+          transition-all duration-300
+          ${
+            open
+              ? "border-[var(--color-accent-light)] shadow-lg shadow-[var(--color-primary)]/5"
+              : "border-[var(--color-border)] hover:border-[var(--color-accent-light)] hover:shadow-lg hover:shadow-[var(--color-primary)]/5 hover:-translate-y-0.5"
+          }
+        `}
+      >
+        {/* Left accent bar */}
+        <div
+          className={`absolute top-0 left-0 w-[3px] h-full bg-[var(--color-accent)] rounded-r-sm transition-opacity duration-300 ${
+            open ? "opacity-100" : "opacity-0"
+          }`}
+        />
+
+        {/* Header */}
+        <div className="flex items-center gap-4 p-6">
+          <div
+            className={`w-12 h-12 rounded-[14px] flex items-center justify-center shrink-0 transition-all duration-300 ${
+              open
+                ? "bg-[var(--color-accent)]"
+                : "bg-[var(--color-bg-blue)] group-hover:bg-[var(--color-accent)]"
+            }`}
+          >
+            <Icon
+              className={`size-[22px] transition-colors duration-300 ${
+                open ? "text-white" : "text-[var(--color-primary-light)]"
+              }`}
+              strokeWidth={1.8}
+            />
+          </div>
+          <div className="flex-1 min-w-0">
+            <h3 className="font-heading font-600 text-[17px] text-[var(--color-primary)]">
+              {item.title}
+            </h3>
+            <p className="text-[13px] text-[var(--color-text-muted)] font-sans font-400">
+              {item.subtitle}
+            </p>
+          </div>
+          <span className="hidden sm:inline-block bg-[var(--color-bg-cream)] text-[var(--color-accent)] text-[11px] font-700 px-3 py-1.5 rounded-lg tracking-wide shrink-0">
+            {item.badge}
+          </span>
+          <ChevronDown
+            className={`size-[18px] text-[var(--color-text-muted)] transition-all duration-300 shrink-0 ${
+              open ? "rotate-180 text-[var(--color-accent)]" : ""
+            }`}
+            strokeWidth={2.5}
+          />
+        </div>
+
+        {/* Expandable body */}
+        <AnimatePresence>
+          {open && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+              className="overflow-hidden"
+            >
+              <div className="px-6 pb-6">
+                <div className="border-t border-[var(--color-border)] pt-5 space-y-3">
+                  {item.details.map((d) => (
+                    <div
+                      key={d.label}
+                      className="bg-[var(--color-stone-50)] rounded-xl p-5"
+                    >
+                      <p className="text-[10px] font-700 uppercase tracking-[0.18em] text-[var(--color-accent)] mb-2">
+                        {d.label}
+                      </p>
+                      <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed font-sans font-300">
+                        {renderBold(d.text)}
+                      </p>
+                    </div>
+                  ))}
+                  {item.stat && (
+                    <div className="flex items-center gap-3 bg-[var(--color-primary)] text-white rounded-xl px-5 py-3 mt-2">
+                      <span className="text-[13px] font-500">{item.stat.label}</span>
+                      <span className="font-heading font-700 text-xl text-[var(--color-accent-light)]">
+                        {item.stat.value}
+                      </span>
+                      {item.stat.suffix && (
+                        <span className="text-[13px] font-500 text-white/80">
+                          {item.stat.suffix}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </SectionFade>
+  );
+}
+
+function BetalingsstotteSection() {
+  return (
+    <section className="py-24 md:py-32 bg-[var(--color-bg-yellow)]">
+      <div className="container-width">
+        {/* Header */}
+        <SectionFade>
+          <div className="text-center mb-14 md:mb-16">
+            <div className="flex items-center justify-center gap-3 mb-5">
+              <div className="w-10 h-0.5 rounded-full bg-[var(--color-accent)]" />
+              <span className="text-[11px] font-700 uppercase tracking-[0.22em] text-[var(--color-accent)]">
+                Økonomi & Rettigheter
+              </span>
+              <div className="w-10 h-0.5 rounded-full bg-[var(--color-accent)]" />
+            </div>
+            <h2 className="heading-section text-[var(--color-primary)] mb-4">
+              Støtte til tannbehandling
+            </h2>
+            <p className="text-[17px] text-[var(--color-text-secondary)] font-sans font-300 max-w-xl mx-auto leading-relaxed">
+              Visste du at mange har rett på hel eller delvis dekning av
+              tannlegekostnader? Finn ut hva som gjelder for deg.
+            </p>
+          </div>
+        </SectionFade>
+
+        {/* Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto">
+          {supportCategories.map((item, i) => (
+            <SupportCard key={item.title} item={item} index={i} />
+          ))}
+        </div>
+
+        {/* CTA */}
+        <SectionFade delay={0.4}>
+          <div className="text-center mt-14">
+            <p className="text-[var(--color-text-secondary)] font-sans font-400 text-[15px] mb-5">
+              Usikker på hva du har rett på? Vi hjelper deg å finne ut av det.
+            </p>
+            <a
+              href="tel:61280412"
+              className="btn-primary px-8 py-4"
+            >
+              <Phone className="size-[18px]" />
+              Ring 61 28 04 12
+            </a>
+          </div>
+        </SectionFade>
+      </div>
+    </section>
+  );
+}
+
 /* ─────────────────────── MAIN PAGE ─────────────────────── */
 
 export default function HomePage() {
@@ -469,6 +791,7 @@ export default function HomePage() {
     <main>
       <HeroSection />
       <TreatmentsSection />
+      <BetalingsstotteSection />
       <TipsAndSymptomsSection />
       <ArticlesSection />
       <CTASection />
