@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Calendar, Phone, ArrowRight } from "lucide-react";
+import { ArrowUpRight, Calendar, Phone } from "lucide-react";
 import { symptoms } from "@/data/content";
 
 export default function SymptomerPage() {
@@ -46,10 +46,7 @@ export default function SymptomerPage() {
                   onClick={() => setExpanded(expanded === i ? null : i)}
                   className="w-full text-left bg-white rounded-2xl p-8 border border-[var(--color-border)] hover:border-[var(--color-accent)] transition-all duration-300 hover:shadow-lg hover:shadow-[var(--color-accent)]/5 group"
                 >
-                  <div className="flex items-start gap-5">
-                    <div className="w-14 h-14 rounded-2xl bg-[var(--color-bg-blue)] flex items-center justify-center shrink-0 group-hover:bg-[var(--color-accent)]/10 transition-colors">
-                      <s.icon className="size-7 text-[var(--color-primary-light)]" />
-                    </div>
+                  <div>
                     <div className="flex-1">
                       <div className="flex items-center justify-between mb-2">
                         <h2 className="font-heading font-600 text-xl text-[var(--color-primary)]">
