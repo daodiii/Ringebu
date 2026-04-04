@@ -6,6 +6,19 @@ import { motion, AnimatePresence, useInView } from "framer-motion";
 import {
   ChevronDown,
   Phone,
+  Zap,
+  Droplets,
+  Thermometer,
+  AlertCircle,
+  Wind,
+  Flame,
+  Frown,
+  ShieldCheck,
+  User,
+  Star,
+  Clock,
+  Sparkles,
+  CircleDot,
   ArrowRight,
 } from "lucide-react";
 
@@ -53,6 +66,7 @@ function ExpandableItem({
   title,
   preview,
   content,
+  icon: Icon,
   badge,
   index,
   accentColor = "var(--color-accent)",
@@ -60,6 +74,7 @@ function ExpandableItem({
   title: string;
   preview: string;
   content: string[];
+  icon: React.ElementType;
   badge?: string;
   index: number;
   accentColor?: string;
@@ -90,6 +105,18 @@ function ExpandableItem({
 
         {/* Header */}
         <div className="flex items-center gap-4 p-5 md:p-6">
+          <div
+            className={`w-11 h-11 rounded-[12px] flex items-center justify-center shrink-0 transition-all duration-300 ${
+              open ? "bg-[var(--color-accent)]" : "bg-[var(--color-bg-blue)]"
+            }`}
+          >
+            <Icon
+              className={`size-5 transition-colors duration-300 ${
+                open ? "text-white" : "text-[var(--color-primary-light)]"
+              }`}
+              strokeWidth={1.8}
+            />
+          </div>
           <div className="flex-1 min-w-0">
             <h3 className="font-heading font-600 text-base md:text-[17px] text-[var(--color-primary)] leading-snug">
               {title}
@@ -182,7 +209,7 @@ function SectionNav({
 
 const tipsData = [
   {
-
+    icon: Sparkles,
     title: "Kaffe, brunost og tennene dine",
     preview: "Nordmenn drikker i snitt 4 kopper kaffe om dagen — men svart kaffe kan faktisk beskytte mot hull.",
     content: [
@@ -192,7 +219,7 @@ const tipsData = [
     ],
   },
   {
-
+    icon: Zap,
     title: "Elektrisk vs. manuell tannbørste",
     preview: "Elektriske børster fjerner opptil 21 % mer plakk, viser studier — men teknikken teller mest.",
     content: [
@@ -202,7 +229,7 @@ const tipsData = [
     ],
   },
   {
-
+    icon: Clock,
     title: "Når må tannbørsten byttes?",
     preview: "Tre måneder er regelen, men børsten kan være ubrukelig allerede etter seks uker.",
     content: [
@@ -212,7 +239,7 @@ const tipsData = [
     ],
   },
   {
-
+    icon: Droplets,
     title: "Munnskyll: når det hjelper og når du kaster bort penger",
     preview: "Feil timing kan redusere effekten av tannkremen din. Timing er alt.",
     content: [
@@ -222,7 +249,7 @@ const tipsData = [
     ],
   },
   {
-
+    icon: ShieldCheck,
     title: "Fluorid for voksne — ikke bare barnas greie",
     preview: "Emaljen utsettes for syreangrep hele livet, og fluorid er det eneste stoffet som reparerer tidlig skade.",
     content: [
@@ -232,7 +259,7 @@ const tipsData = [
     ],
   },
   {
-
+    icon: AlertCircle,
     title: "Tanngnissing og tannpressing: den skjulte trusselen",
     preview: "Opptil 20 % gnisser tenner uten å vite det. Kreftene kan være ti ganger sterkere enn vanlig tygging.",
     content: [
@@ -242,7 +269,7 @@ const tipsData = [
     ],
   },
   {
-
+    icon: CircleDot,
     title: "Spyttets superkrefter: kroppens egen tannbeskyttelse",
     preview: "Du produserer opptil 1,5 liter spytt daglig — en av kroppens mest undervurderte forsvarsmekanismer.",
     content: [
@@ -252,7 +279,7 @@ const tipsData = [
     ],
   },
   {
-
+    icon: Star,
     title: "Reisekit for tennene: smart tannpleie på farten",
     preview: "En tannlegetime i utlandet kan koste tusenlapper uten forsikring. Slik pakker du smart.",
     content: [
@@ -262,7 +289,7 @@ const tipsData = [
     ],
   },
   {
-
+    icon: User,
     title: "Graviditet og tannhelse",
     preview: "«Hvert barn koster en tann» er en myte — men hormoner og morgenkvalmhet påvirker tannhelsen reelt.",
     content: [
@@ -272,7 +299,7 @@ const tipsData = [
     ],
   },
   {
-
+    icon: Thermometer,
     title: "Årstidens tannhelsetrusler",
     preview: "Norsk klima byr på unike utfordringer — fra vinterens tørre luft til sommerens sportsskader.",
     content: [
@@ -285,7 +312,7 @@ const tipsData = [
 
 const symptomsData = [
   {
-
+    icon: Zap,
     title: "Tannpine",
     preview: "Typen smerte avslører ofte hva som er galt — skarp, bankende eller verkende har ulike årsaker.",
     badge: "Oppsøk snarest",
@@ -296,7 +323,7 @@ const symptomsData = [
     ],
   },
   {
-
+    icon: Droplets,
     title: "Blødende tannkjøtt",
     preview: "Tannkjøtt som blør regelmessig er kroppens advarsel om betennelse under overflaten.",
     badge: "Bør undersøkes",
@@ -307,7 +334,7 @@ const symptomsData = [
     ],
   },
   {
-
+    icon: Thermometer,
     title: "Sensitive tenner",
     preview: "Den plutselige isen gjennom tannen — dentinhypersensitivitet rammer opptil 30 % av oss.",
     badge: "Vanlig tilstand",
@@ -318,7 +345,7 @@ const symptomsData = [
     ],
   },
   {
-
+    icon: AlertCircle,
     title: "Hovne tannkjøtt",
     preview: "Om hevelsen er lokal eller spredt gir viktig informasjon om årsaken — fra matbit til infeksjon.",
     badge: "Oppsøk tannlege",
@@ -329,7 +356,7 @@ const symptomsData = [
     ],
   },
   {
-
+    icon: Wind,
     title: "Dårlig ånde (halitose)",
     preview: "Vedvarende dårlig ånde handler ofte om mer enn tannpuss — bakterier, tørr munn og mageproblemer kan ligge bak.",
     badge: "Bør undersøkes",
@@ -340,7 +367,7 @@ const symptomsData = [
     ],
   },
   {
-
+    icon: Frown,
     title: "Kjevesmerter",
     preview: "Smerter i kjeven, knepping og morgenstivhet — fra nattlig tanngnissing til stressrelaterte spenninger.",
     badge: "Bør undersøkes",
@@ -351,7 +378,7 @@ const symptomsData = [
     ],
   },
   {
-
+    icon: Flame,
     title: "Løse tenner hos voksne",
     preview: "En tann som beveger seg hos en voksen er alltid et alvorlig signal som krever rask undersøkelse.",
     badge: "Haster",
@@ -362,7 +389,7 @@ const symptomsData = [
     ],
   },
   {
-
+    icon: CircleDot,
     title: "Misfarging av tenner",
     preview: "Misfargede tenner kan være overfladisk og enkelt å behandle, eller stamme fra dypere endringer.",
     badge: "Varierer",
@@ -376,7 +403,7 @@ const symptomsData = [
 
 const supportData = [
   {
-
+    icon: User,
     title: "Barn og ungdom (0–18 år)",
     preview: "Alle under 18 har rett til gratis tannbehandling i den offentlige tannhelsetjenesten.",
     badge: "Gratis",
@@ -387,7 +414,7 @@ const supportData = [
     ],
   },
   {
-
+    icon: Sparkles,
     title: "Unge voksne (19–28 år)",
     preview: "Du betaler kun 25 % av offentlige takster for nødvendig tannbehandling.",
     badge: "75 % rabatt",
@@ -398,7 +425,7 @@ const supportData = [
     ],
   },
   {
-
+    icon: ShieldCheck,
     title: "HELFO-stønad",
     preview: "15 medisinske tilstander kan gi rett til refusjon fra folketrygden for tannbehandling.",
     badge: "Refusjon",
@@ -409,7 +436,7 @@ const supportData = [
     ],
   },
   {
-
+    icon: Star,
     title: "Frikort",
     preview: "Når du har betalt kr 3 278 i godkjente egenandeler i løpet av et år, slipper du mer.",
     badge: "kr 3 278",
@@ -420,7 +447,7 @@ const supportData = [
     ],
   },
   {
-
+    icon: Zap,
     title: "NAV sosialhjelp",
     preview: "Har du ikke råd til tannlege? NAV kan dekke hele eller deler av nødvendig behandling.",
     badge: "Behovsprøvd",
@@ -431,7 +458,7 @@ const supportData = [
     ],
   },
   {
-
+    icon: Clock,
     title: "Eldre og uføre",
     preview: "Sykehjem, hjemmesykepleie eller psykisk utviklingshemming gir rett til gratis tannbehandling.",
     badge: "Gratis",
@@ -543,7 +570,7 @@ export default function InformasjonPage() {
                 title={tip.title}
                 preview={tip.preview}
                 content={tip.content}
-
+                icon={tip.icon}
                 index={i}
               />
             ))}
@@ -584,7 +611,7 @@ export default function InformasjonPage() {
                 title={s.title}
                 preview={s.preview}
                 content={s.content}
-
+                icon={s.icon}
                 badge={s.badge}
                 index={i}
               />
@@ -649,7 +676,7 @@ export default function InformasjonPage() {
                 title={s.title}
                 preview={s.preview}
                 content={s.content}
-
+                icon={s.icon}
                 badge={s.badge}
                 index={i}
               />

@@ -1,40 +1,40 @@
 @import "tailwindcss";
 
 @theme inline {
-  /* ── Warm Espresso Anchors ── */
-  --color-primary: #3D2E25;
-  --color-primary-dark: #2A1E17;
-  --color-primary-light: #5A4A3F;
+  /* ── Dark Anchors ── */
+  --color-primary: #2C3E50;
+  --color-primary-dark: #1A2A38;
+  --color-primary-light: #3D5A6E;
 
-  /* ── Bronze Accent ── */
+  /* ── Accent ── */
   --color-accent: #B8845C;
   --color-accent-hover: #9A6F4A;
-  --color-accent-light: #D4B896;
+  --color-accent-light: #D4C4AA;
 
-  /* ── Section Tints (all warm) ── */
-  --color-bg-blue: #EDE3D5;
+  /* ── Section Tints ── */
+  --color-bg-blue: #E2EBF0;
   --color-bg-yellow: #F5EDE4;
-  --color-bg-mint: #E8DDD0;
-  --color-bg-cream: #FAF6F1;
+  --color-bg-mint: #E2EBF0;
+  --color-bg-cream: #F0EDE8;
 
-  /* ── Warm Brown Scale ── */
-  --color-stone-50: #FAF7F3;
-  --color-stone-100: #F5EFE8;
-  --color-stone-200: #E8DDD0;
-  --color-stone-300: #D4C4AA;
-  --color-stone-400: #B09878;
-  --color-stone-500: #8B7355;
-  --color-stone-600: #6B5344;
-  --color-stone-700: #5A4A3F;
-  --color-stone-800: #4A3728;
-  --color-stone-900: #3D2E25;
+  /* ── Cool Slate Scale ── */
+  --color-stone-50: #F8FAFB;
+  --color-stone-100: #F0F3F5;
+  --color-stone-200: #D5DEE5;
+  --color-stone-300: #B8C5CF;
+  --color-stone-400: #8A9BAA;
+  --color-stone-500: #64788A;
+  --color-stone-600: #4A5568;
+  --color-stone-700: #374151;
+  --color-stone-800: #1F2937;
+  --color-stone-900: #1A2A38;
 
   /* ── Semantic Colors ── */
-  --color-bg: #FFFCF8;
-  --color-text-primary: #3D2E25;
-  --color-text-secondary: #6B5344;
-  --color-text-muted: #B09878;
-  --color-border: #E8DDD0;
+  --color-bg: #ffffff;
+  --color-text-primary: #1A2A38;
+  --color-text-secondary: #4A5568;
+  --color-text-muted: #8A9BAA;
+  --color-border: #D5DEE5;
 
   /* ── Typography ── */
   --font-sans: var(--font-dm-sans), system-ui, sans-serif;

@@ -1,31 +1,54 @@
+import {
+  Stethoscope,
+  Sparkles,
+  CircleDot,
+  ShieldAlert,
+  ShieldCheck,
+  Heart,
+  Zap,
+  Droplets,
+  Thermometer,
+  AlertCircle,
+  Wind,
+  Flame,
+  Unlink,
+  Frown,
+} from "lucide-react";
+
 /* ── Treatments ── */
 export const treatments = [
   {
+    icon: Stethoscope,
     title: "Generell tannbehandling",
     description: "Undersøkelser, fyllinger, rotbehandling og alt innen standard tannpleie for hele familien.",
     color: "emerald",
   },
   {
+    icon: Sparkles,
     title: "Kosmetisk tannpleie",
     description: "Tannbleking, fasetter og estetiske behandlinger for et vakrere smil.",
     color: "sky",
   },
   {
+    icon: CircleDot,
     title: "Tannimplantater",
     description: "Permanente erstatninger for manglende tenner som ser og føles naturlige.",
     color: "violet",
   },
   {
+    icon: ShieldAlert,
     title: "Akutt tannhjelp",
     description: "Rask hjelp ved tannpine, skader og akutte tannproblemer.",
     color: "rose",
   },
   {
+    icon: ShieldCheck,
     title: "Forebyggende behandling",
     description: "Tannrens, fluorbehandling og veiledning for å unngå fremtidige problemer.",
     color: "amber",
   },
   {
+    icon: Heart,
     title: "Rotbehandling",
     description: "Skånsom behandling for å redde infiserte tenner og lindre smerte.",
     color: "teal",
@@ -44,6 +67,7 @@ export const treatmentColors: Record<string, { bg: string; text: string; icon: s
 /* ── Symptoms ── */
 export const symptoms = [
   {
+    icon: Zap,
     title: "Tannpine",
     description: "Vedvarende eller plutselig smerte i tenner kan tyde på hull, infeksjon eller sprekk i tannen.",
     severity: "Oppsøk tannlege snarest",
@@ -52,7 +76,7 @@ export const symptoms = [
     slug: "tannpine-arsaker-behandling",
   },
   {
-
+    icon: Droplets,
     title: "Blødende tannkjøtt",
     description: "Tannkjøtt som blør ved tannpuss eller bruk av tanntråd kan være et tegn på gingivitt.",
     severity: "Bør undersøkes",
@@ -61,7 +85,7 @@ export const symptoms = [
     slug: "blodende-tannkjott",
   },
   {
-
+    icon: Thermometer,
     title: "Sensitive tenner",
     description: "Smerte eller ubehag ved varme, kulde eller søt mat kan skyldes eksponert dentin.",
     severity: "Vanlig, men bør sjekkes",
@@ -70,7 +94,7 @@ export const symptoms = [
     slug: "tannpine-arsaker-behandling",
   },
   {
-
+    icon: AlertCircle,
     title: "Hovne tannkjøtt",
     description: "Hevelse i tannkjøttet kan indikere infeksjon, betennelse eller periodontitt.",
     severity: "Oppsøk tannlege",
@@ -79,7 +103,7 @@ export const symptoms = [
     slug: "blodende-tannkjott",
   },
   {
-
+    icon: Wind,
     title: "Dårlig ånde",
     description: "Vedvarende dårlig ånde kan skyldes bakterier, tannkjøttsykdom eller andre tilstander.",
     severity: "Bør undersøkes",
@@ -88,7 +112,7 @@ export const symptoms = [
     slug: "forebygge-hull-i-tennene",
   },
   {
-
+    icon: Flame,
     title: "Tannkjøttbetennelse",
     description: "Rødt, hovent og ømt tannkjøtt er ofte tegn på begynnende periodontitt.",
     severity: "Bør behandles",
@@ -97,7 +121,7 @@ export const symptoms = [
     slug: "blodende-tannkjott",
   },
   {
-
+    icon: Unlink,
     title: "Løse tenner",
     description: "Tenner som er løse eller har endret posisjon kan indikere alvorlig periodontitt.",
     severity: "Haster – oppsøk tannlege",
@@ -106,7 +130,7 @@ export const symptoms = [
     slug: "blodende-tannkjott",
   },
   {
-
+    icon: Frown,
     title: "Kjevesmerter",
     description: "Smerter i kjeven, hodepine eller knepping kan skyldes tanngnissing eller kjeveproblemer.",
     severity: "Bør undersøkes",
