@@ -1,40 +1,40 @@
 @import "tailwindcss";
 
 @theme inline {
-  /* ── Dark Anchors ── */
-  --color-primary: #2C3E50;
-  --color-primary-dark: #1A2A38;
-  --color-primary-light: #3D5A6E;
+  /* ── Warm Espresso Anchors ── */
+  --color-primary: #3C2415;
+  --color-primary-dark: #2A1810;
+  --color-primary-light: #5C3D2E;
 
-  /* ── Accent ── */
-  --color-accent: #B8845C;
-  --color-accent-hover: #9A6F4A;
-  --color-accent-light: #D4C4AA;
+  /* ── Terracotta Accent ── */
+  --color-accent: #C67B5C;
+  --color-accent-hover: #A8624A;
+  --color-accent-light: #D4B896;
 
-  /* ── Section Tints ── */
-  --color-bg-blue: #E2EBF0;
-  --color-bg-yellow: #F5EDE4;
-  --color-bg-mint: #E2EBF0;
-  --color-bg-cream: #F0EDE8;
+  /* ── Warm Section Tints ── */
+  --color-bg-blue: #EDE4D8;
+  --color-bg-yellow: #F2EBE0;
+  --color-bg-mint: #E8DED1;
+  --color-bg-cream: #F7F0E8;
 
-  /* ── Cool Slate Scale ── */
-  --color-stone-50: #F8FAFB;
-  --color-stone-100: #F0F3F5;
-  --color-stone-200: #D5DEE5;
-  --color-stone-300: #B8C5CF;
-  --color-stone-400: #8A9BAA;
-  --color-stone-500: #64788A;
-  --color-stone-600: #4A5568;
-  --color-stone-700: #374151;
-  --color-stone-800: #1F2937;
-  --color-stone-900: #1A2A38;
+  /* ── Warm Brown Scale ── */
+  --color-stone-50: #FAF7F2;
+  --color-stone-100: #F5EDE3;
+  --color-stone-200: #E8DDD0;
+  --color-stone-300: #D4C4AA;
+  --color-stone-400: #A89279;
+  --color-stone-500: #8B7355;
+  --color-stone-600: #6B5344;
+  --color-stone-700: #5C3D2E;
+  --color-stone-800: #4A2E1E;
+  --color-stone-900: #3C2415;
 
   /* ── Semantic Colors ── */
-  --color-bg: #ffffff;
-  --color-text-primary: #1A2A38;
-  --color-text-secondary: #4A5568;
-  --color-text-muted: #8A9BAA;
-  --color-border: #D5DEE5;
+  --color-bg: #FEFBF6;
+  --color-text-primary: #3C2415;
+  --color-text-secondary: #6B5344;
+  --color-text-muted: #A89279;
+  --color-border: #DDD3C5;
 
   /* ── Typography ── */
   --font-sans: var(--font-dm-sans), system-ui, sans-serif;
@@ -182,7 +182,7 @@ h1, h2, h3, h4, h5, h6 {
 .btn-primary:hover {
   background-color: var(--color-accent-hover);
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(184, 132, 92, 0.3);
+  box-shadow: 0 8px 30px rgba(198, 123, 92, 0.25);
 }
 
 .btn-secondary {
@@ -232,7 +232,7 @@ h1, h2, h3, h4, h5, h6 {
   background-color: var(--color-accent);
   color: white;
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(184, 132, 92, 0.2);
+  box-shadow: 0 8px 30px rgba(198, 123, 92, 0.2);
 }
 
 /* ── Nav Button ── */
@@ -276,7 +276,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .card:hover {
   border-color: var(--color-border);
-  box-shadow: 0 20px 60px rgba(184, 132, 92, 0.08);
+  box-shadow: 0 20px 60px rgba(60, 36, 21, 0.08);
   transform: translateY(-4px);
 }
 
