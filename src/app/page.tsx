@@ -106,23 +106,59 @@ function HeroSection() {
             </motion.div>
           </div>
 
-          {/* Right: Single Hero Image */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="relative aspect-[4/3] rounded-2xl overflow-hidden"
-          >
-            <Image
-              src="/images/ringebutannMain.jpg"
-              alt="Ringebu Tannlegesenter behandlingsrom"
-              fill
-              className="object-cover"
-              style={{ objectPosition: "center 60%" }}
-              priority
-              sizes="(max-width: 768px) 100vw, 50vw"
-            />
-          </motion.div>
+          {/* Right: Asymmetric Image Collage */}
+          <div className="grid grid-rows-[3fr_2fr] gap-2 aspect-[4/3]">
+            {/* Large top image */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="relative rounded-xl overflow-hidden"
+            >
+              <Image
+                src="/images/clinic-valley.jpg"
+                alt="Utsikt over Gudbrandsdalen fra Ringebu Tannlegesenter"
+                fill
+                className="object-cover"
+                style={{ objectPosition: "center 40%" }}
+                priority
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </motion.div>
+            {/* Two smaller bottom images */}
+            <div className="grid grid-cols-2 gap-2">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.5 }}
+                className="relative rounded-xl overflow-hidden"
+              >
+                <Image
+                  src="/images/clinic-instruments.jpg"
+                  alt="Moderne tannlegeutstyr ved Ringebu Tannlegesenter"
+                  fill
+                  className="object-cover"
+                  style={{ objectPosition: "center 50%" }}
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                />
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.65 }}
+                className="relative rounded-xl overflow-hidden"
+              >
+                <Image
+                  src="/images/ringebutannMain.jpg"
+                  alt="Ringebu Tannlegesenter behandlingsrom"
+                  fill
+                  className="object-cover"
+                  style={{ objectPosition: "center 60%" }}
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                />
+              </motion.div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -225,8 +261,17 @@ function TreatmentsSection() {
           {/* Accent Card - Kron og Bro */}
           <SectionFade className="md:col-span-4" delay={0.15}>
             <Link href="/behandlinger" className="group block h-full cursor-pointer">
-              <div className="rounded-2xl bg-gradient-to-br from-[var(--color-accent)]/[0.08] to-[var(--color-bg-cream)] border-2 border-[var(--color-accent)]/20 p-8 md:p-10 h-full flex flex-col justify-between min-h-[220px] transition-all duration-500 hover:shadow-[0_20px_60px_rgba(198,123,92,0.12)] hover:-translate-y-1 hover:border-[var(--color-accent)]/35">
-                <div>
+              <div className="relative rounded-2xl bg-gradient-to-br from-[var(--color-accent)]/[0.08] to-[var(--color-bg-cream)] border-2 border-[var(--color-accent)]/20 p-8 md:p-10 h-full flex flex-col justify-between min-h-[220px] transition-all duration-500 hover:shadow-[0_20px_60px_rgba(198,123,92,0.12)] hover:-translate-y-1 hover:border-[var(--color-accent)]/35 overflow-hidden">
+                <Image
+                  src="/images/toothbrush-colorful.png"
+                  alt=""
+                  fill
+                  className="object-cover opacity-[0.12] scale-110 transition-transform duration-700 group-hover:scale-105"
+                  style={{ objectPosition: "center" }}
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  aria-hidden="true"
+                />
+                <div className="relative z-10">
                   <span className="text-[10px] font-700 uppercase tracking-[0.2em] text-[var(--color-accent)] block mb-3">
                     Restaurering
                   </span>
@@ -237,7 +282,7 @@ function TreatmentsSection() {
                     Naturlig utseende restaureringer som gjenoppretter form, funksjon og selvtillit.
                   </p>
                 </div>
-                <div className="flex items-center gap-2 text-[var(--color-accent)] font-heading font-600 text-sm mt-6 group-hover:text-[var(--color-primary)] transition-colors">
+                <div className="relative z-10 flex items-center gap-2 text-[var(--color-accent)] font-heading font-600 text-sm mt-6 group-hover:text-[var(--color-primary)] transition-colors">
                   Se behandlinger
                   <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                 </div>

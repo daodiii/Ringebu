@@ -29,6 +29,7 @@ interface Treatment {
   variant: "dark" | "cream" | "accent" | "image";
   span: "wide" | "tall" | "standard";
   image?: string;
+  gradient?: string;
 }
 
 /* ─────────────── Data ─────────────── */
@@ -55,6 +56,7 @@ const treatments: Treatment[] = [
     variant: "image",
     span: "wide",
     image: "/images/ringebutannMain.jpg",
+    gradient: "linear-gradient(135deg, rgba(139,115,85,0.22) 0%, rgba(212,184,150,0.30) 100%)",
   },
   {
     title: "Bleking",
@@ -71,6 +73,7 @@ const treatments: Treatment[] = [
     prices: [],
     variant: "dark",
     span: "tall",
+    gradient: "linear-gradient(135deg, rgba(198,123,92,0.22) 0%, rgba(220,170,140,0.28) 100%)",
   },
   {
     title: "Fyllingsterapi",
@@ -91,6 +94,7 @@ const treatments: Treatment[] = [
     ],
     variant: "cream",
     span: "standard",
+    gradient: "linear-gradient(135deg, rgba(180,160,120,0.20) 0%, rgba(235,225,200,0.30) 100%)",
   },
   {
     title: "Kron og Bro",
@@ -109,6 +113,7 @@ const treatments: Treatment[] = [
     ],
     variant: "accent",
     span: "standard",
+    gradient: "linear-gradient(135deg, rgba(195,150,110,0.25) 0%, rgba(240,220,200,0.30) 100%)",
   },
   {
     title: "Rotfylling",
@@ -129,6 +134,7 @@ const treatments: Treatment[] = [
     ],
     variant: "cream",
     span: "wide",
+    gradient: "linear-gradient(135deg, rgba(160,140,130,0.20) 0%, rgba(210,200,190,0.28) 100%)",
   },
   {
     title: "Visdomstennene",
@@ -148,6 +154,7 @@ const treatments: Treatment[] = [
     ],
     variant: "dark",
     span: "standard",
+    gradient: "linear-gradient(135deg, rgba(100,135,110,0.18) 0%, rgba(180,210,185,0.25) 100%)",
   },
   {
     title: "Tannkjøtt & Tannstein",
@@ -168,6 +175,7 @@ const treatments: Treatment[] = [
     ],
     variant: "accent",
     span: "standard",
+    gradient: "linear-gradient(135deg, rgba(175,155,130,0.20) 0%, rgba(230,215,195,0.28) 100%)",
   },
   {
     title: "Bittskinner",
@@ -184,6 +192,7 @@ const treatments: Treatment[] = [
     prices: [],
     variant: "cream",
     span: "standard",
+    gradient: "linear-gradient(135deg, rgba(145,130,155,0.18) 0%, rgba(210,200,220,0.25) 100%)",
   },
   {
     title: "Tannlegeskrekk",
@@ -201,6 +210,7 @@ const treatments: Treatment[] = [
     variant: "image",
     span: "wide",
     image: "/images/about-clinic.jpg",
+    gradient: "linear-gradient(135deg, rgba(190,165,140,0.22) 0%, rgba(240,225,210,0.30) 100%)",
   },
 ];
 
@@ -289,9 +299,22 @@ function TreatmentCard({ treatment, index }: { treatment: Treatment; index: numb
         className={`
           ${v.bg} ${v.border} rounded-2xl overflow-hidden cursor-pointer
           transition-all duration-300 hover:-translate-y-1 ${v.hoverShadow}
-          h-full flex flex-col
+          h-full flex flex-col relative
         `}
+        style={
+          treatment.gradient && (treatment.variant === "cream" || treatment.variant === "accent")
+            ? { background: treatment.gradient }
+            : undefined
+        }
       >
+        {/* Gradient overlay for dark variant cards */}
+        {treatment.gradient && treatment.variant === "dark" && (
+          <div
+            className="absolute inset-0 z-0 pointer-events-none"
+            style={{ background: treatment.gradient }}
+          />
+        )}
+
         {/* Image header for image variants */}
         {treatment.variant === "image" && treatment.image && (
           <div className="relative aspect-[21/9] md:aspect-[3/1] overflow-hidden">
@@ -308,7 +331,14 @@ function TreatmentCard({ treatment, index }: { treatment: Treatment; index: numb
         )}
 
         {/* Card body */}
-        <div className="p-7 md:p-9 flex-1 flex flex-col">
+        <div
+          className="p-7 md:p-9 flex-1 flex flex-col"
+          style={
+            treatment.gradient && treatment.variant === "image"
+              ? { background: treatment.gradient }
+              : undefined
+          }
+        >
           {/* Header row */}
           <div className="flex items-start justify-between gap-4 mb-4">
             <div className="flex-1">
