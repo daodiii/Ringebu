@@ -52,6 +52,7 @@ function severityStyle(severity: string) {
       text: "text-rose-800",
       border: "border-rose-200",
       gradient: "linear-gradient(to bottom, #e11d48, #f97316)",
+      fill: "linear-gradient(135deg, rgba(225,29,72,0.12) 0%, rgba(249,115,22,0.06) 50%, rgba(255,255,255,0.9) 100%)",
       tint: "bg-rose-50/60",
     };
   if (severity.includes("snarest"))
@@ -60,6 +61,7 @@ function severityStyle(severity: string) {
       text: "text-amber-800",
       border: "border-amber-200",
       gradient: "linear-gradient(to bottom, #f59e0b, #d97706)",
+      fill: "linear-gradient(135deg, rgba(245,158,11,0.12) 0%, rgba(217,119,6,0.06) 50%, rgba(255,255,255,0.9) 100%)",
       tint: "bg-amber-50/60",
     };
   if (severity.includes("behandles"))
@@ -68,6 +70,7 @@ function severityStyle(severity: string) {
       text: "text-[var(--color-accent)]",
       border: "border-[var(--color-accent-light)]",
       gradient: "linear-gradient(to bottom, #C67B5C, #D4B896)",
+      fill: "linear-gradient(135deg, rgba(198,123,92,0.12) 0%, rgba(212,184,150,0.06) 50%, rgba(255,255,255,0.9) 100%)",
       tint: "bg-[var(--color-bg-cream)]",
     };
   return {
@@ -75,6 +78,7 @@ function severityStyle(severity: string) {
     text: "text-[var(--color-primary)]",
     border: "border-[var(--color-border)]",
     gradient: "linear-gradient(to bottom, #A89279, #D4B896)",
+    fill: "linear-gradient(135deg, rgba(168,146,121,0.12) 0%, rgba(212,184,150,0.06) 50%, rgba(255,255,255,0.9) 100%)",
     tint: "bg-[var(--color-bg-blue)]",
   };
 }
@@ -86,6 +90,14 @@ const routineGradients = [
   "linear-gradient(to bottom, #5C3D2E, #10b981)",
   "linear-gradient(to bottom, #10b981, #C67B5C)",
   "linear-gradient(to bottom, #A89279, #D4B896)",
+];
+
+const routineFills = [
+  "linear-gradient(135deg, rgba(198,123,92,0.12) 0%, rgba(212,184,150,0.06) 50%, rgba(255,255,255,0.9) 100%)",
+  "linear-gradient(135deg, rgba(212,184,150,0.12) 0%, rgba(92,61,46,0.06) 50%, rgba(255,255,255,0.9) 100%)",
+  "linear-gradient(135deg, rgba(92,61,46,0.12) 0%, rgba(16,185,129,0.06) 50%, rgba(255,255,255,0.9) 100%)",
+  "linear-gradient(135deg, rgba(16,185,129,0.12) 0%, rgba(198,123,92,0.06) 50%, rgba(255,255,255,0.9) 100%)",
+  "linear-gradient(135deg, rgba(168,146,121,0.12) 0%, rgba(212,184,150,0.06) 50%, rgba(255,255,255,0.9) 100%)",
 ];
 
 /* ─────────────── PAGE ─────────────── */
@@ -159,11 +171,12 @@ export default function SymptomerPage() {
                   <SectionFade key={s.title} delay={i * 0.08}>
                     <button
                       onClick={() => toggleExpanded(s.title)}
-                      className={`w-full text-left bg-white rounded-2xl border overflow-hidden transition-all duration-300 ${
+                      className={`w-full text-left rounded-2xl border overflow-hidden transition-all duration-300 ${
                         isOpen
                           ? "border-rose-300 shadow-lg shadow-rose-500/5"
                           : "border-[var(--color-border)] hover:border-rose-300 hover:shadow-lg hover:shadow-rose-500/5"
                       }`}
+                      style={{ background: style.fill }}
                     >
                       {/* Gradient left border */}
                       <div className="flex">
@@ -291,15 +304,17 @@ export default function SymptomerPage() {
               {routineSymptoms.map((s, i) => {
                 const isOpen = expanded.has(s.title);
                 const leftGradient = routineGradients[i % routineGradients.length];
+                const fillGradient = routineFills[i % routineFills.length];
                 return (
                   <SectionFade key={s.title} delay={i * 0.06}>
                     <button
                       onClick={() => toggleExpanded(s.title)}
-                      className={`w-full text-left bg-white rounded-2xl border overflow-hidden transition-all duration-300 ${
+                      className={`w-full text-left rounded-2xl border overflow-hidden transition-all duration-300 ${
                         isOpen
                           ? "border-[var(--color-accent)] shadow-lg shadow-[var(--color-accent)]/5"
                           : "border-[var(--color-border)] hover:border-[var(--color-accent)] hover:shadow-lg hover:shadow-[var(--color-accent)]/5"
                       }`}
+                      style={{ background: fillGradient }}
                     >
                       <div className="flex">
                         <div
