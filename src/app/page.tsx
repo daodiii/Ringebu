@@ -203,7 +203,7 @@ function TreatmentsSection() {
           {/* Large Featured Card - Forebyggende + Image */}
           <SectionFade className="md:col-span-8">
             <Link href="/behandlinger" className="group block h-full cursor-pointer">
-              <div className="rounded-2xl bg-[var(--color-bg-cream)] border border-[var(--color-border)] overflow-hidden h-full transition-all duration-500 hover:shadow-[0_20px_60px_rgba(60,36,21,0.1)] hover:-translate-y-1">
+              <div className="rounded-2xl bg-white border border-[var(--color-border)] overflow-hidden h-full transition-all duration-500 hover:shadow-[0_20px_60px_rgba(60,36,21,0.1)] hover:-translate-y-1">
                 <div className="relative aspect-[21/9] overflow-hidden">
                   <Image
                     src="/images/ringebutannMain.jpg"
@@ -288,7 +288,7 @@ function TreatmentsSection() {
 
           {/* Wide Card - Akutt tannhjelp */}
           <SectionFade className="md:col-span-8" delay={0.2}>
-            <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-cream)] p-8 md:p-10 flex flex-col md:flex-row items-center gap-8 md:gap-12 group h-full transition-all duration-500 hover:shadow-[0_20px_60px_rgba(60,36,21,0.08)] hover:-translate-y-1">
+            <div className="rounded-2xl border border-[var(--color-border)] bg-white p-8 md:p-10 flex flex-col md:flex-row items-center gap-8 md:gap-12 group h-full transition-all duration-500 hover:shadow-[0_20px_60px_rgba(60,36,21,0.08)] hover:-translate-y-1">
               <div className="w-full md:w-1/2">
                 <h3 className="text-xl md:text-2xl font-heading font-700 text-[var(--color-primary)] mb-3">
                   Akutt tannhjelp
@@ -468,7 +468,7 @@ function GuideSection() {
 
             {/* Tips & råd — terracotta-tinted card with article list */}
             <SectionFade className="lg:col-span-3" delay={0.15}>
-              <div className="rounded-2xl p-8 md:p-10 h-full bg-[var(--color-accent)]/[0.08] border-[1.5px] border-[var(--color-accent)]/20">
+              <div className="rounded-2xl p-8 md:p-10 h-full bg-white border-[1.5px] border-[var(--color-border)]">
                 <div className="flex items-center justify-between mb-8">
                   <h2 className="text-2xl md:text-3xl font-heading font-700 text-[var(--color-primary)]">
                     Tips & råd

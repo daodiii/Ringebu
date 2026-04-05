@@ -69,11 +69,13 @@ const topBorderColors: Record<string, string> = {
 export default function InformasjonPage() {
   return (
     <main className="pt-20">
-      {/* ── Hero — Reassuring ── */}
-      <section className="relative bg-[var(--color-bg-cream)] py-20 md:py-28 overflow-hidden">
-        {/* Decorative blobs */}
-        <div className="absolute -top-[20%] -right-[10%] w-[40vw] h-[40vw] rounded-full bg-[var(--color-accent)]/[0.05] blur-3xl" />
-        <div className="absolute -bottom-[15%] -left-[8%] w-[30vw] h-[30vw] rounded-full bg-[var(--color-accent-light)]/[0.07] blur-2xl" />
+      {/* ── Hero — Brown like other pages ── */}
+      <section className="relative bg-[var(--color-primary)] py-20 md:py-28 overflow-hidden">
+        <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-primary-light)] to-[var(--color-accent)]" />
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -top-[30%] -right-[15%] w-[50vw] h-[50vw] rounded-full bg-[var(--color-accent)]/8 blur-3xl" />
+          <div className="absolute -bottom-[20%] -left-[10%] w-[30vw] h-[30vw] rounded-full bg-[var(--color-accent-light)]/5 blur-3xl" />
+        </div>
 
         <div className="container-width relative z-10 text-center">
           <motion.div
@@ -81,10 +83,10 @@ export default function InformasjonPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="heading-display text-[var(--color-primary)] mb-5">
+            <h1 className="heading-display text-white mb-5">
               Støtte og rettigheter
             </h1>
-            <p className="text-lg md:text-xl text-[var(--color-text-secondary)] font-sans font-400 leading-relaxed max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-white/80 font-sans font-400 leading-relaxed max-w-2xl mx-auto">
               Mange har rett på hel eller delvis dekning av tannlegekostnader uten
               å vite det. Her er en oversikt over ordningene som finnes i Norge.
             </p>
@@ -103,7 +105,7 @@ export default function InformasjonPage() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4, delay: 0.3 + i * 0.06 }}
-                className="font-heading font-700 text-base md:text-lg px-5 py-2.5 rounded-full bg-white border border-[var(--color-border)] text-[var(--color-primary)] shadow-sm"
+                className="font-heading font-700 text-base md:text-lg px-5 py-2.5 rounded-full bg-white/15 border border-white/20 text-white shadow-sm"
               >
                 {sp.badge}
               </motion.span>

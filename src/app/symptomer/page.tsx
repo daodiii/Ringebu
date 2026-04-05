@@ -99,11 +99,13 @@ export default function SymptomerPage() {
 
   return (
     <main className="pt-20">
-      {/* ── Hero — Warm & Empathetic ── */}
-      <section className="relative bg-[var(--color-bg-cream)] py-20 md:py-28 overflow-hidden">
-        {/* Decorative terracotta blob */}
-        <div className="absolute -top-[20%] -right-[10%] w-[45vw] h-[45vw] rounded-full bg-[var(--color-accent)]/[0.06] blur-3xl" />
-        <div className="absolute -bottom-[15%] -left-[5%] w-[25vw] h-[25vw] rounded-full bg-[var(--color-accent-light)]/[0.08] blur-2xl" />
+      {/* ── Hero — Brown like other pages ── */}
+      <section className="relative bg-[var(--color-primary)] py-20 md:py-28 overflow-hidden">
+        <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-primary-light)] to-[var(--color-accent)]" />
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -top-[30%] -right-[15%] w-[50vw] h-[50vw] rounded-full bg-[var(--color-accent)]/8 blur-3xl" />
+          <div className="absolute -bottom-[20%] -left-[10%] w-[30vw] h-[30vw] rounded-full bg-[var(--color-accent-light)]/5 blur-3xl" />
+        </div>
 
         <div className="container-width relative z-10">
           <motion.div
@@ -112,10 +114,10 @@ export default function SymptomerPage() {
             transition={{ duration: 0.6 }}
             className="max-w-2xl"
           >
-            <h1 className="heading-display text-[var(--color-primary)] mb-5">
+            <h1 className="heading-display text-white mb-5">
               Vanlige symptomer du bør kjenne til
             </h1>
-            <p className="text-lg md:text-xl text-[var(--color-text-secondary)] font-sans font-400 leading-relaxed max-w-xl">
+            <p className="text-lg md:text-xl text-white/80 font-sans font-400 leading-relaxed max-w-xl">
               Kjenner du igjen noen av disse symptomene? Jo tidligere du oppsøker
               tannlegen, desto enklere er behandlingen.
             </p>
