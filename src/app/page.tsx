@@ -203,7 +203,7 @@ function TreatmentsSection() {
           {/* Large Featured Card - Forebyggende + Image */}
           <SectionFade className="md:col-span-8">
             <Link href="/behandlinger" className="group block h-full cursor-pointer">
-              <div className="rounded-2xl bg-white border border-[var(--color-border)] overflow-hidden h-full transition-all duration-500 hover:shadow-[0_20px_60px_rgba(60,36,21,0.1)] hover:-translate-y-1">
+              <div className="rounded-2xl border border-[var(--color-border)] overflow-hidden h-full transition-all duration-500 hover:shadow-[0_20px_60px_rgba(60,36,21,0.1)] hover:-translate-y-1" style={{ background: "linear-gradient(135deg, rgba(198,123,92,0.08) 0%, rgba(212,184,150,0.04) 40%, white 100%)" }}>
                 <div className="relative aspect-[21/9] overflow-hidden">
                   <Image
                     src="/images/ringebutannMain.jpg"
@@ -288,7 +288,7 @@ function TreatmentsSection() {
 
           {/* Wide Card - Akutt tannhjelp */}
           <SectionFade className="md:col-span-8" delay={0.2}>
-            <div className="rounded-2xl border border-[var(--color-border)] bg-white p-8 md:p-10 flex flex-col md:flex-row items-center gap-8 md:gap-12 group h-full transition-all duration-500 hover:shadow-[0_20px_60px_rgba(60,36,21,0.08)] hover:-translate-y-1">
+            <div className="rounded-2xl border border-[var(--color-border)] p-8 md:p-10 flex flex-col md:flex-row items-center gap-8 md:gap-12 group h-full transition-all duration-500 hover:shadow-[0_20px_60px_rgba(60,36,21,0.08)] hover:-translate-y-1" style={{ background: "linear-gradient(135deg, rgba(225,29,72,0.06) 0%, rgba(249,115,22,0.03) 40%, white 100%)" }}>
               <div className="w-full md:w-1/2">
                 <h3 className="text-xl md:text-2xl font-heading font-700 text-[var(--color-primary)] mb-3">
                   Akutt tannhjelp
@@ -345,7 +345,7 @@ function TrustSection() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
             {/* NTF Membership */}
             <SectionFade>
-              <div className="relative bg-white rounded-2xl border border-[var(--color-border)] p-8 md:p-10 h-full overflow-hidden transition-all duration-300 hover:shadow-[0_12px_40px_rgba(60,36,21,0.06)] hover:-translate-y-0.5">
+              <div className="relative rounded-2xl border border-[var(--color-border)] p-8 md:p-10 h-full overflow-hidden transition-all duration-300 hover:shadow-[0_12px_40px_rgba(60,36,21,0.06)] hover:-translate-y-0.5" style={{ background: "linear-gradient(135deg, rgba(212,184,150,0.1) 0%, rgba(168,146,121,0.04) 40%, white 100%)" }}>
                 {/* Subtle decorative corner */}
                 <div className="absolute -top-16 -right-16 w-32 h-32 rounded-full bg-[var(--color-accent)]/[0.04] blur-2xl" />
 
@@ -468,7 +468,7 @@ function GuideSection() {
 
             {/* Tips & råd — terracotta-tinted card with article list */}
             <SectionFade className="lg:col-span-3" delay={0.15}>
-              <div className="rounded-2xl p-8 md:p-10 h-full bg-white border-[1.5px] border-[var(--color-border)]">
+              <div className="rounded-2xl p-8 md:p-10 h-full border-[1.5px] border-[var(--color-border)]" style={{ background: "linear-gradient(135deg, rgba(198,123,92,0.07) 0%, rgba(212,184,150,0.03) 40%, white 100%)" }}>
                 <div className="flex items-center justify-between mb-8">
                   <h2 className="text-2xl md:text-3xl font-heading font-700 text-[var(--color-primary)]">
                     Tips & råd
@@ -690,6 +690,15 @@ function renderBold(text: string) {
   );
 }
 
+const supportFills = [
+  "linear-gradient(135deg, rgba(16,185,129,0.08) 0%, rgba(5,150,105,0.03) 40%, white 100%)",
+  "linear-gradient(135deg, rgba(198,123,92,0.08) 0%, rgba(212,184,150,0.03) 40%, white 100%)",
+  "linear-gradient(135deg, rgba(212,184,150,0.08) 0%, rgba(92,61,46,0.03) 40%, white 100%)",
+  "linear-gradient(135deg, rgba(92,61,46,0.08) 0%, rgba(198,123,92,0.03) 40%, white 100%)",
+  "linear-gradient(135deg, rgba(168,146,121,0.08) 0%, rgba(212,184,150,0.03) 40%, white 100%)",
+  "linear-gradient(135deg, rgba(16,185,129,0.08) 0%, rgba(198,123,92,0.03) 40%, white 100%)",
+];
+
 function SupportCard({
   item,
   index,
@@ -704,7 +713,7 @@ function SupportCard({
       <div
         onClick={() => setOpen(!open)}
         className={`
-          relative bg-white rounded-2xl border overflow-hidden cursor-pointer
+          relative rounded-2xl border overflow-hidden cursor-pointer
           transition-all duration-300
           ${
             open
@@ -712,6 +721,7 @@ function SupportCard({
               : "border-[var(--color-border)] hover:border-[var(--color-accent-light)] hover:shadow-lg hover:shadow-[var(--color-primary)]/5 hover:-translate-y-0.5"
           }
         `}
+        style={{ background: supportFills[index % supportFills.length] }}
       >
         {/* Left accent bar */}
         <div
