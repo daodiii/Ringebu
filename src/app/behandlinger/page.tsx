@@ -246,16 +246,15 @@ function slugify(s: string) {
 
 function ExpandedPanel({ t, panelId }: { t: Treatment; panelId: string }) {
   return (
-    <AnimatePresence>
-      <motion.div
-        id={panelId}
-        role="region"
-        initial={{ height: 0, opacity: 0 }}
-        animate={{ height: "auto", opacity: 1 }}
-        exit={{ height: 0, opacity: 0 }}
-        transition={{ duration: 0.3, ease: "easeOut" }}
-        className="overflow-hidden"
-      >
+    <motion.div
+      id={panelId}
+      role="region"
+      initial={{ height: 0, opacity: 0 }}
+      animate={{ height: "auto", opacity: 1 }}
+      exit={{ height: 0, opacity: 0 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      className="overflow-hidden"
+    >
         <div className="pt-4 pb-2 space-y-4">
           {/* Features */}
           <ul className="space-y-2">
@@ -310,7 +309,6 @@ function ExpandedPanel({ t, panelId }: { t: Treatment; panelId: string }) {
           )}
         </div>
       </motion.div>
-    </AnimatePresence>
   );
 }
 
@@ -354,15 +352,16 @@ function CategoryTabs({
                 aria-selected={active === cat}
                 tabIndex={active === cat ? 0 : -1}
                 onClick={() => onChange(cat)}
-                className="relative shrink-0 px-4 py-2 rounded-full text-sm font-sans font-500 transition-colors duration-200 cursor-pointer whitespace-nowrap"
-                style={{
-                  color: active === cat ? "var(--color-primary)" : "var(--color-text-muted)",
-                }}
+                className={`relative shrink-0 px-4 py-2 rounded-full text-sm font-sans font-500 transition-colors duration-200 cursor-pointer whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2 ${
+                  active === cat
+                    ? "text-white"
+                    : "bg-[var(--color-bg-cream)] text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-blue)]"
+                }`}
               >
                 {active === cat && (
                   <motion.span
                     layoutId="activeTab"
-                    className="absolute inset-0 rounded-full bg-[var(--color-bg-cream)] border border-[var(--color-border)]"
+                    className="absolute inset-0 rounded-full bg-[var(--color-accent)]"
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
@@ -394,6 +393,7 @@ function ImageBand({
   const prefersReduced = useReducedMotion();
   const img = treatmentImages[t.title];
   const panelId = `panel-${slugify(t.title)}`;
+  const isFirstBand = t.title === "Forebyggende Behandling";
 
   const gradientDir = direction === "left" ? "to right" : "to left";
   const textAlign = direction === "left" ? "items-start text-left" : "items-end text-right md:items-end md:text-right";
@@ -406,7 +406,7 @@ function ImageBand({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-      className="relative rounded-2xl overflow-hidden cursor-pointer group"
+      className="relative rounded-2xl overflow-hidden cursor-pointer group md:min-h-[240px]"
       style={{
         backgroundColor: t.color,
         scrollMarginTop: "140px",
@@ -417,6 +417,11 @@ function ImageBand({
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
           onToggle();
+        }
+        if (e.key === "Escape" && isExpanded) {
+          e.preventDefault();
+          onToggle();
+          (e.currentTarget as HTMLElement).focus();
         }
       }}
       role="button"
@@ -440,17 +445,18 @@ function ImageBand({
               !isExpanded ? "group-hover:scale-105" : ""
             }`}
             sizes="(max-width: 768px) 100vw, 1140px"
+            priority={isFirstBand}
           />
           {/* Desktop gradient overlay */}
           <div
-            className="absolute inset-0 hidden md:block"
+            className="absolute inset-0 z-10 hidden md:block"
             style={{
               background: `linear-gradient(${gradientDir}, ${t.color} 40%, ${t.color}CC 60%, transparent 85%)`,
             }}
           />
           {/* Mobile vertical gradient */}
           <div
-            className="absolute inset-0 md:hidden"
+            className="absolute inset-0 z-10 md:hidden"
             style={{
               background: `linear-gradient(to top, ${t.color} 55%, ${t.color}AA 70%, transparent 100%)`,
             }}
@@ -459,7 +465,7 @@ function ImageBand({
       )}
 
       {/* Content */}
-      <div className="relative z-10">
+      <div className="relative z-20">
         {/* Mobile spacer to show image at top */}
         <div className="min-h-[160px] md:hidden" />
 
@@ -504,7 +510,9 @@ function ImageBand({
           </div>
 
           {/* Expanded panel */}
-          {isExpanded && <ExpandedPanel t={t} panelId={panelId} />}
+          <AnimatePresence>
+            {isExpanded && <ExpandedPanel t={t} panelId={panelId} />}
+          </AnimatePresence>
         </div>
       </div>
     </motion.div>
@@ -544,6 +552,11 @@ function CompactCard({
           e.preventDefault();
           onToggle();
         }
+        if (e.key === "Escape" && isExpanded) {
+          e.preventDefault();
+          onToggle();
+          (e.currentTarget as HTMLElement).focus();
+        }
       }}
       role="button"
       tabIndex={0}
@@ -572,24 +585,6 @@ function CompactCard({
         <p className="text-white/70 text-[0.8rem] font-sans font-400 mb-3">
           {t.subtitle}
         </p>
-        <p className="text-white/85 text-[0.8rem] font-sans font-400 leading-relaxed mb-4">
-          {t.description}
-        </p>
-
-        {/* Feature pills - visible when collapsed */}
-        {!isExpanded && (
-          <div className="flex flex-wrap gap-1.5 mb-3">
-            {t.features.slice(0, 3).map((f) => (
-              <span
-                key={f}
-                className="text-[0.65rem] font-sans font-400 px-2 py-0.5 rounded-full text-white/80"
-                style={{ backgroundColor: `${t.accent}20` }}
-              >
-                {f}
-              </span>
-            ))}
-          </div>
-        )}
 
         {/* Expand indicator */}
         <div className="flex items-center gap-2 text-white/60 text-[0.75rem] font-sans">
@@ -600,7 +595,9 @@ function CompactCard({
         </div>
 
         {/* Expanded panel */}
-        {isExpanded && <ExpandedPanel t={t} panelId={panelId} />}
+        <AnimatePresence>
+          {isExpanded && <ExpandedPanel t={t} panelId={panelId} />}
+        </AnimatePresence>
       </div>
     </motion.div>
   );
