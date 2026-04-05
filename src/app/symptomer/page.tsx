@@ -79,11 +79,14 @@ function severityStyle(severity: string) {
   };
 }
 
-const severityLegend = [
-  { label: "Haster", bg: "bg-rose-50", text: "text-rose-800", border: "border-rose-200" },
-  { label: "Snarest", bg: "bg-amber-50", text: "text-amber-800", border: "border-amber-200" },
-  { label: "Bør behandles", bg: "bg-[var(--color-bg-cream)]", text: "text-[var(--color-accent)]", border: "border-[var(--color-accent-light)]" },
-  { label: "Bør undersøkes", bg: "bg-[var(--color-bg-blue)]", text: "text-[var(--color-primary)]", border: "border-[var(--color-border)]" },
+/* Distinct left-border colors for routine symptoms */
+const routineColors = [
+  "bg-[var(--color-accent)]",        // terracotta
+  "bg-[var(--color-accent-light)]",   // warm gold
+  "bg-[var(--color-primary-light)]",  // warm brown
+  "bg-emerald-500",                   // forest green
+  "bg-[var(--color-stone-400)]",      // warm stone
+  "bg-amber-500",                     // amber
 ];
 
 /* ─────────────── PAGE ─────────────── */
@@ -121,22 +124,6 @@ export default function SymptomerPage() {
             </p>
           </motion.div>
 
-          {/* Severity legend */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.25 }}
-            className="flex flex-wrap gap-3 mt-10"
-          >
-            {severityLegend.map((item) => (
-              <span
-                key={item.label}
-                className={`${item.bg} ${item.text} ${item.border} border text-xs font-sans font-600 px-4 py-2 rounded-full`}
-              >
-                {item.label}
-              </span>
-            ))}
-          </motion.div>
         </div>
       </section>
 
@@ -275,87 +262,89 @@ export default function SymptomerPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {routineSymptoms.map((s, i) => {
-                const style = severityStyle(s.severity);
                 const isOpen = expanded === s.title;
+                const leftColor = routineColors[i % routineColors.length];
                 return (
                   <SectionFade key={s.title} delay={i * 0.06}>
                     <button
                       onClick={() =>
                         setExpanded(isOpen ? null : s.title)
                       }
-                      className={`w-full text-left bg-white rounded-2xl p-7 border transition-all duration-300 ${
+                      className={`w-full text-left bg-white rounded-2xl border overflow-hidden transition-all duration-300 ${
                         isOpen
                           ? "border-[var(--color-accent)] shadow-lg shadow-[var(--color-accent)]/5"
                           : "border-[var(--color-border)] hover:border-[var(--color-accent)] hover:shadow-lg hover:shadow-[var(--color-accent)]/5"
                       }`}
                     >
-                      <div className="flex items-start justify-between gap-3 mb-2">
-                        <div className="flex items-center gap-3">
-                          <div
-                            className={`w-2.5 h-2.5 rounded-full ${style.accent} shrink-0`}
-                          />
-                          <h2 className="font-heading font-600 text-lg text-[var(--color-primary)]">
-                            {s.title}
-                          </h2>
-                        </div>
-                        <ChevronDown
-                          className={`size-4 text-[var(--color-text-muted)] shrink-0 mt-0.5 transition-transform duration-300 ${
-                            isOpen ? "rotate-180" : ""
-                          }`}
+                      <div className="flex">
+                        <div
+                          className={`w-1.5 shrink-0 ${leftColor} rounded-l-2xl`}
                         />
-                      </div>
-                      <p className="text-[var(--color-text-secondary)] leading-relaxed font-sans font-400 text-[0.95rem] ml-[22px]">
-                        {s.description}
-                      </p>
+                        <div className="flex-1 p-6 md:p-7">
+                          <div className="flex items-start justify-between gap-3 mb-2">
+                            <h2 className="font-heading font-600 text-lg text-[var(--color-primary)]">
+                              {s.title}
+                            </h2>
+                            <ChevronDown
+                              className={`size-4 text-[var(--color-text-muted)] shrink-0 mt-0.5 transition-transform duration-300 ${
+                                isOpen ? "rotate-180" : ""
+                              }`}
+                            />
+                          </div>
+                          <p className="text-[var(--color-text-secondary)] leading-relaxed font-sans font-400 text-[0.95rem]">
+                            {s.description}
+                          </p>
 
-                      <AnimatePresence>
-                        {isOpen && (
-                          <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: "auto" }}
-                            exit={{ opacity: 0, height: 0 }}
-                            transition={{ duration: 0.3 }}
-                            className="overflow-hidden"
-                          >
-                            <div className="mt-5 space-y-4 ml-[22px]">
-                              <div>
-                                <span className="text-xs font-sans font-600 uppercase tracking-wider text-[var(--color-accent)]">
-                                  Mulige årsaker
-                                </span>
-                                <ul className="mt-2 space-y-1.5">
-                                  {s.causes.map((c) => (
-                                    <li
-                                      key={c}
-                                      className="flex items-center gap-2 text-[var(--color-text-secondary)] font-sans font-400 text-sm"
+                          <AnimatePresence>
+                            {isOpen && (
+                              <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: "auto" }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{ duration: 0.3 }}
+                                className="overflow-hidden"
+                              >
+                                <div className="mt-5 space-y-4">
+                                  <div>
+                                    <span className="text-xs font-sans font-600 uppercase tracking-wider text-[var(--color-accent)]">
+                                      Mulige årsaker
+                                    </span>
+                                    <ul className="mt-2 space-y-1.5">
+                                      {s.causes.map((c) => (
+                                        <li
+                                          key={c}
+                                          className="flex items-center gap-2 text-[var(--color-text-secondary)] font-sans font-400 text-sm"
+                                        >
+                                          <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]" />
+                                          {c}
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                  <div className="bg-[var(--color-bg-cream)] rounded-xl p-4">
+                                    <span className="text-xs font-sans font-600 uppercase tracking-wider text-[var(--color-accent)]">
+                                      Hva bør du gjøre?
+                                    </span>
+                                    <p className="text-[var(--color-primary)] mt-2 font-sans font-400 leading-relaxed text-sm">
+                                      {s.whatToDo}
+                                    </p>
+                                  </div>
+                                  {s.slug && (
+                                    <Link
+                                      href={`/artikler/${s.slug}`}
+                                      className="inline-flex items-center gap-1.5 text-sm font-500 text-[var(--color-accent)] hover:text-[var(--color-primary-light)] transition-colors"
+                                      onClick={(e) => e.stopPropagation()}
                                     >
-                                      <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]" />
-                                      {c}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                              <div className="bg-[var(--color-bg-cream)] rounded-xl p-4">
-                                <span className="text-xs font-sans font-600 uppercase tracking-wider text-[var(--color-accent)]">
-                                  Hva bør du gjøre?
-                                </span>
-                                <p className="text-[var(--color-primary)] mt-2 font-sans font-400 leading-relaxed text-sm">
-                                  {s.whatToDo}
-                                </p>
-                              </div>
-                              {s.slug && (
-                                <Link
-                                  href={`/artikler/${s.slug}`}
-                                  className="inline-flex items-center gap-1.5 text-sm font-500 text-[var(--color-accent)] hover:text-[var(--color-primary-light)] transition-colors"
-                                  onClick={(e) => e.stopPropagation()}
-                                >
-                                  Les relatert artikkel
-                                  <ArrowUpRight className="size-4" />
-                                </Link>
-                              )}
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
+                                      Les relatert artikkel
+                                      <ArrowUpRight className="size-4" />
+                                    </Link>
+                                  )}
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      </div>
                     </button>
                   </SectionFade>
                 );
