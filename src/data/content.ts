@@ -137,7 +137,7 @@ export const articles: Article[] = [
     category: "Smertelindring",
     readTime: "5 min",
     date: "2026-03-15",
-    image: "/images/service-general.jpg",
+    image: "/images/article-toothache.jpg",
     content: [
       "Tannpine kan variere fra litt ubehag til helt uutholdelig, og årsakene er mange. Det forsvinner sjelden av seg selv — det er kroppens måte å si fra at noe er galt.",
       "## Vanlige årsaker til tannpine",
@@ -161,7 +161,7 @@ export const articles: Article[] = [
     category: "Tannkjøtt",
     readTime: "4 min",
     date: "2026-03-10",
-    image: "/images/service-cosmetic.jpg",
+    image: "/images/article-gum-health.jpg",
     content: [
       "Mange opplever at tannkjøttet blør når de pusser tennene, og tenker at det er normalt. Det er det ikke. Blødning betyr som regel at tannkjøttet er betent — det kalles gingivitt.",
       "## Hva forårsaker blødende tannkjøtt?",
@@ -183,7 +183,7 @@ export const articles: Article[] = [
     category: "Forebygging",
     readTime: "4 min",
     date: "2026-03-05",
-    image: "/images/service-implant.jpg",
+    image: "/images/article-cavity-prevention.jpg",
     content: [
       "Karies, eller hull i tennene, oppstår når bakterier i munnen produserer syre som bryter ned tannemaljen. Det er en gradvis prosess som kan stoppes og forebygges med riktige tiltak.",
       "## Hvorfor får vi hull i tennene?",
@@ -205,7 +205,7 @@ export const articles: Article[] = [
     category: "Angst og frykt",
     readTime: "6 min",
     date: "2026-02-28",
-    image: "/images/service-emergency.jpg",
+    image: "/images/article-dental-anxiety-2.jpg",
     content: [
       "Er du redd for tannlegen? Du er langt fra alene — mellom 15 og 20 prosent av oss kjenner på det samme. For mange blir frykten så stor at de unngår tannlegen helt, og det gjør jo bare problemene verre over tid.",
       "## Hva forårsaker tannlegeskrekk?",
@@ -228,7 +228,7 @@ export const articles: Article[] = [
     category: "Kirurgi",
     readTime: "5 min",
     date: "2026-02-20",
-    image: "/images/about-clinic.jpg",
+    image: "/images/article-wisdom-teeth-2.jpg",
     content: [
       "Visdomstenner, eller tredje molarer, er de siste tennene som bryter frem – vanligvis mellom 17 og 25 års alder. For mange skaper de ingen problemer, men for andre kan de forårsake betydelig ubehag.",
       "## Når blir visdomstenner et problem?",
@@ -250,7 +250,7 @@ export const articles: Article[] = [
     category: "Kosmetisk",
     readTime: "5 min",
     date: "2026-02-15",
-    image: "/images/service-cosmetic.jpg",
+    image: "/images/article-teeth-whitening.jpg",
     content: [
       "Hvitere tenner gir selvtillit — det merker de fleste som har prøvd. Tannbleking er noe mange spør om, og det finnes flere måter å gjøre det på.",
       "## Hvorfor blir tennene mørke?",
@@ -274,7 +274,7 @@ export const articles: Article[] = [
     category: "Kosthold",
     readTime: "3 min",
     date: "2026-03-01",
-    image: "/images/service-general.jpg",
+    image: "/images/article-coffee-teeth.jpg",
     content: [
       "Norge er blant landene med høyest kaffeforbruk per innbygger. Den gode nyheten er at svart kaffe inneholder **polyfenoler** som kan hemme veksten av kariesbakterier. Problemet oppstår når vi tilsetter sukker eller drikker kaffe jevnlig gjennom dagen — da utsettes tennene for et konstant syrepress.",
       "## Brunost og meieriprodukter som tannvern",
@@ -290,7 +290,7 @@ export const articles: Article[] = [
     category: "Tannpleie",
     readTime: "3 min",
     date: "2026-03-04",
-    image: "/images/toothbrush-colorful.png",
+    image: "/images/article-electric-toothbrush.jpg",
     content: [
       "En stor **Cochrane-studie** fant at oscillerende elektriske børster fjerner betydelig mer plakk og reduserer tannkjøttsykdom mer effektivt enn manuelle. Etter tre måneder med bruk var det målbart bedre tannkjøtthelse.",
       "## Hvem har størst nytte av elektrisk?",
@@ -306,7 +306,7 @@ export const articles: Article[] = [
     category: "Tannpleie",
     readTime: "2 min",
     date: "2026-03-08",
-    image: "/images/service-general.jpg",
+    image: "/images/article-toothbrush-replace.jpg",
     content: [
       "Tannleger anbefaler å bytte tannbørste eller børstetopp **hver tredje måned**, men dette er et minimumsintervall. Forskning viser at børster med utbøyde og flisete bust fjerner vesentlig mindre plakk enn nye børster.",
       "## En enkel test",
@@ -322,7 +322,7 @@ export const articles: Article[] = [
     category: "Tannpleie",
     readTime: "3 min",
     date: "2026-03-12",
-    image: "/images/service-cosmetic.jpg",
+    image: "/images/article-mouthwash.jpg",
     content: [
       "Det viktigste mange gjør feil: å bruke munnskyll **rett etter tannpuss**. Fluortannkrem trenger tid til å virke på emaljen, og skylling rett etterpå vasker bort fluoriden. Bruk heller munnskyll på et annet tidspunkt — for eksempel etter lunsj.",
       "## Hvem har nytte av munnskyll?",
@@ -338,7 +338,7 @@ export const articles: Article[] = [
     category: "Forebygging",
     readTime: "3 min",
     date: "2026-03-16",
-    image: "/images/service-implant.jpg",
+    image: "/images/article-fluoride.jpg",
     content: [
       "Fluorid virker på to måter: det styrker emaljen ved å danne **fluorapatitt** (mer syreresistent enn vanlig emalje), og det hemmer bakterienes evne til å produsere syre. Denne beskyttelsen er like viktig for voksne — særlig de med blottlagte tannhalser.",
       "## Hvor mye fluorid trenger du?",
@@ -354,7 +354,7 @@ export const articles: Article[] = [
     category: "Symptomer",
     readTime: "3 min",
     date: "2026-03-20",
-    image: "/images/service-emergency.jpg",
+    image: "/images/article-teeth-grinding.jpg",
     content: [
       "**Bruksisme** — tanngnissing og tannpressing — skjer oftest under søvn. Typiske tegn inkluderer flate, nedslitte tyggeflater, sprekker i tennene, spenning i kjevemuskulatur om morgenen, hodepine ved tinningen og økende tannfølsomhet.",
       "## Årsaker og risikofaktorer",
@@ -370,7 +370,7 @@ export const articles: Article[] = [
     category: "Forebygging",
     readTime: "3 min",
     date: "2026-03-24",
-    image: "/images/about-clinic.jpg",
+    image: "/images/article-saliva.jpg",
     content: [
       "Spytt inneholder **kalsium- og fosfationer** som aktivt remineraliserer emaljen etter syreangrep, antibakterielle enzymer som lysozym og laktoferrin, og buffersystemer som nøytraliserer syrer. Uten tilstrekkelig spytt øker kariesrisikoen dramatisk.",
       "## Tørr munn er vanligere enn du tror",
@@ -386,7 +386,7 @@ export const articles: Article[] = [
     category: "Tannpleie",
     readTime: "2 min",
     date: "2026-03-28",
-    image: "/images/hero-dentist.jpg",
+    image: "/images/article-travel-kit.jpg",
     content: [
       "Et godt reisekit trenger ikke være stort: reise-tannbørste, fluortannkrem i reisestørrelse, tanntråd, sukkerfri tyggegummi med xylitol, og et sett **midlertidig tannfylling** fra apoteket (nyttig hvis en fylling løsner).",
       "## Flyreiser og tannproblemer",
@@ -402,7 +402,7 @@ export const articles: Article[] = [
     category: "Livsfaser",
     readTime: "3 min",
     date: "2026-04-01",
-    image: "/images/service-cosmetic.jpg",
+    image: "/images/article-dental-anxiety.jpg",
     content: [
       "**Graviditetsgingivitt** rammer opptil 75 % av gravide kvinner. Økte progesteron- og østrogennivåer gjør tannkjøttet mer mottagelig for betennelse, så selv normal mengde plakk kan gi hovne, blødende gummer.",
       "## Morgenkvalmhet og emalje",
@@ -418,7 +418,7 @@ export const articles: Article[] = [
     category: "Forebygging",
     readTime: "3 min",
     date: "2026-04-04",
-    image: "/images/service-emergency.jpg",
+    image: "/images/article-wisdom-teeth.jpg",
     content: [
       "## Vinteren",
       "**Vinteren** betyr kald, tørr luft og oppvarmet innendørsluft. Begge reduserer spyttproduksjonen. Drikk ekstra vann, bruk luftfukter hjemme, og velg sukkerfri pastiller. Kald luft kan utløse ising i ømfintlige tenner — bruk skjerf eller buff over munnen på de kaldeste dagene.",
