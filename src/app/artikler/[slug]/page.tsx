@@ -1,9 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, Clock, Calendar, ArrowRight, Phone } from "lucide-react";
+import { Clock, Calendar, Phone } from "lucide-react";
 import { articles } from "@/data/content";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import ArticleHero from "@/components/ArticleHero";
 
 export function generateStaticParams() {
   return articles.map((a) => ({ slug: a.slug }));
@@ -98,48 +99,13 @@ export default async function ArticlePage({
   return (
     <main className="pt-20">
       {/* Hero */}
-      <section className="relative">
-        <div className="relative h-64 md:h-80 overflow-hidden">
-          <Image
-            src={article.image}
-            alt={article.title}
-            fill
-            className="object-cover"
-            priority
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-primary)] via-[var(--color-primary)]/70 to-transparent" />
-        </div>
-        <div className="container-width relative -mt-24 z-10 pb-8">
-          <Link
-            href="/artikler"
-            className="inline-flex items-center gap-2 text-white/80 hover:text-white text-sm font-sans mb-4 transition-colors"
-          >
-            <ArrowLeft className="size-4" />
-            Tilbake til artikler
-          </Link>
-          <div className="flex items-center gap-3 mb-4">
-            <span className="inline-block px-3 py-1 rounded-full bg-[var(--color-accent)] text-white text-xs font-500 font-sans">
-              {article.category}
-            </span>
-            <span className="flex items-center gap-1.5 text-white/70 text-sm font-sans">
-              <Clock className="size-4" />
-              {article.readTime} lesetid
-            </span>
-            <span className="flex items-center gap-1.5 text-white/70 text-sm font-sans">
-              <Calendar className="size-4" />
-              {new Date(article.date).toLocaleDateString("nb-NO", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </span>
-          </div>
-          <h1 className="heading-display text-white text-3xl md:text-5xl max-w-3xl">
-            {article.title}
-          </h1>
-        </div>
-      </section>
+      <ArticleHero
+        title={article.title}
+        category={article.category}
+        readTime={article.readTime}
+        date={article.date}
+        image={article.image}
+      />
 
       {/* Content */}
       <section className="section-padding bg-white">
