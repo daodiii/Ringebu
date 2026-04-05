@@ -138,25 +138,8 @@ export default function Kontakt() {
       <section className="section-padding bg-white">
         <div className="container-width">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 max-w-6xl mx-auto">
-            {/* Left — Map + Contact Details */}
+            {/* Left — Contact Details + Map */}
             <div>
-              {/* Embedded Map */}
-              <SectionFade>
-                <div className="rounded-2xl overflow-hidden border border-[var(--color-border)] mb-6 aspect-[4/3]">
-                  <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1870.5!2d10.1614!3d61.5267!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4614f8e5a5a5a5a5%3A0x0!2sJernbanegata%204%2C%202630%20Ringebu!5e0!3m2!1sno!2sno!4v1700000000000!5m2!1sno!2sno"
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0 }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    title="Ringebu Tannlegesenter på kartet"
-                    className="grayscale-[20%] contrast-[1.05]"
-                  />
-                </div>
-              </SectionFade>
-
               <div className="space-y-4">
                 {/* Phone */}
                 <SectionFade delay={0.05}>
@@ -238,6 +221,23 @@ export default function Kontakt() {
                   </a>
                 </SectionFade>
               </div>
+
+              {/* Embedded Map */}
+              <SectionFade delay={0.2}>
+                <div className="rounded-2xl overflow-hidden border border-[var(--color-border)] mt-6 aspect-[4/3]">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1870.5!2d10.1614!3d61.5267!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4614f8e5a5a5a5a5%3A0x0!2sJernbanegata%204%2C%202630%20Ringebu!5e0!3m2!1sno!2sno!4v1700000000000!5m2!1sno!2sno"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Ringebu Tannlegesenter på kartet"
+                    className="grayscale-[20%] contrast-[1.05]"
+                  />
+                </div>
+              </SectionFade>
             </div>
 
             {/* Right — Opening Hours + Emergency + Booking */}
