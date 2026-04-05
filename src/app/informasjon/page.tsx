@@ -81,15 +81,12 @@ export default function InformasjonPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <p className="eyebrow text-[var(--color-accent)] mb-4">
-              Støtte og rettigheter
-            </p>
             <h1 className="heading-display text-[var(--color-primary)] mb-5">
-              Du har kanskje allerede dekning
+              Støtte og rettigheter
             </h1>
             <p className="text-lg md:text-xl text-[var(--color-text-secondary)] font-sans font-400 leading-relaxed max-w-2xl mx-auto">
-              Mange har rett på hel eller delvis dekning av tannlegekostnader
-              uten å vite det. Her er en oversikt over ordningene som finnes.
+              Mange har rett på hel eller delvis dekning av tannlegekostnader uten
+              å vite det. Her er en oversikt over ordningene som finnes i Norge.
             </p>
           </motion.div>
 

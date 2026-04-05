@@ -112,15 +112,12 @@ export default function SymptomerPage() {
             transition={{ duration: 0.6 }}
             className="max-w-2xl"
           >
-            <p className="eyebrow text-[var(--color-accent)] mb-4">
-              Symptomguiden
-            </p>
             <h1 className="heading-display text-[var(--color-primary)] mb-5">
-              Kjenner du deg igjen?
+              Vanlige symptomer du bør kjenne til
             </h1>
             <p className="text-lg md:text-xl text-[var(--color-text-secondary)] font-sans font-400 leading-relaxed max-w-xl">
-              Jo tidligere du oppsøker tannlegen, desto enklere er behandlingen.
-              Her finner du de vanligste symptomene og hva de kan bety.
+              Kjenner du igjen noen av disse symptomene? Jo tidligere du oppsøker
+              tannlegen, desto enklere er behandlingen.
             </p>
           </motion.div>
 
