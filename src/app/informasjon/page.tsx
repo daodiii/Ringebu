@@ -48,21 +48,26 @@ function SectionFade({
 const freePages = supportPages.filter((sp) => sp.badge === "Gratis");
 const subsidyPages = supportPages.filter((sp) => sp.badge !== "Gratis");
 
-const personaNav = [
-  { slug: "barn", label: "Barn 0–18", icon: SmilePlus, badge: "Gratis" },
-  { slug: "unge-voksne", label: "19–28 år", icon: User, badge: "75 % rabatt" },
-  { slug: "helfo", label: "Diagnose", icon: Stethoscope, badge: "Refusjon" },
-  { slug: "frikort", label: "Høye utgifter", icon: Shield, badge: "kr 3 278" },
-  { slug: "nav", label: "Lav inntekt", icon: HandHeart, badge: "Behovsprøvd" },
-  { slug: "eldre", label: "Eldre / uføre", icon: Heart, badge: "Gratis" },
+const freeGradients = [
+  "linear-gradient(to bottom, #10b981, #059669)", // emerald for Barn
+  "linear-gradient(to bottom, #C67B5C, #D4B896)", // terracotta for Eldre
 ];
 
-const topBorderColors: Record<string, string> = {
-  "unge-voksne": "border-t-[var(--color-accent)]",
-  helfo: "border-t-[var(--color-accent-light)]",
-  frikort: "border-t-[var(--color-primary-light)]",
-  nav: "border-t-[var(--color-stone-400)]",
+const topGradients: Record<string, string> = {
+  "unge-voksne": "linear-gradient(to right, #C67B5C, #D4B896, #C67B5C)",
+  helfo: "linear-gradient(to right, #D4B896, #5C3D2E, #D4B896)",
+  frikort: "linear-gradient(to right, #5C3D2E, #C67B5C, #5C3D2E)",
+  nav: "linear-gradient(to right, #A89279, #D4B896, #A89279)",
 };
+
+const personaNav = [
+  { slug: "barn", label: "Barn 0–18", icon: SmilePlus, badge: "Gratis", desc: "Helt gratis tannbehandling gjennom offentlig tannhelsetjeneste" },
+  { slug: "unge-voksne", label: "19–28 år", icon: User, badge: "75 % rabatt", desc: "Sterkt subsidiert behandling for unge voksne" },
+  { slug: "helfo", label: "Diagnose", icon: Stethoscope, badge: "Refusjon", desc: "Folketrygden dekker ved spesifikke diagnoser" },
+  { slug: "frikort", label: "Høye utgifter", icon: Shield, badge: "kr 3 278", desc: "Egenandelstaket som begrenser årlige kostnader" },
+  { slug: "nav", label: "Lav inntekt", icon: HandHeart, badge: "Behovsprøvd", desc: "Økonomisk støtte fra NAV ved lav inntekt" },
+  { slug: "eldre", label: "Eldre / uføre", icon: Heart, badge: "Gratis", desc: "Gratis tannbehandling for eldre og uføre" },
+];
 
 /* ─────────────── PAGE ─────────────── */
 
@@ -114,10 +119,10 @@ export default function InformasjonPage() {
         </div>
       </section>
 
-      {/* ── Featured: Free Coverage (Barn + Eldre) ── */}
+      {/* ── Featured: Free Coverage (Barn + Eldre) — Bento Layout ── */}
       <section className="py-16 md:py-24 bg-white">
         <div className="container-width">
-          <div className="max-w-5xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             <SectionFade>
               <div className="flex items-center gap-3 mb-8 md:mb-10">
                 <ShieldCheck className="size-5 text-emerald-600" />
@@ -127,27 +132,34 @@ export default function InformasjonPage() {
               </div>
             </SectionFade>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-5 md:gap-6">
               {freePages.map((sp, i) => (
-                <SectionFade key={sp.slug} delay={i * 0.1}>
+                <SectionFade key={sp.slug} delay={i * 0.1} className={i === 0 ? "md:col-span-3" : "md:col-span-2"}>
                   <Link
                     href={`/informasjon/${sp.slug}`}
                     className="group block h-full"
                   >
-                    <div className="bg-[var(--color-bg-cream)] rounded-2xl border border-[var(--color-border)] p-8 md:p-10 h-full flex flex-col transition-all duration-300 hover:shadow-[0_20px_60px_rgba(60,36,21,0.08)] hover:-translate-y-1 cursor-pointer">
-                      {/* Badge as headline */}
-                      <span className="font-heading font-700 text-3xl md:text-4xl text-emerald-700 mb-4">
-                        {sp.badge}
-                      </span>
-                      <h3 className="font-heading font-600 text-xl text-[var(--color-primary)] mb-3 group-hover:text-[var(--color-accent)] transition-colors">
-                        {sp.shortTitle}
-                      </h3>
-                      <p className="text-[0.95rem] text-[var(--color-text-secondary)] font-sans font-400 leading-relaxed mb-6 flex-1">
-                        {sp.hubSummary}
-                      </p>
-                      <div className="flex items-center gap-2 text-[var(--color-accent)] font-sans font-500 text-sm group-hover:text-[var(--color-primary)] transition-colors">
-                        Les mer
-                        <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                    <div className="bg-[var(--color-bg-cream)] rounded-2xl border border-[var(--color-border)] h-full flex overflow-hidden transition-all duration-300 hover:shadow-[0_20px_60px_rgba(60,36,21,0.08)] hover:-translate-y-1 cursor-pointer">
+                      {/* Gradient left border */}
+                      <div
+                        className="w-2 shrink-0 rounded-l-2xl"
+                        style={{ background: freeGradients[i] }}
+                      />
+                      <div className="flex-1 p-10 md:p-12 flex flex-col">
+                        {/* Badge as headline */}
+                        <span className="font-heading font-700 text-3xl md:text-4xl text-emerald-700 mb-4">
+                          {sp.badge}
+                        </span>
+                        <h3 className="font-heading font-600 text-xl text-[var(--color-primary)] mb-3 group-hover:text-[var(--color-accent)] transition-colors">
+                          {sp.shortTitle}
+                        </h3>
+                        <p className="text-[0.95rem] text-[var(--color-text-secondary)] font-sans font-400 leading-relaxed mb-6 flex-1">
+                          {sp.hubSummary}
+                        </p>
+                        <div className="flex items-center gap-2 text-[var(--color-accent)] font-sans font-500 text-sm group-hover:text-[var(--color-primary)] transition-colors">
+                          Les mer
+                          <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                        </div>
                       </div>
                     </div>
                   </Link>
@@ -161,7 +173,7 @@ export default function InformasjonPage() {
       {/* ── Subsidy Cards Grid ── */}
       <section className="py-16 md:py-24 bg-[var(--color-bg-blue)]">
         <div className="container-width">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             <SectionFade>
               <div className="flex items-center gap-3 mb-8 md:mb-10">
                 <Stethoscope className="size-5 text-[var(--color-accent)]" />
@@ -179,10 +191,13 @@ export default function InformasjonPage() {
                     className="group block h-full"
                   >
                     <div
-                      className={`bg-white rounded-2xl border border-[var(--color-border)] border-t-4 ${
-                        topBorderColors[sp.slug] || "border-t-[var(--color-accent)]"
-                      } p-7 h-full flex flex-col transition-all duration-300 hover:shadow-[0_16px_48px_rgba(60,36,21,0.08)] hover:-translate-y-1 cursor-pointer`}
+                      className="relative bg-white rounded-2xl border border-[var(--color-border)] overflow-hidden p-8 md:p-9 h-full flex flex-col transition-all duration-300 hover:shadow-[0_16px_48px_rgba(60,36,21,0.08)] hover:-translate-y-1 cursor-pointer"
                     >
+                      {/* Gradient top accent strip */}
+                      <div
+                        className="absolute top-0 inset-x-0 h-1.5"
+                        style={{ background: topGradients[sp.slug] || "linear-gradient(to right, #C67B5C, #D4B896)" }}
+                      />
                       {/* Badge value — large */}
                       <span className="font-heading font-700 text-2xl md:text-3xl text-[var(--color-accent)] mb-2">
                         {sp.badge}
@@ -210,35 +225,47 @@ export default function InformasjonPage() {
       {/* ── Persona Navigator ── */}
       <section className="py-16 md:py-20 bg-[var(--color-bg-cream)]">
         <div className="container-width">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-5xl mx-auto">
             <SectionFade>
               <h2 className="heading-section text-[var(--color-primary)] text-center mb-10 md:mb-12">
                 Hvem gjelder det for?
               </h2>
             </SectionFade>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
               {personaNav.map((item, i) => {
                 const Icon = item.icon;
                 return (
                   <SectionFade key={item.slug} delay={i * 0.06}>
                     <Link
                       href={`/informasjon/${item.slug}`}
-                      className="group block"
+                      className="group block h-full"
                     >
                       <motion.div
                         whileHover={{ y: -4 }}
-                        className="bg-white rounded-2xl border border-[var(--color-border)] p-5 text-center transition-all duration-300 hover:shadow-lg hover:shadow-[var(--color-accent)]/5 hover:border-[var(--color-accent)]/30 cursor-pointer h-full flex flex-col items-center justify-center gap-3"
+                        className="relative bg-white rounded-2xl border border-[var(--color-border)] p-6 md:p-8 transition-all duration-300 hover:shadow-lg hover:shadow-[var(--color-accent)]/5 hover:border-[var(--color-accent)]/30 cursor-pointer h-full flex flex-col overflow-hidden"
                       >
-                        <div className="w-11 h-11 rounded-xl bg-[var(--color-accent)]/[0.08] flex items-center justify-center">
-                          <Icon className="size-5 text-[var(--color-accent)]" />
+                        {/* Gradient bottom accent */}
+                        <div
+                          className="absolute bottom-0 inset-x-0 h-1"
+                          style={{ background: `linear-gradient(to right, transparent, var(--color-accent), transparent)` }}
+                        />
+                        <div className="flex items-center gap-4 mb-4">
+                          <div className="w-14 h-14 rounded-xl bg-[var(--color-accent)]/[0.08] flex items-center justify-center shrink-0">
+                            <Icon className="size-6 text-[var(--color-accent)]" />
+                          </div>
+                          <div>
+                            <span className="font-sans font-600 text-base text-[var(--color-primary)] block">
+                              {item.label}
+                            </span>
+                            <span className="font-heading font-700 text-sm text-[var(--color-accent)]">
+                              {item.badge}
+                            </span>
+                          </div>
                         </div>
-                        <span className="font-sans font-600 text-sm text-[var(--color-primary)]">
-                          {item.label}
-                        </span>
-                        <span className="font-heading font-700 text-xs text-[var(--color-accent)]">
-                          {item.badge}
-                        </span>
+                        <p className="text-sm text-[var(--color-text-secondary)] font-sans font-400 leading-relaxed flex-1">
+                          {item.desc}
+                        </p>
                       </motion.div>
                     </Link>
                   </SectionFade>

@@ -50,7 +50,7 @@ function HeroSection() {
           alt=""
           fill
           className="object-cover scale-[1.03]"
-          style={{ objectPosition: "center 40%", filter: "blur(0.5px)" }}
+          style={{ objectPosition: "center 40%" }}
           priority
           quality={100}
           sizes="100vw"

@@ -51,7 +51,7 @@ function severityStyle(severity: string) {
       bg: "bg-rose-50",
       text: "text-rose-800",
       border: "border-rose-200",
-      accent: "bg-rose-500",
+      gradient: "linear-gradient(to bottom, #e11d48, #f97316)",
       tint: "bg-rose-50/60",
     };
   if (severity.includes("snarest"))
@@ -59,7 +59,7 @@ function severityStyle(severity: string) {
       bg: "bg-amber-50",
       text: "text-amber-800",
       border: "border-amber-200",
-      accent: "bg-amber-500",
+      gradient: "linear-gradient(to bottom, #f59e0b, #d97706)",
       tint: "bg-amber-50/60",
     };
   if (severity.includes("behandles"))
@@ -67,35 +67,49 @@ function severityStyle(severity: string) {
       bg: "bg-[var(--color-bg-cream)]",
       text: "text-[var(--color-accent)]",
       border: "border-[var(--color-accent-light)]",
-      accent: "bg-[var(--color-accent)]",
+      gradient: "linear-gradient(to bottom, #C67B5C, #D4B896)",
       tint: "bg-[var(--color-bg-cream)]",
     };
   return {
     bg: "bg-[var(--color-bg-blue)]",
     text: "text-[var(--color-primary)]",
     border: "border-[var(--color-border)]",
-    accent: "bg-[var(--color-stone-400)]",
+    gradient: "linear-gradient(to bottom, #A89279, #D4B896)",
     tint: "bg-[var(--color-bg-blue)]",
   };
 }
 
-/* Distinct left-border colors for routine symptoms */
-const routineColors = [
-  "bg-[var(--color-accent)]",        // terracotta
-  "bg-[var(--color-accent-light)]",   // warm gold
-  "bg-[var(--color-primary-light)]",  // warm brown
-  "bg-emerald-500",                   // forest green
-  "bg-[var(--color-stone-400)]",      // warm stone
-  "bg-amber-500",                     // amber
+/* Gradient left-border colors for routine symptoms */
+const routineGradients = [
+  "linear-gradient(to bottom, #C67B5C, #D4B896)",
+  "linear-gradient(to bottom, #D4B896, #5C3D2E)",
+  "linear-gradient(to bottom, #5C3D2E, #10b981)",
+  "linear-gradient(to bottom, #10b981, #C67B5C)",
+  "linear-gradient(to bottom, #A89279, #D4B896)",
 ];
 
 /* ─────────────── PAGE ─────────────── */
 
 export default function SymptomerPage() {
-  const [expanded, setExpanded] = useState<string | null>(null);
-
   const urgentSymptoms = symptoms.filter((s) => isUrgent(s.severity));
   const routineSymptoms = symptoms.filter((s) => !isUrgent(s.severity));
+
+  const [expanded, setExpanded] = useState<Set<string>>(
+    () =>
+      new Set([
+        ...urgentSymptoms.slice(0, 2).map((s) => s.title),
+        ...routineSymptoms.slice(0, 2).map((s) => s.title),
+      ])
+  );
+
+  const toggleExpanded = (title: string) => {
+    setExpanded((prev) => {
+      const next = new Set(prev);
+      if (next.has(title)) next.delete(title);
+      else next.add(title);
+      return next;
+    });
+  };
 
   return (
     <main className="pt-20">
@@ -121,14 +135,13 @@ export default function SymptomerPage() {
               tannlegen, desto enklere er behandlingen.
             </p>
           </motion.div>
-
         </div>
       </section>
 
       {/* ── Urgent Symptoms Band ── */}
       <section className="py-16 md:py-24 bg-rose-50/40">
         <div className="container-width">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             <SectionFade>
               <div className="flex items-center gap-3 mb-8 md:mb-10">
                 <AlertTriangle className="size-5 text-rose-700" />
@@ -141,25 +154,24 @@ export default function SymptomerPage() {
             <div className="space-y-5">
               {urgentSymptoms.map((s, i) => {
                 const style = severityStyle(s.severity);
-                const isOpen = expanded === s.title;
+                const isOpen = expanded.has(s.title);
                 return (
                   <SectionFade key={s.title} delay={i * 0.08}>
                     <button
-                      onClick={() =>
-                        setExpanded(isOpen ? null : s.title)
-                      }
+                      onClick={() => toggleExpanded(s.title)}
                       className={`w-full text-left bg-white rounded-2xl border overflow-hidden transition-all duration-300 ${
                         isOpen
                           ? "border-rose-300 shadow-lg shadow-rose-500/5"
                           : "border-[var(--color-border)] hover:border-rose-300 hover:shadow-lg hover:shadow-rose-500/5"
                       }`}
                     >
-                      {/* Colored left border */}
+                      {/* Gradient left border */}
                       <div className="flex">
                         <div
-                          className={`w-1.5 shrink-0 ${style.accent} rounded-l-2xl`}
+                          className="w-2 shrink-0 rounded-l-2xl"
+                          style={{ background: style.gradient }}
                         />
-                        <div className="flex-1 p-6 md:p-8">
+                        <div className="flex-1 p-8 md:p-10">
                           {/* Severity bar */}
                           <div
                             className={`inline-flex items-center gap-2 ${style.bg} ${style.text} ${style.border} border rounded-full px-4 py-1.5 text-xs font-sans font-600 mb-4`}
@@ -182,6 +194,23 @@ export default function SymptomerPage() {
                                 isOpen ? "rotate-180" : ""
                               }`}
                             />
+                          </div>
+
+                          {/* Cause pills — always visible */}
+                          <div className="flex flex-wrap gap-2 mt-4">
+                            {s.causes.slice(0, 3).map((c) => (
+                              <span
+                                key={c}
+                                className="rounded-full bg-[var(--color-bg-cream)] border border-[var(--color-border)] px-3 py-1 text-xs font-sans font-500 text-[var(--color-text-secondary)]"
+                              >
+                                {c}
+                              </span>
+                            ))}
+                            {s.causes.length > 3 && (
+                              <span className="rounded-full bg-[var(--color-bg-blue)] px-3 py-1 text-xs font-sans font-500 text-[var(--color-text-muted)]">
+                                +{s.causes.length - 3} til
+                              </span>
+                            )}
                           </div>
 
                           <AnimatePresence>
@@ -248,7 +277,7 @@ export default function SymptomerPage() {
       {/* ── Routine Symptoms Grid ── */}
       <section className="py-16 md:py-24 bg-[var(--color-bg-blue)]">
         <div className="container-width">
-          <div className="max-w-5xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             <SectionFade>
               <div className="flex items-center gap-3 mb-8 md:mb-10">
                 <Stethoscope className="size-5 text-[var(--color-accent)]" />
@@ -258,16 +287,14 @@ export default function SymptomerPage() {
               </div>
             </SectionFade>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {routineSymptoms.map((s, i) => {
-                const isOpen = expanded === s.title;
-                const leftColor = routineColors[i % routineColors.length];
+                const isOpen = expanded.has(s.title);
+                const leftGradient = routineGradients[i % routineGradients.length];
                 return (
                   <SectionFade key={s.title} delay={i * 0.06}>
                     <button
-                      onClick={() =>
-                        setExpanded(isOpen ? null : s.title)
-                      }
+                      onClick={() => toggleExpanded(s.title)}
                       className={`w-full text-left bg-white rounded-2xl border overflow-hidden transition-all duration-300 ${
                         isOpen
                           ? "border-[var(--color-accent)] shadow-lg shadow-[var(--color-accent)]/5"
@@ -276,9 +303,10 @@ export default function SymptomerPage() {
                     >
                       <div className="flex">
                         <div
-                          className={`w-1.5 shrink-0 ${leftColor} rounded-l-2xl`}
+                          className="w-2 shrink-0 rounded-l-2xl"
+                          style={{ background: leftGradient }}
                         />
-                        <div className="flex-1 p-6 md:p-7">
+                        <div className="flex-1 p-7 md:p-9">
                           <div className="flex items-start justify-between gap-3 mb-2">
                             <h2 className="font-heading font-600 text-lg text-[var(--color-primary)]">
                               {s.title}
@@ -292,6 +320,23 @@ export default function SymptomerPage() {
                           <p className="text-[var(--color-text-secondary)] leading-relaxed font-sans font-400 text-[0.95rem]">
                             {s.description}
                           </p>
+
+                          {/* Cause pills — always visible */}
+                          <div className="flex flex-wrap gap-2 mt-3">
+                            {s.causes.slice(0, 3).map((c) => (
+                              <span
+                                key={c}
+                                className="rounded-full bg-[var(--color-bg-cream)] border border-[var(--color-border)] px-3 py-1 text-xs font-sans font-500 text-[var(--color-text-secondary)]"
+                              >
+                                {c}
+                              </span>
+                            ))}
+                            {s.causes.length > 3 && (
+                              <span className="rounded-full bg-[var(--color-bg-blue)] px-3 py-1 text-xs font-sans font-500 text-[var(--color-text-muted)]">
+                                +{s.causes.length - 3} til
+                              </span>
+                            )}
+                          </div>
 
                           <AnimatePresence>
                             {isOpen && (
@@ -349,42 +394,6 @@ export default function SymptomerPage() {
               })}
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* ── Mid-page CTA ── */}
-      <section className="py-16 md:py-20 bg-[var(--color-bg-cream)]">
-        <div className="container-width">
-          <SectionFade>
-            <div className="text-center max-w-xl mx-auto">
-              <div className="w-16 h-16 rounded-full bg-[var(--color-accent)]/10 flex items-center justify-center mx-auto mb-6">
-                <Phone className="size-7 text-[var(--color-accent)]" />
-              </div>
-              <h2 className="heading-section text-[var(--color-primary)] mb-4">
-                Usikker? Ring oss.
-              </h2>
-              <p className="text-[var(--color-text-secondary)] font-sans font-400 leading-relaxed mb-8">
-                Det koster ingenting å ringe. Vi kan gi deg råd over telefon og
-                hjelpe deg å vurdere om du trenger en time.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Link
-                  href="/kontakt"
-                  className="btn-primary px-8 py-4"
-                >
-                  <Calendar className="size-5" />
-                  Bestill time
-                </Link>
-                <a
-                  href="tel:61280412"
-                  className="btn-outline px-8 py-4"
-                >
-                  <Phone className="size-5" />
-                  Ring 61 28 04 12
-                </a>
-              </div>
-            </div>
-          </SectionFade>
         </div>
       </section>
 
