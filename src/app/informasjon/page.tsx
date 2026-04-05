@@ -142,10 +142,6 @@ export default function InformasjonPage() {
                         style={{ background: freeGradients[i] }}
                       />
                       <div className="flex-1 p-10 md:p-12 flex flex-col">
-                        {/* Badge as headline */}
-                        <span className="font-heading font-700 text-3xl md:text-4xl text-emerald-700 mb-4">
-                          {sp.badge}
-                        </span>
                         <h3 className="font-heading font-600 text-xl text-[var(--color-primary)] mb-3 group-hover:text-[var(--color-accent)] transition-colors">
                           {sp.shortTitle}
                         </h3>
@@ -195,11 +191,6 @@ export default function InformasjonPage() {
                         className="absolute top-0 inset-x-0 h-1.5"
                         style={{ background: topGradients[sp.slug] || "linear-gradient(to right, #C67B5C, #D4B896)" }}
                       />
-                      {/* Badge value — large */}
-                      <span className="font-heading font-700 text-2xl md:text-3xl text-[var(--color-accent)] mb-2">
-                        {sp.badge}
-                      </span>
-                      <div className="h-px bg-[var(--color-border)] mb-4" />
                       <h3 className="font-heading font-600 text-lg text-[var(--color-primary)] mb-2 group-hover:text-[var(--color-accent)] transition-colors">
                         {sp.shortTitle}
                       </h3>
