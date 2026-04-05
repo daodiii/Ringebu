@@ -198,9 +198,10 @@ const treatments: Treatment[] = [
 /* ─────────────── Layout Data ─────────────── */
 
 const treatmentImages: Record<string, { src: string; alt: string; objectPosition?: string }> = {
-  "Forebyggende Behandling": { src: "/images/ringebutannMain.jpg", alt: "Tannlegestol hos Ringebu Tannklinikk", objectPosition: "70% center" },
-  "Fyllingsterapi": { src: "/images/service-implant.jpg", alt: "Moderne behandlingsrom med utstyr", objectPosition: "center center" },
-  "Visdomstennene": { src: "/images/about-clinic.jpg", alt: "Behandlingsrom hos Ringebu Tannklinikk", objectPosition: "center 40%" },
+  "Forebyggende Behandling": { src: "/images/clinic-valley.jpg", alt: "Resepsjon med naturkunst på veggen hos Ringebu Tannklinikk", objectPosition: "center 60%" },
+  "Fyllingsterapi": { src: "/images/clinic-instruments.jpg", alt: "Moderne tanninstrumenter og digitalt utstyr", objectPosition: "center center" },
+  "Visdomstennene": { src: "/images/ringebutannMain.jpg", alt: "Tannlegestol klar for behandling", objectPosition: "center 55%" },
+  "Tannlegeskrekk": { src: "/images/clinic-sign.jpg", alt: "Ringebu Tannlegesenter skiltet", objectPosition: "center 40%" },
 };
 
 const categories = ["Alle", "Forebyggende", "Kosmetisk", "Restaurering", "Kirurgi", "Spesialbehandling"];
@@ -210,12 +211,13 @@ type LayoutItem =
   | { type: "row"; treatmentTitles: string[] };
 
 const pageLayout: LayoutItem[] = [
-  { type: "band", treatmentTitle: "Forebyggende Behandling", direction: "left" },
+  { type: "band", treatmentTitle: "Forebyggende Behandling", direction: "right" },
   { type: "row", treatmentTitles: ["Bleking", "Tannkjøtt & Tannstein"] },
-  { type: "band", treatmentTitle: "Fyllingsterapi", direction: "right" },
+  { type: "band", treatmentTitle: "Fyllingsterapi", direction: "left" },
   { type: "row", treatmentTitles: ["Kron og Bro", "Rotfylling", "Bittskinner"] },
-  { type: "band", treatmentTitle: "Visdomstennene", direction: "left" },
-  { type: "row", treatmentTitles: ["Tannlegeskrekk"] },
+  { type: "band", treatmentTitle: "Visdomstennene", direction: "right" },
+  { type: "row", treatmentTitles: [] },
+  { type: "band", treatmentTitle: "Tannlegeskrekk", direction: "left" },
 ];
 
 // Dev-mode validation
@@ -395,9 +397,8 @@ function ImageBand({
   const panelId = `panel-${slugify(t.title)}`;
   const isFirstBand = t.title === "Forebyggende Behandling";
 
-  const gradientDir = direction === "left" ? "to right" : "to left";
-  const textAlign = direction === "left" ? "items-start text-left" : "items-end text-right md:items-end md:text-right";
-  const textPosition = direction === "left" ? "md:pr-[45%]" : "md:pl-[45%]";
+  /* direction = which side the IMAGE is on */
+  const imageOnRight = direction === "right";
 
   return (
     <motion.div
@@ -406,7 +407,7 @@ function ImageBand({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-      className="relative rounded-2xl overflow-hidden cursor-pointer group md:min-h-[300px]"
+      className="relative rounded-2xl overflow-hidden cursor-pointer group"
       style={{
         backgroundColor: t.color,
         scrollMarginTop: "140px",
@@ -434,60 +435,21 @@ function ImageBand({
           : { y: -4, boxShadow: `0 16px 48px ${t.color}65` }
       }
     >
-      {/* Background image */}
-      {img && (
-        <div className="absolute inset-0 overflow-hidden">
-          <Image
-            src={img.src}
-            alt={img.alt}
-            fill
-            className={`object-cover transition-transform duration-600 ${
-              !isExpanded ? "group-hover:scale-105" : ""
-            }`}
-            style={{ objectPosition: img.objectPosition || "center center" }}
-            sizes="(max-width: 768px) 100vw, 1140px"
-            priority={isFirstBand}
-          />
-          {/* Desktop gradient overlay — only covers text side, image side stays visible */}
-          <div
-            className="absolute inset-0 z-10 hidden md:block"
-            style={{
-              background: `linear-gradient(${gradientDir}, ${t.color} 30%, ${t.color}E6 42%, ${t.color}99 55%, ${t.color}40 65%, transparent 75%)`,
-            }}
-          />
-          {/* Mobile vertical gradient — bottom text area only */}
-          <div
-            className="absolute inset-0 z-10 md:hidden"
-            style={{
-              background: `linear-gradient(to top, ${t.color} 40%, ${t.color}CC 55%, ${t.color}66 65%, transparent 80%)`,
-            }}
-          />
-        </div>
-      )}
-
-      {/* Content */}
-      <div className="relative z-20">
-        {/* Mobile spacer to show image at top */}
-        <div className="min-h-[200px] md:hidden" />
-
-        <div className={`p-6 md:p-8 flex flex-col ${textAlign} ${textPosition}`}>
-          <span
-            className="inline-block self-start text-[0.58rem] font-sans font-600 uppercase tracking-[0.2em] px-2.5 py-0.5 rounded-full mb-3"
-            style={{ color: t.accent, backgroundColor: `${t.accent}18` }}
-          >
-            {t.category}
-          </span>
-          <h3 className="font-heading font-700 text-white text-2xl md:text-3xl leading-tight mb-1">
+      {/* ── Desktop: split layout ── */}
+      <div className="hidden md:grid md:grid-cols-2 md:min-h-[340px]">
+        {/* Text side */}
+        <div
+          className={`relative z-20 flex flex-col justify-center p-8 lg:p-10 ${
+            imageOnRight ? "order-1" : "order-2"
+          }`}
+        >
+          <h3 className="font-heading font-700 text-white text-2xl lg:text-3xl leading-tight mb-3">
             {t.title}
           </h3>
-          <p className="text-white/70 text-[0.85rem] font-sans font-400 mb-3">
-            {t.subtitle}
-          </p>
-          <p className="text-white/85 text-[0.85rem] font-sans font-400 leading-relaxed mb-4 max-w-lg">
+          <p className="text-white/85 text-[0.95rem] font-sans font-400 leading-relaxed mb-4 max-w-md">
             {t.description}
           </p>
 
-          {/* Feature pills - visible when collapsed */}
           {!isExpanded && (
             <div className="flex flex-wrap gap-2 mb-4">
               {t.features.slice(0, 3).map((f) => (
@@ -502,7 +464,6 @@ function ImageBand({
             </div>
           )}
 
-          {/* Expand indicator */}
           <div className="flex items-center gap-2 text-white/60 text-[0.8rem] font-sans">
             <span>{isExpanded ? "Lukk detaljer" : "Se detaljer"}</span>
             <ChevronDown
@@ -510,7 +471,105 @@ function ImageBand({
             />
           </div>
 
-          {/* Expanded panel */}
+          <AnimatePresence>
+            {isExpanded && <ExpandedPanel t={t} panelId={panelId} />}
+          </AnimatePresence>
+        </div>
+
+        {/* Image side with gradient blending */}
+        <div
+          className={`relative overflow-hidden ${
+            imageOnRight ? "order-2" : "order-1"
+          }`}
+        >
+          {img && (
+            <>
+              <Image
+                src={img.src}
+                alt={img.alt}
+                fill
+                className={`object-cover transition-transform duration-600 ${
+                  !isExpanded ? "group-hover:scale-105" : ""
+                }`}
+                style={{ objectPosition: img.objectPosition || "center center" }}
+                sizes="(max-width: 768px) 100vw, 600px"
+                priority={isFirstBand}
+              />
+              {/* Gradient that blends the image edge into the solid background */}
+              <div
+                className="absolute inset-0 z-10"
+                style={{
+                  background: imageOnRight
+                    ? `linear-gradient(to right, ${t.color} 0%, ${t.color}CC 6%, ${t.color}80 14%, ${t.color}33 24%, transparent 40%)`
+                    : `linear-gradient(to left, ${t.color} 0%, ${t.color}CC 6%, ${t.color}80 14%, ${t.color}33 24%, transparent 40%)`,
+                }}
+              />
+              {/* Subtle top/bottom vignette for polish */}
+              <div
+                className="absolute inset-0 z-10"
+                style={{
+                  background: `linear-gradient(to bottom, ${t.color}40 0%, transparent 15%, transparent 85%, ${t.color}40 100%)`,
+                }}
+              />
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* ── Mobile: stacked layout (image on top, text below) ── */}
+      <div className="md:hidden">
+        {/* Image area */}
+        {img && (
+          <div className="relative h-[220px] overflow-hidden">
+            <Image
+              src={img.src}
+              alt={img.alt}
+              fill
+              className="object-cover"
+              style={{ objectPosition: img.objectPosition || "center center" }}
+              sizes="100vw"
+              priority={isFirstBand}
+            />
+            {/* Bottom gradient blend into content area */}
+            <div
+              className="absolute inset-0 z-10"
+              style={{
+                background: `linear-gradient(to top, ${t.color} 5%, ${t.color}CC 18%, ${t.color}66 35%, transparent 60%)`,
+              }}
+            />
+          </div>
+        )}
+
+        {/* Text content */}
+        <div className="relative z-20 p-6 -mt-8">
+          <h3 className="font-heading font-700 text-white text-2xl leading-tight mb-3">
+            {t.title}
+          </h3>
+          <p className="text-white/85 text-[0.95rem] font-sans font-400 leading-relaxed mb-4">
+            {t.description}
+          </p>
+
+          {!isExpanded && (
+            <div className="flex flex-wrap gap-2 mb-4">
+              {t.features.slice(0, 3).map((f) => (
+                <span
+                  key={f}
+                  className="text-[0.7rem] font-sans font-400 px-2.5 py-1 rounded-full text-white/80"
+                  style={{ backgroundColor: `${t.accent}20` }}
+                >
+                  {f}
+                </span>
+              ))}
+            </div>
+          )}
+
+          <div className="flex items-center gap-2 text-white/60 text-[0.8rem] font-sans">
+            <span>{isExpanded ? "Lukk detaljer" : "Se detaljer"}</span>
+            <ChevronDown
+              className={`size-4 transition-transform duration-300 ${isExpanded ? "rotate-180" : ""}`}
+            />
+          </div>
+
           <AnimatePresence>
             {isExpanded && <ExpandedPanel t={t} panelId={panelId} />}
           </AnimatePresence>
@@ -574,18 +633,9 @@ function CompactCard({
       }
     >
       <div className="p-5 md:p-6">
-        <span
-          className="inline-block text-[0.58rem] font-sans font-600 uppercase tracking-[0.2em] px-2.5 py-0.5 rounded-full mb-3"
-          style={{ color: t.accent, backgroundColor: `${t.accent}18` }}
-        >
-          {t.category}
-        </span>
-        <h3 className="font-heading font-700 text-white text-xl md:text-2xl leading-tight mb-1">
+        <h3 className="font-heading font-700 text-white text-xl md:text-2xl leading-tight mb-3">
           {t.title}
         </h3>
-        <p className="text-white/70 text-[0.8rem] font-sans font-400 mb-3">
-          {t.subtitle}
-        </p>
 
         {/* Expand indicator */}
         <div className="flex items-center gap-2 text-white/60 text-[0.75rem] font-sans">
@@ -634,6 +684,8 @@ function EditorialLayout({
         const rowTreatments = item.treatmentTitles
           .map((title) => treatments.find((tr) => tr.title === title))
           .filter(Boolean) as Treatment[];
+
+        if (rowTreatments.length === 0) return null;
 
         const isSingle = rowTreatments.length === 1;
 
@@ -734,14 +786,6 @@ export default function Behandlinger() {
           <div className="absolute -bottom-[20%] -left-[10%] w-[30vw] h-[30vw] rounded-full bg-[var(--color-accent-light)]/5 blur-3xl" />
         </div>
         <div className="container-width text-center relative z-10">
-          <motion.span
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-[var(--color-accent-light)] text-sm font-sans font-600 uppercase tracking-[0.15em] mb-4 block"
-          >
-            Våre tjenester
-          </motion.span>
           <motion.h1
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}

@@ -18,9 +18,6 @@ export default function SymptomerPage() {
           <div className="absolute -top-[30%] -right-[15%] w-[50vw] h-[50vw] rounded-full bg-[var(--color-accent)]/8 blur-3xl" />
         </div>
         <div className="container-width text-center relative z-10">
-          <span className="text-[var(--color-accent-light)] text-sm font-sans font-600 uppercase tracking-[0.15em] mb-4 block">
-            Symptomer
-          </span>
           <h1 className="heading-display text-white mb-5">
             Vanlige symptomer du bør kjenne til
           </h1>

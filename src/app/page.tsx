@@ -9,12 +9,9 @@ import {
   Phone,
   ChevronRight,
   ChevronDown,
+  ShieldCheck,
+  HandCoins,
 } from "lucide-react";
-import {
-  treatments,
-  treatmentColors,
-  articles,
-} from "@/data/content";
 
 /* ─────────────────────── Helpers ─────────────────────── */
 
@@ -54,17 +51,18 @@ function HeroSection() {
           src="/images/hero-valley-bg.jpg"
           alt=""
           fill
-          className="object-cover"
-          style={{ objectPosition: "center 40%" }}
+          className="object-cover scale-[1.03]"
+          style={{ objectPosition: "center 40%", filter: "blur(0.5px)" }}
           priority
+          quality={100}
           sizes="100vw"
         />
-        {/* Gradient overlay — warm brown fading from left to transparent right */}
+        {/* Gradient overlay — light scrim so the valley nature shows through */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(105deg, rgba(42,24,16,0.92) 0%, rgba(42,24,16,0.82) 30%, rgba(42,24,16,0.55) 55%, rgba(42,24,16,0.25) 75%, rgba(42,24,16,0.10) 100%)",
+              "linear-gradient(105deg, rgba(42,24,16,0.55) 0%, rgba(42,24,16,0.40) 25%, rgba(42,24,16,0.18) 50%, rgba(42,24,16,0.06) 75%, transparent 100%)",
           }}
         />
         {/* Subtle noise texture for depth */}
@@ -85,7 +83,7 @@ function HeroSection() {
               transition={{ duration: 0.7, delay: 0.1 }}
             >
               <div className="w-12 h-[2px] bg-[var(--color-accent)] mb-6" />
-              <p className="text-xs font-sans font-600 uppercase tracking-[0.25em] text-[var(--color-accent-light)] mb-4">
+              <p className="text-xs font-sans font-600 uppercase tracking-[0.25em] text-[var(--color-accent-light)] mb-4" style={{ textShadow: "0 1px 6px rgba(0,0,0,0.4)" }}>
                 Ringebu Tannlegesenter
               </p>
             </motion.div>
@@ -95,6 +93,7 @@ function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.25 }}
               className="font-heading font-700 text-4xl md:text-5xl lg:text-[3.5rem] xl:text-6xl text-white leading-[1.1] mb-6"
+              style={{ textShadow: "0 2px 12px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.4)" }}
             >
               Vi tar vare på{" "}
               <span className="text-[var(--color-accent-light)]">
@@ -106,7 +105,8 @@ function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.4 }}
-              className="text-lg md:text-xl text-white/75 font-sans font-400 leading-relaxed max-w-lg mb-10"
+              className="text-lg md:text-xl text-white/80 font-sans font-400 leading-relaxed max-w-lg mb-10"
+              style={{ textShadow: "0 1px 8px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.3)" }}
             >
               Moderne tannbehandling med personlig omsorg i hjertet av
               Gudbrandsdalen.
@@ -142,7 +142,7 @@ function HeroSection() {
             transition={{ duration: 0.9, delay: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
             className="hidden lg:block"
           >
-            <div className="relative rounded-sm overflow-hidden shadow-2xl shadow-black/30 border border-white/10 aspect-[4/5] max-w-[340px] ml-auto">
+            <div className="relative rounded-sm overflow-hidden shadow-2xl shadow-black/30 border border-white/10 aspect-[4/5] max-w-[420px] ml-auto">
               <Image
                 src="/images/hero-clinic.jpg"
                 alt="Moderne behandlingsrom ved Ringebu Tannlegesenter"
@@ -164,7 +164,7 @@ function HeroSection() {
 
       {/* Bottom fade to page background */}
       <div
-        className="absolute bottom-0 inset-x-0 h-24 z-10"
+        className="absolute bottom-0 inset-x-0 h-6 z-10"
         style={{
           background: "linear-gradient(to bottom, transparent, var(--color-bg-cream))",
         }}
@@ -218,13 +218,10 @@ function TreatmentsSection() {
                   <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-primary)]/30 to-transparent" />
                 </div>
                 <div className="p-8 md:p-10">
-                  <span className="text-[0.6875rem] font-sans font-700 tracking-[0.2em] text-[var(--color-accent)] uppercase mb-3 block">
-                    Grunnlaget for god tannhelse
-                  </span>
                   <h3 className="text-2xl md:text-3xl font-heading font-700 text-[var(--color-primary)] mb-3">
                     Forebyggende behandling
                   </h3>
-                  <p className="text-[var(--color-text-secondary)] leading-relaxed font-sans font-400 text-base max-w-lg">
+                  <p className="text-[var(--color-text-secondary)] leading-relaxed font-sans font-400 text-[1.05rem] max-w-lg">
                     Undersøkelse, profesjonell rens, fluorbehandling og personlig veiledning
                     for å holde smilet friskt gjennom hele livet.
                   </p>
@@ -246,13 +243,10 @@ function TreatmentsSection() {
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
                 <div className="relative z-10">
-                  <span className="text-[0.6875rem] font-700 uppercase tracking-[0.2em] text-[var(--color-accent-light)] block mb-3">
-                    Kosmetisk
-                  </span>
                   <h3 className="text-2xl md:text-3xl font-heading font-700 mb-4">
                     Profesjonell Tannbleking
                   </h3>
-                  <p className="text-white/70 text-base leading-relaxed font-sans font-400">
+                  <p className="text-white/70 text-[1.05rem] leading-relaxed font-sans font-400">
                     Få et strålende smil med vår skånsomme, kliniske blekeprosess
                     utviklet for varige resultater.
                   </p>
@@ -279,13 +273,10 @@ function TreatmentsSection() {
                   aria-hidden="true"
                 />
                 <div className="relative z-10">
-                  <span className="text-[0.6875rem] font-700 uppercase tracking-[0.2em] text-[var(--color-accent)] block mb-3">
-                    Restaurering
-                  </span>
                   <h3 className="text-xl md:text-2xl font-heading font-700 text-[var(--color-primary)] mb-3">
                     Kron, Bro & Fyllinger
                   </h3>
-                  <p className="text-[var(--color-text-secondary)] text-base leading-relaxed font-sans font-400">
+                  <p className="text-[var(--color-text-secondary)] text-[1.05rem] leading-relaxed font-sans font-400">
                     Naturlig utseende restaureringer som gjenoppretter form, funksjon og selvtillit.
                   </p>
                 </div>
@@ -301,13 +292,10 @@ function TreatmentsSection() {
           <SectionFade className="md:col-span-8" delay={0.2}>
             <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-cream)] p-8 md:p-10 flex flex-col md:flex-row items-center gap-8 md:gap-12 group h-full transition-all duration-500 hover:shadow-[0_20px_60px_rgba(60,36,21,0.08)] hover:-translate-y-1">
               <div className="w-full md:w-1/2">
-                <span className="text-[0.6875rem] font-700 uppercase tracking-[0.2em] text-[var(--color-accent)] block mb-3">
-                  Hastehenvendelser
-                </span>
                 <h3 className="text-xl md:text-2xl font-heading font-700 text-[var(--color-primary)] mb-3">
                   Akutt tannhjelp
                 </h3>
-                <p className="text-[var(--color-text-secondary)] text-base mb-6 leading-relaxed font-sans font-400">
+                <p className="text-[var(--color-text-secondary)] text-[1.05rem] mb-6 leading-relaxed font-sans font-400">
                   Har du fått akutt tannpine? Vi prioriterer hastehenvendelser og hjelper deg
                   raskt.
                 </p>
@@ -331,6 +319,124 @@ function TreatmentsSection() {
               </div>
             </div>
           </SectionFade>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────────── TRUST SIGNALS ─────────────────────── */
+
+function TrustSection() {
+  return (
+    <section className="py-16 md:py-20 bg-[var(--color-bg-cream)]">
+      <div className="container-width">
+        <div className="max-w-5xl mx-auto">
+          {/* Section label */}
+          <SectionFade>
+            <div className="flex items-center gap-4 mb-10 md:mb-12">
+              <div className="h-px bg-[var(--color-border)] flex-grow" />
+              <span className="text-xs font-sans font-700 tracking-[0.25em] text-[var(--color-accent)] uppercase whitespace-nowrap">
+                Trygghet &amp; kvalitet
+              </span>
+              <div className="h-px bg-[var(--color-border)] flex-grow" />
+            </div>
+          </SectionFade>
+
+          {/* Two trust cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+            {/* NTF Membership */}
+            <SectionFade>
+              <div className="relative bg-white rounded-2xl border border-[var(--color-border)] p-8 md:p-10 h-full overflow-hidden transition-all duration-300 hover:shadow-[0_12px_40px_rgba(60,36,21,0.06)] hover:-translate-y-0.5">
+                {/* Subtle decorative corner */}
+                <div className="absolute -top-16 -right-16 w-32 h-32 rounded-full bg-[var(--color-accent)]/[0.04] blur-2xl" />
+
+                <div className="relative z-10">
+                  {/* Icon + badge row */}
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="w-12 h-12 rounded-xl bg-[var(--color-primary)]/[0.07] flex items-center justify-center">
+                      <ShieldCheck className="size-6 text-[var(--color-primary)]" />
+                    </div>
+                    <span className="text-[0.65rem] font-sans font-700 tracking-[0.2em] uppercase text-[var(--color-text-muted)] bg-[var(--color-bg-cream)] px-3 py-1.5 rounded-lg">
+                      Siden 1884
+                    </span>
+                  </div>
+
+                  <h3 className="text-xl md:text-2xl font-heading font-700 text-[var(--color-primary)] mb-3">
+                    Medlem av Den norske tannlegeforening
+                  </h3>
+                  <p className="text-[var(--color-text-secondary)] text-[0.95rem] leading-relaxed font-sans font-400 mb-6">
+                    Som NTF-medlem følger vi strenge etiske retningslinjer og
+                    holder oss faglig oppdatert gjennom kontinuerlig
+                    etterutdanning — din garanti for trygg og kvalitetssikret
+                    behandling.
+                  </p>
+
+                  {/* Key points */}
+                  <div className="space-y-2.5">
+                    {[
+                      "Etiske retningslinjer for pasientbehandling",
+                      "Løpende faglig oppdatering og etterutdanning",
+                      "Kvalitetssikret praksis og utstyr",
+                    ].map((point) => (
+                      <div key={point} className="flex items-start gap-3">
+                        <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] mt-2 shrink-0" />
+                        <span className="text-sm text-[var(--color-text-secondary)] font-sans font-400">
+                          {point}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </SectionFade>
+
+            {/* Direkte oppgjør med HELFO */}
+            <SectionFade delay={0.12}>
+              <div className="relative bg-[var(--color-primary)] rounded-2xl p-8 md:p-10 h-full overflow-hidden transition-all duration-300 hover:shadow-[0_12px_40px_rgba(60,36,21,0.15)] hover:-translate-y-0.5">
+                {/* Subtle texture */}
+                <div className="absolute -bottom-20 -left-20 w-48 h-48 rounded-full bg-white/[0.04] blur-2xl" />
+                <div className="absolute -top-10 -right-10 w-36 h-36 rounded-full bg-[var(--color-accent)]/[0.08] blur-2xl" />
+
+                <div className="relative z-10">
+                  {/* Icon + badge row */}
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center">
+                      <HandCoins className="size-6 text-[var(--color-accent-light)]" />
+                    </div>
+                    <span className="text-[0.65rem] font-sans font-700 tracking-[0.2em] uppercase text-white/50 bg-white/[0.08] px-3 py-1.5 rounded-lg">
+                      Folketrygden
+                    </span>
+                  </div>
+
+                  <h3 className="text-xl md:text-2xl font-heading font-700 text-white mb-3">
+                    Direkte oppgjør med HELFO
+                  </h3>
+                  <p className="text-white/75 text-[0.95rem] leading-relaxed font-sans font-400 mb-6">
+                    Du betaler kun din egenandel — vi ordner resten direkte med
+                    HELFO. Ingen forskuddsbetaling, ingen refusjonskrav å sende
+                    selv.
+                  </p>
+
+                  {/* Key points */}
+                  <div className="space-y-2.5">
+                    {[
+                      "Slipper å legge ut for hele behandlingen",
+                      "Vi sender refusjonskrav på dine vegne",
+                      "Gjelder alle 15 HELFO-stønadspunkter",
+                    ].map((point) => (
+                      <div key={point} className="flex items-start gap-3">
+                        <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent-light)] mt-2 shrink-0" />
+                        <span className="text-sm text-white/70 font-sans font-400">
+                          {point}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </SectionFade>
+          </div>
         </div>
       </div>
     </section>
@@ -425,13 +531,10 @@ function GuideSection() {
                   <div className="flex gap-6 flex-1">
                     <div className="w-1 self-stretch rounded-full bg-[var(--color-accent)] shrink-0 hidden md:block" />
                     <div>
-                      <span className="text-[0.6875rem] font-700 uppercase tracking-[0.2em] text-[var(--color-accent)] block mb-2">
-                        Rettigheter & Økonomi
-                      </span>
                       <h2 className="text-2xl md:text-3xl font-heading font-700 text-[var(--color-primary)] mb-3">
                         Informasjon & støtte
                       </h2>
-                      <p className="text-[var(--color-text-secondary)] text-base md:text-lg leading-relaxed font-sans font-400 max-w-2xl">
+                      <p className="text-[var(--color-text-secondary)] text-[1.05rem] md:text-lg leading-relaxed font-sans font-400 max-w-2xl">
                         Støtteordninger, rettigheter og alt du lurer på om tannbehandling
                         i Norge. Barn, unge voksne, HELFO, NAV og frikort — samlet på ett sted.
                       </p>
@@ -451,74 +554,6 @@ function GuideSection() {
           </SectionFade>
 
         </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─────────────────────── ARTICLES (Magazine Layout) ─────────────────────── */
-
-function ArticlesSection() {
-  const displayArticles = articles.slice(0, 2);
-
-  return (
-    <section id="artikler" className="py-12 md:py-16 bg-[var(--color-bg-blue)]">
-      <div className="container-width">
-        {/* Centered Divider Header */}
-        <SectionFade>
-          <div className="flex items-center gap-4 mb-8 md:mb-10">
-            <div className="h-px bg-[var(--color-border)] flex-grow" />
-            <span className="text-xs font-sans font-700 tracking-[0.25em] text-[var(--color-accent)] uppercase whitespace-nowrap">
-              Journal &amp; Ekspertise
-            </span>
-            <div className="h-px bg-[var(--color-border)] flex-grow" />
-          </div>
-        </SectionFade>
-
-        {/* Compact Two-Column Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-          {displayArticles.map((article, i) => (
-            <SectionFade key={article.slug} delay={i * 0.12}>
-              <Link href={`/artikler/${article.slug}`} className="group flex gap-5 items-start">
-                <div className="w-32 h-24 md:w-40 md:h-28 shrink-0 overflow-hidden rounded-lg relative">
-                  <Image
-                    src={article.image}
-                    alt={article.title}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    sizes="160px"
-                  />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 text-xs font-sans font-700 tracking-[0.15em] text-[var(--color-text-muted)] uppercase mb-2">
-                    <span>{article.category}</span>
-                    <span className="w-1 h-1 bg-[var(--color-accent)] rounded-full" />
-                    <span>{article.readTime} lesing</span>
-                  </div>
-                  <h3 className="text-lg md:text-xl font-heading font-600 text-[var(--color-primary)] mb-2 leading-tight group-hover:underline decoration-1 underline-offset-4">
-                    {article.title}
-                  </h3>
-                  <p className="text-[var(--color-stone-600)] text-sm leading-relaxed font-sans font-400 line-clamp-2">
-                    {article.excerpt}
-                  </p>
-                </div>
-              </Link>
-            </SectionFade>
-          ))}
-        </div>
-
-        {/* CTA */}
-        <SectionFade delay={0.3}>
-          <div className="mt-8 md:mt-10 text-center">
-            <Link
-              href="/artikler"
-              className="btn-outline px-10 py-4"
-            >
-              Besøk magasinet
-              <ArrowRight className="size-4" />
-            </Link>
-          </div>
-        </SectionFade>
       </div>
     </section>
   );
@@ -742,10 +777,10 @@ function SupportCard({
                       key={d.label}
                       className="bg-[var(--color-stone-50)] rounded-xl p-5"
                     >
-                      <p className="text-[0.6875rem] font-700 uppercase tracking-[0.18em] text-[var(--color-accent)] mb-2">
+                      <p className="font-heading font-600 text-[var(--color-primary)] text-sm mb-1">
                         {d.label}
                       </p>
-                      <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed font-sans font-300">
+                      <p className="text-[0.95rem] text-[var(--color-text-secondary)] leading-relaxed font-sans font-300">
                         {renderBold(d.text)}
                       </p>
                     </div>
@@ -780,13 +815,6 @@ function BetalingsstotteSection() {
         {/* Header */}
         <SectionFade>
           <div className="text-center mb-14 md:mb-16">
-            <div className="flex items-center justify-center gap-3 mb-5">
-              <div className="w-10 h-0.5 rounded-full bg-[var(--color-accent)]" />
-              <span className="text-[0.6875rem] font-700 uppercase tracking-[0.22em] text-[var(--color-accent)]">
-                Økonomi & Rettigheter
-              </span>
-              <div className="w-10 h-0.5 rounded-full bg-[var(--color-accent)]" />
-            </div>
             <h2 className="heading-section text-[var(--color-primary)] mb-4">
               Støtte til tannbehandling
             </h2>
@@ -831,8 +859,8 @@ export default function HomePage() {
     <main>
       <HeroSection />
       <TreatmentsSection />
+      <TrustSection />
       <GuideSection />
-      <ArticlesSection />
       <CTASection />
     </main>
   );

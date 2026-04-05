@@ -52,6 +52,7 @@ declare module 'lucide-react' {
     export const Droplets: Icon;
     export const AlarmClock: Icon;
     export const HandHeart: Icon;
+    export const HandCoins: Icon;
     export const Thermometer: Icon;
     export const Wind: Icon;
     export const Flame: Icon;
