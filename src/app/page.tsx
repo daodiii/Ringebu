@@ -81,7 +81,7 @@ function HeroSection() {
               transition={{ duration: 0.7, delay: 0.1 }}
             >
               <div className="w-12 h-[2px] bg-[var(--color-accent)] mb-6" />
-              <p className="text-xs font-sans font-600 uppercase tracking-[0.25em] text-[var(--color-accent-light)] mb-4" style={{ textShadow: "0 1px 6px rgba(0,0,0,0.4)" }}>
+              <p className="text-sm md:text-base font-sans font-700 uppercase tracking-[0.25em] text-white mb-4" style={{ textShadow: "0 2px 12px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.4)" }}>
                 Ringebu Tannlegesenter
               </p>
             </motion.div>
