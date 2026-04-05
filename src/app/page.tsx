@@ -7,6 +7,7 @@ import { motion, useInView, AnimatePresence } from "framer-motion";
 import {
   ArrowRight,
   Phone,
+  ChevronRight,
   ChevronDown,
 } from "lucide-react";
 
@@ -420,85 +421,119 @@ function TrustSection() {
   );
 }
 
-/* ─────────────────────── GUIDE (Unified Card) ─────────────────────── */
-
-const guideItems = [
-  {
-    tag: "Hjelp deg selv",
-    title: "Symptomer",
-    description:
-      "Tannpine, blødende tannkjøtt eller ising i tennene? Typen smerte avslører ofte hva som er galt — og hvor raskt du bør handle.",
-    cta: "Finn årsaken",
-    href: "/symptomer",
-  },
-  {
-    tag: "Ekspertråd",
-    title: "Tips & råd",
-    description:
-      "Artikler om tannhelse, forebygging og hverdagstips fra teamet ved Ringebu Tannlegesenter.",
-    cta: "Les artiklene",
-    href: "/artikler",
-  },
-  {
-    tag: "Rettigheter",
-    title: "Informasjon & støtte",
-    description:
-      "Støtteordninger, rettigheter og alt du lurer på om tannbehandling i Norge. Barn, unge voksne, HELFO, NAV og frikort.",
-    cta: "Les mer",
-    href: "/informasjon",
-  },
-];
+/* ─────────────────────── GUIDE (Terracotta Accent) ─────────────────────── */
 
 function GuideSection() {
+  const tipArticles = [
+    { title: "Kaffe, brunost og tennene dine: norsk kosthold og tannhelse", href: "/artikler" },
+    { title: "Munnskyll — når det hjelper og når du kaster bort penger", href: "/artikler" },
+    { title: "Spyttets superkrefter: kroppens egen tannbeskyttelse", href: "/artikler" },
+  ];
+
   return (
     <section className="py-24 md:py-32 bg-[var(--color-bg-yellow)]">
       <div className="container-width">
-        <div className="max-w-5xl mx-auto">
-          <SectionFade>
-            <div className="bg-white rounded-2xl border border-[var(--color-border)] overflow-hidden shadow-[0_8px_40px_rgba(60,36,21,0.05)]">
-              {/* Dark header bar */}
-              <div className="bg-[var(--color-primary)] px-6 md:px-10 py-5 flex flex-wrap gap-2">
-                {guideItems.map((item, i) => (
-                  <span
-                    key={item.title}
-                    className={`px-5 py-2.5 rounded-lg font-sans text-sm font-600 transition-colors ${
-                      i === 0
-                        ? "bg-white/15 text-white"
-                        : "text-white/50 hover:text-white/75 hover:bg-white/[0.06]"
-                    }`}
-                  >
-                    {item.title}
-                  </span>
-                ))}
-              </div>
+        <div className="max-w-5xl mx-auto space-y-5 md:space-y-6">
 
-              {/* Three columns */}
-              <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[var(--color-border)]">
-                {guideItems.map((item, i) => (
-                  <SectionFade key={item.title} delay={i * 0.1}>
-                    <Link
-                      href={item.href}
-                      className="group block p-7 md:p-8 transition-colors hover:bg-[var(--color-stone-50)] cursor-pointer h-full"
-                    >
-                      <p className="text-[0.65rem] font-sans font-700 tracking-[0.2em] uppercase text-[var(--color-accent)] mb-3">
-                        {item.tag}
-                      </p>
-                      <h3 className="text-lg md:text-xl font-heading font-700 text-[var(--color-primary)] mb-3">
-                        {item.title}
-                      </h3>
-                      <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed font-sans font-400 mb-5">
-                        {item.description}
-                      </p>
-                      <span className="text-sm font-heading font-600 text-[var(--color-accent)] group-hover:text-[var(--color-primary)] transition-colors inline-flex items-center gap-1.5">
-                        {item.cta}
-                        <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
-                      </span>
-                    </Link>
-                  </SectionFade>
-                ))}
+          {/* ── Top row: Symptomer (terracotta) + Tips & Råd (tinted) ── */}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-5 lg:gap-6">
+
+            {/* Symptomer — terracotta gradient card */}
+            <SectionFade className="lg:col-span-2">
+              <Link href="/symptomer" className="group block h-full">
+                <div
+                  className="rounded-2xl p-8 md:p-10 h-full flex flex-col justify-between min-h-[360px] transition-all duration-300 hover:shadow-[0_20px_60px_rgba(198,123,92,0.2)] hover:-translate-y-1 cursor-pointer text-white"
+                  style={{
+                    background: "linear-gradient(135deg, #C67B5C 0%, #A8624A 100%)",
+                  }}
+                >
+                  <div>
+                    <h2 className="text-2xl md:text-3xl font-heading font-700 mb-6">
+                      Symptomer
+                    </h2>
+                    <p className="text-white/85 text-base leading-relaxed font-sans font-400">
+                      Tannpine, blødende tannkjøtt eller ising i tennene? Typen smerte
+                      avslører ofte hva som er galt — og hvor raskt du bør handle.
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3 font-heading font-600 mt-8 group-hover:text-white/90 transition-colors">
+                    Finn årsaken her
+                    <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-colors">
+                      <ChevronRight className="size-5 text-white" />
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </SectionFade>
+
+            {/* Tips & råd — terracotta-tinted card with article list */}
+            <SectionFade className="lg:col-span-3" delay={0.15}>
+              <div className="rounded-2xl p-8 md:p-10 h-full bg-[var(--color-accent)]/[0.08] border-[1.5px] border-[var(--color-accent)]/20">
+                <div className="flex items-center justify-between mb-8">
+                  <h2 className="text-2xl md:text-3xl font-heading font-700 text-[var(--color-primary)]">
+                    Tips & råd
+                  </h2>
+                  <Link
+                    href="/artikler"
+                    className="text-[var(--color-accent)] font-sans font-500 text-sm hover:underline underline-offset-4"
+                  >
+                    Se alle
+                  </Link>
+                </div>
+                <div className="divide-y divide-[var(--color-accent)]/[0.12]">
+                  {tipArticles.map((tip, i) => (
+                    <SectionFade key={tip.title} delay={i * 0.08}>
+                      <Link
+                        href={tip.href}
+                        className="flex items-center justify-between py-6 group cursor-pointer"
+                      >
+                        <span className="text-lg md:text-xl font-sans font-400 text-[var(--color-primary)] group-hover:text-[var(--color-accent)] transition-colors pr-4">
+                          {tip.title}
+                        </span>
+                        <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[var(--color-bg-cream)] flex items-center justify-center">
+                          <ChevronRight className="size-5 text-[var(--color-accent)]" />
+                        </div>
+                      </Link>
+                    </SectionFade>
+                  ))}
+                </div>
               </div>
-            </div>
+            </SectionFade>
+          </div>
+
+          {/* ── Bottom row: Informasjon — deep forest green card ── */}
+          <SectionFade delay={0.25}>
+            <Link href="/informasjon" className="group block">
+              <div
+                className="relative rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-[0_20px_60px_rgba(45,74,62,0.2)] hover:-translate-y-1 cursor-pointer"
+                style={{ background: "#2D4A3E" }}
+              >
+                {/* Subtle warm glow */}
+                <div className="absolute -top-20 -right-20 w-48 h-48 rounded-full bg-[var(--color-accent)]/[0.08] blur-3xl" />
+                <div className="absolute -bottom-16 -left-16 w-40 h-40 rounded-full bg-[var(--color-accent-light)]/[0.06] blur-2xl" />
+
+                <div className="relative z-10 p-8 md:p-10 flex flex-col md:flex-row md:items-center gap-6 md:gap-12">
+                  <div className="flex-1">
+                    <h2 className="text-2xl md:text-3xl font-heading font-700 text-white mb-3">
+                      Informasjon & støtte
+                    </h2>
+                    <p className="text-white/70 text-[1.05rem] md:text-lg leading-relaxed font-sans font-400 max-w-2xl">
+                      Støtteordninger, rettigheter og alt du lurer på om tannbehandling
+                      i Norge. Barn, unge voksne, HELFO, NAV og frikort — samlet på ett sted.
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-3 text-[var(--color-accent-light)] font-heading font-600 shrink-0 group-hover:text-white transition-colors">
+                    Les mer
+                    <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/15 transition-colors">
+                      <ArrowRight className="size-5 text-[var(--color-accent-light)]" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Link>
           </SectionFade>
+
         </div>
       </div>
     </section>
