@@ -138,17 +138,23 @@ export default function Kontakt() {
       <section className="section-padding bg-white">
         <div className="container-width">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 max-w-6xl mx-auto">
-            {/* Left — Contact Details */}
+            {/* Left — Map + Contact Details */}
             <div>
+              {/* Embedded Map */}
               <SectionFade>
-                <p className="eyebrow mb-3">Ta kontakt</p>
-                <h2 className="heading-section mb-3">
-                  Vi er her for deg
-                </h2>
-                <p className="body-large mb-10">
-                  Ring oss direkte, send en e-post, eller stikk innom
-                  klinikken. Enkel parkering rett utenfor døren.
-                </p>
+                <div className="rounded-2xl overflow-hidden border border-[var(--color-border)] mb-6 aspect-[4/3]">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1870.5!2d10.1614!3d61.5267!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4614f8e5a5a5a5a5%3A0x0!2sJernbanegata%204%2C%202630%20Ringebu!5e0!3m2!1sno!2sno!4v1700000000000!5m2!1sno!2sno"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Ringebu Tannlegesenter på kartet"
+                    className="grayscale-[20%] contrast-[1.05]"
+                  />
+                </div>
               </SectionFade>
 
               <div className="space-y-4">
@@ -337,27 +343,6 @@ export default function Kontakt() {
             </div>
           </div>
         </div>
-      </section>
-
-      {/* ── Google Maps ── */}
-      <section className="relative">
-        <SectionFade>
-          <div className="w-full h-[400px] md:h-[500px] relative">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1870.5!2d10.1614!3d61.5267!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4614f8e5a5a5a5a5%3A0x0!2sJernbanegata%204%2C%202630%20Ringebu!5e0!3m2!1sno!2sno!4v1700000000000!5m2!1sno!2sno"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title="Ringebu Tannlegesenter på kartet"
-              className="grayscale-[30%] contrast-[1.05]"
-            />
-            {/* Overlay gradient at top for smooth transition */}
-            <div className="absolute top-0 inset-x-0 h-8 bg-gradient-to-b from-white to-transparent pointer-events-none" />
-          </div>
-        </SectionFade>
       </section>
 
       {/* ── Finn oss fra turistområder ── */}
