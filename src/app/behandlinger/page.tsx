@@ -1,15 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  ChevronDown,
-  Calendar,
-  Phone,
-  ArrowRight,
-} from "lucide-react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { Calendar, Phone, ChevronDown } from "lucide-react";
 
 /* ─────────────── Types ─────────────── */
 
@@ -25,11 +20,8 @@ interface Treatment {
   features: string[];
   category: string;
   prices: PriceItem[];
-  /* Visual config for bento grid */
-  variant: "dark" | "cream" | "accent" | "image";
-  span: "wide" | "tall" | "standard";
-  image?: string;
-  gradient?: string;
+  color: string;
+  accent: string;
 }
 
 /* ─────────────── Data ─────────────── */
@@ -48,15 +40,13 @@ const treatments: Treatment[] = [
     ],
     category: "Forebyggende",
     prices: [
-      { name: "Undersøkelse med 2 røntgenbilder, rens og kostnadsoverslag", description: "Fullstendig tannhelsesjekk" },
+      { name: "Undersøkelse med rens og kostnadsoverslag", description: "Fullstendig tannhelsesjekk" },
       { name: "Studentrabatt på undersøkelse", description: "Gyldig med studentbevis" },
       { name: "Enkel etterkontroll", description: "Etter kirurgiske inngrep" },
       { name: "Omfattende etterkontroll", description: "Etter oralmedisinske undersøkelser" },
     ],
-    variant: "image",
-    span: "wide",
-    image: "/images/ringebutannMain.jpg",
-    gradient: "linear-gradient(135deg, rgba(139,115,85,0.22) 0%, rgba(212,184,150,0.30) 100%)",
+    color: "#3C2415",
+    accent: "#D4B896",
   },
   {
     title: "Bleking",
@@ -71,9 +61,8 @@ const treatments: Treatment[] = [
     ],
     category: "Kosmetisk",
     prices: [],
-    variant: "dark",
-    span: "tall",
-    gradient: "linear-gradient(135deg, rgba(198,123,92,0.22) 0%, rgba(220,170,140,0.28) 100%)",
+    color: "#1C2A3A",
+    accent: "#8AABC4",
   },
   {
     title: "Fyllingsterapi",
@@ -92,9 +81,8 @@ const treatments: Treatment[] = [
       { name: "Fylling — mellomstor", description: "To flater" },
       { name: "Fylling — stor", description: "Tre eller flere flater" },
     ],
-    variant: "cream",
-    span: "standard",
-    gradient: "linear-gradient(135deg, rgba(180,160,120,0.20) 0%, rgba(235,225,200,0.30) 100%)",
+    color: "#2A3A2B",
+    accent: "#A0C4A2",
   },
   {
     title: "Kron og Bro",
@@ -111,9 +99,8 @@ const treatments: Treatment[] = [
     prices: [
       { name: "Fullkrone", description: "Hel krone over tann" },
     ],
-    variant: "accent",
-    span: "standard",
-    gradient: "linear-gradient(135deg, rgba(195,150,110,0.25) 0%, rgba(240,220,200,0.30) 100%)",
+    color: "#5A3420",
+    accent: "#D4A87C",
   },
   {
     title: "Rotfylling",
@@ -132,9 +119,8 @@ const treatments: Treatment[] = [
       { name: "Rotfylling — 2 rotkanaler", description: "Tann med to rotkanaler" },
       { name: "Rotfylling — 3–4 rotkanaler", description: "Tann med tre til fire rotkanaler" },
     ],
-    variant: "cream",
-    span: "wide",
-    gradient: "linear-gradient(135deg, rgba(160,140,130,0.20) 0%, rgba(210,200,190,0.28) 100%)",
+    color: "#3D1C28",
+    accent: "#C48A9C",
   },
   {
     title: "Visdomstennene",
@@ -152,9 +138,8 @@ const treatments: Treatment[] = [
       { name: "Ukomplisert ekstraksjon", description: "Enkel fjerning av tann eller rot" },
       { name: "Kirurgisk fjerning", description: "Fjerning av retinert tann" },
     ],
-    variant: "dark",
-    span: "standard",
-    gradient: "linear-gradient(135deg, rgba(100,135,110,0.18) 0%, rgba(180,210,185,0.25) 100%)",
+    color: "#1C3636",
+    accent: "#88BFBF",
   },
   {
     title: "Tannkjøtt & Tannstein",
@@ -162,20 +147,19 @@ const treatments: Treatment[] = [
     description:
       "Sunt tannkjøtt er det viktigste for at tennene skal holde lenge. Vi fjerner tannstein og behandler tannkjøttsykdom.",
     features: [
-      "Grundig fjerning av tannstein over og under tannkjøttet",
+      "Grundig fjerning av tannstein",
       "Behandling av gingivitt og periodontitt",
       "Veiledning i effektiv munnhygiene",
       "Regelmessig oppfølging og vedlikehold",
     ],
     category: "Forebyggende",
     prices: [
-      { name: "Periodontal behandling og rehabilitering", description: "Behandling av tannkjøttsykdom" },
-      { name: "Behandling av marginal periodontitt", description: "Tannkjøttbetennelse" },
+      { name: "Periodontal behandling", description: "Behandling av tannkjøttsykdom" },
+      { name: "Behandling av periodontitt", description: "Tannkjøttbetennelse" },
       { name: "Fiksering av tenner", description: "Stabilisering av løse tenner" },
     ],
-    variant: "accent",
-    span: "standard",
-    gradient: "linear-gradient(135deg, rgba(175,155,130,0.20) 0%, rgba(230,215,195,0.28) 100%)",
+    color: "#33362A",
+    accent: "#B0B89A",
   },
   {
     title: "Bittskinner",
@@ -190,9 +174,8 @@ const treatments: Treatment[] = [
     ],
     category: "Spesialbehandling",
     prices: [],
-    variant: "cream",
-    span: "standard",
-    gradient: "linear-gradient(135deg, rgba(145,130,155,0.18) 0%, rgba(210,200,220,0.25) 100%)",
+    color: "#2E2038",
+    accent: "#B09AC4",
   },
   {
     title: "Tannlegeskrekk",
@@ -207,290 +190,622 @@ const treatments: Treatment[] = [
     ],
     category: "Spesialbehandling",
     prices: [],
-    variant: "image",
-    span: "wide",
-    image: "/images/about-clinic.jpg",
-    gradient: "linear-gradient(135deg, rgba(190,165,140,0.22) 0%, rgba(240,225,210,0.30) 100%)",
+    color: "#2A2A30",
+    accent: "#A0A0AE",
   },
 ];
 
-/* ─────────────── Treatment Card ─────────────── */
+/* ─────────────── Layout Data ─────────────── */
 
-function TreatmentCard({ treatment, index }: { treatment: Treatment; index: number }) {
-  const [open, setOpen] = useState(false);
-  const hasPrices = treatment.prices.length > 0;
+const treatmentImages: Record<string, { src: string; alt: string }> = {
+  "Forebyggende Behandling": { src: "/images/ringebutannMain.jpg", alt: "Ringebu Tannklinikk" },
+  "Fyllingsterapi": { src: "/images/service-general.jpg", alt: "Moderne tannbehandling" },
+  "Visdomstennene": { src: "/images/dental-chair.png", alt: "Tannlegestol med utstyr" },
+};
 
-  /* Grid span classes */
-  const spanClass =
-    treatment.span === "wide"
-      ? "md:col-span-8"
-      : treatment.span === "tall"
-      ? "md:col-span-4 md:row-span-2"
-      : "md:col-span-4";
+const categories = ["Alle", "Forebyggende", "Kosmetisk", "Restaurering", "Kirurgi", "Spesialbehandling"];
 
-  /* Variant styles */
-  const variants = {
-    dark: {
-      bg: "bg-[var(--color-primary)]",
-      text: "text-white",
-      textMuted: "text-white/70",
-      accent: "text-[var(--color-accent-light)]",
-      border: "",
-      detailBg: "bg-white/10",
-      detailLabel: "text-[var(--color-accent-light)]",
-      detailText: "text-white/80",
-      priceBg: "bg-white/5 border-white/10",
-      chevron: "text-white/50",
-      hoverShadow: "hover:shadow-[0_20px_60px_rgba(60,36,21,0.2)]",
-    },
-    cream: {
-      bg: "bg-[var(--color-bg-cream)]",
-      text: "text-[var(--color-primary)]",
-      textMuted: "text-[var(--color-text-secondary)]",
-      accent: "text-[var(--color-accent)]",
-      border: "border border-[var(--color-border)]",
-      detailBg: "bg-white",
-      detailLabel: "text-[var(--color-accent)]",
-      detailText: "text-[var(--color-text-secondary)]",
-      priceBg: "bg-white border-[var(--color-border)]",
-      chevron: "text-[var(--color-text-muted)]",
-      hoverShadow: "hover:shadow-[0_20px_60px_rgba(60,36,21,0.08)]",
-    },
-    accent: {
-      bg: "bg-gradient-to-br from-[var(--color-accent)]/[0.08] to-[var(--color-bg-cream)]",
-      text: "text-[var(--color-primary)]",
-      textMuted: "text-[var(--color-text-secondary)]",
-      accent: "text-[var(--color-accent)]",
-      border: "border-2 border-[var(--color-accent)]/20",
-      detailBg: "bg-white",
-      detailLabel: "text-[var(--color-accent)]",
-      detailText: "text-[var(--color-text-secondary)]",
-      priceBg: "bg-white border-[var(--color-accent)]/15",
-      chevron: "text-[var(--color-accent)]",
-      hoverShadow: "hover:shadow-[0_20px_60px_rgba(198,123,92,0.12)]",
-    },
-    image: {
-      bg: "bg-[var(--color-bg-cream)]",
-      text: "text-[var(--color-primary)]",
-      textMuted: "text-[var(--color-text-secondary)]",
-      accent: "text-[var(--color-accent)]",
-      border: "border border-[var(--color-border)]",
-      detailBg: "bg-white",
-      detailLabel: "text-[var(--color-accent)]",
-      detailText: "text-[var(--color-text-secondary)]",
-      priceBg: "bg-white border-[var(--color-border)]",
-      chevron: "text-[var(--color-text-muted)]",
-      hoverShadow: "hover:shadow-[0_20px_60px_rgba(60,36,21,0.1)]",
-    },
-  };
+type LayoutItem =
+  | { type: "band"; treatmentTitle: string; direction: "left" | "right" }
+  | { type: "row"; treatmentTitles: string[] };
 
-  const v = variants[treatment.variant];
+const pageLayout: LayoutItem[] = [
+  { type: "band", treatmentTitle: "Forebyggende Behandling", direction: "left" },
+  { type: "row", treatmentTitles: ["Bleking", "Tannkjøtt & Tannstein"] },
+  { type: "band", treatmentTitle: "Fyllingsterapi", direction: "right" },
+  { type: "row", treatmentTitles: ["Kron og Bro", "Rotfylling", "Bittskinner"] },
+  { type: "band", treatmentTitle: "Visdomstennene", direction: "left" },
+  { type: "row", treatmentTitles: ["Tannlegeskrekk"] },
+];
+
+// Dev-mode validation
+if (process.env.NODE_ENV === "development") {
+  const allTitles = treatments.map((t) => t.title);
+  const layoutTitles = pageLayout.flatMap((item) =>
+    item.type === "band" ? [item.treatmentTitle] : item.treatmentTitles
+  );
+  const missing = allTitles.filter((t) => !layoutTitles.includes(t));
+  const extra = layoutTitles.filter((t) => !allTitles.includes(t));
+  if (missing.length) console.warn("[behandlinger] Missing from layout:", missing);
+  if (extra.length) console.warn("[behandlinger] Not in treatments:", extra);
+}
+
+/* ─────────────── Helpers ─────────────── */
+
+function slugify(s: string) {
+  return s
+    .toLowerCase()
+    .replace(/[æ]/g, "ae")
+    .replace(/[ø]/g, "o")
+    .replace(/[å]/g, "a")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
+/* ─────────────── ExpandedPanel ─────────────── */
+
+function ExpandedPanel({ t, panelId }: { t: Treatment; panelId: string }) {
+  return (
+    <AnimatePresence>
+      <motion.div
+        id={panelId}
+        role="region"
+        initial={{ height: 0, opacity: 0 }}
+        animate={{ height: "auto", opacity: 1 }}
+        exit={{ height: 0, opacity: 0 }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
+        className="overflow-hidden"
+      >
+        <div className="pt-4 pb-2 space-y-4">
+          {/* Features */}
+          <ul className="space-y-2">
+            {t.features.map((f) => (
+              <li
+                key={f}
+                className="flex items-start gap-2 text-[0.85rem] font-sans font-400 leading-snug"
+              >
+                <span
+                  className="w-1.5 h-1.5 rounded-full mt-[5px] shrink-0"
+                  style={{ backgroundColor: t.accent }}
+                />
+                <span className="text-white/90">{f}</span>
+              </li>
+            ))}
+          </ul>
+
+          {/* Prices */}
+          {t.prices.length > 0 ? (
+            <div
+              className="rounded-xl p-4"
+              style={{
+                backgroundColor: `${t.accent}0D`,
+                border: `1px solid ${t.accent}15`,
+              }}
+            >
+              <p
+                className="text-[0.6rem] font-sans font-600 uppercase tracking-[0.18em] mb-2.5"
+                style={{ color: t.accent }}
+              >
+                Behandlinger
+              </p>
+              {t.prices.map((item, idx) => (
+                <div
+                  key={item.name}
+                  className={`py-1.5 ${idx < t.prices.length - 1 ? "border-b" : ""}`}
+                  style={{ borderColor: `${t.accent}12` }}
+                >
+                  <div className="font-sans font-500 text-[0.8rem] text-white">
+                    {item.name}
+                  </div>
+                  <div className="text-[0.72rem] text-white/60 font-sans font-400">
+                    {item.description}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-white/60 text-[0.8rem] font-sans italic">
+              Ta kontakt for prisinformasjon
+            </p>
+          )}
+        </div>
+      </motion.div>
+    </AnimatePresence>
+  );
+}
+
+/* ─────────────── CategoryTabs ─────────────── */
+
+function CategoryTabs({
+  active,
+  onChange,
+}: {
+  active: string;
+  onChange: (cat: string) => void;
+}) {
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      const idx = categories.indexOf(active);
+      if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+        e.preventDefault();
+        onChange(categories[(idx + 1) % categories.length]);
+      } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        e.preventDefault();
+        onChange(categories[(idx - 1 + categories.length) % categories.length]);
+      }
+    },
+    [active, onChange]
+  );
+
+  return (
+    <div className="sticky top-20 z-40 bg-white/95 backdrop-blur-md border-b border-[var(--color-border)]">
+      <div className="container-width max-w-[1140px] py-3">
+        <div className="relative">
+          <div
+            role="tablist"
+            aria-label="Filtrer behandlinger"
+            className="flex gap-1.5 overflow-x-auto scrollbar-hide"
+            onKeyDown={handleKeyDown}
+          >
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                role="tab"
+                aria-selected={active === cat}
+                tabIndex={active === cat ? 0 : -1}
+                onClick={() => onChange(cat)}
+                className="relative shrink-0 px-4 py-2 rounded-full text-sm font-sans font-500 transition-colors duration-200 cursor-pointer whitespace-nowrap"
+                style={{
+                  color: active === cat ? "var(--color-primary)" : "var(--color-text-muted)",
+                }}
+              >
+                {active === cat && (
+                  <motion.span
+                    layoutId="activeTab"
+                    className="absolute inset-0 rounded-full bg-[var(--color-bg-cream)] border border-[var(--color-border)]"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
+                <span className="relative z-10">{cat}</span>
+              </button>
+            ))}
+          </div>
+          {/* Fade hint for mobile scroll */}
+          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white/95 to-transparent pointer-events-none md:hidden" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────── ImageBand ─────────────── */
+
+function ImageBand({
+  t,
+  direction,
+  isExpanded,
+  onToggle,
+}: {
+  t: Treatment;
+  direction: "left" | "right";
+  isExpanded: boolean;
+  onToggle: () => void;
+}) {
+  const prefersReduced = useReducedMotion();
+  const img = treatmentImages[t.title];
+  const panelId = `panel-${slugify(t.title)}`;
+
+  const gradientDir = direction === "left" ? "to right" : "to left";
+  const textAlign = direction === "left" ? "items-start text-left" : "items-end text-right md:items-end md:text-right";
+  const textPosition = direction === "left" ? "md:pr-[50%]" : "md:pl-[50%]";
 
   return (
     <motion.div
-      className={spanClass}
-      initial={{ opacity: 0, y: 24 }}
+      data-treatment={t.title}
+      initial={prefersReduced ? { opacity: 1 } : { opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.6, delay: index * 0.06, ease: [0.25, 0.1, 0.25, 1] }}
-    >
-      <div
-        onClick={() => setOpen(!open)}
-        className={`
-          ${v.bg} ${v.border} rounded-2xl overflow-hidden cursor-pointer
-          transition-all duration-300 hover:-translate-y-1 ${v.hoverShadow}
-          h-full flex flex-col relative
-        `}
-        style={
-          treatment.gradient && (treatment.variant === "cream" || treatment.variant === "accent")
-            ? { background: treatment.gradient }
-            : undefined
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+      className="relative rounded-2xl overflow-hidden cursor-pointer group"
+      style={{
+        backgroundColor: t.color,
+        scrollMarginTop: "140px",
+        boxShadow: `0 4px 20px ${t.color}50`,
+      }}
+      onClick={onToggle}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onToggle();
         }
-      >
-        {/* Gradient overlay for dark variant cards */}
-        {treatment.gradient && treatment.variant === "dark" && (
-          <div
-            className="absolute inset-0 z-0 pointer-events-none"
-            style={{ background: treatment.gradient }}
+      }}
+      role="button"
+      tabIndex={0}
+      aria-expanded={isExpanded}
+      aria-controls={panelId}
+      whileHover={
+        prefersReduced || isExpanded
+          ? undefined
+          : { y: -4, boxShadow: `0 16px 48px ${t.color}65` }
+      }
+    >
+      {/* Background image */}
+      {img && (
+        <div className="absolute inset-0 overflow-hidden">
+          <Image
+            src={img.src}
+            alt={img.alt}
+            fill
+            className={`object-cover transition-transform duration-600 ${
+              !isExpanded ? "group-hover:scale-105" : ""
+            }`}
+            sizes="(max-width: 768px) 100vw, 1140px"
           />
-        )}
+          {/* Desktop gradient overlay */}
+          <div
+            className="absolute inset-0 hidden md:block"
+            style={{
+              background: `linear-gradient(${gradientDir}, ${t.color} 40%, ${t.color}CC 60%, transparent 85%)`,
+            }}
+          />
+          {/* Mobile vertical gradient */}
+          <div
+            className="absolute inset-0 md:hidden"
+            style={{
+              background: `linear-gradient(to top, ${t.color} 55%, ${t.color}AA 70%, transparent 100%)`,
+            }}
+          />
+        </div>
+      )}
 
-        {/* Image header for image variants */}
-        {treatment.variant === "image" && treatment.image && (
-          <div className="relative aspect-[21/9] md:aspect-[3/1] overflow-hidden">
-            <Image
-              src={treatment.image}
-              alt={treatment.title}
-              fill
-              className="object-cover transition-transform duration-700 hover:scale-105"
-              style={{ objectPosition: "center 60%" }}
-              sizes="(max-width: 768px) 100vw, 66vw"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-primary)]/40 to-transparent" />
-          </div>
-        )}
+      {/* Content */}
+      <div className="relative z-10">
+        {/* Mobile spacer to show image at top */}
+        <div className="min-h-[160px] md:hidden" />
 
-        {/* Card body */}
-        <div
-          className="p-7 md:p-9 flex-1 flex flex-col"
-          style={
-            treatment.gradient && treatment.variant === "image"
-              ? { background: treatment.gradient }
-              : undefined
-          }
-        >
-          {/* Header row */}
-          <div className="flex items-start justify-between gap-4 mb-4">
-            <div className="flex-1">
-              <span className={`text-[0.6875rem] font-700 uppercase tracking-[0.2em] ${v.accent} block mb-2`}>
-                {treatment.category}
-              </span>
-              <h3 className={`text-xl md:text-2xl lg:text-3xl font-heading font-700 ${v.text} leading-tight`}>
-                {treatment.title}
-              </h3>
-              <p className={`text-sm ${v.textMuted} font-sans font-400 mt-1`}>
-                {treatment.subtitle}
-              </p>
-            </div>
-            <ChevronDown
-              className={`size-5 ${v.chevron} transition-all duration-300 shrink-0 mt-2 ${
-                open ? "rotate-180" : ""
-              }`}
-              strokeWidth={2}
-            />
-          </div>
-
-          {/* Description */}
-          <p className={`${v.textMuted} text-base leading-relaxed font-sans font-400 mb-4 flex-1`}>
-            {treatment.description}
+        <div className={`p-6 md:p-8 flex flex-col ${textAlign} ${textPosition}`}>
+          <span
+            className="inline-block self-start text-[0.58rem] font-sans font-600 uppercase tracking-[0.2em] px-2.5 py-0.5 rounded-full mb-3"
+            style={{ color: t.accent, backgroundColor: `${t.accent}18` }}
+          >
+            {t.category}
+          </span>
+          <h3 className="font-heading font-700 text-white text-2xl md:text-3xl leading-tight mb-1">
+            {t.title}
+          </h3>
+          <p className="text-white/70 text-[0.85rem] font-sans font-400 mb-3">
+            {t.subtitle}
+          </p>
+          <p className="text-white/85 text-[0.85rem] font-sans font-400 leading-relaxed mb-4 max-w-lg">
+            {t.description}
           </p>
 
-          {/* Expandable details */}
-          <AnimatePresence>
-            {open && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
-                className="overflow-hidden"
-              >
-                <div className={`border-t ${treatment.variant === "dark" ? "border-white/15" : "border-[var(--color-border)]"} pt-6 mt-2`}>
-                  <div className={`grid ${hasPrices ? "md:grid-cols-2" : "grid-cols-1"} gap-5`}>
-                    {/* Features */}
-                    <div>
-                      <p className={`text-[0.6875rem] font-700 uppercase tracking-[0.18em] ${v.detailLabel} mb-4`}>
-                        Hva inngår
-                      </p>
-                      <ul className="space-y-3">
-                        {treatment.features.map((f) => (
-                          <li key={f} className={`flex items-start gap-2.5 ${v.detailText} text-sm leading-relaxed font-sans font-400`}>
-                            <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] mt-2 shrink-0" />
-                            {f}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+          {/* Feature pills - visible when collapsed */}
+          {!isExpanded && (
+            <div className="flex flex-wrap gap-2 mb-4">
+              {t.features.slice(0, 3).map((f) => (
+                <span
+                  key={f}
+                  className="text-[0.7rem] font-sans font-400 px-2.5 py-1 rounded-full text-white/80"
+                  style={{ backgroundColor: `${t.accent}20` }}
+                >
+                  {f}
+                </span>
+              ))}
+            </div>
+          )}
 
-                    {/* Prices */}
-                    {hasPrices && (
-                      <div className={`${v.priceBg} rounded-xl p-5 border`}>
-                        <p className={`text-[0.6875rem] font-700 uppercase tracking-[0.18em] ${v.detailLabel} mb-4`}>
-                          Behandlinger
-                        </p>
-                        <div className="space-y-0">
-                          {treatment.prices.map((item, idx) => (
-                            <div
-                              key={item.name}
-                              className={`py-3 ${
-                                idx < treatment.prices.length - 1
-                                  ? treatment.variant === "dark"
-                                    ? "border-b border-white/10"
-                                    : "border-b border-[var(--color-border)]"
-                                  : ""
-                              }`}
-                            >
-                              <div className={`font-sans font-500 text-sm ${v.text}`}>
-                                {item.name}
-                              </div>
-                              <div className={`text-xs ${v.textMuted} font-sans font-400 mt-0.5`}>
-                                {item.description}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {/* Expand indicator */}
+          <div className="flex items-center gap-2 text-white/60 text-[0.8rem] font-sans">
+            <span>{isExpanded ? "Lukk detaljer" : "Se detaljer"}</span>
+            <ChevronDown
+              className={`size-4 transition-transform duration-300 ${isExpanded ? "rotate-180" : ""}`}
+            />
+          </div>
+
+          {/* Expanded panel */}
+          {isExpanded && <ExpandedPanel t={t} panelId={panelId} />}
         </div>
       </div>
     </motion.div>
   );
 }
 
+/* ─────────────── CompactCard ─────────────── */
+
+function CompactCard({
+  t,
+  isExpanded,
+  onToggle,
+}: {
+  t: Treatment;
+  isExpanded: boolean;
+  onToggle: () => void;
+}) {
+  const prefersReduced = useReducedMotion();
+  const panelId = `panel-${slugify(t.title)}`;
+
+  return (
+    <motion.div
+      data-treatment={t.title}
+      initial={prefersReduced ? { opacity: 1 } : { opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+      className="rounded-2xl overflow-hidden cursor-pointer border border-transparent transition-all duration-300 group"
+      style={{
+        backgroundColor: t.color,
+        scrollMarginTop: "140px",
+        boxShadow: `0 4px 20px ${t.color}50`,
+      }}
+      onClick={onToggle}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onToggle();
+        }
+      }}
+      role="button"
+      tabIndex={0}
+      aria-expanded={isExpanded}
+      aria-controls={panelId}
+      whileHover={
+        prefersReduced || isExpanded
+          ? undefined
+          : {
+              y: -4,
+              boxShadow: `0 16px 48px ${t.color}65`,
+              borderColor: `${t.accent}40`,
+            }
+      }
+    >
+      <div className="p-5 md:p-6">
+        <span
+          className="inline-block text-[0.58rem] font-sans font-600 uppercase tracking-[0.2em] px-2.5 py-0.5 rounded-full mb-3"
+          style={{ color: t.accent, backgroundColor: `${t.accent}18` }}
+        >
+          {t.category}
+        </span>
+        <h3 className="font-heading font-700 text-white text-xl md:text-2xl leading-tight mb-1">
+          {t.title}
+        </h3>
+        <p className="text-white/70 text-[0.8rem] font-sans font-400 mb-3">
+          {t.subtitle}
+        </p>
+        <p className="text-white/85 text-[0.8rem] font-sans font-400 leading-relaxed mb-4">
+          {t.description}
+        </p>
+
+        {/* Feature pills - visible when collapsed */}
+        {!isExpanded && (
+          <div className="flex flex-wrap gap-1.5 mb-3">
+            {t.features.slice(0, 3).map((f) => (
+              <span
+                key={f}
+                className="text-[0.65rem] font-sans font-400 px-2 py-0.5 rounded-full text-white/80"
+                style={{ backgroundColor: `${t.accent}20` }}
+              >
+                {f}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* Expand indicator */}
+        <div className="flex items-center gap-2 text-white/60 text-[0.75rem] font-sans">
+          <span>{isExpanded ? "Lukk detaljer" : "Se detaljer"}</span>
+          <ChevronDown
+            className={`size-3.5 transition-transform duration-300 ${isExpanded ? "rotate-180" : ""}`}
+          />
+        </div>
+
+        {/* Expanded panel */}
+        {isExpanded && <ExpandedPanel t={t} panelId={panelId} />}
+      </div>
+    </motion.div>
+  );
+}
+
+/* ─────────────── EditorialLayout ─────────────── */
+
+function EditorialLayout({
+  expandedId,
+  onToggle,
+}: {
+  expandedId: string | null;
+  onToggle: (title: string) => void;
+}) {
+  return (
+    <div className="space-y-4">
+      {pageLayout.map((item, idx) => {
+        if (item.type === "band") {
+          const t = treatments.find((tr) => tr.title === item.treatmentTitle);
+          if (!t) return null;
+          return (
+            <ImageBand
+              key={t.title}
+              t={t}
+              direction={item.direction}
+              isExpanded={expandedId === t.title}
+              onToggle={() => onToggle(t.title)}
+            />
+          );
+        }
+
+        // Row of compact cards
+        const rowTreatments = item.treatmentTitles
+          .map((title) => treatments.find((tr) => tr.title === title))
+          .filter(Boolean) as Treatment[];
+
+        const isSingle = rowTreatments.length === 1;
+
+        return (
+          <div
+            key={`row-${idx}`}
+            className={`flex flex-col md:flex-row gap-4 ${isSingle ? "md:justify-center" : ""}`}
+          >
+            {rowTreatments.map((t) => (
+              <div key={t.title} className={`flex-1 ${isSingle ? "md:w-1/2 md:flex-initial" : ""}`}>
+                <CompactCard
+                  t={t}
+                  isExpanded={expandedId === t.title}
+                  onToggle={() => onToggle(t.title)}
+                />
+              </div>
+            ))}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ─────────────── FilteredGrid ─────────────── */
+
+function FilteredGrid({
+  activeCategory,
+  expandedId,
+  onToggle,
+}: {
+  activeCategory: string;
+  expandedId: string | null;
+  onToggle: (title: string) => void;
+}) {
+  const filtered = treatments.filter((t) => t.category === activeCategory);
+
+  return (
+    <AnimatePresence mode="popLayout">
+      <motion.div
+        key={activeCategory}
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -12 }}
+        transition={{ duration: 0.25 }}
+        className="grid grid-cols-1 md:grid-cols-2 gap-4"
+      >
+        {filtered.map((t) => (
+          <CompactCard
+            key={t.title}
+            t={t}
+            isExpanded={expandedId === t.title}
+            onToggle={() => onToggle(t.title)}
+          />
+        ))}
+      </motion.div>
+    </AnimatePresence>
+  );
+}
+
 /* ─────────────── Page ─────────────── */
 
 export default function Behandlinger() {
+  const [activeCategory, setActiveCategory] = useState("Alle");
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  const handleCategoryChange = useCallback((cat: string) => {
+    setActiveCategory(cat);
+    setExpandedId(null);
+  }, []);
+
+  const handleToggle = useCallback(
+    (title: string) => {
+      setExpandedId((prev) => (prev === title ? null : title));
+    },
+    []
+  );
+
+  // Auto-scroll to expanded treatment
+  useEffect(() => {
+    if (!expandedId) return;
+    const timeout = setTimeout(() => {
+      const el = document.querySelector(`[data-treatment="${expandedId}"]`);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 350);
+    return () => clearTimeout(timeout);
+  }, [expandedId]);
+
   return (
     <main className="pt-20">
       {/* ── Header ── */}
       <section className="relative bg-[var(--color-primary)] py-20 md:py-28 overflow-hidden">
         <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-primary-light)] to-[var(--color-accent)]" />
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 pointer-events-none">
           <div className="absolute -top-[30%] -right-[15%] w-[50vw] h-[50vw] rounded-full bg-[var(--color-accent)]/8 blur-3xl" />
           <div className="absolute -bottom-[20%] -left-[10%] w-[30vw] h-[30vw] rounded-full bg-[var(--color-accent-light)]/5 blur-3xl" />
         </div>
         <div className="container-width text-center relative z-10">
-          <span className="text-[var(--color-accent-light)] text-sm font-sans font-600 uppercase tracking-[0.15em] mb-4 block">
+          <motion.span
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-[var(--color-accent-light)] text-sm font-sans font-600 uppercase tracking-[0.15em] mb-4 block"
+          >
             Våre tjenester
-          </span>
-          <h1 className="heading-display text-white mb-5">
+          </motion.span>
+          <motion.h1
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="heading-display text-white mb-5"
+          >
             Behandlinger
-          </h1>
-          <p className="text-lg text-white/80 font-sans font-400 max-w-xl mx-auto leading-relaxed">
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-lg text-white/80 font-sans font-400 max-w-xl mx-auto leading-relaxed"
+          >
             Fra forebyggende pleie til avansert kosmetisk behandling.
-            Klikk på en behandling for å se detaljer og priser.
-          </p>
+          </motion.p>
         </div>
       </section>
 
-      {/* ── Bento Grid ── */}
-      <section className="py-16 md:py-24 bg-[var(--color-bg)]">
-        <div className="container-width">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-6 max-w-6xl mx-auto">
-            {treatments.map((t, i) => (
-              <TreatmentCard key={t.title} treatment={t} index={i} />
-            ))}
-          </div>
+      {/* ── Category Tabs ── */}
+      <CategoryTabs active={activeCategory} onChange={handleCategoryChange} />
+
+      {/* ── Treatment Grid ── */}
+      <section className="py-14 md:py-20 bg-[var(--color-bg)]">
+        <div className="container-width max-w-[1140px]">
+          {activeCategory === "Alle" ? (
+            <EditorialLayout expandedId={expandedId} onToggle={handleToggle} />
+          ) : (
+            <FilteredGrid
+              activeCategory={activeCategory}
+              expandedId={expandedId}
+              onToggle={handleToggle}
+            />
+          )}
         </div>
       </section>
 
       {/* ── Payment Info ── */}
-      <section className="py-16 md:py-24 bg-[var(--color-bg-blue)]">
+      <section className="py-14 md:py-20 bg-[var(--color-bg-blue)]">
         <div className="container-width max-w-5xl">
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-5">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="bg-white rounded-2xl border border-[var(--color-border)] p-8"
+              className="bg-white rounded-2xl border border-[var(--color-border)] p-7"
             >
-              <h3 className="font-heading font-600 text-xl text-[var(--color-primary)] mb-5">
+              <h3 className="font-heading font-600 text-xl text-[var(--color-primary)] mb-4">
                 Betalingsinformasjon
               </h3>
-              <ul className="space-y-3">
+              <ul className="space-y-2.5">
                 {[
                   "Betaling skjer ved endt behandling",
                   "Vi aksepterer kort, Vipps og kontant",
                   "Avbetalingsordninger kan avtales",
                   "Trygderefusjon for stønadberettigede behandlinger",
                 ].map((item) => (
-                  <li key={item} className="flex items-start gap-2.5 text-[var(--color-text-secondary)] font-sans font-400 text-sm">
-                    <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] mt-2.5 shrink-0" />
+                  <li
+                    key={item}
+                    className="flex items-start gap-2.5 text-[var(--color-text-secondary)] font-sans font-400 text-sm"
+                  >
+                    <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] mt-2 shrink-0" />
                     {item}
                   </li>
                 ))}
@@ -502,19 +817,19 @@ export default function Behandlinger() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="bg-white rounded-2xl border border-[var(--color-border)] p-8"
+              className="bg-white rounded-2xl border border-[var(--color-border)] p-7"
             >
-              <h3 className="font-heading font-600 text-xl text-[var(--color-primary)] mb-5">
+              <h3 className="font-heading font-600 text-xl text-[var(--color-primary)] mb-4">
                 Trygderefusjon
               </h3>
-              <p className="text-[var(--color-text-secondary)] font-sans font-400 leading-relaxed mb-4">
+              <p className="text-[var(--color-text-secondary)] font-sans font-400 leading-relaxed mb-3">
                 Enkelte tannbehandlinger gir rett til refusjon fra HELFO. Vi
-                hjelper deg med å sende refusjonskrav, slik at du får tilbake
-                det du har krav på.
+                hjelper deg med å sende refusjonskrav, slik at du får tilbake det
+                du har krav på.
               </p>
               <p className="text-[var(--color-text-secondary)] font-sans font-400 leading-relaxed">
-                Spør oss gjerne om dette ved bestilling av time, så informerer
-                vi deg om dine rettigheter.
+                Spør oss gjerne om dette ved bestilling av time, så informerer vi
+                deg om dine rettigheter.
               </p>
             </motion.div>
           </div>
@@ -524,10 +839,10 @@ export default function Behandlinger() {
       {/* ── CTA ── */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-[var(--color-primary)]" />
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 pointer-events-none">
           <div className="absolute -top-[30%] -right-[15%] w-[50vw] h-[50vw] rounded-full bg-[var(--color-accent)]/10 blur-3xl" />
         </div>
-        <div className="relative z-10 container-width py-16 md:py-20 text-center">
+        <div className="relative z-10 container-width py-14 md:py-20 text-center">
           <h2 className="heading-section text-white mb-4">
             Usikker på hvilken behandling du trenger?
           </h2>
@@ -536,11 +851,17 @@ export default function Behandlinger() {
             med å finne den beste løsningen.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/kontakt" className="btn-primary bg-white text-[var(--color-primary)] hover:bg-[var(--color-bg-cream)] px-8 py-4 cursor-pointer">
+            <Link
+              href="/kontakt"
+              className="btn-primary bg-white text-[var(--color-primary)] hover:bg-[var(--color-bg-cream)] px-8 py-4 cursor-pointer"
+            >
               <Calendar className="size-5" />
               Kontakt oss
             </Link>
-            <a href="tel:61280412" className="btn-secondary px-8 py-4 cursor-pointer">
+            <a
+              href="tel:61280412"
+              className="btn-secondary px-8 py-4 cursor-pointer"
+            >
               <Phone className="size-5" />
               Ring 61 28 04 12
             </a>
