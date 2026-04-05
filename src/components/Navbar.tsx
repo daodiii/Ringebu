@@ -75,7 +75,7 @@ export default function Navbar() {
               href="tel:61280412"
               className="hidden md:flex items-center gap-2 text-sm font-sans transition-colors text-[var(--color-stone-500)] hover:text-[var(--color-accent)]"
             >
-              <Phone className="size-4" />
+              <Phone className="size-4" aria-hidden="true" />
               <span>61 28 04 12</span>
             </a>
             <Link
@@ -90,7 +90,7 @@ export default function Navbar() {
                 "lg:hidden p-2 relative z-50 transition-colors",
                 "text-[var(--color-primary)]"
               )}
-              aria-label="Toggle menu"
+              aria-label="Meny"
             >
               {mobileOpen ? <X className="size-6" /> : <Menu className="size-6" />}
             </button>
@@ -107,6 +107,9 @@ export default function Navbar() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
             className="fixed inset-0 bg-white z-40 lg:hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigasjonsmeny"
           >
             <div className="flex flex-col justify-center items-center h-full gap-6 px-8">
               {navLinks.map((link, i) => (
@@ -141,7 +144,7 @@ export default function Navbar() {
                   href="tel:61280412"
                   className="flex items-center gap-2 text-[var(--color-stone-500)] text-lg"
                 >
-                  <Phone className="size-5" />
+                  <Phone className="size-5" aria-hidden="true" />
                   61 28 04 12
                 </a>
                 <Link

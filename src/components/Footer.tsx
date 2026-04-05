@@ -84,25 +84,25 @@ export default function Footer() {
             <ul className="space-y-4">
               <li>
                 <a href="tel:61280412" className="flex items-center gap-3 text-white/85 hover:text-white text-sm transition-colors">
-                  <Phone className="size-4 text-white/70 shrink-0" />
+                  <Phone className="size-4 text-white/70 shrink-0" aria-hidden="true" />
                   61 28 04 12
                 </a>
               </li>
               <li>
                 <a href="mailto:post@ringebutann.no" className="flex items-center gap-3 text-white/85 hover:text-white text-sm transition-colors">
-                  <Mail className="size-4 text-white/70 shrink-0" />
+                  <Mail className="size-4 text-white/70 shrink-0" aria-hidden="true" />
                   post@ringebutann.no
                 </a>
               </li>
               <li>
                 <div className="flex items-start gap-3 text-white/85 text-sm">
-                  <MapPin className="size-4 text-white/70 shrink-0 mt-0.5" />
+                  <MapPin className="size-4 text-white/70 shrink-0 mt-0.5" aria-hidden="true" />
                   <span>Jernbanegata 4,<br />2630 Ringebu</span>
                 </div>
               </li>
               <li>
                 <div className="flex items-start gap-3 text-white/85 text-sm">
-                  <Clock className="size-4 text-white/70 shrink-0 mt-0.5" />
+                  <Clock className="size-4 text-white/70 shrink-0 mt-0.5" aria-hidden="true" />
                   <div>
                     <div>Man-Fre: 08:00–15:30</div>
                     <div>Tirs & Tors: 08:00–17:00</div>

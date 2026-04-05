@@ -169,8 +169,7 @@ export default function SymptomerPage() {
                 const isOpen = expanded.has(s.title);
                 return (
                   <SectionFade key={s.title} delay={i * 0.08}>
-                    <button
-                      onClick={() => toggleExpanded(s.title)}
+                    <div
                       className={`w-full text-left rounded-2xl border overflow-hidden transition-all duration-300 ${
                         isOpen
                           ? "border-rose-300 shadow-lg shadow-rose-500/5"
@@ -184,48 +183,56 @@ export default function SymptomerPage() {
                           className="w-2 shrink-0 rounded-l-2xl"
                           style={{ background: style.gradient }}
                         />
-                        <div className="flex-1 p-8 md:p-10">
-                          {/* Severity bar */}
-                          <div
-                            className={`inline-flex items-center gap-2 ${style.bg} ${style.text} ${style.border} border rounded-full px-4 py-1.5 text-xs font-sans font-600 mb-4`}
+                        <div className="flex-1">
+                          {/* Clickable header — acts as accordion trigger */}
+                          <button
+                            onClick={() => toggleExpanded(s.title)}
+                            className="w-full text-left p-8 md:p-10 cursor-pointer"
+                            aria-expanded={isOpen}
                           >
-                            <AlertTriangle className="size-3.5" />
-                            {s.severity}
-                          </div>
-
-                          <div className="flex items-start justify-between gap-4">
-                            <div>
-                              <h2 className="font-heading font-700 text-xl md:text-2xl text-[var(--color-primary)] mb-2">
-                                {s.title}
-                              </h2>
-                              <p className="text-[var(--color-text-secondary)] leading-relaxed font-sans font-400">
-                                {s.description}
-                              </p>
+                            {/* Severity bar */}
+                            <div
+                              className={`inline-flex items-center gap-2 ${style.bg} ${style.text} ${style.border} border rounded-full px-4 py-1.5 text-xs font-sans font-600 mb-4`}
+                            >
+                              <AlertTriangle className="size-3.5" />
+                              {s.severity}
                             </div>
-                            <ChevronDown
-                              className={`size-5 text-[var(--color-text-muted)] shrink-0 mt-1 transition-transform duration-300 ${
-                                isOpen ? "rotate-180" : ""
-                              }`}
-                            />
-                          </div>
 
-                          {/* Cause pills — always visible */}
-                          <div className="flex flex-wrap gap-2 mt-4">
-                            {s.causes.slice(0, 3).map((c) => (
-                              <span
-                                key={c}
-                                className="rounded-full bg-[var(--color-bg-cream)] border border-[var(--color-border)] px-3 py-1 text-xs font-sans font-500 text-[var(--color-text-secondary)]"
-                              >
-                                {c}
-                              </span>
-                            ))}
-                            {s.causes.length > 3 && (
-                              <span className="rounded-full bg-[var(--color-bg-blue)] px-3 py-1 text-xs font-sans font-500 text-[var(--color-text-muted)]">
-                                +{s.causes.length - 3} til
-                              </span>
-                            )}
-                          </div>
+                            <div className="flex items-start justify-between gap-4">
+                              <div>
+                                <h2 className="font-heading font-700 text-xl md:text-2xl text-[var(--color-primary)] mb-2">
+                                  {s.title}
+                                </h2>
+                                <p className="text-[var(--color-text-secondary)] leading-relaxed font-sans font-400">
+                                  {s.description}
+                                </p>
+                              </div>
+                              <ChevronDown
+                                className={`size-5 text-[var(--color-text-muted)] shrink-0 mt-1 transition-transform duration-300 ${
+                                  isOpen ? "rotate-180" : ""
+                                }`}
+                              />
+                            </div>
 
+                            {/* Cause pills — always visible */}
+                            <div className="flex flex-wrap gap-2 mt-4">
+                              {s.causes.slice(0, 3).map((c) => (
+                                <span
+                                  key={c}
+                                  className="rounded-full bg-[var(--color-bg-cream)] border border-[var(--color-border)] px-3 py-1 text-xs font-sans font-500 text-[var(--color-text-secondary)]"
+                                >
+                                  {c}
+                                </span>
+                              ))}
+                              {s.causes.length > 3 && (
+                                <span className="rounded-full bg-[var(--color-bg-blue)] px-3 py-1 text-xs font-sans font-500 text-[var(--color-text-muted)]">
+                                  +{s.causes.length - 3} til
+                                </span>
+                              )}
+                            </div>
+                          </button>
+
+                          {/* Expanded body — outside the button */}
                           <AnimatePresence>
                             {isOpen && (
                               <motion.div
@@ -235,7 +242,7 @@ export default function SymptomerPage() {
                                 transition={{ duration: 0.3 }}
                                 className="overflow-hidden"
                               >
-                                <div className="mt-6 space-y-5">
+                                <div className="px-8 md:px-10 pb-8 md:pb-10 space-y-5">
                                   <div>
                                     <span className="text-xs font-sans font-600 uppercase tracking-wider text-[var(--color-accent)]">
                                       Mulige årsaker
@@ -266,7 +273,6 @@ export default function SymptomerPage() {
                                     <Link
                                       href={`/artikler/${s.slug}`}
                                       className="inline-flex items-center gap-1.5 text-sm font-500 text-[var(--color-accent)] hover:text-[var(--color-primary-light)] transition-colors"
-                                      onClick={(e) => e.stopPropagation()}
                                     >
                                       Les relatert artikkel
                                       <ArrowUpRight className="size-4" />
@@ -278,7 +284,7 @@ export default function SymptomerPage() {
                           </AnimatePresence>
                         </div>
                       </div>
-                    </button>
+                    </div>
                   </SectionFade>
                 );
               })}
@@ -307,8 +313,7 @@ export default function SymptomerPage() {
                 const fillGradient = routineFills[i % routineFills.length];
                 return (
                   <SectionFade key={s.title} delay={i * 0.06}>
-                    <button
-                      onClick={() => toggleExpanded(s.title)}
+                    <div
                       className={`w-full text-left rounded-2xl border overflow-hidden transition-all duration-300 ${
                         isOpen
                           ? "border-[var(--color-accent)] shadow-lg shadow-[var(--color-accent)]/5"
@@ -321,38 +326,46 @@ export default function SymptomerPage() {
                           className="w-2 shrink-0 rounded-l-2xl"
                           style={{ background: leftGradient }}
                         />
-                        <div className="flex-1 p-7 md:p-9">
-                          <div className="flex items-start justify-between gap-3 mb-2">
-                            <h2 className="font-heading font-600 text-lg text-[var(--color-primary)]">
-                              {s.title}
-                            </h2>
-                            <ChevronDown
-                              className={`size-4 text-[var(--color-text-muted)] shrink-0 mt-0.5 transition-transform duration-300 ${
-                                isOpen ? "rotate-180" : ""
-                              }`}
-                            />
-                          </div>
-                          <p className="text-[var(--color-text-secondary)] leading-relaxed font-sans font-400 text-[0.95rem]">
-                            {s.description}
-                          </p>
+                        <div className="flex-1">
+                          {/* Clickable header — acts as accordion trigger */}
+                          <button
+                            onClick={() => toggleExpanded(s.title)}
+                            className="w-full text-left p-7 md:p-9 cursor-pointer"
+                            aria-expanded={isOpen}
+                          >
+                            <div className="flex items-start justify-between gap-3 mb-2">
+                              <h2 className="font-heading font-600 text-lg text-[var(--color-primary)]">
+                                {s.title}
+                              </h2>
+                              <ChevronDown
+                                className={`size-4 text-[var(--color-text-muted)] shrink-0 mt-0.5 transition-transform duration-300 ${
+                                  isOpen ? "rotate-180" : ""
+                                }`}
+                              />
+                            </div>
+                            <p className="text-[var(--color-text-secondary)] leading-relaxed font-sans font-400 text-[0.95rem]">
+                              {s.description}
+                            </p>
 
-                          {/* Cause pills — always visible */}
-                          <div className="flex flex-wrap gap-2 mt-3">
-                            {s.causes.slice(0, 3).map((c) => (
-                              <span
-                                key={c}
-                                className="rounded-full bg-[var(--color-bg-cream)] border border-[var(--color-border)] px-3 py-1 text-xs font-sans font-500 text-[var(--color-text-secondary)]"
-                              >
-                                {c}
-                              </span>
-                            ))}
-                            {s.causes.length > 3 && (
-                              <span className="rounded-full bg-[var(--color-bg-blue)] px-3 py-1 text-xs font-sans font-500 text-[var(--color-text-muted)]">
-                                +{s.causes.length - 3} til
-                              </span>
-                            )}
-                          </div>
+                            {/* Cause pills — always visible */}
+                            <div className="flex flex-wrap gap-2 mt-3">
+                              {s.causes.slice(0, 3).map((c) => (
+                                <span
+                                  key={c}
+                                  className="rounded-full bg-[var(--color-bg-cream)] border border-[var(--color-border)] px-3 py-1 text-xs font-sans font-500 text-[var(--color-text-secondary)]"
+                                >
+                                  {c}
+                                </span>
+                              ))}
+                              {s.causes.length > 3 && (
+                                <span className="rounded-full bg-[var(--color-bg-blue)] px-3 py-1 text-xs font-sans font-500 text-[var(--color-text-muted)]">
+                                  +{s.causes.length - 3} til
+                                </span>
+                              )}
+                            </div>
+                          </button>
 
+                          {/* Expanded body — outside the button */}
                           <AnimatePresence>
                             {isOpen && (
                               <motion.div
@@ -362,7 +375,7 @@ export default function SymptomerPage() {
                                 transition={{ duration: 0.3 }}
                                 className="overflow-hidden"
                               >
-                                <div className="mt-5 space-y-4">
+                                <div className="px-7 md:px-9 pb-7 md:pb-9 space-y-4">
                                   <div>
                                     <span className="text-xs font-sans font-600 uppercase tracking-wider text-[var(--color-accent)]">
                                       Mulige årsaker
@@ -391,7 +404,6 @@ export default function SymptomerPage() {
                                     <Link
                                       href={`/artikler/${s.slug}`}
                                       className="inline-flex items-center gap-1.5 text-sm font-500 text-[var(--color-accent)] hover:text-[var(--color-primary-light)] transition-colors"
-                                      onClick={(e) => e.stopPropagation()}
                                     >
                                       Les relatert artikkel
                                       <ArrowUpRight className="size-4" />
@@ -403,7 +415,7 @@ export default function SymptomerPage() {
                           </AnimatePresence>
                         </div>
                       </div>
-                    </button>
+                    </div>
                   </SectionFade>
                 );
               })}

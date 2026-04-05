@@ -148,9 +148,9 @@ export default function Kontakt() {
                     <div className="flex">
                       <div className="w-1.5 shrink-0 rounded-l-2xl" style={{ background: "linear-gradient(to bottom, #C67B5C, #D4B896)" }} />
                       <div className="flex-1 p-6">
-                        <h3 className="font-heading font-600 text-[var(--color-primary)] mb-1">
+                        <h2 className="font-heading font-600 text-[var(--color-primary)] mb-1">
                           Telefon
-                        </h3>
+                        </h2>
                         <p className="text-[var(--color-primary-light)] font-sans font-600 text-lg">
                           61 28 04 12
                         </p>
@@ -172,9 +172,9 @@ export default function Kontakt() {
                     <div className="flex">
                       <div className="w-1.5 shrink-0 rounded-l-2xl" style={{ background: "linear-gradient(to bottom, #D4B896, #5C3D2E)" }} />
                       <div className="flex-1 p-6">
-                        <h3 className="font-heading font-600 text-[var(--color-primary)] mb-1">
+                        <h2 className="font-heading font-600 text-[var(--color-primary)] mb-1">
                           E-post
-                        </h3>
+                        </h2>
                         <p className="text-[var(--color-primary-light)] font-sans font-600">
                           post@ringebutann.no
                         </p>
@@ -198,9 +198,9 @@ export default function Kontakt() {
                     <div className="flex">
                       <div className="w-1.5 shrink-0 rounded-l-2xl" style={{ background: "linear-gradient(to bottom, #5C3D2E, #10b981)" }} />
                       <div className="flex-1 p-6">
-                        <h3 className="font-heading font-600 text-[var(--color-primary)] mb-1">
+                        <h2 className="font-heading font-600 text-[var(--color-primary)] mb-1">
                           Adresse
-                        </h3>
+                        </h2>
                         <p className="text-[var(--color-text-primary)] font-sans">
                           Jernbanegata 4, 2630 Ringebu
                         </p>
@@ -245,9 +245,9 @@ export default function Kontakt() {
                   <div className="flex">
                     <div className="w-1.5 shrink-0 rounded-l-2xl" style={{ background: "linear-gradient(to bottom, #A89279, #D4B896)" }} />
                     <div className="flex-1 p-8">
-                  <h3 className="font-heading font-600 text-xl text-[var(--color-primary)] mb-6">
+                  <h2 className="font-heading font-600 text-xl text-[var(--color-primary)] mb-6">
                     Åpningstider
-                  </h3>
+                  </h2>
                   <div className="space-y-3">
                     {openingHours.map((h) => (
                       <div
@@ -282,9 +282,9 @@ export default function Kontakt() {
                   <div className="flex">
                     <div className="w-1.5 shrink-0 rounded-l-2xl" style={{ background: "linear-gradient(to bottom, #e11d48, #f97316)" }} />
                     <div className="flex-1 p-8">
-                      <h3 className="font-heading font-600 text-xl text-rose-900 mb-2">
+                      <h2 className="font-heading font-600 text-xl text-rose-900 mb-2">
                         Akutt tannverk?
-                      </h3>
+                      </h2>
                       <p className="text-rose-800/80 font-sans font-300 leading-relaxed mb-3">
                         Ved akutt tannverk i åpningstiden, ring oss på{" "}
                         <a
@@ -315,9 +315,9 @@ export default function Kontakt() {
                 <div className="rounded-2xl bg-[var(--color-primary)] p-8 relative overflow-hidden">
                   <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-[var(--color-accent)]/10 blur-2xl" />
                   <div className="relative z-10">
-                    <h3 className="font-heading font-600 text-xl text-white mb-4">
+                    <h2 className="font-heading font-600 text-xl text-white mb-4">
                       Bestill time
-                    </h3>
+                    </h2>
                     <p className="text-white/70 font-sans font-300 leading-relaxed mb-6">
                       Ring oss direkte for å bestille en time som passer deg.
                       Vårt vennlige personale hjelper deg gjerne.
@@ -367,9 +367,9 @@ export default function Kontakt() {
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-2">
                       <MapPin className="size-4 text-[var(--color-accent)]" />
-                      <h3 className="font-heading font-600 text-lg text-[var(--color-primary)]">
+                      <h2 className="font-heading font-600 text-lg text-[var(--color-primary)]">
                         {d.place}
-                      </h3>
+                      </h2>
                     </div>
                     <span className="text-xs font-sans font-500 uppercase tracking-wider text-[var(--color-text-muted)]">
                       {d.direction}
@@ -402,9 +402,9 @@ export default function Kontakt() {
                 <div>
                   <div className="flex items-center gap-2 mb-3">
                     <MapPin className="size-4 text-[var(--color-accent-light)]" />
-                    <h3 className="font-heading font-600 text-lg">
+                    <h2 className="font-heading font-600 text-lg">
                       Hele Gudbrandsdalen
-                    </h3>
+                    </h2>
                   </div>
                   <p className="text-sm text-white/70 font-sans font-300 leading-relaxed mb-4">
                     Vi tar imot pasienter fra hele dalføret — fra Dovre i nord

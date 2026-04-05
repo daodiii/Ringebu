@@ -91,7 +91,7 @@ export default function Hero() {
                         },
                     ].map((item, i) => (
                         <GradientBorderCard key={item.title} containerClassName="shadow-[0_0_30px_-5px_rgba(0,122,255,0.3)] border-primary/20" className="p-5 flex flex-col items-center gap-3 text-center">
-                            <h3 className="font-semibold text-base text-foreground">{item.title}</h3>
+                            <h2 className="font-semibold text-base text-foreground">{item.title}</h2>
                             <p className="text-sm text-gray-800 leading-relaxed">{item.desc}</p>
                         </GradientBorderCard>
                     ))}

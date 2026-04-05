@@ -52,7 +52,7 @@ function HeroSection() {
           className="object-cover scale-[1.03]"
           style={{ objectPosition: "center 40%" }}
           priority
-          quality={100}
+          quality={85}
           sizes="100vw"
         />
         {/* Gradient overlay — light scrim so the valley nature shows through */}

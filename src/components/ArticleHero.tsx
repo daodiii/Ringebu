@@ -36,7 +36,7 @@ export default function ArticleHero({
           <>
             <Image
               src={image}
-              alt={title}
+              alt=""
               fill
               className="object-cover"
               priority
