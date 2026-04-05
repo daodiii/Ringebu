@@ -639,7 +639,7 @@ function EditorialLayout({
         return (
           <div
             key={`row-${idx}`}
-            className={`flex flex-col md:flex-row gap-4 ${isSingle ? "md:justify-center" : ""}`}
+            className={`flex flex-col md:flex-row md:items-start gap-4 ${isSingle ? "md:justify-center" : ""}`}
           >
             {rowTreatments.map((t) => (
               <div key={t.title} className={`flex-1 ${isSingle ? "md:w-1/2 md:flex-initial" : ""}`}>
