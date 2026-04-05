@@ -473,14 +473,14 @@ export default function Kontakt() {
               <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-[var(--color-primary)]/5 blur-3xl" />
 
               <div className="relative z-10">
-                <p className="eyebrow mb-3">For besøkende</p>
+                <p className="eyebrow mb-3">Vi er her for deg</p>
                 <h2 className="font-heading font-600 text-2xl md:text-3xl text-[var(--color-primary)] mb-4 leading-tight">
-                  På ferie i Gudbrandsdalen og trenger tannlege?
+                  Trenger du hjelp? Ta kontakt med oss
                 </h2>
                 <p className="body-editorial max-w-xl mx-auto mb-8">
-                  Enten det gjelder en brukket tann på skitur, tannverk på
-                  hytteferien, eller en vanlig sjekk — vi tar deg imot raskt
-                  og profesjonelt.
+                  Enten du trenger en rutinesjekk, har akutt tannverk, eller
+                  bare har et spørsmål — vi hjelper deg gjerne. Ring oss eller
+                  send en e-post, så finner vi en løsning sammen.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <a
