@@ -197,10 +197,10 @@ const treatments: Treatment[] = [
 
 /* ─────────────── Layout Data ─────────────── */
 
-const treatmentImages: Record<string, { src: string; alt: string }> = {
-  "Forebyggende Behandling": { src: "/images/ringebutannMain.jpg", alt: "Ringebu Tannklinikk" },
-  "Fyllingsterapi": { src: "/images/service-general.jpg", alt: "Moderne tannbehandling" },
-  "Visdomstennene": { src: "/images/dental-chair.png", alt: "Tannlegestol med utstyr" },
+const treatmentImages: Record<string, { src: string; alt: string; objectPosition?: string }> = {
+  "Forebyggende Behandling": { src: "/images/ringebutannMain.jpg", alt: "Tannlegestol hos Ringebu Tannklinikk", objectPosition: "70% center" },
+  "Fyllingsterapi": { src: "/images/service-implant.jpg", alt: "Moderne behandlingsrom med utstyr", objectPosition: "center center" },
+  "Visdomstennene": { src: "/images/about-clinic.jpg", alt: "Behandlingsrom hos Ringebu Tannklinikk", objectPosition: "center 40%" },
 };
 
 const categories = ["Alle", "Forebyggende", "Kosmetisk", "Restaurering", "Kirurgi", "Spesialbehandling"];
@@ -444,6 +444,7 @@ function ImageBand({
             className={`object-cover transition-transform duration-600 ${
               !isExpanded ? "group-hover:scale-105" : ""
             }`}
+            style={{ objectPosition: img.objectPosition || "center center" }}
             sizes="(max-width: 768px) 100vw, 1140px"
             priority={isFirstBand}
           />
