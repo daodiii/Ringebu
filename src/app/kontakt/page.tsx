@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import {
@@ -8,8 +7,6 @@ import {
   Mail,
   MapPin,
   Clock,
-  AlertTriangle,
-  Calendar,
   ChevronRight,
   ArrowRight,
 } from "lucide-react";
@@ -145,13 +142,12 @@ export default function Kontakt() {
                 <SectionFade delay={0.05}>
                   <a
                     href="tel:61280412"
-                    className="block card p-6 group cursor-pointer"
+                    className="block rounded-2xl border border-[var(--color-border)] overflow-hidden hover:border-[var(--color-accent)]/40 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer group"
+                    style={{ background: "linear-gradient(135deg, rgba(198,123,92,0.10) 0%, rgba(212,184,150,0.05) 50%, rgba(255,255,255,0.95) 100%)" }}
                   >
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[var(--color-bg-cream)] to-[var(--color-bg-mint)] flex items-center justify-center shrink-0 group-hover:from-[var(--color-accent)]/10 group-hover:to-[var(--color-accent)]/20 transition-all duration-300">
-                        <Phone className="size-5 text-[var(--color-accent)]" />
-                      </div>
-                      <div>
+                    <div className="flex">
+                      <div className="w-1.5 shrink-0 rounded-l-2xl" style={{ background: "linear-gradient(to bottom, #C67B5C, #D4B896)" }} />
+                      <div className="flex-1 p-6">
                         <h3 className="font-heading font-600 text-[var(--color-primary)] mb-1">
                           Telefon
                         </h3>
@@ -170,13 +166,12 @@ export default function Kontakt() {
                 <SectionFade delay={0.1}>
                   <a
                     href="mailto:post@ringebutann.no"
-                    className="block card p-6 group cursor-pointer"
+                    className="block rounded-2xl border border-[var(--color-border)] overflow-hidden hover:border-[var(--color-accent)]/40 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer group"
+                    style={{ background: "linear-gradient(135deg, rgba(212,184,150,0.10) 0%, rgba(92,61,46,0.05) 50%, rgba(255,255,255,0.95) 100%)" }}
                   >
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[var(--color-bg-cream)] to-[var(--color-bg-mint)] flex items-center justify-center shrink-0 group-hover:from-[var(--color-accent)]/10 group-hover:to-[var(--color-accent)]/20 transition-all duration-300">
-                        <Mail className="size-5 text-[var(--color-accent)]" />
-                      </div>
-                      <div>
+                    <div className="flex">
+                      <div className="w-1.5 shrink-0 rounded-l-2xl" style={{ background: "linear-gradient(to bottom, #D4B896, #5C3D2E)" }} />
+                      <div className="flex-1 p-6">
                         <h3 className="font-heading font-600 text-[var(--color-primary)] mb-1">
                           E-post
                         </h3>
@@ -197,13 +192,12 @@ export default function Kontakt() {
                     href="https://www.google.com/maps/search/?api=1&query=Jernbanegata+4,+2630+Ringebu"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block card p-6 group cursor-pointer"
+                    className="block rounded-2xl border border-[var(--color-border)] overflow-hidden hover:border-[var(--color-accent)]/40 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer group"
+                    style={{ background: "linear-gradient(135deg, rgba(92,61,46,0.10) 0%, rgba(16,185,129,0.05) 50%, rgba(255,255,255,0.95) 100%)" }}
                   >
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[var(--color-bg-cream)] to-[var(--color-bg-mint)] flex items-center justify-center shrink-0 group-hover:from-[var(--color-accent)]/10 group-hover:to-[var(--color-accent)]/20 transition-all duration-300">
-                        <MapPin className="size-5 text-[var(--color-accent)]" />
-                      </div>
-                      <div>
+                    <div className="flex">
+                      <div className="w-1.5 shrink-0 rounded-l-2xl" style={{ background: "linear-gradient(to bottom, #5C3D2E, #10b981)" }} />
+                      <div className="flex-1 p-6">
                         <h3 className="font-heading font-600 text-[var(--color-primary)] mb-1">
                           Adresse
                         </h3>
@@ -244,15 +238,16 @@ export default function Kontakt() {
             <div className="space-y-6">
               {/* Opening Hours */}
               <SectionFade delay={0.1}>
-                <div className="card p-8">
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--color-bg-cream)] to-[var(--color-bg-mint)] flex items-center justify-center shrink-0">
-                      <Clock className="size-5 text-[var(--color-accent)]" />
-                    </div>
-                    <h3 className="font-heading font-600 text-xl text-[var(--color-primary)]">
-                      Åpningstider
-                    </h3>
-                  </div>
+                <div
+                  className="rounded-2xl border border-[var(--color-border)] overflow-hidden"
+                  style={{ background: "linear-gradient(135deg, rgba(168,146,121,0.10) 0%, rgba(212,184,150,0.05) 50%, rgba(255,255,255,0.95) 100%)" }}
+                >
+                  <div className="flex">
+                    <div className="w-1.5 shrink-0 rounded-l-2xl" style={{ background: "linear-gradient(to bottom, #A89279, #D4B896)" }} />
+                    <div className="flex-1 p-8">
+                  <h3 className="font-heading font-600 text-xl text-[var(--color-primary)] mb-6">
+                    Åpningstider
+                  </h3>
                   <div className="space-y-3">
                     {openingHours.map((h) => (
                       <div
@@ -276,17 +271,17 @@ export default function Kontakt() {
                       </div>
                     ))}
                   </div>
+                    </div>
+                  </div>
                 </div>
               </SectionFade>
 
               {/* Emergency */}
               <SectionFade delay={0.2}>
-                <div className="rounded-2xl bg-rose-50 border border-rose-200/80 p-8">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-rose-100 flex items-center justify-center shrink-0">
-                      <AlertTriangle className="size-6 text-rose-600" />
-                    </div>
-                    <div>
+                <div className="rounded-2xl border border-rose-200/80 overflow-hidden" style={{ background: "linear-gradient(135deg, rgba(225,29,72,0.08) 0%, rgba(249,115,22,0.04) 50%, rgba(255,255,255,0.95) 100%)" }}>
+                  <div className="flex">
+                    <div className="w-1.5 shrink-0 rounded-l-2xl" style={{ background: "linear-gradient(to bottom, #e11d48, #f97316)" }} />
+                    <div className="flex-1 p-8">
                       <h3 className="font-heading font-600 text-xl text-rose-900 mb-2">
                         Akutt tannverk?
                       </h3>
@@ -320,12 +315,9 @@ export default function Kontakt() {
                 <div className="rounded-2xl bg-[var(--color-primary)] p-8 relative overflow-hidden">
                   <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-[var(--color-accent)]/10 blur-2xl" />
                   <div className="relative z-10">
-                    <div className="flex items-center gap-3 mb-4">
-                      <Calendar className="size-6 text-[var(--color-accent-light)]" />
-                      <h3 className="font-heading font-600 text-xl text-white">
-                        Bestill time
-                      </h3>
-                    </div>
+                    <h3 className="font-heading font-600 text-xl text-white mb-4">
+                      Bestill time
+                    </h3>
                     <p className="text-white/70 font-sans font-300 leading-relaxed mb-6">
                       Ring oss direkte for å bestille en time som passer deg.
                       Vårt vennlige personale hjelper deg gjerne.
