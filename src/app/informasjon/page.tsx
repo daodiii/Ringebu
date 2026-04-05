@@ -53,11 +53,23 @@ const freeGradients = [
   "linear-gradient(to bottom, #C67B5C, #D4B896)", // terracotta for Eldre
 ];
 
+const freeFills = [
+  "linear-gradient(135deg, rgba(16,185,129,0.06) 0%, rgba(5,150,105,0.02) 50%, transparent 100%)",
+  "linear-gradient(135deg, rgba(198,123,92,0.06) 0%, rgba(212,184,150,0.02) 50%, transparent 100%)",
+];
+
 const topGradients: Record<string, string> = {
   "unge-voksne": "linear-gradient(to right, #C67B5C, #D4B896, #C67B5C)",
   helfo: "linear-gradient(to right, #D4B896, #5C3D2E, #D4B896)",
   frikort: "linear-gradient(to right, #5C3D2E, #C67B5C, #5C3D2E)",
   nav: "linear-gradient(to right, #A89279, #D4B896, #A89279)",
+};
+
+const subsidyFills: Record<string, string> = {
+  "unge-voksne": "linear-gradient(135deg, rgba(198,123,92,0.06) 0%, rgba(212,184,150,0.02) 50%, transparent 100%)",
+  helfo: "linear-gradient(135deg, rgba(212,184,150,0.06) 0%, rgba(92,61,46,0.02) 50%, transparent 100%)",
+  frikort: "linear-gradient(135deg, rgba(92,61,46,0.06) 0%, rgba(198,123,92,0.02) 50%, transparent 100%)",
+  nav: "linear-gradient(135deg, rgba(168,146,121,0.06) 0%, rgba(212,184,150,0.02) 50%, transparent 100%)",
 };
 
 const personaNav = [
@@ -97,25 +109,6 @@ export default function InformasjonPage() {
             </p>
           </motion.div>
 
-          {/* Badge preview row */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.25 }}
-            className="flex flex-wrap justify-center gap-3 mt-10"
-          >
-            {supportPages.map((sp, i) => (
-              <motion.span
-                key={sp.slug}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4, delay: 0.3 + i * 0.06 }}
-                className="font-heading font-700 text-base md:text-lg px-5 py-2.5 rounded-full bg-white/15 border border-white/20 text-white shadow-sm"
-              >
-                {sp.badge}
-              </motion.span>
-            ))}
-          </motion.div>
         </div>
       </section>
 
@@ -139,7 +132,10 @@ export default function InformasjonPage() {
                     href={`/informasjon/${sp.slug}`}
                     className="group block h-full"
                   >
-                    <div className="bg-[var(--color-bg-cream)] rounded-2xl border border-[var(--color-border)] h-full flex overflow-hidden transition-all duration-300 hover:shadow-[0_20px_60px_rgba(60,36,21,0.08)] hover:-translate-y-1 cursor-pointer">
+                    <div
+                      className="rounded-2xl border border-[var(--color-border)] h-full flex overflow-hidden transition-all duration-300 hover:shadow-[0_20px_60px_rgba(60,36,21,0.08)] hover:-translate-y-1 cursor-pointer"
+                      style={{ background: freeFills[i] }}
+                    >
                       {/* Gradient left border */}
                       <div
                         className="w-2 shrink-0 rounded-l-2xl"
@@ -191,7 +187,8 @@ export default function InformasjonPage() {
                     className="group block h-full"
                   >
                     <div
-                      className="relative bg-white rounded-2xl border border-[var(--color-border)] overflow-hidden p-8 md:p-9 h-full flex flex-col transition-all duration-300 hover:shadow-[0_16px_48px_rgba(60,36,21,0.08)] hover:-translate-y-1 cursor-pointer"
+                      className="relative rounded-2xl border border-[var(--color-border)] overflow-hidden p-8 md:p-9 h-full flex flex-col transition-all duration-300 hover:shadow-[0_16px_48px_rgba(60,36,21,0.08)] hover:-translate-y-1 cursor-pointer"
+                      style={{ background: subsidyFills[sp.slug] || "white" }}
                     >
                       {/* Gradient top accent strip */}
                       <div
