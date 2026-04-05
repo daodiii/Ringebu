@@ -167,7 +167,7 @@ export default function InformasjonPage() {
       </section>
 
       {/* ── Subsidy Cards Grid ── */}
-      <section className="py-16 md:py-24 bg-[var(--color-bg-blue)]">
+      <section className="py-16 md:py-24 bg-white">
         <div className="container-width">
           <div className="max-w-6xl mx-auto">
             <SectionFade>
@@ -220,7 +220,7 @@ export default function InformasjonPage() {
       </section>
 
       {/* ── Persona Navigator ── */}
-      <section className="py-16 md:py-20 bg-[var(--color-bg-cream)]">
+      <section className="py-16 md:py-20 bg-white">
         <div className="container-width">
           <div className="max-w-5xl mx-auto">
             <SectionFade>

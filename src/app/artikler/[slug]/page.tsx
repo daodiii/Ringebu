@@ -142,7 +142,7 @@ export default async function ArticlePage({
       </section>
 
       {/* Content */}
-      <section className="section-padding bg-[var(--color-bg-cream)]">
+      <section className="section-padding bg-white">
         <div className="container-width">
           <div className="max-w-3xl mx-auto">
             {article.content.map((p, i) => (
@@ -173,7 +173,7 @@ export default async function ArticlePage({
       </section>
 
       {/* Related Articles */}
-      <section className="section-padding bg-[var(--color-bg-blue)]">
+      <section className="section-padding bg-white">
         <div className="container-width">
           <h2 className="heading-section mb-8">Andre artikler</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

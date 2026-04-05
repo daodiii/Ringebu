@@ -175,7 +175,7 @@ function HeroSection() {
 
 function TreatmentsSection() {
   return (
-    <section id="behandlinger" className="py-24 md:py-32 bg-[var(--color-bg-blue)]">
+    <section id="behandlinger" className="py-24 md:py-32 bg-white">
       <div className="container-width">
         {/* Header */}
         <SectionFade>
@@ -327,7 +327,7 @@ function TreatmentsSection() {
 
 function TrustSection() {
   return (
-    <section className="py-16 md:py-20 bg-[var(--color-bg-cream)]">
+    <section className="py-16 md:py-20 bg-white">
       <div className="container-width">
         <div className="max-w-5xl mx-auto">
           {/* Section label */}
@@ -431,7 +431,7 @@ function GuideSection() {
   ];
 
   return (
-    <section className="py-24 md:py-32 bg-[var(--color-bg-yellow)]">
+    <section className="py-24 md:py-32 bg-white">
       <div className="container-width">
         <div className="max-w-5xl mx-auto space-y-5 md:space-y-6">
 
@@ -791,7 +791,7 @@ function SupportCard({
 
 function BetalingsstotteSection() {
   return (
-    <section className="py-24 md:py-32 bg-[var(--color-bg-yellow)]">
+    <section className="py-24 md:py-32 bg-white">
       <div className="container-width">
         {/* Header */}
         <SectionFade>

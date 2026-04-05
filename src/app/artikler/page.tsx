@@ -31,7 +31,7 @@ export default function ArtiklerPage() {
       </section>
 
       {/* Articles Grid */}
-      <section className="section-padding bg-[var(--color-bg-cream)]">
+      <section className="section-padding bg-white">
         <div className="container-width">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {articles.map((article) => (
@@ -79,7 +79,7 @@ export default function ArtiklerPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-[var(--color-bg-blue)] py-16">
+      <section className="bg-white py-16">
         <div className="container-width text-center">
           <h2 className="heading-section mb-4">Har du spørsmål?</h2>
           <p className="body-large mb-8 max-w-lg mx-auto">

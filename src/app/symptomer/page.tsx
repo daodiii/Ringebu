@@ -139,7 +139,7 @@ export default function SymptomerPage() {
       </section>
 
       {/* ── Urgent Symptoms Band ── */}
-      <section className="py-16 md:py-24 bg-rose-50/40">
+      <section className="py-16 md:py-24 bg-white">
         <div className="container-width">
           <div className="max-w-6xl mx-auto">
             <SectionFade>
@@ -275,7 +275,7 @@ export default function SymptomerPage() {
       </section>
 
       {/* ── Routine Symptoms Grid ── */}
-      <section className="py-16 md:py-24 bg-[var(--color-bg-blue)]">
+      <section className="py-16 md:py-24 bg-white">
         <div className="container-width">
           <div className="max-w-6xl mx-auto">
             <SectionFade>

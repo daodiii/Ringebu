@@ -61,7 +61,7 @@ export default function Kontakt() {
       </section>
 
       {/* Contact Content */}
-      <section className="section-padding bg-[var(--color-bg-cream)]">
+      <section className="section-padding bg-white">
         <div className="container-width">
           <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
             {/* Contact Info */}

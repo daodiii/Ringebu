@@ -147,7 +147,7 @@ export default async function SupportPage({
       </section>
 
       {/* ── Intro ── */}
-      <section className="py-12 md:py-16 bg-[var(--color-bg-cream)]">
+      <section className="py-12 md:py-16 bg-white">
         <div className="container-width">
           <div className="max-w-3xl mx-auto">
             {page.intro.map((p, i) => (
@@ -185,7 +185,7 @@ export default async function SupportPage({
 
       {/* ── Practical Steps ── */}
       {page.practicalSteps && (
-        <section className="py-12 md:py-16 bg-[var(--color-bg-blue)]">
+        <section className="py-12 md:py-16 bg-white">
           <div className="container-width">
             <div className="max-w-3xl mx-auto">
               <div className="bg-white rounded-2xl border border-[var(--color-border)] p-8 md:p-10">
@@ -211,7 +211,7 @@ export default async function SupportPage({
       )}
 
       {/* ── External Links ── */}
-      <section className="py-12 md:py-16 bg-[var(--color-bg-yellow)]">
+      <section className="py-12 md:py-16 bg-white">
         <div className="container-width">
           <div className="max-w-3xl mx-auto">
             <h2 className="font-heading font-700 text-xl md:text-2xl text-[var(--color-primary)] mb-6">
@@ -239,7 +239,7 @@ export default async function SupportPage({
 
       {/* ── Related Pages ── */}
       {related.length > 0 && (
-        <section className="py-12 md:py-16 bg-[var(--color-bg-cream)]">
+        <section className="py-12 md:py-16 bg-white">
           <div className="container-width">
             <div className="max-w-4xl mx-auto">
               <h2 className="font-heading font-700 text-xl md:text-2xl text-[var(--color-primary)] mb-8">

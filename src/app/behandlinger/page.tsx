@@ -824,7 +824,7 @@ export default function Behandlinger() {
       </section>
 
       {/* ── Payment Info ── */}
-      <section className="py-14 md:py-20 bg-[var(--color-bg-blue)]">
+      <section className="py-14 md:py-20 bg-white">
         <div className="container-width max-w-5xl">
           <div className="grid md:grid-cols-2 gap-5">
             <motion.div
