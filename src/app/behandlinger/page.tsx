@@ -397,7 +397,7 @@ function ImageBand({
 
   const gradientDir = direction === "left" ? "to right" : "to left";
   const textAlign = direction === "left" ? "items-start text-left" : "items-end text-right md:items-end md:text-right";
-  const textPosition = direction === "left" ? "md:pr-[50%]" : "md:pl-[50%]";
+  const textPosition = direction === "left" ? "md:pr-[45%]" : "md:pl-[45%]";
 
   return (
     <motion.div
@@ -406,7 +406,7 @@ function ImageBand({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-      className="relative rounded-2xl overflow-hidden cursor-pointer group md:min-h-[240px]"
+      className="relative rounded-2xl overflow-hidden cursor-pointer group md:min-h-[300px]"
       style={{
         backgroundColor: t.color,
         scrollMarginTop: "140px",
@@ -447,18 +447,18 @@ function ImageBand({
             sizes="(max-width: 768px) 100vw, 1140px"
             priority={isFirstBand}
           />
-          {/* Desktop gradient overlay */}
+          {/* Desktop gradient overlay — only covers text side, image side stays visible */}
           <div
             className="absolute inset-0 z-10 hidden md:block"
             style={{
-              background: `linear-gradient(${gradientDir}, ${t.color} 40%, ${t.color}CC 60%, transparent 85%)`,
+              background: `linear-gradient(${gradientDir}, ${t.color} 30%, ${t.color}E6 42%, ${t.color}99 55%, ${t.color}40 65%, transparent 75%)`,
             }}
           />
-          {/* Mobile vertical gradient */}
+          {/* Mobile vertical gradient — bottom text area only */}
           <div
             className="absolute inset-0 z-10 md:hidden"
             style={{
-              background: `linear-gradient(to top, ${t.color} 55%, ${t.color}AA 70%, transparent 100%)`,
+              background: `linear-gradient(to top, ${t.color} 40%, ${t.color}CC 55%, ${t.color}66 65%, transparent 80%)`,
             }}
           />
         </div>
@@ -467,7 +467,7 @@ function ImageBand({
       {/* Content */}
       <div className="relative z-20">
         {/* Mobile spacer to show image at top */}
-        <div className="min-h-[160px] md:hidden" />
+        <div className="min-h-[200px] md:hidden" />
 
         <div className={`p-6 md:p-8 flex flex-col ${textAlign} ${textPosition}`}>
           <span
