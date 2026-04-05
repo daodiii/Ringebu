@@ -142,13 +142,13 @@ export default function InformasjonPage() {
                         style={{ background: freeGradients[i] }}
                       />
                       <div className="flex-1 p-10 md:p-12 flex flex-col">
-                        <h3 className="font-heading font-600 text-xl text-[var(--color-primary)] mb-3 group-hover:text-[var(--color-accent)] transition-colors">
+                        <h3 className="font-heading font-700 text-2xl md:text-3xl text-[var(--color-primary)] mb-4 group-hover:text-[var(--color-accent)] transition-colors">
                           {sp.shortTitle}
                         </h3>
-                        <p className="text-[0.95rem] text-[var(--color-text-secondary)] font-sans font-400 leading-relaxed mb-6 flex-1">
+                        <p className="text-base md:text-lg text-[var(--color-text-secondary)] font-sans font-400 leading-relaxed mb-6 flex-1">
                           {sp.hubSummary}
                         </p>
-                        <div className="flex items-center gap-2 text-[var(--color-accent)] font-sans font-500 text-sm group-hover:text-[var(--color-primary)] transition-colors">
+                        <div className="flex items-center gap-2 text-[var(--color-accent)] font-sans font-500 text-base group-hover:text-[var(--color-primary)] transition-colors">
                           Les mer
                           <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                         </div>
@@ -191,13 +191,13 @@ export default function InformasjonPage() {
                         className="absolute top-0 inset-x-0 h-1.5"
                         style={{ background: topGradients[sp.slug] || "linear-gradient(to right, #C67B5C, #D4B896)" }}
                       />
-                      <h3 className="font-heading font-600 text-lg text-[var(--color-primary)] mb-2 group-hover:text-[var(--color-accent)] transition-colors">
+                      <h3 className="font-heading font-700 text-xl md:text-2xl text-[var(--color-primary)] mb-3 group-hover:text-[var(--color-accent)] transition-colors">
                         {sp.shortTitle}
                       </h3>
-                      <p className="text-[0.95rem] text-[var(--color-text-secondary)] font-sans font-400 leading-relaxed mb-5 flex-1">
+                      <p className="text-base md:text-lg text-[var(--color-text-secondary)] font-sans font-400 leading-relaxed mb-5 flex-1">
                         {sp.hubSummary}
                       </p>
-                      <div className="flex items-center gap-2 text-[var(--color-accent)] font-sans font-500 text-sm group-hover:text-[var(--color-primary)] transition-colors">
+                      <div className="flex items-center gap-2 text-[var(--color-accent)] font-sans font-500 text-base group-hover:text-[var(--color-primary)] transition-colors">
                         Les mer
                         <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                       </div>
@@ -251,7 +251,7 @@ export default function InformasjonPage() {
                             </span>
                           </div>
                         </div>
-                        <p className="text-sm text-[var(--color-text-secondary)] font-sans font-400 leading-relaxed flex-1">
+                        <p className="text-base text-[var(--color-text-secondary)] font-sans font-400 leading-relaxed flex-1">
                           {item.desc}
                         </p>
                       </motion.div>
