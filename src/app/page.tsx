@@ -138,7 +138,7 @@ function HeroSection() {
             initial={{ opacity: 0, x: 40, scale: 0.95 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
             transition={{ duration: 0.9, delay: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
-            className="hidden lg:block"
+            className="hidden md:block"
           >
             <div className="relative rounded-sm overflow-hidden shadow-2xl shadow-black/30 border border-white/10 aspect-[4/5] max-w-[420px] ml-auto">
               <Image
@@ -147,7 +147,7 @@ function HeroSection() {
                 fill
                 className="object-cover"
                 style={{ objectPosition: "center 50%" }}
-                sizes="(max-width: 1024px) 0vw, 35vw"
+                sizes="(max-width: 767px) 0vw, (max-width: 1024px) 40vw, 35vw"
               />
               {/* Bottom label */}
               <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent pt-16 pb-5 px-6">
