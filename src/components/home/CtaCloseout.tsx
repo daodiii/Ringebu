@@ -29,12 +29,12 @@ export function CtaCloseout() {
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, rgba(0,0,0,0.45) 0%, transparent 30%, transparent 60%, rgba(0,0,0,0.78) 100%)",
+            "linear-gradient(180deg, rgba(14,42,48,0.45) 0%, transparent 30%, transparent 60%, rgba(8,32,37,0.82) 100%)",
         }}
       />
 
       <RevealOnScroll className="relative mx-auto grid min-h-[80vh] w-full max-w-[var(--container-max,1280px)] grid-cols-1 grid-rows-[auto_1fr_auto] gap-10 px-[var(--container-px,24px)] pt-32 pb-20 md:min-h-[88vh] md:grid-cols-[1.4fr_1fr] md:gap-10 md:pt-36 md:pb-24">
-        {/* Contact info — top right (same column widths as original grid) */}
+        {/* Contact info — top right */}
         <ul className="order-2 text-[var(--color-text-on-dark)] md:order-none md:col-start-2 md:row-start-1">
           {CONTACT_ROWS.map((row) => (
             <li
@@ -46,7 +46,7 @@ export function CtaCloseout() {
               </span>
               <span className="text-[14px] font-medium tracking-[-0.01em]">
                 {row.href ? (
-                  <a href={row.href} className="hover:text-[var(--color-amber)]">
+                  <a href={row.href} className="transition-colors hover:text-[var(--color-copper)]">
                     {row.value}
                   </a>
                 ) : (
@@ -62,13 +62,13 @@ export function CtaCloseout() {
           <SectionEyebrow tone="ink" withRule className="mb-5">
             Bestill en time
           </SectionEyebrow>
-          <h2 className="font-sans text-[40px] font-semibold leading-[1] tracking-[-0.032em] text-white md:text-[54px]">
+          <h2 className="font-sans text-[40px] font-semibold leading-[1] tracking-[-0.032em] text-[var(--color-paper)] md:text-[54px]">
             Smilet ditt fortjener<br />
             <span className="font-light text-[var(--color-amber)]">litt mer tid.</span>
           </h2>
           <Link
             href="/kontakt"
-            className="mt-7 inline-flex items-center gap-2.5 rounded-full bg-[var(--color-amber)] px-6 py-3 text-[13px] font-semibold tracking-[0.005em] text-[var(--color-ink)] transition-colors hover:bg-[var(--color-amber-deep)]"
+            className="mt-7 inline-flex items-center gap-2.5 rounded-full bg-[var(--color-copper)] px-6 py-3 text-[13px] font-semibold tracking-[0.005em] text-[var(--color-paper)] transition-colors hover:bg-[var(--color-copper)]/90"
           >
             Finn en ledig time
             <ArrowRight className="size-4" aria-hidden="true" />

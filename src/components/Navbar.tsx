@@ -100,12 +100,7 @@ export default function Navbar() {
           <div className="flex items-center gap-3">
             <Link
               href="/kontakt"
-              className={cn(
-                "hidden md:inline-flex items-center rounded-full px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.06em] transition-colors",
-                mode === "dark"
-                  ? "bg-[var(--color-amber)] text-[var(--color-ink)] hover:bg-[var(--color-amber-deep)]"
-                  : "bg-[var(--color-ink)] text-[var(--color-amber)] hover:bg-[var(--color-text-primary)]"
-              )}
+              className="hidden md:inline-flex items-center rounded-full bg-[var(--color-copper)] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.06em] text-[var(--color-paper)] transition-colors hover:bg-[var(--color-copper)]/90"
             >
               Bestill time
             </Link>
@@ -172,7 +167,7 @@ export default function Navbar() {
                 <Link
                   href="/kontakt"
                   onClick={() => setMobileOpen(false)}
-                  className="rounded-full bg-[var(--color-ink)] px-7 py-3 font-semibold text-[var(--color-amber)]"
+                  className="rounded-full bg-[var(--color-copper)] px-7 py-3 font-semibold text-[var(--color-paper)]"
                 >
                   Bestill time
                 </Link>

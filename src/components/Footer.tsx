@@ -17,7 +17,7 @@ const PRACTICAL = [
 
 export default function Footer() {
   return (
-    <footer className="bg-[var(--color-ink)] text-[var(--color-text-on-dark)]">
+    <footer className="bg-[var(--color-ink-warm)] text-[var(--color-text-on-dark)] border-t border-[var(--color-brass)]/40">
       <div className="mx-auto w-full max-w-[var(--container-max,1280px)] px-[var(--container-px,24px)] py-14">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-[1.4fr_1fr_1fr_1fr] md:gap-10">
           {/* Brand */}

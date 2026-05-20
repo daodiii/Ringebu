@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-type Tone = "ink" | "paper";
+type Tone = "ink" | "paper" | "mist";
 
 interface Props {
   children: React.ReactNode;
@@ -12,11 +12,13 @@ interface Props {
 const toneClasses: Record<Tone, string> = {
   ink: "text-[var(--color-amber)]",
   paper: "text-[var(--color-stone)]",
+  mist: "text-[var(--color-ink)]/70",
 };
 
 const ruleToneClasses: Record<Tone, string> = {
   ink: "bg-[var(--color-brass)]",
   paper: "bg-[var(--color-brass)]",
+  mist: "bg-[var(--color-ink)]/40",
 };
 
 export function SectionEyebrow({

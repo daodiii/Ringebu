@@ -1,5 +1,4 @@
 import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
-import { GrainOverlay } from "@/components/ui/GrainOverlay";
 import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 
 const CREDENTIALS = [
@@ -13,30 +12,29 @@ const CREDENTIALS = [
   },
   {
     name: "Praksis i Gudbrandsdalen siden 1985.",
-    sub: "Over fire tiår i samme dal — vi kjenner pasientene våre.",
+    sub: "Over fire tiår i samme dal, vi kjenner pasientene våre.",
   },
 ] as const;
 
 export function TrustSection() {
   return (
-    <section className="relative isolate overflow-hidden bg-[var(--color-ink-warm)] py-[var(--space-section)] text-[var(--color-text-on-dark)]">
-      <GrainOverlay opacity={0.05} />
+    <section className="relative isolate overflow-hidden bg-[var(--color-paper)] py-[var(--space-section)] text-[var(--color-text-primary)]">
       <RevealOnScroll className="relative mx-auto w-full max-w-[var(--container-max,1280px)] px-[var(--container-px,24px)]">
-        <SectionEyebrow tone="ink" withRule className="mb-7">
+        <SectionEyebrow tone="paper" withRule className="mb-7">
           Trygghet & kvalitet
         </SectionEyebrow>
 
-        <p className="max-w-[620px] font-sans text-[28px] font-medium leading-[1.1] tracking-[-0.025em] text-[var(--color-text-on-dark)] md:text-[32px]">
+        <p className="max-w-[620px] font-sans text-[28px] font-medium leading-[1.1] tracking-[-0.025em] text-[var(--color-text-primary)] md:text-[32px]">
           Tre konkrete grunner til at tannhelsen din er trygg hos oss.
         </p>
 
-        <ul className="mt-12 divide-y divide-[var(--color-rule-dark)] border-y border-[var(--color-rule-dark)]">
+        <ul className="mt-12 border-y border-[var(--color-rule)] divide-y divide-[var(--color-rule)]">
           {CREDENTIALS.map((c) => (
             <li key={c.name} className="py-7">
-              <div className="font-sans text-[22px] font-medium leading-[1.15] tracking-[-0.022em] text-[var(--color-text-on-dark)] md:text-[24px]">
+              <div className="font-sans text-[22px] font-medium leading-[1.15] tracking-[-0.022em] text-[var(--color-text-primary)] md:text-[24px]">
                 {c.name}
               </div>
-              <p className="mt-2 max-w-[640px] text-[14px] leading-[1.55] text-[var(--color-text-on-dark-muted)]">
+              <p className="mt-2 max-w-[640px] text-[14px] leading-[1.55] text-[var(--color-text-secondary)]">
                 {c.sub}
               </p>
             </li>

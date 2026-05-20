@@ -1,16 +1,18 @@
 @import "tailwindcss";
 
 @theme inline {
-  /* ── Ink / Paper / Accent ── */
-  --color-ink:          #0A0A0A;   /* hero base, footer, deep close-out */
-  --color-ink-warm:     #0F0B07;   /* trust section — has warm brown undertone */
-  --color-paper:        #FCF9F2;   /* default page background, cream sections — soft off-white, subtle warmth */
+  /* ── Petrol (dark anchor) / Paper / Accent ── */
+  --color-ink:          #0E2A30;   /* Petrol Teal — hero, treatments open spine */
+  --color-ink-warm:     #082025;   /* Petrol Deep — footer base, depth variant */
+  --color-petrol-mist:  #DEE7E6;   /* Petrol Mist — pale cool surface, used for the Trust section */
+  --color-paper:        #FCF9F2;   /* default page background, cream sections */
   --color-paper-warm:   #F5EFE0;   /* About section — one notch deeper to differentiate */
 
-  --color-amber:        #F5E9CB;   /* tungsten-light accent — headline accent, CTA on dark */
+  --color-copper:       #C97A5B;   /* warm spark — primary CTAs */
+  --color-amber:        #F5E9CB;   /* tungsten cream — text and accents on dark surfaces */
   --color-amber-deep:   #E8C58C;   /* stronger amber — single bento tile, highlights */
   --color-brass:        #B8945C;   /* thin lines, eyebrow rules, footer category labels */
-  --color-stone:        #8B6F4A;   /* headline accent on light (substitute for italic) */
+  --color-stone:        #6B8278;   /* sage-eucalyptus accent on light surfaces */
 
   /* ── Text ── */
   --color-text-primary:        #1A1410;
