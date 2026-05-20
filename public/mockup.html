@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Behandlinger — Layout Mockups</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: #FEFBF6; color: #3C2415; }
+  h1, h2, h3 { font-family: 'Playfair Display', serif; }
+
+  .page-header { text-align: center; padding: 60px 24px 40px; }
+  .page-header h1 { font-size: 2.5rem; margin-bottom: 8px; }
+  .page-header p { color: #6B5344; font-size: 1.1rem; }
+
+  .section { max-width: 1140px; margin: 0 auto; padding: 40px 24px 60px; }
+  .section-label {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #C67B5C;
+    background: #C67B5C15;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+  .section h2 { font-size: 1.8rem; margin-bottom: 6px; }
+  .section .desc { color: #6B5344; margin-bottom: 24px; font-size: 0.95rem; }
+
+  .divider { border: none; border-top: 1px solid #DDD3C5; max-width: 1140px; margin: 0 auto; }
+
+  /* ── Card base ── */
+  .card {
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+  }
+  .card .cat {
+    font-size: 0.58rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 10px;
+  }
+  .card h3 { color: white; font-size: 1.15rem; margin-bottom: 4px; line-height: 1.25; }
+  .card .sub { color: rgba(255,255,255,0.7); font-size: 0.8rem; margin-bottom: 10px; }
+  .card .body { color: rgba(255,255,255,0.85); font-size: 0.78rem; line-height: 1.55; margin-bottom: 12px; }
+  .card ul { list-style: none; margin-bottom: 12px; }
+  .card ul li { color: rgba(255,255,255,0.9); font-size: 0.76rem; line-height: 1.4; padding: 2px 0; padding-left: 14px; position: relative; }
+  .card ul li::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.5); position: absolute; left: 0; top: 7px; }
+  .card .prices { background: rgba(255,255,255,0.08); border-radius: 10px; padding: 12px; margin-top: auto; }
+  .card .prices .price-label { font-size: 0.58rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.6); margin-bottom: 6px; }
+  .card .prices .price-item { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .card .prices .price-item:last-child { border: none; }
+  .card .prices .price-name { color: white; font-size: 0.76rem; font-weight: 500; }
+  .card .prices .price-desc { color: rgba(255,255,255,0.55); font-size: 0.68rem; }
+
+  /* Colors */
+  .c1 { background: #3C2415; }
+  .c2 { background: #1C2A3A; }
+  .c3 { background: #2A3A2B; }
+  .c4 { background: #5A3420; }
+  .c5 { background: #3D1C28; }
+  .c6 { background: #1C3636; }
+  .c7 { background: #33362A; }
+  .c8 { background: #2E2038; }
+  .c9 { background: #2A2A30; }
+
+  /* ══════ APPROACH A: CSS Columns Masonry ══════ */
+  .masonry {
+    column-count: 3;
+    column-gap: 14px;
+  }
+  .masonry .card {
+    break-inside: avoid;
+    margin-bottom: 14px;
+  }
+
+  /* ══════ APPROACH B: Flex Rows ══════ */
+  .flex-grid { display: flex; flex-direction: column; gap: 14px; }
+  .flex-row { display: flex; gap: 14px; }
+  .flex-row > * { min-width: 0; }
+  .w55 { flex: 0 0 55%; }
+  .w45 { flex: 0 0 calc(45% - 14px); }
+  .w33 { flex: 1 1 0; }
+  .w40 { flex: 0 0 40%; }
+  .w60 { flex: 0 0 calc(60% - 14px); }
+  .w35 { flex: 0 0 35%; }
+  .w30 { flex: 0 0 calc(30% - 14px); }
+  .w65 { flex: 0 0 calc(65% - 14px); }
+
+  /* ══════ APPROACH C: Editorial ══════ */
+  .editorial { display: flex; flex-direction: column; gap: 14px; }
+  .editorial .card { padding: 32px; }
+  .editorial .card h3 { font-size: 1.5rem; }
+  .editorial .split { display: flex; gap: 24px; }
+  .editorial .split > div { flex: 1; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>Layout Mockups</h1>
+  <p>Three different approaches — scroll down to compare</p>
+</div>
+
+<hr class="divider">
+
+<!-- ════════════════════ APPROACH A ════════════════════ -->
+<div class="section">
+  <span class="section-label">Approach A — Recommended</span>
+  <h2>CSS Columns Masonry</h2>
+  <p class="desc">Cards flow top→bottom in 3 columns. Each card is exactly as tall as its content. Zero wasted space. The varied content (some have prices, some don't) creates natural height differences — a mosaic effect without any CSS Grid hacks.</p>
+
+  <div class="masonry">
+    <!-- Col 1 items -->
+    <div class="card c1">
+      <div class="cat">Forebyggende</div>
+      <h3>Forebyggende Behandling</h3>
+      <div class="sub">Grunnlaget for god tannhelse</div>
+      <div class="body">Regelmessig forebygging holder tennene friske hele livet. Vi undersøker grundig, renser tennene og viser deg hvordan du best tar vare på dem hjemme.</div>
+      <ul>
+        <li>Grundig tannundersøkelse med digitalt røntgen</li>
+        <li>Profesjonell tannrens og polering</li>
+        <li>Fluorbehandling for sterkere emalje</li>
+        <li>Individuelle råd for munnhygiene hjemme</li>
+      </ul>
+      <div class="prices">
+        <div class="price-label">Behandlinger</div>
+        <div class="price-item"><div class="price-name">Undersøkelse med rens</div><div class="price-desc">Fullstendig tannhelsesjekk</div></div>
+        <div class="price-item"><div class="price-name">Studentrabatt</div><div class="price-desc">Gyldig med studentbevis</div></div>
+        <div class="price-item"><div class="price-name">Enkel etterkontroll</div><div class="price-desc">Etter kirurgiske inngrep</div></div>
+        <div class="price-item"><div class="price-name">Omfattende etterkontroll</div><div class="price-desc">Etter oralmedisinske undersøkelser</div></div>
+      </div>
+    </div>
+
+    <div class="card c4">
+      <div class="cat">Restaurering</div>
+      <h3>Kron og Bro</h3>
+      <div class="sub">Holdbare restaureringer</div>
+      <div class="body">Kroner og broer erstatter eller reparerer tenner som er skadet eller borte — og ser helt naturlige ut.</div>
+      <ul>
+        <li>Helkeramiske kroner for naturlig utseende</li>
+        <li>Broer som erstatter manglende tenner</li>
+        <li>Lang holdbarhet med riktig vedlikehold</li>
+        <li>Skreddersydd tilpasning til ditt bitt</li>
+      </ul>
+      <div class="prices">
+        <div class="price-label">Behandlinger</div>
+        <div class="price-item"><div class="price-name">Fullkrone</div><div class="price-desc">Hel krone over tann</div></div>
+      </div>
+    </div>
+
+    <div class="card c7">
+      <div class="cat">Forebyggende</div>
+      <h3>Tannkjøtt & Tannstein</h3>
+      <div class="sub">Friskt tannkjøtt, sterke tenner</div>
+      <div class="body">Sunt tannkjøtt er det viktigste for at tennene skal holde lenge.</div>
+      <ul>
+        <li>Grundig fjerning av tannstein</li>
+        <li>Behandling av gingivitt og periodontitt</li>
+        <li>Veiledning i effektiv munnhygiene</li>
+        <li>Regelmessig oppfølging og vedlikehold</li>
+      </ul>
+      <div class="prices">
+        <div class="price-label">Behandlinger</div>
+        <div class="price-item"><div class="price-name">Periodontal behandling</div><div class="price-desc">Tannkjøttsykdom</div></div>
+        <div class="price-item"><div class="price-name">Behandling av periodontitt</div><div class="price-desc">Tannkjøttbetennelse</div></div>
+        <div class="price-item"><div class="price-name">Fiksering av tenner</div><div class="price-desc">Stabilisering av løse tenner</div></div>
+      </div>
+    </div>
+
+    <!-- Col 2 items -->
+    <div class="card c2">
+      <div class="cat">Kosmetisk</div>
+      <h3>Bleking</h3>
+      <div class="sub">Et lysere, hvitere smil</div>
+      <div class="body">Få hvitere tenner med profesjonell bleking. Det er trygt, gjør ikke vondt, og resultatet holder lenge.</div>
+      <ul>
+        <li>Klinikkbleking med raskt resultat</li>
+        <li>Hjemmebleking med tilpassede skinner</li>
+        <li>Skånsom behandling for emaljen</li>
+        <li>Langvarig og naturlig resultat</li>
+      </ul>
+    </div>
+
+    <div class="card c5">
+      <div class="cat">Restaurering</div>
+      <h3>Rotfylling</h3>
+      <div class="sub">Redd tannen din</div>
+      <div class="body">Rotfylling redder tenner som er skadet eller infisert. Det er ikke vondt, og du får beholde tannen.</div>
+      <ul>
+        <li>Moderne endodontisk behandling</li>
+        <li>Smertefri med god bedøvelse</li>
+        <li>Avansert utstyr for presis behandling</li>
+        <li>Bevarer din naturlige tann</li>
+      </ul>
+      <div class="prices">
+        <div class="price-label">Behandlinger</div>
+        <div class="price-item"><div class="price-name">Rotfylling — 1 rotkanal</div><div class="price-desc">Tann med én rotkanal</div></div>
+        <div class="price-item"><div class="price-name">Rotfylling — 2 rotkanaler</div><div class="price-desc">Tann med to rotkanaler</div></div>
+        <div class="price-item"><div class="price-name">Rotfylling — 3–4 rotkanaler</div><div class="price-desc">Tann med tre til fire rotkanaler</div></div>
+      </div>
+    </div>
+
+    <div class="card c8">
+      <div class="cat">Spesialbehandling</div>
+      <h3>Bittskinner</h3>
+      <div class="sub">Beskyttelse mot tanngnissing</div>
+      <div class="body">Gnisser du tenner om natten? En bittskinne tilpasset deg beskytter og lindrer.</div>
+      <ul>
+        <li>Individuelt tilpassede bittskinner</li>
+        <li>Beskyttelse mot slitasje</li>
+        <li>Lindring av kjevesmerter og hodepine</li>
+        <li>Veiledning om årsaker og forebygging</li>
+      </ul>
+    </div>
+
+    <!-- Col 3 items -->
+    <div class="card c3">
+      <div class="cat">Restaurering</div>
+      <h3>Fyllingsterapi</h3>
+      <div class="sub">Moderne, usynlige fyllinger</div>
+      <div class="body">Fyllinger i tannfargen som fyller hull og gjør tenner hele igjen — du ser ikke forskjellen.</div>
+      <ul>
+        <li>Tannfargede komposittfyllinger</li>
+        <li>Utskifting av gamle amalgamfyllinger</li>
+        <li>Smertefri behandling med lokalbedøvelse</li>
+        <li>Holdbare materialer med naturlig utseende</li>
+      </ul>
+      <div class="prices">
+        <div class="price-label">Behandlinger</div>
+        <div class="price-item"><div class="price-name">Fylling — liten</div><div class="price-desc">Én flate</div></div>
+        <div class="price-item"><div class="price-name">Fylling — mellomstor</div><div class="price-desc">To flater</div></div>
+        <div class="price-item"><div class="price-name">Fylling — stor</div><div class="price-desc">Tre eller flere flater</div></div>
+      </div>
+    </div>
+
+    <div class="card c6">
+      <div class="cat">Kirurgi</div>
+      <h3>Visdomstennene</h3>
+      <div class="sub">Vurdering og fjerning</div>
+      <div class="body">Vi sjekker om visdomstennene dine trenger å fjernes, og hvis ja — gjør vi det skånsomt.</div>
+      <ul>
+        <li>Grundig vurdering med røntgen</li>
+        <li>Skånsom kirurgisk fjerning</li>
+        <li>God smertelindring under og etter</li>
+        <li>Tett oppfølging i etterkant</li>
+      </ul>
+      <div class="prices">
+        <div class="price-label">Behandlinger</div>
+        <div class="price-item"><div class="price-name">Ukomplisert ekstraksjon</div><div class="price-desc">Enkel fjerning</div></div>
+        <div class="price-item"><div class="price-name">Kirurgisk fjerning</div><div class="price-desc">Retinert tann</div></div>
+      </div>
+    </div>
+
+    <div class="card c9">
+      <div class="cat">Spesialbehandling</div>
+      <h3>Tannlegeskrekk</h3>
+      <div class="sub">Vi forstår deg</div>
+      <div class="body">Hos oss møter du et trygt, rolig miljø med ekstra tid og omsorg.</div>
+      <ul>
+        <li>Rolig og trygt behandlingsmiljø</li>
+        <li>Ekstra tid til å bli kjent og trygg</li>
+        <li>Skånsomme behandlingsteknikker</li>
+        <li>Mulighet for pauser underveis</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ════════════════════ APPROACH B ════════════════════ -->
+<div class="section">
+  <span class="section-label">Approach B</span>
+  <h2>Flex Rows with Varied Splits</h2>
+  <p class="desc">Independent flex rows with different width ratios. No grid, no row-spans, no gaps. Each row has its own column split (55/45, 33/33/33, 40/60, 35/30/35) so every card gets a unique width. Height is always content-driven.</p>
+
+  <div class="flex-grid">
+    <!-- Row 1: 55 / 45 -->
+    <div class="flex-row">
+      <div class="card c1 w55">
+        <div class="cat">Forebyggende</div>
+        <h3>Forebyggende Behandling</h3>
+        <div class="sub">Grunnlaget for god tannhelse</div>
+        <div class="body">Regelmessig forebygging holder tennene friske hele livet. Vi undersøker grundig, renser tennene og viser deg hvordan du best tar vare på dem hjemme.</div>
+        <ul>
+          <li>Grundig tannundersøkelse med digitalt røntgen</li>
+          <li>Profesjonell tannrens og polering</li>
+          <li>Fluorbehandling for sterkere emalje</li>
+          <li>Individuelle råd for munnhygiene hjemme</li>
+        </ul>
+        <div class="prices">
+          <div class="price-label">Behandlinger</div>
+          <div class="price-item"><div class="price-name">Undersøkelse med rens</div><div class="price-desc">Fullstendig tannhelsesjekk</div></div>
+          <div class="price-item"><div class="price-name">Studentrabatt</div><div class="price-desc">Gyldig med studentbevis</div></div>
+          <div class="price-item"><div class="price-name">Enkel etterkontroll</div><div class="price-desc">Etter kirurgiske inngrep</div></div>
+          <div class="price-item"><div class="price-name">Omfattende etterkontroll</div><div class="price-desc">Etter oralmedisinske undersøkelser</div></div>
+        </div>
+      </div>
+      <div class="card c2 w45">
+        <div class="cat">Kosmetisk</div>
+        <h3>Bleking</h3>
+        <div class="sub">Et lysere, hvitere smil</div>
+        <div class="body">Få hvitere tenner med profesjonell bleking. Det er trygt, gjør ikke vondt, og resultatet holder lenge.</div>
+        <ul>
+          <li>Klinikkbleking med raskt resultat</li>
+          <li>Hjemmebleking med tilpassede skinner</li>
+          <li>Skånsom behandling for emaljen</li>
+          <li>Langvarig og naturlig resultat</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Row 2: 33 / 33 / 33 -->
+    <div class="flex-row">
+      <div class="card c3 w33">
+        <div class="cat">Restaurering</div>
+        <h3>Fyllingsterapi</h3>
+        <div class="sub">Moderne, usynlige fyllinger</div>
+        <div class="body">Fyllinger i tannfargen som fyller hull og gjør tenner hele igjen.</div>
+        <ul>
+          <li>Tannfargede komposittfyllinger</li>
+          <li>Utskifting av gamle amalgamfyllinger</li>
+          <li>Smertefri behandling med lokalbedøvelse</li>
+          <li>Holdbare materialer med naturlig utseende</li>
+        </ul>
+        <div class="prices">
+          <div class="price-label">Behandlinger</div>
+          <div class="price-item"><div class="price-name">Fylling — liten</div><div class="price-desc">Én flate</div></div>
+          <div class="price-item"><div class="price-name">Fylling — mellomstor</div><div class="price-desc">To flater</div></div>
+          <div class="price-item"><div class="price-name">Fylling — stor</div><div class="price-desc">Tre eller flere flater</div></div>
+        </div>
+      </div>
+      <div class="card c4 w33">
+        <div class="cat">Restaurering</div>
+        <h3>Kron og Bro</h3>
+        <div class="sub">Holdbare restaureringer</div>
+        <div class="body">Kroner og broer erstatter eller reparerer tenner som er skadet eller borte.</div>
+        <ul>
+          <li>Helkeramiske kroner for naturlig utseende</li>
+          <li>Broer som erstatter manglende tenner</li>
+          <li>Lang holdbarhet med riktig vedlikehold</li>
+          <li>Skreddersydd tilpasning til ditt bitt</li>
+        </ul>
+        <div class="prices">
+          <div class="price-label">Behandlinger</div>
+          <div class="price-item"><div class="price-name">Fullkrone</div><div class="price-desc">Hel krone over tann</div></div>
+        </div>
+      </div>
+      <div class="card c5 w33">
+        <div class="cat">Restaurering</div>
+        <h3>Rotfylling</h3>
+        <div class="sub">Redd tannen din</div>
+        <div class="body">Rotfylling redder tenner som er skadet eller infisert.</div>
+        <ul>
+          <li>Moderne endodontisk behandling</li>
+          <li>Smertefri med god bedøvelse</li>
+          <li>Avansert utstyr for presis behandling</li>
+          <li>Bevarer din naturlige tann</li>
+        </ul>
+        <div class="prices">
+          <div class="price-label">Behandlinger</div>
+          <div class="price-item"><div class="price-name">Rotfylling — 1 rotkanal</div><div class="price-desc">Én rotkanal</div></div>
+          <div class="price-item"><div class="price-name">Rotfylling — 2 rotkanaler</div><div class="price-desc">To rotkanaler</div></div>
+          <div class="price-item"><div class="price-name">Rotfylling — 3–4 rotkanaler</div><div class="price-desc">Tre til fire rotkanaler</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3: 40 / 60 -->
+    <div class="flex-row">
+      <div class="card c6 w40">
+        <div class="cat">Kirurgi</div>
+        <h3>Visdomstennene</h3>
+        <div class="sub">Vurdering og fjerning</div>
+        <div class="body">Vi sjekker om visdomstennene dine trenger å fjernes, og gjør det skånsomt.</div>
+        <ul>
+          <li>Grundig vurdering med røntgen</li>
+          <li>Skånsom kirurgisk fjerning</li>
+          <li>God smertelindring under og etter</li>
+          <li>Tett oppfølging i etterkant</li>
+        </ul>
+        <div class="prices">
+          <div class="price-label">Behandlinger</div>
+          <div class="price-item"><div class="price-name">Ukomplisert ekstraksjon</div><div class="price-desc">Enkel fjerning</div></div>
+          <div class="price-item"><div class="price-name">Kirurgisk fjerning</div><div class="price-desc">Retinert tann</div></div>
+        </div>
+      </div>
+      <div class="card c7 w60">
+        <div class="cat">Forebyggende</div>
+        <h3>Tannkjøtt & Tannstein</h3>
+        <div class="sub">Friskt tannkjøtt, sterke tenner</div>
+        <div class="body">Sunt tannkjøtt er det viktigste for at tennene skal holde lenge. Vi fjerner tannstein og behandler tannkjøttsykdom.</div>
+        <ul>
+          <li>Grundig fjerning av tannstein</li>
+          <li>Behandling av gingivitt og periodontitt</li>
+          <li>Veiledning i effektiv munnhygiene</li>
+          <li>Regelmessig oppfølging og vedlikehold</li>
+        </ul>
+        <div class="prices">
+          <div class="price-label">Behandlinger</div>
+          <div class="price-item"><div class="price-name">Periodontal behandling</div><div class="price-desc">Tannkjøttsykdom</div></div>
+          <div class="price-item"><div class="price-name">Behandling av periodontitt</div><div class="price-desc">Tannkjøttbetennelse</div></div>
+          <div class="price-item"><div class="price-name">Fiksering av tenner</div><div class="price-desc">Løse tenner</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 4: 35 / 65 -->
+    <div class="flex-row">
+      <div class="card c8 w35">
+        <div class="cat">Spesialbehandling</div>
+        <h3>Bittskinner</h3>
+        <div class="sub">Beskyttelse mot tanngnissing</div>
+        <div class="body">Gnisser du tenner om natten? En bittskinne beskytter og lindrer.</div>
+        <ul>
+          <li>Individuelt tilpassede bittskinner</li>
+          <li>Beskyttelse mot slitasje</li>
+          <li>Lindring av kjevesmerter og hodepine</li>
+          <li>Veiledning om årsaker og forebygging</li>
+        </ul>
+      </div>
+      <div class="card c9 w65">
+        <div class="cat">Spesialbehandling</div>
+        <h3>Tannlegeskrekk</h3>
+        <div class="sub">Vi forstår deg</div>
+        <div class="body">Hos oss møter du et trygt, rolig miljø med ekstra tid og omsorg. Vi tar tannlegeskrekk på alvor.</div>
+        <ul>
+          <li>Rolig og trygt behandlingsmiljø</li>
+          <li>Ekstra tid til å bli kjent og trygg</li>
+          <li>Skånsomme behandlingsteknikker</li>
+          <li>Mulighet for pauser underveis</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ════════════════════ APPROACH C ════════════════════ -->
+<div class="section">
+  <span class="section-label">Approach C</span>
+  <h2>Full-Width Editorial Sections</h2>
+  <p class="desc">Each treatment is a full-width section with alternating internal layouts. More like a magazine article. Very long page, but maximum readability and zero wasted space. Content flows left-to-right in alternating splits.</p>
+
+  <div class="editorial">
+    <div class="card c1">
+      <div class="cat">Forebyggende</div>
+      <h3>Forebyggende Behandling</h3>
+      <div class="sub">Grunnlaget for god tannhelse</div>
+      <div class="split">
+        <div>
+          <div class="body">Regelmessig forebygging holder tennene friske hele livet. Vi undersøker grundig, renser tennene og viser deg hvordan du best tar vare på dem hjemme.</div>
+          <ul>
+            <li>Grundig tannundersøkelse med digitalt røntgen</li>
+            <li>Profesjonell tannrens og polering</li>
+            <li>Fluorbehandling for sterkere emalje</li>
+            <li>Individuelle råd for munnhygiene hjemme</li>
+          </ul>
+        </div>
+        <div>
+          <div class="prices">
+            <div class="price-label">Behandlinger</div>
+            <div class="price-item"><div class="price-name">Undersøkelse med rens</div><div class="price-desc">Fullstendig tannhelsesjekk</div></div>
+            <div class="price-item"><div class="price-name">Studentrabatt</div><div class="price-desc">Gyldig med studentbevis</div></div>
+            <div class="price-item"><div class="price-name">Enkel etterkontroll</div><div class="price-desc">Etter kirurgiske inngrep</div></div>
+            <div class="price-item"><div class="price-name">Omfattende etterkontroll</div><div class="price-desc">Etter oralmedisinske undersøkelser</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card c2">
+      <div class="cat">Kosmetisk</div>
+      <h3>Bleking</h3>
+      <div class="sub">Et lysere, hvitere smil</div>
+      <div class="body">Få hvitere tenner med profesjonell bleking. Det er trygt, gjør ikke vondt, og resultatet holder lenge.</div>
+      <ul>
+        <li>Klinikkbleking med raskt resultat</li>
+        <li>Hjemmebleking med tilpassede skinner</li>
+        <li>Skånsom behandling for emaljen</li>
+        <li>Langvarig og naturlig resultat</li>
+      </ul>
+    </div>
+
+    <div class="card c3">
+      <div class="cat">Restaurering</div>
+      <h3>Fyllingsterapi</h3>
+      <div class="sub">Moderne, usynlige fyllinger</div>
+      <div class="split">
+        <div>
+          <div class="body">Fyllinger i tannfargen som fyller hull og gjør tenner hele igjen — du ser ikke forskjellen.</div>
+          <ul>
+            <li>Tannfargede komposittfyllinger</li>
+            <li>Utskifting av gamle amalgamfyllinger</li>
+            <li>Smertefri behandling med lokalbedøvelse</li>
+            <li>Holdbare materialer med naturlig utseende</li>
+          </ul>
+        </div>
+        <div>
+          <div class="prices">
+            <div class="price-label">Behandlinger</div>
+            <div class="price-item"><div class="price-name">Fylling — liten</div><div class="price-desc">Én flate</div></div>
+            <div class="price-item"><div class="price-name">Fylling — mellomstor</div><div class="price-desc">To flater</div></div>
+            <div class="price-item"><div class="price-name">Fylling — stor</div><div class="price-desc">Tre eller flere flater</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p style="text-align:center; color:#A89279; padding: 20px 0; font-style:italic;">... 6 more treatments in alternating layouts ...</p>
+  </div>
+</div>
+
+<div style="height: 80px;"></div>
+
+</body>
+</html>

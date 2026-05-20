@@ -1,53 +1,77 @@
 @import "tailwindcss";
 
 @theme inline {
-  /* ── Warm Espresso Anchors ── */
-  --color-primary: #3C2415;
-  --color-primary-dark: #2A1810;
-  --color-primary-light: #5C3D2E;
+  /* ── Ink / Paper / Accent ── */
+  --color-ink:          #0A0A0A;   /* hero base, footer, deep close-out */
+  --color-ink-warm:     #0F0B07;   /* trust section — has warm brown undertone */
+  --color-paper:        #FCF9F2;   /* default page background, cream sections — soft off-white, subtle warmth */
+  --color-paper-warm:   #F5EFE0;   /* About section — one notch deeper to differentiate */
 
-  /* ── Terracotta Accent ── */
-  --color-accent: #C67B5C;
-  --color-accent-hover: #A8624A;
-  --color-accent-light: #D4B896;
+  --color-amber:        #F5E9CB;   /* tungsten-light accent — headline accent, CTA on dark */
+  --color-amber-deep:   #E8C58C;   /* stronger amber — single bento tile, highlights */
+  --color-brass:        #B8945C;   /* thin lines, eyebrow rules, footer category labels */
+  --color-stone:        #8B6F4A;   /* headline accent on light (substitute for italic) */
 
-  /* ── Warm Section Tints ── */
-  --color-bg-blue: #EDE4D8;
-  --color-bg-yellow: #F2EBE0;
-  --color-bg-mint: #E8DED1;
-  --color-bg-cream: #F7F0E8;
+  /* ── Text ── */
+  --color-text-primary:        #1A1410;
+  --color-text-secondary:      #4A3F33;
+  --color-text-muted:          #8B7C6A;
+  --color-text-on-dark:        #F5E9CB;
+  --color-text-on-dark-muted:  rgba(245, 233, 203, 0.55);
 
-  /* ── Warm Brown Scale ── */
-  --color-stone-50: #FAF7F2;
-  --color-stone-100: #F5EDE3;
-  --color-stone-200: #E8DDD0;
-  --color-stone-300: #D4C4AA;
-  --color-stone-400: #A89279;
-  --color-stone-500: #8B7355;
-  --color-stone-600: #6B5344;
-  --color-stone-700: #5C3D2E;
-  --color-stone-800: #4A2E1E;
-  --color-stone-900: #3C2415;
+  /* ── Rules ── */
+  --color-rule:       rgba(26, 20, 16, 0.12);
+  --color-rule-dark:  rgba(245, 233, 203, 0.18);
 
-  /* ── Semantic Colors ── */
-  --color-bg: #FEFBF6;
-  --color-text-primary: #3C2415;
-  --color-text-secondary: #6B5344;
-  --color-text-muted: #A89279;
-  --color-border: #DDD3C5;
+  /* ── Urgency (severity pill) ── */
+  --color-urgent: #B8624A;
 
   /* ── Typography ── */
-  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
-  --font-heading: var(--font-fraunces), Georgia, serif;
-  --font-serif: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-sans), system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, monospace;
+  --font-heading: var(--font-sans), system-ui, sans-serif;  /* alias so any legacy class still resolves */
+
+  /* ── Radius ── */
+  --radius-tile:  14px;
+  --radius-pill:  9999px;
+  --radius-frame: 0;          /* catalogue plates: square corners */
+  --radius-inset: 6px;
+  --radius-sm:    8px;         /* legacy aliases for inner pages still using them */
+  --radius-md:    12px;
+  --radius-lg:    16px;
 
   /* ── Spacing ── */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
-  --radius-2xl: 32px;
-  --radius-full: 9999px;
+  --space-section:        clamp(72px, 8vw, 100px);
+  --space-section-tight:  clamp(60px, 6vw, 80px);
+  --container-px:         clamp(20px, 4vw, 36px);
+  --container-max:        1280px;
+
+  /* ── Motion ── */
+  --ease-cinematic: cubic-bezier(0.25, 0.1, 0.25, 1);
+
+  /* ── Legacy aliases (so inner pages don't break before they're redesigned) ── */
+  --color-primary:        var(--color-text-primary);
+  --color-primary-dark:   var(--color-ink);
+  --color-primary-light:  var(--color-text-secondary);
+  --color-accent:         var(--color-stone);
+  --color-accent-hover:   var(--color-text-primary);
+  --color-accent-light:   var(--color-amber-deep);
+  --color-bg:             var(--color-paper);
+  --color-bg-cream:       var(--color-paper);
+  --color-bg-blue:        var(--color-paper-warm);
+  --color-bg-yellow:      var(--color-paper-warm);
+  --color-bg-mint:        var(--color-paper-warm);
+  --color-border:         var(--color-rule);
+  --color-stone-50:  #F8F5EE;
+  --color-stone-100: #F0EBE0;
+  --color-stone-200: #DDD5C5;
+  --color-stone-300: #C2B59C;
+  --color-stone-400: #A89279;
+  --color-stone-500: #8B7C6A;
+  --color-stone-600: #6B5A40;
+  --color-stone-700: #4A3F33;
+  --color-stone-800: #2C2620;
+  --color-stone-900: #1A1410;
 }
 
 /* ── Reset & Base ── */
@@ -73,17 +97,21 @@ a, button, [role="button"], input, select, textarea {
 }
 
 body {
-  background-color: var(--color-bg);
+  background-color: var(--color-paper);
   color: var(--color-text-primary);
   font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";  /* Geist stylistic set: tabular figures + cleaner 'a' */
   overflow-x: hidden;
-  line-height: 1.6;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading);
+  font-family: var(--font-sans);
+  font-weight: 500;
   letter-spacing: -0.02em;
-  line-height: 1.15;
+  line-height: 1.05;
 }
 
 /* ── Section Layouts ── */
@@ -356,4 +384,61 @@ h1, h2, h3, h4, h5, h6 {
 
 .snap-container::-webkit-scrollbar {
   width: 0px;
+}
+
+/* ── Typography utilities ── */
+.display-hero {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: clamp(38px, 6.5vw, 72px);
+  line-height: 0.97;
+  letter-spacing: -0.035em;
+}
+
+.display-section {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: clamp(32px, 4.2vw, 52px);
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+}
+
+.display-quote {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: clamp(26px, 3.5vw, 44px);
+  line-height: 1.12;
+  letter-spacing: -0.028em;
+}
+
+.body-large {
+  font-family: var(--font-sans);
+  font-size: clamp(16px, 1.2vw, 17px);
+  line-height: 1.55;
+  letter-spacing: -0.012em;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+}
+
+.data-label {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 9.5px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.data-value {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: -0.01em;
+  color: var(--color-text-primary);
 }

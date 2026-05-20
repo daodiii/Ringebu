@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guide Section — 3 Approaches</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --color-primary: #3C2415;
+    --color-primary-dark: #2A1810;
+    --color-primary-light: #5C3D2E;
+    --color-accent: #C67B5C;
+    --color-accent-hover: #A8624A;
+    --color-accent-light: #D4B896;
+    --color-bg-blue: #EDE4D8;
+    --color-bg-yellow: #F2EBE0;
+    --color-bg-cream: #F7F0E8;
+    --color-stone-50: #FAF7F2;
+    --color-text-primary: #3C2415;
+    --color-text-secondary: #6B5344;
+    --color-text-muted: #A89279;
+    --color-border: #DDD3C5;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    background: #FEFBF6;
+    color: var(--color-text-primary);
+  }
+  h1, h2, h3 { font-family: 'Fraunces', Georgia, serif; }
+
+  .label {
+    text-align: center;
+    padding: 48px 24px 16px;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+  .label span {
+    background: var(--color-primary);
+    color: white;
+    padding: 4px 14px;
+    border-radius: 99px;
+    font-size: 10px;
+    margin-left: 10px;
+    letter-spacing: 0.15em;
+    vertical-align: middle;
+  }
+
+  .divider {
+    max-width: 900px;
+    margin: 0 auto;
+    height: 1px;
+    background: var(--color-border);
+  }
+
+  /* ─── TRUST SECTION (context — same for all) ─── */
+  .trust-section {
+    padding: 56px 24px;
+    background: var(--color-bg-cream);
+  }
+  .trust-inner {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .trust-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .trust-header .line { flex: 1; height: 1px; background: var(--color-border); }
+  .trust-header .text {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    white-space: nowrap;
+  }
+  .trust-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .trust-card-white {
+    background: white;
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    padding: 36px;
+  }
+  .trust-card-dark {
+    background: var(--color-primary);
+    border-radius: 16px;
+    padding: 36px;
+    color: white;
+  }
+  .trust-card-white h3, .trust-card-dark h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .trust-card-white p {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+  .trust-card-dark p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.6;
+  }
+  .trust-points {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .trust-point {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+  }
+  .trust-point .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+  .trust-card-white .dot { background: var(--color-accent); }
+  .trust-card-dark .dot { background: var(--color-accent-light); }
+  .trust-card-white .trust-point { color: var(--color-text-secondary); }
+  .trust-card-dark .trust-point { color: rgba(255,255,255,0.65); }
+
+  /* ─── APPROACH A: Terracotta Accent Cards ─── */
+  .guide-a {
+    padding: 80px 24px;
+    background: var(--color-bg-yellow);
+  }
+  .guide-a-inner {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .guide-a-grid {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  .card-terracotta {
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent-hover));
+    border-radius: 16px;
+    padding: 36px;
+    color: white;
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .card-terracotta:hover { transform: translateY(-3px); box-shadow: 0 20px 60px rgba(198,123,92,0.2); }
+  .card-terracotta h2 { font-size: 26px; font-weight: 700; margin-bottom: 16px; }
+  .card-terracotta p { font-size: 15px; color: rgba(255,255,255,0.85); line-height: 1.6; }
+  .card-terracotta .cta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-family: 'Fraunces', serif;
+    margin-top: 24px;
+  }
+  .card-terracotta .cta .arrow {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .card-warm-tint {
+    background: rgba(198,123,92,0.08);
+    border: 1.5px solid rgba(198,123,92,0.2);
+    border-radius: 16px;
+    padding: 36px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .card-warm-tint:hover { transform: translateY(-3px); box-shadow: 0 20px 60px rgba(198,123,92,0.08); border-color: rgba(198,123,92,0.35); }
+  .card-warm-tint h2 { font-size: 26px; font-weight: 700; color: var(--color-primary); margin-bottom: 16px; }
+  .card-warm-tint .tips-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  .card-warm-tint .see-all {
+    font-size: 13px;
+    color: var(--color-accent);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .tip-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+    border-top: 1px solid rgba(198,123,92,0.12);
+    cursor: pointer;
+  }
+  .tip-row:last-child { border-bottom: 1px solid rgba(198,123,92,0.12); }
+  .tip-row .title {
+    font-size: 16px;
+    color: var(--color-primary);
+    flex: 1;
+    padding-right: 16px;
+  }
+  .tip-row .chevron {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--color-bg-cream);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    color: var(--color-accent);
+  }
+
+  .card-info-a {
+    background: var(--color-bg-cream);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    padding: 36px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .card-info-a:hover { transform: translateY(-3px); box-shadow: 0 20px 60px rgba(60,36,21,0.06); }
+  .card-info-a .stripe {
+    width: 3px;
+    align-self: stretch;
+    border-radius: 3px;
+    background: var(--color-accent);
+    flex-shrink: 0;
+  }
+  .card-info-a h2 { font-size: 24px; font-weight: 700; color: var(--color-primary); margin-bottom: 8px; }
+  .card-info-a p { font-size: 15px; color: var(--color-text-secondary); line-height: 1.6; max-width: 600px; }
+  .card-info-a .cta-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-family: 'Fraunces', serif;
+    color: var(--color-accent);
+    flex-shrink: 0;
+  }
+  .card-info-a .cta-right .arrow {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: rgba(198,123,92,0.1);
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* ─── APPROACH B: Full-Bleed Editorial Bands ─── */
+  .guide-b {
+    padding: 80px 24px;
+    background: var(--color-bg-yellow);
+  }
+  .guide-b-inner {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .band {
+    display: flex;
+    align-items: stretch;
+    border-bottom: 1px solid var(--color-border);
+    padding: 40px 0;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .band:first-child { border-top: 1px solid var(--color-border); }
+  .band:hover { padding-left: 12px; }
+  .band .number {
+    font-family: 'Fraunces', serif;
+    font-size: 48px;
+    font-weight: 900;
+    color: var(--color-accent);
+    opacity: 0.3;
+    width: 80px;
+    flex-shrink: 0;
+    line-height: 1;
+    padding-top: 4px;
+  }
+  .band .band-content { flex: 1; }
+  .band h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 8px;
+  }
+  .band p {
+    font-size: 15px;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    max-width: 560px;
+  }
+  .band .band-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    flex-shrink: 0;
+    color: var(--color-accent);
+    opacity: 0.5;
+    transition: opacity 0.3s;
+  }
+  .band:hover .band-arrow { opacity: 1; }
+
+  /* ─── APPROACH C: Unified Single Card ─── */
+  .guide-c {
+    padding: 80px 24px;
+    background: var(--color-bg-yellow);
+  }
+  .guide-c-inner {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .unified-card {
+    background: white;
+    border-radius: 20px;
+    border: 1px solid var(--color-border);
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(60,36,21,0.05);
+  }
+  .unified-header {
+    background: var(--color-primary);
+    padding: 28px 36px;
+    display: flex;
+    gap: 4px;
+  }
+  .unified-tab {
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .unified-tab.active {
+    background: rgba(255,255,255,0.15);
+    color: white;
+  }
+  .unified-tab.inactive {
+    color: rgba(255,255,255,0.5);
+  }
+  .unified-tab.inactive:hover {
+    color: rgba(255,255,255,0.75);
+    background: rgba(255,255,255,0.06);
+  }
+  .unified-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .unified-section {
+    padding: 32px;
+    cursor: pointer;
+    transition: background 0.2s;
+    border-right: 1px solid var(--color-border);
+  }
+  .unified-section:last-child { border-right: none; }
+  .unified-section:hover { background: var(--color-stone-50); }
+  .unified-section .tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 12px;
+  }
+  .unified-section h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 10px;
+  }
+  .unified-section p {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+  .unified-section .section-cta {
+    margin-top: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-accent);
+    font-family: 'Fraunces', serif;
+  }
+
+  /* Arrow SVG */
+  .svg-arrow {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+  }
+  .svg-chevron {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ TRUST SECTION (context) ═══════════════ -->
+<div class="label">Trust Section (above — for context) <span>Same for all</span></div>
+<section class="trust-section">
+  <div class="trust-inner">
+    <div class="trust-header">
+      <div class="line"></div>
+      <div class="text">Trygghet &amp; kvalitet</div>
+      <div class="line"></div>
+    </div>
+    <div class="trust-grid">
+      <div class="trust-card-white">
+        <h3>Medlem av Den norske tannlegeforening</h3>
+        <p>Som NTF-medlem følger vi strenge etiske retningslinjer og holder oss faglig oppdatert gjennom kontinuerlig etterutdanning.</p>
+        <div class="trust-points">
+          <div class="trust-point"><div class="dot"></div>Etiske retningslinjer for pasientbehandling</div>
+          <div class="trust-point"><div class="dot"></div>Løpende faglig oppdatering og etterutdanning</div>
+          <div class="trust-point"><div class="dot"></div>Kvalitetssikret praksis og utstyr</div>
+        </div>
+      </div>
+      <div class="trust-card-dark">
+        <h3>Direkte oppgjør med HELFO</h3>
+        <p>Du betaler kun din egenandel — vi ordner resten direkte med HELFO. Ingen forskuddsbetaling.</p>
+        <div class="trust-points">
+          <div class="trust-point"><div class="dot"></div>Slipper å legge ut for hele behandlingen</div>
+          <div class="trust-point"><div class="dot"></div>Vi sender refusjonskrav på dine vegne</div>
+          <div class="trust-point"><div class="dot"></div>Gjelder alle 15 HELFO-stønadspunkter</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ APPROACH A ═══════════════ -->
+<div class="label">Approach A — Terracotta Accent Cards <span>Recommended</span></div>
+<section class="guide-a">
+  <div class="guide-a-inner">
+    <div class="guide-a-grid">
+      <!-- Symptomer — terracotta gradient -->
+      <div class="card-terracotta">
+        <div>
+          <h2>Symptomer</h2>
+          <p>Tannpine, blødende tannkjøtt eller ising i tennene? Typen smerte avslører ofte hva som er galt — og hvor raskt du bør handle.</p>
+        </div>
+        <div class="cta">
+          Finn årsaken her
+          <div class="arrow">
+            <svg class="svg-chevron" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tips & råd — warm tint -->
+      <div class="card-warm-tint">
+        <div class="tips-header">
+          <h2>Tips & råd</h2>
+          <a href="#" class="see-all">Se alle</a>
+        </div>
+        <div>
+          <div class="tip-row">
+            <div class="title">Kaffe, brunost og tennene dine: norsk kosthold og tannhelse</div>
+            <div class="chevron"><svg class="svg-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg></div>
+          </div>
+          <div class="tip-row">
+            <div class="title">Munnskyll — når det hjelper og når du kaster bort penger</div>
+            <div class="chevron"><svg class="svg-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg></div>
+          </div>
+          <div class="tip-row">
+            <div class="title">Spyttets superkrefter: kroppens egen tannbeskyttelse</div>
+            <div class="chevron"><svg class="svg-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info — full-width -->
+    <div class="card-info-a">
+      <div class="stripe"></div>
+      <div>
+        <h2>Informasjon & støtte</h2>
+        <p>Støtteordninger, rettigheter og alt du lurer på om tannbehandling i Norge. Barn, unge voksne, HELFO, NAV og frikort — samlet på ett sted.</p>
+      </div>
+      <div class="cta-right">
+        Les mer
+        <div class="arrow">
+          <svg class="svg-arrow" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════ APPROACH B ═══════════════ -->
+<div class="label">Approach B — Editorial Bands</div>
+<section class="guide-b">
+  <div class="guide-b-inner">
+    <div class="band">
+      <div class="number">01</div>
+      <div class="band-content">
+        <h2>Symptomer</h2>
+        <p>Tannpine, blødende tannkjøtt eller ising i tennene? Typen smerte avslører ofte hva som er galt — og hvor raskt du bør handle.</p>
+      </div>
+      <div class="band-arrow">
+        <svg class="svg-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </div>
+    <div class="band">
+      <div class="number">02</div>
+      <div class="band-content">
+        <h2>Tips & råd</h2>
+        <p>Ekspertartikler om tannhelse, forebygging og hverdagstips. Kaffe og tannhelse, munnskyll, spyttets superkrefter — og mye mer.</p>
+      </div>
+      <div class="band-arrow">
+        <svg class="svg-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </div>
+    <div class="band">
+      <div class="number">03</div>
+      <div class="band-content">
+        <h2>Informasjon & støtte</h2>
+        <p>Støtteordninger, rettigheter og alt du lurer på om tannbehandling i Norge. Barn, unge voksne, HELFO, NAV og frikort.</p>
+      </div>
+      <div class="band-arrow">
+        <svg class="svg-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════ APPROACH C ═══════════════ -->
+<div class="label">Approach C — Unified Single Card</div>
+<section class="guide-c">
+  <div class="guide-c-inner">
+    <div class="unified-card">
+      <div class="unified-header">
+        <div class="unified-tab active">Symptomer</div>
+        <div class="unified-tab inactive">Tips & råd</div>
+        <div class="unified-tab inactive">Informasjon</div>
+      </div>
+      <div class="unified-body">
+        <div class="unified-section">
+          <div class="tag">Hjelp deg selv</div>
+          <h3>Symptomer</h3>
+          <p>Tannpine, blødende tannkjøtt eller ising i tennene? Typen smerte avslører ofte hva som er galt.</p>
+          <div class="section-cta">Finn årsaken &rarr;</div>
+        </div>
+        <div class="unified-section">
+          <div class="tag">Ekspertråd</div>
+          <h3>Tips & råd</h3>
+          <p>Artikler om tannhelse, forebygging og hverdagstips fra teamet ved Ringebu Tannlegesenter.</p>
+          <div class="section-cta">Les artiklene &rarr;</div>
+        </div>
+        <div class="unified-section">
+          <div class="tag">Rettigheter</div>
+          <h3>Informasjon & støtte</h3>
+          <p>Støtteordninger, rettigheter og alt du lurer på om tannbehandling i Norge.</p>
+          <div class="section-cta">Les mer &rarr;</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div style="height: 80px;"></div>
+</body>
+</html>
