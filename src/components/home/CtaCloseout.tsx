@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
 import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 
 type ContactRow = { label: string; value: string; href?: string };
@@ -59,9 +58,6 @@ export function CtaCloseout() {
 
         {/* Main content — bottom left */}
         <div className="order-1 max-w-[640px] md:order-none md:col-start-1 md:row-start-3">
-          <SectionEyebrow tone="ink" withRule className="mb-5">
-            Bestill en time
-          </SectionEyebrow>
           <h2 className="font-sans text-[40px] font-semibold leading-[1] tracking-[-0.032em] text-[var(--color-paper)] md:text-[54px]">
             Smilet ditt fortjener<br />
             <span className="font-light text-[var(--color-amber)]">litt mer tid.</span>

@@ -89,21 +89,21 @@ export function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative isolate min-h-[100svh] overflow-hidden bg-[var(--color-ink)]"
+      className="relative isolate min-h-[100svh] overflow-hidden bg-[var(--color-paper)]"
       aria-label="Velkommen"
     >
-      {/* Atmospheric background — gradients + grain, no full-bleed photo */}
+      {/* Atmospheric background — warm white easing into the cream paper below */}
       <div
         aria-hidden="true"
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 70% 60% at 15% 30%, rgba(184,148,92,0.10) 0%, transparent 65%), " +
-            "radial-gradient(ellipse 60% 70% at 90% 85%, rgba(232,197,140,0.07) 0%, transparent 60%), " +
-            "linear-gradient(165deg, #100C08 0%, #0A0A0A 55%, #050505 100%)",
+            "radial-gradient(ellipse 70% 60% at 15% 30%, rgba(184,148,92,0.08) 0%, transparent 65%), " +
+            "radial-gradient(ellipse 60% 70% at 90% 85%, rgba(14,42,48,0.05) 0%, transparent 60%), " +
+            "linear-gradient(165deg, #FFFFFF 0%, #FEFCF7 55%, #FCF9F2 100%)",
         }}
       />
-      <GrainOverlay opacity={0.06} />
+      <GrainOverlay opacity={0.04} />
 
       {/* Top brass accent */}
       <div
@@ -111,14 +111,14 @@ export function Hero() {
         className="absolute inset-x-0 top-0 z-[1] h-px"
         style={{
           background:
-            "linear-gradient(90deg, transparent 0%, var(--color-brass) 25%, var(--color-amber) 50%, var(--color-brass) 75%, transparent 100%)",
+            "linear-gradient(90deg, transparent 0%, var(--color-brass) 25%, var(--color-ink) 50%, var(--color-brass) 75%, transparent 100%)",
         }}
       />
 
       <div className="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-[var(--container-max,1280px)] flex-col gap-12 px-[var(--container-px,24px)] pt-32 pb-16 md:pt-36 md:pb-20 lg:grid lg:grid-cols-[1fr_1.05fr] lg:items-center lg:gap-14">
         {/* Left — headline + subline + CTAs */}
         <div className="flex flex-col">
-          <h1 className="display-hero text-white">
+          <h1 className="display-hero text-[var(--color-text-primary)]">
             <span className="block overflow-hidden">
               {headlineWords1.map((word, i) => (
                 <motion.span
@@ -132,7 +132,7 @@ export function Hero() {
                 </motion.span>
               ))}
             </span>
-            <span className="block overflow-hidden font-light text-[var(--color-amber)]">
+            <span className="block overflow-hidden font-light text-[var(--color-copper)]">
               {headlineWords2.map((word, i) => (
                 <motion.span
                   key={`l2-${i}`}
@@ -148,7 +148,7 @@ export function Hero() {
           </h1>
 
           <motion.p
-            className="body-large mt-8 max-w-[440px] text-[var(--color-text-on-dark-muted)]"
+            className="body-large mt-8 max-w-[440px] text-[var(--color-text-secondary)]"
             initial={prefersReduced ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.85, ease: EASE }}
@@ -164,14 +164,14 @@ export function Hero() {
           >
             <Link
               href="/kontakt"
-              className="inline-flex items-center gap-2.5 rounded-full bg-[var(--color-amber)] px-7 py-3.5 text-[13px] font-semibold tracking-[0.005em] text-[var(--color-ink)] transition-colors hover:bg-[var(--color-amber-deep)]"
+              className="inline-flex items-center gap-2.5 rounded-full bg-[var(--color-copper)] px-7 py-3.5 text-[13px] font-semibold tracking-[0.005em] text-[var(--color-paper)] transition-colors hover:bg-[var(--color-copper)]/90"
             >
               Bestill time
               <ArrowRight className="size-4" aria-hidden="true" />
             </Link>
             <a
               href="tel:61280412"
-              className="inline-flex items-center gap-2 rounded-full border border-[var(--color-rule-dark)] px-6 py-3.5 text-[13px] font-medium text-[var(--color-text-on-dark)] transition-colors hover:bg-white/[0.04]"
+              className="inline-flex items-center gap-2 rounded-full border border-[var(--color-rule)] px-6 py-3.5 text-[13px] font-medium text-[var(--color-text-primary)] transition-colors hover:bg-[rgba(26,20,16,0.04)]"
             >
               Ring 61 28 04 12
             </a>
@@ -196,7 +196,7 @@ export function Hero() {
           {PHOTOS.map((photo) => (
             <motion.div
               key={photo.key}
-              className="group relative overflow-hidden rounded-[3px] bg-[var(--color-ink)] shadow-[0_18px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/[0.08]"
+              className="group relative overflow-hidden rounded-[3px] bg-[var(--color-ink)] shadow-[0_18px_50px_rgba(14,42,48,0.16)] ring-1 ring-[rgba(26,20,16,0.06)]"
               style={{ gridArea: photo.area }}
               initial={
                 prefersReduced
@@ -218,7 +218,7 @@ export function Hero() {
               />
               <div
                 aria-hidden="true"
-                className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"
+                className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"
               />
             </motion.div>
           ))}
@@ -232,20 +232,20 @@ export function Hero() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 1.0, ease: EASE }}
           >
-            <div className="absolute right-0 top-0 h-12 w-px bg-gradient-to-b from-[var(--color-amber)] to-transparent" />
-            <div className="absolute right-0 top-0 h-px w-12 bg-gradient-to-r from-transparent to-[var(--color-amber)]" />
+            <div className="absolute right-0 top-0 h-12 w-px bg-gradient-to-b from-[var(--color-brass)] to-transparent" />
+            <div className="absolute right-0 top-0 h-px w-12 bg-gradient-to-r from-transparent to-[var(--color-brass)]" />
           </motion.div>
         </div>
       </div>
 
       {/* Bottom scroll cue */}
       <motion.div
-        className="absolute left-1/2 bottom-6 z-10 flex -translate-x-1/2 items-center gap-2 font-sans text-[11px] tracking-[0.04em] text-white/40"
+        className="absolute left-1/2 bottom-6 z-10 flex -translate-x-1/2 items-center gap-2 font-sans text-[11px] tracking-[0.04em] text-[var(--color-text-muted)]"
         initial={prefersReduced ? false : { opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 1.3, ease: EASE }}
       >
-        <span aria-hidden="true" className="inline-block h-px w-7 bg-white/30" />
+        <span aria-hidden="true" className="inline-block h-px w-7 bg-[var(--color-text-muted)]/40" />
         <span>Bla videre</span>
       </motion.div>
     </section>

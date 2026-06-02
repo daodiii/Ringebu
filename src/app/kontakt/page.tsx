@@ -100,16 +100,6 @@ export default function Kontakt() {
           <div className="absolute -bottom-[20%] -left-[10%] w-[40vw] h-[40vw] rounded-full bg-[var(--color-accent-light)]/5 blur-3xl" />
         </div>
         <div className="container-width text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-          >
-            <div className="w-12 h-[2px] bg-[var(--color-accent)] mx-auto mb-6" />
-            <p className="text-sm font-sans font-600 uppercase tracking-[0.2em] text-[var(--color-accent-light)] mb-4">
-              Ringebu Tannlegesenter
-            </p>
-          </motion.div>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -342,7 +332,6 @@ export default function Kontakt() {
         <div className="container-width">
           <SectionFade>
             <div className="text-center mb-14">
-              <p className="eyebrow mb-3">Finn oss</p>
               <h2 className="heading-section mb-4">
                 Tannlegen i Gudbrandsdalen
               </h2>
@@ -450,7 +439,6 @@ export default function Kontakt() {
               <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-[var(--color-primary)]/5 blur-3xl" />
 
               <div className="relative z-10">
-                <p className="eyebrow mb-3">Vi er her for deg</p>
                 <h2 className="font-heading font-600 text-2xl md:text-3xl text-[var(--color-primary)] mb-4 leading-tight">
                   Trenger du hjelp? Ta kontakt med oss
                 </h2>

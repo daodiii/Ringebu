@@ -1,4 +1,3 @@
-import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
 import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 
 const CREDENTIALS = [
@@ -20,10 +19,6 @@ export function TrustSection() {
   return (
     <section className="relative isolate overflow-hidden bg-[var(--color-paper)] py-[var(--space-section)] text-[var(--color-text-primary)]">
       <RevealOnScroll className="relative mx-auto w-full max-w-[var(--container-max,1280px)] px-[var(--container-px,24px)]">
-        <SectionEyebrow tone="paper" withRule className="mb-7">
-          Trygghet & kvalitet
-        </SectionEyebrow>
-
         <p className="max-w-[620px] font-sans text-[28px] font-medium leading-[1.1] tracking-[-0.025em] text-[var(--color-text-primary)] md:text-[32px]">
           Tre konkrete grunner til at tannhelsen din er trygg hos oss.
         </p>

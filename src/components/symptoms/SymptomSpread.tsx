@@ -53,12 +53,8 @@ export function SymptomSpread({ symptom, meta, index }: Props) {
 
           {/* Content column */}
           <div style={{ direction: "ltr" }}>
-            <div className="font-mono text-[10px] uppercase tracking-[0.28em] text-[var(--color-brass)]">
-              {meta.subtitle}
-            </div>
-
             <h2
-              className="mt-3 font-sans font-light text-[var(--color-text-primary)]"
+              className="font-sans font-light text-[var(--color-text-primary)]"
               style={{
                 fontSize: "clamp(28px, 3vw, 42px)",
                 letterSpacing: "-0.03em",

@@ -15,8 +15,6 @@ const LINKS = [
   { href: "/kontakt", label: "Kontakt" },
 ] as const;
 
-type Mode = "dark" | "light";
-
 export default function Navbar() {
   const pathname = usePathname();
   const isHome = pathname === "/";
@@ -42,16 +40,16 @@ export default function Navbar() {
     };
   }, [mobileOpen]);
 
-  const mode: Mode = isHome && heroInView ? "dark" : "light";
+  const overHero = isHome && heroInView;
 
   return (
     <>
       <nav
         className={cn(
-          "fixed inset-x-0 top-0 z-50 transition-[background-color,color,backdrop-filter] duration-500",
-          mode === "dark"
-            ? "bg-transparent text-[var(--color-text-on-dark)]"
-            : "bg-[var(--color-paper)]/90 backdrop-blur-md text-[var(--color-text-primary)] border-b border-[var(--color-rule)]"
+          "fixed inset-x-0 top-0 z-50 text-[var(--color-text-primary)] transition-[background-color,backdrop-filter] duration-500",
+          overHero
+            ? "bg-transparent"
+            : "bg-[var(--color-paper)]/90 backdrop-blur-md border-b border-[var(--color-rule)]"
         )}
       >
         <div className="mx-auto flex w-full max-w-[var(--container-max,1280px)] items-center justify-between px-[var(--container-px,24px)] py-4">
@@ -59,14 +57,7 @@ export default function Navbar() {
             <span className="font-sans text-sm font-semibold tracking-[-0.01em]">
               Ringebu Tannlegesenter
             </span>
-            <span
-              className={cn(
-                "mt-0.5 font-mono text-[9px] uppercase tracking-[0.3em]",
-                mode === "dark"
-                  ? "text-[var(--color-text-on-dark-muted)]"
-                  : "text-[var(--color-text-muted)]"
-              )}
-            >
+            <span className="mt-0.5 font-mono text-[9px] uppercase tracking-[0.3em] text-[var(--color-text-muted)]">
               Gudbrandsdalen · siden 1985
             </span>
           </Link>
@@ -81,13 +72,9 @@ export default function Navbar() {
                     href={link.href}
                     className={cn(
                       "text-[12.5px] font-medium tracking-[0.005em] transition-colors",
-                      mode === "dark"
-                        ? active
-                          ? "text-[var(--color-amber)]"
-                          : "text-[var(--color-text-on-dark)]/75 hover:text-[var(--color-text-on-dark)]"
-                        : active
-                          ? "text-[var(--color-text-primary)]"
-                          : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
+                      active
+                        ? "text-[var(--color-text-primary)]"
+                        : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
                     )}
                   >
                     {link.label}
@@ -108,12 +95,7 @@ export default function Navbar() {
               onClick={() => setMobileOpen((v) => !v)}
               aria-label={mobileOpen ? "Lukk meny" : "Åpne meny"}
               aria-expanded={mobileOpen}
-              className={cn(
-                "relative z-50 p-2 lg:hidden",
-                mode === "dark" && !mobileOpen
-                  ? "text-[var(--color-text-on-dark)]"
-                  : "text-[var(--color-text-primary)]"
-              )}
+              className="relative z-50 p-2 text-[var(--color-text-primary)] lg:hidden"
             >
               {mobileOpen ? <X className="size-6" /> : <Menu className="size-6" />}
             </button>

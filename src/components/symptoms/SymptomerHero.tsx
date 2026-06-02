@@ -22,13 +22,8 @@ export function SymptomerHero() {
       />
 
       <div className="relative mx-auto flex min-h-[75vh] w-full max-w-[var(--container-max,1280px)] flex-col justify-end px-[var(--container-px,24px)] py-32 md:py-36">
-        <div className="inline-flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-brass)]">
-          <span aria-hidden="true" className="inline-block h-px w-7 bg-[var(--color-brass)]" />
-          Hva du kan kjenne på
-        </div>
-
         <h1
-          className="mt-7 max-w-[14ch] font-sans font-extralight text-[var(--color-amber)]"
+          className="max-w-[14ch] font-sans font-extralight text-[var(--color-amber)]"
           style={{
             fontSize: "clamp(56px, 8vw, 128px)",
             letterSpacing: "-0.045em",

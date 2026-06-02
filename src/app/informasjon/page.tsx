@@ -118,10 +118,10 @@ export default function InformasjonPage() {
           <div className="max-w-6xl mx-auto">
             <SectionFade>
               <div className="flex items-center gap-3 mb-8 md:mb-10">
-                <ShieldCheck className="size-5 text-emerald-600" />
-                <span className="text-xs font-sans font-700 tracking-[0.2em] uppercase text-emerald-700">
+                <ShieldCheck className="size-6 shrink-0 text-emerald-600" />
+                <h2 className="font-heading font-700 text-2xl md:text-3xl text-[var(--color-primary)]">
                   Helt gratis behandling
-                </span>
+                </h2>
               </div>
             </SectionFade>
 
@@ -168,10 +168,10 @@ export default function InformasjonPage() {
           <div className="max-w-6xl mx-auto">
             <SectionFade>
               <div className="flex items-center gap-3 mb-8 md:mb-10">
-                <Stethoscope className="size-5 text-[var(--color-accent)]" />
-                <span className="text-xs font-sans font-700 tracking-[0.2em] uppercase text-[var(--color-accent)]">
+                <Stethoscope className="size-6 shrink-0 text-[var(--color-accent)]" />
+                <h2 className="font-heading font-700 text-2xl md:text-3xl text-[var(--color-primary)]">
                   Delvis dekning og støtte
-                </span>
+                </h2>
               </div>
             </SectionFade>
 
