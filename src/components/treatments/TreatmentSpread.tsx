@@ -1,9 +1,6 @@
 // src/components/treatments/TreatmentSpread.tsx
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
 import type { Treatment } from "@/app/behandlinger/data";
-import { RefusionChip } from "./RefusionChip";
 import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 
 interface Props {
@@ -62,13 +59,6 @@ export function TreatmentSpread({ treatment, index }: Props) {
               {treatment.title}
             </h2>
 
-            <div className="mt-3 flex flex-wrap items-center gap-3">
-              <RefusionChip refusion={treatment.refusion} />
-              <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-muted)]">
-                {treatment.duration}
-              </span>
-            </div>
-
             <p className="mt-4 max-w-[58ch] text-[15px] leading-[1.6] text-[var(--color-text-secondary)]">
               {treatment.description}
             </p>
@@ -87,32 +77,6 @@ export function TreatmentSpread({ treatment, index }: Props) {
                 </li>
               ))}
             </ul>
-
-            {treatment.prices.length > 0 && (
-              <div className="mt-5 border-t border-[var(--color-brass)]/30 pt-3">
-                <ul className="grid grid-cols-1 gap-x-8 gap-y-1.5 sm:grid-cols-2">
-                  {treatment.prices.map((p) => (
-                    <li
-                      key={p.name}
-                      className="flex items-baseline justify-between gap-3"
-                    >
-                      <span className="text-[12.5px] text-[var(--color-text-primary)]">{p.name}</span>
-                      <span className="font-mono text-[10.5px] tracking-[0.05em] text-[var(--color-text-muted)]">
-                        {p.description}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            <Link
-              href="/kontakt"
-              className="mt-6 inline-flex items-center gap-2 rounded-full bg-[var(--color-copper)] px-5 py-2.5 text-[12px] font-semibold tracking-[0.005em] text-[var(--color-paper)] transition-colors hover:bg-[var(--color-copper)]/90"
-            >
-              Bestill time
-              <ArrowUpRight className="size-3.5" aria-hidden="true" />
-            </Link>
           </div>
         </div>
       </RevealOnScroll>

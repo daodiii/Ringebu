@@ -1,8 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, Phone } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import type { symptoms } from "@/data/content";
-import { getTier, type Tier } from "@/lib/symptomSeverity";
 import type { SymptomMeta } from "@/app/symptomer/data";
 import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 
@@ -15,7 +14,6 @@ interface Props {
 }
 
 export function SymptomSpread({ symptom, meta, index }: Props) {
-  const tier = getTier(symptom.severity);
   const photoOnRight = index % 2 === 1;
 
   return (
@@ -64,13 +62,6 @@ export function SymptomSpread({ symptom, meta, index }: Props) {
               {symptom.title}
             </h2>
 
-            <div className="mt-3 flex flex-wrap items-center gap-3">
-              <TierChip tier={tier} />
-              <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-muted)]">
-                {symptom.severity}
-              </span>
-            </div>
-
             <p className="mt-4 max-w-[58ch] text-[15px] leading-[1.6] text-[var(--color-text-secondary)]">
               {symptom.description}
             </p>
@@ -100,23 +91,6 @@ export function SymptomSpread({ symptom, meta, index }: Props) {
             </div>
 
             <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
-              {tier === "now" ? (
-                <a
-                  href="tel:61280412"
-                  className="inline-flex items-center gap-2 rounded-full bg-[var(--color-copper)] px-5 py-2.5 text-[12px] font-semibold tracking-[0.005em] text-[var(--color-paper)] transition-colors hover:bg-[var(--color-copper)]/90"
-                >
-                  <Phone className="size-3.5" strokeWidth={2} />
-                  Ring 61 28 04 12
-                </a>
-              ) : (
-                <Link
-                  href="/kontakt"
-                  className="inline-flex items-center gap-2 rounded-full bg-[var(--color-copper)] px-5 py-2.5 text-[12px] font-semibold tracking-[0.005em] text-[var(--color-paper)] transition-colors hover:bg-[var(--color-copper)]/90"
-                >
-                  Bestill time
-                  <ArrowUpRight className="size-3.5" aria-hidden="true" />
-                </Link>
-              )}
               {symptom.slug && (
                 <Link
                   href={`/artikler/${symptom.slug}`}
@@ -131,28 +105,5 @@ export function SymptomSpread({ symptom, meta, index }: Props) {
         </div>
       </RevealOnScroll>
     </section>
-  );
-}
-
-function TierChip({ tier }: { tier: Tier }) {
-  const label =
-    tier === "now"
-      ? "Ring i dag"
-      : tier === "soon"
-        ? "Bestill time"
-        : "Følg med";
-  const bg =
-    tier === "now"
-      ? "bg-[var(--color-urgent)] text-[var(--color-paper)]"
-      : tier === "soon"
-        ? "bg-[var(--color-amber-deep)] text-[#6B4F2C]"
-        : "bg-[rgba(26,20,16,0.08)] text-[var(--color-text-secondary)]";
-
-  return (
-    <span
-      className={`inline-block rounded-full font-mono text-[9.5px] uppercase tracking-[0.15em] px-2.5 py-1 font-semibold ${bg}`}
-    >
-      {label}
-    </span>
   );
 }
