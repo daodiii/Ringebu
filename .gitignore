@@ -40,3 +40,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .superpowers/
+
+# local tooling scratch
+.firecrawl/
+.claude/plans/
+
+# icloud offloaded placeholders
+*.icloud

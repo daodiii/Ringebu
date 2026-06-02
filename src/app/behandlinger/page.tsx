@@ -1,20 +1,13 @@
-import { TREATMENTS } from "./data";
-import { BehandlingerHero } from "@/components/treatments/BehandlingerHero";
-import { TreatmentSpread } from "@/components/treatments/TreatmentSpread";
+import { CatalogueDrawer } from "@/components/catalogue/CatalogueDrawer";
+import { PAGE_COPY } from "@/components/catalogue/items";
 import { CtaCloseout } from "@/components/home/CtaCloseout";
 
 export default function BehandlingerPage() {
+  const { title, lead, items } = PAGE_COPY.behandlinger;
   return (
-    <main>
-      <BehandlingerHero />
-      {TREATMENTS.map((treatment, index) => (
-        <TreatmentSpread
-          key={treatment.title}
-          treatment={treatment}
-          index={index}
-        />
-      ))}
+    <>
+      <CatalogueDrawer title={title} lead={lead} items={items} />
       <CtaCloseout />
-    </main>
+    </>
   );
 }
