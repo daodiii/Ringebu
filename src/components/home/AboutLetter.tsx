@@ -5,28 +5,6 @@ import { useRef } from "react";
 
 const EASE = [0.25, 0.1, 0.25, 1] as const;
 
-const POSTSCRIPT: ReadonlyArray<{ label: string; value: React.ReactNode }> = [
-  { label: "Adresse", value: "Hanstadgata 2, 2630 Ringebu" },
-  {
-    label: "Telefon",
-    value: (
-      <a href="tel:61280412" className="hover:text-[var(--color-stone)]">
-        61 28 04 12
-      </a>
-    ),
-  },
-  {
-    label: "Åpningstid",
-    value: (
-      <>
-        <span className="block">Man – Tor · 08:00–15:30</span>
-        <span className="block">Fredag · 08:00–15:00</span>
-      </>
-    ),
-  },
-  { label: "Parkering", value: "Gratis ved klinikken" },
-];
-
 export function AboutLetter() {
   const ref = useRef<HTMLDivElement | null>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
@@ -46,14 +24,10 @@ export function AboutLetter() {
       >
         <div className="mx-auto max-w-[780px]">
           {/* Letterhead */}
-          <div className="mb-12 flex items-baseline justify-between border-b border-[var(--color-rule)] pb-3">
-            <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-[var(--color-brass)]">
-              Brev fra dalen
-            </span>
-            <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-muted)]">
-              Ringebu · Gudbrandsdalen
-            </span>
-          </div>
+          <div
+            aria-hidden="true"
+            className="mb-12 h-px w-full bg-[var(--color-rule)]"
+          />
 
           {/* Salutation */}
           <p
@@ -137,9 +111,6 @@ export function AboutLetter() {
               >
                 Ringebu Tannlegesenter
               </p>
-              <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.25em] text-[var(--color-brass)]">
-                Anno 1985
-              </p>
             </div>
 
             {/* Brass stamp */}
@@ -152,35 +123,32 @@ export function AboutLetter() {
                   "inset 0 0 0 4px var(--color-paper-warm), inset 0 0 0 5px rgba(184,148,92,0.35)",
               }}
             >
-              <div className="flex flex-col items-center">
-                <span className="font-mono text-[14px] font-bold uppercase tracking-[0.18em] text-[var(--color-brass)]">
-                  RTS
-                </span>
-                <span className="mt-0.5 font-mono text-[7px] uppercase tracking-[0.28em] text-[var(--color-brass)]">
-                  1985
-                </span>
-              </div>
+              <span className="font-mono text-[15px] font-bold uppercase tracking-[0.18em] text-[var(--color-brass)]">
+                RTS
+              </span>
             </div>
           </div>
 
           {/* Postscript */}
-          <div className="mt-10">
-            <span className="font-sans text-[15px] italic text-[var(--color-text-secondary)]">
-              P.S.
-            </span>
-            <dl className="mt-4 grid grid-cols-2 gap-x-8 gap-y-5 sm:grid-cols-4">
-              {POSTSCRIPT.map((row) => (
-                <div key={row.label}>
-                  <dt className="font-mono text-[9.5px] uppercase tracking-[0.25em] text-[var(--color-brass)]">
-                    {row.label}
-                  </dt>
-                  <dd className="mt-1 font-sans text-[13px] font-medium leading-[1.45] tracking-[-0.005em] text-[var(--color-text-primary)]">
-                    {row.value}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </div>
+          <p
+            className="mt-10 font-sans text-[var(--color-text-secondary)]"
+            style={{
+              fontSize: "clamp(16px, 1.5vw, 18px)",
+              lineHeight: 1.7,
+              fontWeight: 300,
+              letterSpacing: "-0.005em",
+            }}
+          >
+            <span className="italic">P.S.</span> Du finner oss i Hanstadgata 2 i
+            Ringebu, med gratis parkering rett utenfor. Ring oss gjerne på{" "}
+            <a
+              href="tel:61280412"
+              className="font-medium text-[var(--color-text-primary)] underline decoration-[var(--color-brass)]/40 underline-offset-4 transition-colors hover:text-[var(--color-copper)]"
+            >
+              61 28 04 12
+            </a>
+            , så finner vi en tid som passer.
+          </p>
         </div>
       </motion.div>
     </section>

@@ -12,11 +12,8 @@ interface Props {
   items: SpreadItem[];
 }
 
-const pad = (n: number) => String(n + 1).padStart(2, "0");
-
-function Drawer({ item, index, open, onToggle }: {
+function Drawer({ item, open, onToggle }: {
   item: SpreadItem;
-  index: number;
   open: boolean;
   onToggle: () => void;
 }) {
@@ -26,14 +23,8 @@ function Drawer({ item, index, open, onToggle }: {
         type="button"
         onClick={onToggle}
         aria-expanded={open}
-        className="group relative grid w-full grid-cols-[auto_1fr_auto] items-baseline gap-5 py-6 text-left transition-transform duration-150 ease-out active:scale-[0.997] md:py-7"
+        className="group relative grid w-full grid-cols-[1fr_auto] items-baseline gap-5 py-6 text-left transition-transform duration-150 ease-out active:scale-[0.997] md:py-7"
       >
-        <span
-          className="font-mono text-[14px] tracking-[0.1em] tabular-nums transition-colors duration-300"
-          style={{ color: open ? "var(--color-copper)" : "var(--color-text-muted)" }}
-        >
-          {pad(index)}
-        </span>
         <span
           className="font-sans font-light transition-colors duration-300"
           style={{
@@ -46,12 +37,6 @@ function Drawer({ item, index, open, onToggle }: {
           {item.title}
         </span>
         <span className="flex items-center gap-4">
-          <span
-            className="hidden font-mono text-[12px] uppercase tracking-[0.22em] text-[var(--color-brass)] transition-opacity duration-300 sm:inline"
-            style={{ opacity: open ? 1 : 0 }}
-          >
-            {item.tag}
-          </span>
           <svg
             viewBox="0 0 16 16"
             className="size-5 shrink-0 text-[var(--color-text-muted)] transition-transform duration-[400ms] ease-out"
@@ -106,7 +91,7 @@ function Drawer({ item, index, open, onToggle }: {
               </ul>
               {item.note && (
                 <div className="mt-8 border-t border-[var(--color-brass)]/30 pt-4">
-                  <div className="mb-2 font-mono text-[13px] uppercase tracking-[0.22em] text-[var(--color-brass)]">
+                  <div className="mb-2 text-[18px] font-medium text-[var(--color-copper)]">
                     {item.note.label}
                   </div>
                   <p className="text-[21px] leading-[1.6] text-[var(--color-text-primary)]">
@@ -176,9 +161,6 @@ export function CatalogueDrawer({ title, lead, items }: Props) {
             {title}
             <span className="text-[var(--color-copper)]">.</span>
           </h1>
-          <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-[var(--color-brass)]">
-            {pad(items.length - 1)} oppføringer
-          </span>
         </div>
         <p className="mt-6 max-w-[52ch] text-pretty text-[17px] leading-[1.6] text-[var(--color-text-secondary)]">
           {lead}
@@ -191,7 +173,6 @@ export function CatalogueDrawer({ title, lead, items }: Props) {
             <Drawer
               key={item.title}
               item={item}
-              index={i}
               open={open === i}
               onToggle={() => setOpen((cur) => (cur === i ? -1 : i))}
             />

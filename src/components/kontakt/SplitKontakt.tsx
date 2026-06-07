@@ -36,11 +36,8 @@ export function SplitKontakt() {
                 key={row.label}
                 href={row.href}
                 {...(row.ext ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                className="group grid grid-cols-[112px_1fr_auto] items-baseline gap-4 border-t border-[var(--color-rule-dark)] py-3 last:border-b last:border-[var(--color-rule-dark)] text-[var(--color-text-on-dark)]"
+                className="group grid grid-cols-[1fr_auto] items-baseline gap-4 border-t border-[var(--color-rule-dark)] py-3.5 last:border-b last:border-[var(--color-rule-dark)] text-[var(--color-text-on-dark)]"
               >
-                <span className="font-mono text-[18px] uppercase tracking-[0.12em] text-[var(--color-brass)]">
-                  {row.label}
-                </span>
                 <span
                   className={`min-w-0 truncate font-sans font-light tracking-[-0.01em] transition-colors group-hover:text-[var(--color-copper)] ${row.size}`}
                 >
@@ -69,8 +66,8 @@ export function SplitKontakt() {
 
           {/* Akutt + CTA */}
           <div className="mt-6 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-t border-[var(--color-rule-dark)] pt-4">
-            <div className="text-[12.5px] text-[var(--color-amber)]/80">
-              <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-[var(--color-brass)]">Akutt</span>{" "}
+            <div className="text-[14px] text-[var(--color-amber)]/80">
+              <span className="text-[var(--color-paper)]">Akutt hjelp</span>{" "}
               <a href={KONTAKT.akutt.after.href} className="tabular-nums underline-offset-2 hover:underline">
                 116 117
               </a>{" "}
@@ -102,15 +99,15 @@ export function SplitKontakt() {
               href={MAPS_SEARCH}
               target="_blank"
               rel="noopener noreferrer"
-              className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 bg-[var(--color-ink)] px-2.5 py-1.5 font-mono text-[9px] uppercase tracking-[0.18em] text-[var(--color-amber)] transition-colors hover:text-[var(--color-paper)]"
+              className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 bg-[var(--color-ink)] px-3 py-1.5 text-[13px] font-medium text-[var(--color-amber)] transition-colors hover:text-[var(--color-paper)]"
             >
               Åpne i Google Maps
-              <ArrowUpRight className="size-2.5" aria-hidden="true" />
+              <ArrowUpRight className="size-3.5" aria-hidden="true" />
             </a>
           </div>
 
           {/* Find us */}
-          <h2 className="mt-7 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-brass)]">
+          <h2 className="mt-7 font-sans text-[18px] font-light text-[var(--color-paper)]">
             Tannlegen i Gudbrandsdalen
           </h2>
           <ul className="mt-3">

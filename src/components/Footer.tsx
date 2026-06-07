@@ -26,8 +26,8 @@ export default function Footer() {
               <div className="font-sans text-base font-semibold tracking-[-0.01em] text-[var(--color-text-on-dark)]">
                 Ringebu Tannlegesenter
               </div>
-              <div className="mt-1 font-mono text-[9.5px] uppercase tracking-[0.3em] text-[var(--color-brass)]">
-                Gudbrandsdalen · siden 1985
+              <div className="mt-1 text-[13px] text-[var(--color-brass)]">
+                Gudbrandsdalen, siden 1985
               </div>
             </Link>
             <p className="mt-4 max-w-xs text-[13px] leading-relaxed text-[var(--color-text-on-dark-muted)]">
@@ -39,7 +39,7 @@ export default function Footer() {
           <FooterColumn title="Praktisk" links={PRACTICAL} />
 
           <div>
-            <h4 className="mb-4 font-mono text-[9.5px] font-semibold uppercase tracking-[0.3em] text-[var(--color-brass)]">
+            <h4 className="mb-4 font-sans text-[14px] font-medium text-[var(--color-brass)]">
               Kontakt
             </h4>
             <ul className="space-y-2.5 text-[13px]">
@@ -65,12 +65,9 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-start justify-between gap-3 border-t border-[var(--color-rule-dark)] pt-5 sm:flex-row sm:items-center">
-          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-text-on-dark-muted)]">
+        <div className="mt-12 border-t border-[var(--color-rule-dark)] pt-5">
+          <span className="text-[13px] text-[var(--color-text-on-dark-muted)]">
             © {new Date().getFullYear()} Ringebu Tannlegesenter
-          </span>
-          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-text-on-dark-muted)]">
-            Tannhelse · Gudbrandsdalen
           </span>
         </div>
       </div>
@@ -87,7 +84,7 @@ function FooterColumn({
 }) {
   return (
     <div>
-      <h4 className="mb-4 font-mono text-[9.5px] font-semibold uppercase tracking-[0.3em] text-[var(--color-brass)]">
+      <h4 className="mb-4 font-sans text-[14px] font-medium text-[var(--color-brass)]">
         {title}
       </h4>
       <ul className="space-y-2.5 text-[13px]">

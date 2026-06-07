@@ -53,12 +53,9 @@ export default function Navbar() {
         )}
       >
         <div className="mx-auto flex w-full max-w-[var(--container-max,1280px)] items-center justify-between px-[var(--container-px,24px)] py-4">
-          <Link href="/" className="relative z-50 flex flex-col leading-none">
-            <span className="font-sans text-sm font-semibold tracking-[-0.01em]">
+          <Link href="/" className="relative z-50 flex items-center leading-none">
+            <span className="font-sans text-[15px] font-semibold tracking-[-0.01em]">
               Ringebu Tannlegesenter
-            </span>
-            <span className="mt-0.5 font-mono text-[9px] uppercase tracking-[0.3em] text-[var(--color-text-muted)]">
-              Gudbrandsdalen · siden 1985
             </span>
           </Link>
 
@@ -87,7 +84,7 @@ export default function Navbar() {
           <div className="flex items-center gap-3">
             <Link
               href="/kontakt"
-              className="hidden md:inline-flex items-center rounded-full bg-[var(--color-copper)] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.06em] text-[var(--color-paper)] transition-colors hover:bg-[var(--color-copper)]/90"
+              className="hidden md:inline-flex items-center rounded-full bg-[var(--color-copper)] px-5 py-2 text-[13px] font-semibold text-[var(--color-paper)] transition-colors hover:bg-[var(--color-copper)]/90"
             >
               Bestill time
             </Link>

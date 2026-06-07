@@ -3,13 +3,13 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 
-type ContactRow = { label: string; value: string; href?: string };
+type ContactRow = { value: string; href?: string };
 
 const CONTACT_ROWS: ContactRow[] = [
-  { label: "Tlf", value: "61 28 04 12", href: "tel:61280412" },
-  { label: "E-post", value: "post@ringebutann.no", href: "mailto:post@ringebutann.no" },
-  { label: "Adresse", value: "Hanstadgata 2, 2630 Ringebu" },
-  { label: "Åpent", value: "Man – Tor · 08:00 – 15:30 · Fre · 08:00 – 15:00" },
+  { value: "61 28 04 12", href: "tel:61280412" },
+  { value: "post@ringebutann.no", href: "mailto:post@ringebutann.no" },
+  { value: "Hanstadgata 2, 2630 Ringebu" },
+  { value: "Man – Tor · 08:00 – 15:30 · Fre · 08:00 – 15:00" },
 ];
 
 export function CtaCloseout() {
@@ -37,21 +37,16 @@ export function CtaCloseout() {
         <ul className="order-2 text-[var(--color-text-on-dark)] md:order-none md:col-start-2 md:row-start-1">
           {CONTACT_ROWS.map((row) => (
             <li
-              key={row.label}
-              className="grid grid-cols-[auto_1fr] items-baseline gap-4 border-t border-[var(--color-rule-dark)] py-3.5 last:border-b last:border-[var(--color-rule-dark)]"
+              key={row.value}
+              className="border-t border-[var(--color-rule-dark)] py-4 text-[17px] font-medium leading-[1.4] tracking-[-0.01em] last:border-b last:border-[var(--color-rule-dark)]"
             >
-              <span className="font-mono text-[9.5px] uppercase tracking-[0.25em] text-[var(--color-brass)]">
-                {row.label}
-              </span>
-              <span className="text-[14px] font-medium tracking-[-0.01em]">
-                {row.href ? (
-                  <a href={row.href} className="transition-colors hover:text-[var(--color-copper)]">
-                    {row.value}
-                  </a>
-                ) : (
-                  row.value
-                )}
-              </span>
+              {row.href ? (
+                <a href={row.href} className="transition-colors hover:text-[var(--color-copper)]">
+                  {row.value}
+                </a>
+              ) : (
+                row.value
+              )}
             </li>
           ))}
         </ul>
