@@ -65,7 +65,7 @@ function Drawer({ item, open, onToggle }: {
         style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
       >
         <div className="overflow-hidden">
-          <div className="grid grid-cols-1 items-center gap-8 py-16 md:min-h-[780px] md:grid-cols-[1fr_minmax(0,343px)] md:gap-14 md:py-20">
+          <div className="grid grid-cols-1 items-center gap-8 py-6 md:grid-cols-[1fr_minmax(0,343px)] md:gap-14 md:py-8">
             <div className="md:order-1">
               {item.kicker && (
                 <p className="text-[26px] italic leading-[1.4] text-[var(--color-copper)]">
@@ -147,12 +147,22 @@ function Drawer({ item, open, onToggle }: {
 }
 
 export function CatalogueDrawer({ title, lead, items }: Props) {
-  const [open, setOpen] = useState(0);
+  // Each row opens independently, so opening one never collapses another
+  // above it — the panel simply expands downward in place, no page jump.
+  const [openSet, setOpenSet] = useState<Set<number>>(() => new Set([0]));
+
+  const toggle = (i: number) =>
+    setOpenSet((prev) => {
+      const next = new Set(prev);
+      if (next.has(i)) next.delete(i);
+      else next.add(i);
+      return next;
+    });
 
   return (
     <main className="bg-[var(--color-paper)]">
       {/* Text-only hero */}
-      <header className="mx-auto w-full max-w-[var(--container-max,1280px)] px-[var(--container-px,24px)] pb-10 pt-32 md:pb-14 md:pt-40">
+      <header className="mx-auto w-full max-w-[var(--container-max,1280px)] px-[var(--container-px,24px)] pb-8 pt-24 md:pb-10 md:pt-28">
         <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
           <h1
             className="font-sans font-extralight text-[var(--color-text-primary)]"
@@ -167,14 +177,14 @@ export function CatalogueDrawer({ title, lead, items }: Props) {
         </p>
       </header>
 
-      <div className="mx-auto w-full max-w-[var(--container-max,1280px)] px-[var(--container-px,24px)] pb-28">
+      <div className="mx-auto w-full max-w-[var(--container-max,1280px)] px-[var(--container-px,24px)] pb-8">
         <div className="border-t border-[var(--color-brass)]/30">
           {items.map((item, i) => (
             <Drawer
               key={item.title}
               item={item}
-              open={open === i}
-              onToggle={() => setOpen((cur) => (cur === i ? -1 : i))}
+              open={openSet.has(i)}
+              onToggle={() => toggle(i)}
             />
           ))}
         </div>
