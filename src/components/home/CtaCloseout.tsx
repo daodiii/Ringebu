@@ -41,7 +41,7 @@ export function CtaCloseout() {
               className="border-t border-[var(--color-rule-dark)] py-4 text-[17px] font-medium leading-[1.4] tracking-[-0.01em] last:border-b last:border-[var(--color-rule-dark)]"
             >
               {row.href ? (
-                <a href={row.href} className="transition-colors hover:text-[var(--color-copper)]">
+                <a href={row.href} className="transition-colors hover:text-[var(--color-amber-deep)]">
                   {row.value}
                 </a>
               ) : (
@@ -59,7 +59,7 @@ export function CtaCloseout() {
           </h2>
           <Link
             href="/kontakt"
-            className="mt-7 inline-flex items-center gap-2.5 rounded-full bg-[var(--color-copper)] px-6 py-3 text-[13px] font-semibold tracking-[0.005em] text-[var(--color-paper)] transition-colors hover:bg-[var(--color-copper)]/90"
+            className="mt-7 inline-flex items-center gap-2.5 rounded-full bg-[var(--color-amber-deep)] px-6 py-3 text-[13px] font-semibold tracking-[0.005em] text-[var(--color-ink)] transition-colors hover:bg-[var(--color-amber-deep)]/90"
           >
             Finn en ledig time
             <ArrowRight className="size-4" aria-hidden="true" />

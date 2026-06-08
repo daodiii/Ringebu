@@ -82,7 +82,7 @@ export function Xray() {
           style={{ fontSize: "clamp(40px, 5.4vw, 78px)", letterSpacing: "-0.045em", lineHeight: 0.92 }}
         >
           Se hva tennene{" "}
-          <span className="text-[var(--color-copper)]">prøver å si.</span>
+          <span className="text-[var(--color-amber-deep)]">prøver å si.</span>
         </h2>
         <p className="mt-5 max-w-[44ch] text-[17px] leading-[1.6] text-[var(--color-text-on-dark-muted)]">
           Et symptom er sjelden tilfeldig. Velg et tegn, så lyser vi opp hva som kan ligge bak.
@@ -157,7 +157,7 @@ export function Xray() {
                   {/* pulp/root hint */}
                   <path
                     d={`M0,${-t.height * 0.32} L0,${t.height * 0.22}`}
-                    stroke={on ? "var(--color-copper)" : "rgba(214,231,225,0.25)"}
+                    stroke={on ? "var(--color-amber-deep)" : "rgba(214,231,225,0.25)"}
                     strokeWidth={1.4}
                   />
                 </g>
@@ -247,7 +247,7 @@ export function Xray() {
                 </p>
                 <Link
                   href={current.slug ? `/artikler/${current.slug}` : "/symptomer"}
-                  className="mt-6 inline-flex items-center gap-1.5 text-[16px] font-medium text-[var(--color-copper)] transition-colors hover:text-[var(--color-amber)]"
+                  className="mt-6 inline-flex items-center gap-1.5 text-[16px] font-medium text-[var(--color-amber-deep)] transition-colors hover:text-[var(--color-amber)]"
                 >
                   Les mer
                   <ArrowUpRight className="size-4" aria-hidden="true" />

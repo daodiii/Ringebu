@@ -19,7 +19,7 @@ export function SplitKontakt() {
             className="font-sans font-extralight text-[var(--color-amber)]"
             style={{ fontSize: "clamp(40px, 5vw, 66px)", letterSpacing: "-0.045em", lineHeight: 0.9 }}
           >
-            Kontakt<span className="text-[var(--color-copper)]">.</span>
+            Kontakt<span className="text-[var(--color-amber-deep)]">.</span>
           </h1>
           <p className="mt-3 text-pretty text-[14px] leading-[1.5] text-[var(--color-amber)]/70">
             {KONTAKT.lead}
@@ -39,11 +39,11 @@ export function SplitKontakt() {
                 className="group grid grid-cols-[1fr_auto] items-baseline gap-4 border-t border-[var(--color-rule-dark)] py-3.5 last:border-b last:border-[var(--color-rule-dark)] text-[var(--color-text-on-dark)]"
               >
                 <span
-                  className={`min-w-0 truncate font-sans font-light tracking-[-0.01em] transition-colors group-hover:text-[var(--color-copper)] ${row.size}`}
+                  className={`min-w-0 truncate font-sans font-light tracking-[-0.01em] transition-colors group-hover:text-[var(--color-amber-deep)] ${row.size}`}
                 >
                   {row.display}
                 </span>
-                <row.Icon className="size-3.5 self-center text-[var(--color-brass)] transition-colors group-hover:text-[var(--color-copper)]" aria-hidden="true" />
+                <row.Icon className="size-3.5 self-center text-[var(--color-brass)] transition-colors group-hover:text-[var(--color-amber-deep)]" aria-hidden="true" />
               </a>
             ))}
           </div>
@@ -75,7 +75,7 @@ export function SplitKontakt() {
             </div>
             <a
               href={KONTAKT.phone.href}
-              className="inline-flex items-center gap-2 rounded-full bg-[var(--color-copper)] px-5 py-2.5 text-[13px] font-semibold text-[var(--color-paper)] transition-colors hover:bg-[var(--color-copper)]/90"
+              className="inline-flex items-center gap-2 rounded-full bg-[var(--color-amber-deep)] px-5 py-2.5 text-[13px] font-semibold text-[var(--color-ink)] transition-colors hover:bg-[var(--color-amber-deep)]/90"
             >
               <Phone className="size-3.5" aria-hidden="true" />
               Ring {KONTAKT.phone.display}
@@ -119,7 +119,7 @@ export function SplitKontakt() {
                   rel="noopener noreferrer"
                   className="group grid grid-cols-[1fr_auto] items-baseline gap-4 border-t border-[var(--color-rule-dark)] py-2 last:border-b last:border-[var(--color-rule-dark)]"
                 >
-                  <span className="font-sans text-[15px] font-light text-[var(--color-paper)] transition-colors group-hover:text-[var(--color-copper)]">
+                  <span className="font-sans text-[15px] font-light text-[var(--color-paper)] transition-colors group-hover:text-[var(--color-amber-deep)]">
                     {d.place}
                   </span>
                   <span className="flex items-baseline gap-3 font-mono tabular-nums">
