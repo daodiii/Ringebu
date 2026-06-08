@@ -79,14 +79,11 @@ export function TreatmentsSlipcase() {
     >
       <div className="mx-auto w-full max-w-[var(--container-max,1280px)] px-[var(--container-px,24px)]">
         {/* Header */}
-        <div className="mb-12 flex flex-col items-start justify-between gap-6 md:mb-16 md:flex-row md:items-end">
+        <div className="mb-12 md:mb-16">
           <h2 className="display-section max-w-[640px] text-[var(--color-text-primary)]">
             Skreddersydde løsninger for{" "}
             <span className="font-light text-[var(--color-stone)]">ditt</span> smil.
           </h2>
-          <p className="max-w-[300px] text-[15px] leading-[1.55] text-[var(--color-text-secondary)] md:text-right">
-            Seks fagområder, ett team. HELFO direkte oppgjør på alle stønadsberettigede behandlinger.
-          </p>
         </div>
 
         {/* Slipcase — desktop */}
