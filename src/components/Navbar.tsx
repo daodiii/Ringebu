@@ -5,8 +5,8 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Menu, X, Phone } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { Logo } from "@/components/ui/Logo";
 
 const LINKS = [
   { href: "/behandlinger", label: "Behandlinger" },
@@ -55,7 +55,14 @@ export default function Navbar() {
       >
         <div className="mx-auto flex w-full max-w-[var(--container-max,1280px)] items-center justify-between px-[var(--container-px,24px)] py-4">
           <Link href="/" className="relative z-50 flex items-center gap-2.5 leading-none">
-            <Logo className="size-11" />
+            <Image
+              src="/images/logo-mark.png"
+              alt=""
+              width={156}
+              height={140}
+              className="h-10 w-auto"
+              priority
+            />
             <span className="font-sans text-[15px] font-semibold tracking-[-0.01em]">
               Ringebu Tannlegesenter
             </span>
