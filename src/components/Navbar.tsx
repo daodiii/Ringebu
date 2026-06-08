@@ -60,7 +60,7 @@ export default function Navbar() {
               alt=""
               width={217}
               height={200}
-              className="h-14 w-auto"
+              className="h-10 w-auto"
               priority
             />
             <span className="font-sans text-[15px] font-semibold tracking-[-0.01em]">
