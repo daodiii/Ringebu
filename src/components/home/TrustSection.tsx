@@ -6,12 +6,12 @@ const CREDENTIALS = [
     sub: "Etiske retningslinjer, kontinuerlig etterutdanning, kvalitetssikret praksis.",
   },
   {
-    name: "Direkte oppgjør med HELFO.",
-    sub: "Du betaler kun egenandelen. Vi sender refusjonskravet på dine vegne.",
+    name: "Direkte oppgjør med HELFO i enkelte tilfeller.",
+    sub: "Folketrygden dekker deler av behandlingen ved noen bestemte diagnoser og situasjoner — for eksempel alvorlig tannkjøttsykdom, medfødte tilstander eller skader etter en ulykke. Har du rett på stønad, ordner vi oppgjøret direkte.",
   },
   {
-    name: "Praksis i Gudbrandsdalen siden 1985.",
-    sub: "Over fire tiår i samme dal, vi kjenner pasientene våre.",
+    name: "Erfarne tannleger.",
+    sub: "Vi har mange år bak oss, og vi holder oss faglig oppdatert. Enten du kommer til en vanlig kontroll eller en større behandling, er du i trygge hender.",
   },
 ] as const;
 

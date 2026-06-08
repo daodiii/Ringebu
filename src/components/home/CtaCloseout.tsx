@@ -34,7 +34,7 @@ export function CtaCloseout() {
 
       <RevealOnScroll className="relative mx-auto grid min-h-[80vh] w-full max-w-[var(--container-max,1280px)] grid-cols-1 grid-rows-[auto_1fr_auto] gap-10 px-[var(--container-px,24px)] pt-32 pb-20 md:min-h-[88vh] md:grid-cols-[1.4fr_1fr] md:gap-10 md:pt-36 md:pb-24">
         {/* Contact info — top right */}
-        <ul className="order-2 text-[var(--color-text-on-dark)] md:order-none md:col-start-2 md:row-start-1">
+        <ul className="order-2 text-white md:order-none md:col-start-2 md:row-start-1 md:text-[var(--color-text-on-dark)]">
           {CONTACT_ROWS.map((row) => (
             <li
               key={row.value}

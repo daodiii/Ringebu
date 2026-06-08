@@ -67,7 +67,7 @@ export function AboutLetter() {
         <RevealOnScroll delay={0.36}>
           <Link
             href="/informasjon"
-            className="group mt-14 inline-flex items-center gap-2.5 rounded-full bg-[var(--color-amber-deep)] px-7 py-3.5 text-base font-semibold tracking-[-0.01em] text-[var(--color-ink)] transition-[transform,background-color] duration-300 ease-out hover:-translate-y-0.5 hover:bg-[var(--color-text-on-dark)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-amber-deep)]"
+            className="group mt-12 inline-flex items-center gap-2 text-base font-medium tracking-[-0.01em] text-white transition-colors duration-300 hover:text-[var(--color-amber-deep)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-amber-deep)]"
           >
             Bli kjent med oss
             <ArrowRight className="h-[1.05rem] w-[1.05rem] transition-transform duration-300 ease-out group-hover:translate-x-1" />
