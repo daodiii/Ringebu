@@ -157,7 +157,12 @@ export default function OmOss() {
           />
         </svg>
 
-        <div className="relative space-y-24 py-12 md:space-y-32 md:py-16 md:pl-32">
+        <div className="relative space-y-24 py-12 pl-7 md:space-y-32 md:py-16 md:pl-32">
+          {/* Mobile thread — a green line down the passages */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute left-[18px] top-0 h-full w-px bg-gradient-to-b from-transparent via-[var(--color-amber-deep)]/55 to-transparent md:hidden"
+          />
           {passages.map((p, i) => (
             <RevealOnScroll key={p.title} delay={i * 0.05}>
               <article
@@ -168,7 +173,7 @@ export default function OmOss() {
                 {/* Node marker */}
                 <span
                   aria-hidden
-                  className="absolute -left-8 top-3 hidden h-3 w-3 rounded-full border border-[var(--color-amber-deep)] bg-[var(--color-paper)] md:block"
+                  className="absolute -left-4 top-3 h-3 w-3 rounded-full border border-[var(--color-amber-deep)] bg-[var(--color-paper)] md:-left-8"
                 />
                 <h2
                   className={`${serif} text-[var(--color-ink)]`}
