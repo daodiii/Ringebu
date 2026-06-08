@@ -11,7 +11,6 @@ import { cn } from "@/lib/utils";
 const LINKS = [
   { href: "/behandlinger", label: "Behandlinger" },
   { href: "/symptomer", label: "Symptomer" },
-  { href: "/priser", label: "Priser" },
   { href: "/informasjon", label: "Om oss" },
   { href: "/kontakt", label: "Kontakt" },
 ] as const;

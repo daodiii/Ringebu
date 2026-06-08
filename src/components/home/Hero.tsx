@@ -10,7 +10,7 @@ import { GrainOverlay } from "@/components/ui/GrainOverlay";
 const HEADLINE_LINE_1 = "Tannhelse,";
 const HEADLINE_LINE_2 = "slik den burde være.";
 const SUBLINE =
-  "Moderne tannbehandling med personlig omsorg — i hjertet av Gudbrandsdalen.";
+  "Ringebu Tannlegesenter tilbyr moderne tannbehandling med personlig omsorg — i hjertet av Gudbrandsdalen.";
 
 const EASE = [0.25, 0.1, 0.25, 1] as const;
 
