@@ -58,9 +58,9 @@ export default function Navbar() {
             <Image
               src="/images/logo-mark.png"
               alt=""
-              width={156}
-              height={140}
-              className="h-10 w-auto"
+              width={217}
+              height={200}
+              className="h-14 w-auto"
               priority
             />
             <span className="font-sans text-[15px] font-semibold tracking-[-0.01em]">
