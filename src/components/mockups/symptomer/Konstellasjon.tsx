@@ -64,7 +64,7 @@ export function Konstellasjon() {
           className="max-w-[18ch] font-sans font-extralight text-[var(--color-text-primary)]"
           style={{ fontSize: "clamp(40px, 5.4vw, 78px)", letterSpacing: "-0.045em", lineHeight: 0.92 }}
         >
-          Alt henger sammen
+          Ulike symptomer du kan oppleve
           <span className="text-[var(--color-copper)]">.</span>
         </h2>
         <p className="mt-5 max-w-[46ch] text-[17px] leading-[1.6] text-[var(--color-text-secondary)]">
