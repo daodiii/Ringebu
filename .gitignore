@@ -47,3 +47,10 @@ next-env.d.ts
 
 # icloud offloaded placeholders
 *.icloud
+
+# stray python virtualenvs (should never live under public/)
+venv/
+.venv/
+
+# unused 7.3MB raster logo source — site renders the SVG at src/components/ui/Logo.tsx
+public/images/logo.png
