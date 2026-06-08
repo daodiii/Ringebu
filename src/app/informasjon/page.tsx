@@ -50,26 +50,26 @@ const subsidyPages = supportPages.filter((sp) => sp.badge !== "Gratis");
 
 const freeGradients = [
   "linear-gradient(to bottom, #10b981, #059669)", // emerald for Barn
-  "linear-gradient(to bottom, #C67B5C, #D4B896)", // terracotta for Eldre
+  "linear-gradient(to bottom, #18948A, #0E2A30)", // petrol teal for Eldre
 ];
 
 const freeFills = [
   "linear-gradient(135deg, rgba(16,185,129,0.06) 0%, rgba(5,150,105,0.02) 50%, transparent 100%)",
-  "linear-gradient(135deg, rgba(198,123,92,0.06) 0%, rgba(212,184,150,0.02) 50%, transparent 100%)",
+  "linear-gradient(135deg, rgba(24,148,138,0.06) 0%, rgba(14,42,48,0.02) 50%, transparent 100%)",
 ];
 
 const topGradients: Record<string, string> = {
-  "unge-voksne": "linear-gradient(to right, #C67B5C, #D4B896, #C67B5C)",
-  helfo: "linear-gradient(to right, #D4B896, #5C3D2E, #D4B896)",
-  frikort: "linear-gradient(to right, #5C3D2E, #C67B5C, #5C3D2E)",
-  nav: "linear-gradient(to right, #A89279, #D4B896, #A89279)",
+  "unge-voksne": "linear-gradient(to right, #18948A, #7CB1A7, #18948A)",
+  helfo: "linear-gradient(to right, #7CB1A7, #0E2A30, #7CB1A7)",
+  frikort: "linear-gradient(to right, #0E2A30, #18948A, #0E2A30)",
+  nav: "linear-gradient(to right, #6F938B, #7CB1A7, #6F938B)",
 };
 
 const subsidyFills: Record<string, string> = {
-  "unge-voksne": "linear-gradient(135deg, rgba(198,123,92,0.06) 0%, rgba(212,184,150,0.02) 50%, transparent 100%)",
-  helfo: "linear-gradient(135deg, rgba(212,184,150,0.06) 0%, rgba(92,61,46,0.02) 50%, transparent 100%)",
-  frikort: "linear-gradient(135deg, rgba(92,61,46,0.06) 0%, rgba(198,123,92,0.02) 50%, transparent 100%)",
-  nav: "linear-gradient(135deg, rgba(168,146,121,0.06) 0%, rgba(212,184,150,0.02) 50%, transparent 100%)",
+  "unge-voksne": "linear-gradient(135deg, rgba(24,148,138,0.06) 0%, rgba(124,177,167,0.02) 50%, transparent 100%)",
+  helfo: "linear-gradient(135deg, rgba(124,177,167,0.06) 0%, rgba(14,42,48,0.02) 50%, transparent 100%)",
+  frikort: "linear-gradient(135deg, rgba(14,42,48,0.06) 0%, rgba(24,148,138,0.02) 50%, transparent 100%)",
+  nav: "linear-gradient(135deg, rgba(111,147,139,0.06) 0%, rgba(124,177,167,0.02) 50%, transparent 100%)",
 };
 
 const personaNav = [
@@ -189,7 +189,7 @@ export default function InformasjonPage() {
                       {/* Gradient top accent strip */}
                       <div
                         className="absolute top-0 inset-x-0 h-1.5"
-                        style={{ background: topGradients[sp.slug] || "linear-gradient(to right, #C67B5C, #D4B896)" }}
+                        style={{ background: topGradients[sp.slug] || "linear-gradient(to right, #18948A, #7CB1A7)" }}
                       />
                       <h3 className="font-heading font-700 text-xl md:text-2xl text-[var(--color-primary)] mb-3 group-hover:text-[var(--color-accent)] transition-colors">
                         {sp.shortTitle}

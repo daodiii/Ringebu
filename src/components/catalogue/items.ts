@@ -33,7 +33,7 @@ export const treatmentItems: SpreadItem[] = TREATMENTS.map((t) => ({
 const FALLBACK_META: SymptomMeta = {
   subtitle: "",
   region: "Tann",
-  photoTone: "#ECE6D6",
+  photoTone: "#E6EDE9",
 };
 
 export const symptomItems: SpreadItem[] = symptoms.map((s) => {

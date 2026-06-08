@@ -114,7 +114,7 @@ export function MouthMap() {
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(60% 50% at 30% 8%, rgba(184,148,92,0.07), transparent 70%)",
+            "radial-gradient(60% 50% at 30% 8%, rgba(24,148,138,0.07), transparent 70%)",
         }}
       />
       <div className="relative mx-auto w-full max-w-[var(--container-max,1280px)] px-[var(--container-px,24px)]">

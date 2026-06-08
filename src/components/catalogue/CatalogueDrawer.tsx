@@ -113,7 +113,7 @@ function Drawer({ item, open, onToggle }: {
             {/* Plate reveals downward via vertical clip */}
             <div className="md:order-2">
               <div
-                className="relative aspect-square w-full overflow-hidden shadow-[inset_0_0_0_1px_rgba(184,148,92,0.32)] transition-[clip-path] duration-[600ms] ease-out"
+                className="relative aspect-square w-full overflow-hidden shadow-[inset_0_0_0_1px_rgba(14,42,48,0.16)] transition-[clip-path] duration-[600ms] ease-out"
                 style={{
                   background: item.photoTone,
                   clipPath: open ? "inset(0 0 0 0)" : "inset(0 0 100% 0)",

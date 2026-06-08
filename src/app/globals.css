@@ -8,22 +8,24 @@
   --color-paper:        #FCF9F2;   /* default page background, cream sections */
   --color-paper-warm:   #F5EFE0;   /* About section — one notch deeper to differentiate */
 
-  --color-copper:       #C97A5B;   /* warm spark — primary CTAs */
-  --color-amber:        #F5E9CB;   /* tungsten cream — text and accents on dark surfaces */
-  --color-amber-deep:   #E8C58C;   /* stronger amber — single bento tile, highlights */
-  --color-brass:        #B8945C;   /* thin lines, eyebrow rules, footer category labels */
+  /* NOTE: copper/amber/brass names kept to avoid churn, but the palette is
+     now fully cool blue-green (no warm tones). */
+  --color-copper:       #18948A;   /* vivid teal — primary CTAs, the action spark */
+  --color-amber:        #D6E7E1;   /* pale cool teal — text and accents on dark surfaces */
+  --color-amber-deep:   #7CB1A7;   /* eucalyptus teal — highlights on dark */
+  --color-brass:        #6F938B;   /* muted teal — thin lines, eyebrow rules, labels */
   --color-stone:        #6B8278;   /* sage-eucalyptus accent on light surfaces */
 
   /* ── Text ── */
   --color-text-primary:        #1A1410;
   --color-text-secondary:      #4A3F33;
   --color-text-muted:          #8B7C6A;
-  --color-text-on-dark:        #F5E9CB;
-  --color-text-on-dark-muted:  rgba(245, 233, 203, 0.55);
+  --color-text-on-dark:        #D6E7E1;
+  --color-text-on-dark-muted:  rgba(214, 231, 225, 0.62);
 
   /* ── Rules ── */
   --color-rule:       rgba(26, 20, 16, 0.12);
-  --color-rule-dark:  rgba(245, 233, 203, 0.18);
+  --color-rule-dark:  rgba(214, 231, 225, 0.20);
 
   /* ── Urgency (severity pill) ── */
   --color-urgent: #B8624A;
@@ -227,7 +229,7 @@ h1, h2, h3, h4, h5, h6 {
 .btn-primary:hover {
   background-color: var(--color-accent-hover);
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(198, 123, 92, 0.25);
+  box-shadow: 0 8px 30px rgba(14, 42, 48, 0.25);
 }
 
 .btn-secondary {
@@ -277,7 +279,7 @@ h1, h2, h3, h4, h5, h6 {
   background-color: var(--color-accent);
   color: white;
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(198, 123, 92, 0.2);
+  box-shadow: 0 8px 30px rgba(14, 42, 48, 0.2);
 }
 
 /* ── Nav Button ── */
