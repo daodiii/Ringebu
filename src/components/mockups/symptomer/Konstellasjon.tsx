@@ -62,13 +62,13 @@ export function Konstellasjon() {
       <div className="mx-auto w-full max-w-[var(--container-max,1280px)] px-[var(--container-px,24px)]">
         <h2
           className="max-w-[18ch] font-sans font-extralight text-[var(--color-text-primary)]"
-          style={{ fontSize: "clamp(40px, 5.4vw, 78px)", letterSpacing: "-0.045em", lineHeight: 0.92 }}
+          style={{ fontSize: "clamp(32px, 4.2vw, 52px)", letterSpacing: "-0.045em", lineHeight: 0.92 }}
         >
           Ulike symptomer du kan oppleve
           <span className="text-[var(--color-copper)]">.</span>
         </h2>
         <p className="mt-5 max-w-[46ch] text-[17px] leading-[1.6] text-[var(--color-text-secondary)]">
-          Ett tegn fører ofte til det neste. Følg trådene mellom symptomene og se hvor de møtes.
+          Her finner du informasjon og råd om hva som bør gjøres.
         </p>
 
         <div className="mt-8 grid grid-cols-1 items-center gap-x-14 gap-y-10 lg:grid-cols-[1.15fr_0.85fr]">
