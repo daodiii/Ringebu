@@ -1,310 +1,389 @@
-"use client";
-
-import { useRef } from "react";
 import Link from "next/link";
-import { motion, useInView } from "framer-motion";
-import {
-  ArrowRight,
-  ShieldCheck,
-  CheckCircle,
-  SmilePlus,
-  User,
-  Stethoscope,
-  Shield,
-  HandHeart,
-  Heart,
-  Phone,
-} from "lucide-react";
-import { supportPages } from "@/data/content";
+import { Instrument_Serif } from "next/font/google";
+import { Phone, Mail, MapPin, Clock, ArrowRight } from "lucide-react";
+import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
+import type { Metadata } from "next";
 
-/* ─────────────── Helpers ─────────────── */
+export const metadata: Metadata = {
+  title: "Om oss",
+  description:
+    "En liten tannlegeklinikk i Ringebu med god tid til hver pasient. Bli kjent med oss — og se hvordan et besøk hos oss foregår.",
+  alternates: { canonical: "/informasjon" },
+  openGraph: {
+    title: "Om oss | Ringebu Tannlegesenter",
+    description:
+      "En liten tannlegeklinikk i Ringebu med god tid til hver pasient.",
+  },
+};
 
-function SectionFade({
-  children,
-  className = "",
-  delay = 0,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  delay?: number;
-}) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
+const display = Instrument_Serif({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+const serif = "font-[family-name:var(--font-display)]";
+
+const passages = [
+  {
+    title: "Du er ikke en i rekka her",
+    body: "Vi prioriterer kunden, og det får du merke med en gang. Vi tar én pasient om gangen, og vi har ikke det travelt. Du skal rekke å sette deg godt til rette før vi setter i gang.",
+  },
+  {
+    title: "Vi sier det som det er",
+    body: "Du skal kunne stole på det vi sier. Vi anbefaler aldri behandling du ikke trenger, og vi er ærlige med deg hvis noe bør gjøres. Det skal aldri være tvil om hva du betaler for, eller hvorfor.",
+  },
+  {
+    title: "Gruer du deg litt? Det er helt greit.",
+    body: "Mange synes det er ubehagelig å gå til tannlegen. Det skjønner vi godt. Vi går rolig fram, forteller deg hva vi gjør underveis, og tar en pause med en gang du trenger det. Du bestemmer takten.",
+  },
+];
+
+const steps = [
+  {
+    n: "1",
+    title: "Ta kontakt",
+    body: "Ring oss eller send en e-post, så finner vi en tid som passer for deg.",
+  },
+  {
+    n: "2",
+    title: "Vi blir kjent",
+    body: "Vi tar en rolig prat og en grundig sjekk av tennene dine. Ingen hastverk.",
+  },
+  {
+    n: "3",
+    title: "Du får klar beskjed",
+    body: "Vi forteller deg hva vi ser, hva som haster, og hva som kan vente.",
+  },
+  {
+    n: "4",
+    title: "Vi blir enige om veien videre",
+    body: "Sammen legger vi en plan du er trygg på. Ingen overraskelser på regningen.",
+  },
+];
+
+export default function OmOss() {
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 30 }}
-      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-      transition={{ duration: 0.6, delay, ease: [0.25, 0.1, 0.25, 1] }}
-      className={className}
+    <main
+      className={`${display.variable} relative overflow-hidden bg-[var(--color-paper)] text-[var(--color-text-primary)]`}
     >
-      {children}
-    </motion.div>
-  );
-}
+      {/* Soft ambient cream gradients */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{
+          background:
+            "radial-gradient(1100px 720px at 78% -8%, rgba(124,177,167,0.10), transparent 60%), radial-gradient(900px 640px at 8% 36%, rgba(245,239,224,0.85), transparent 65%), radial-gradient(1000px 900px at 60% 108%, rgba(111,147,139,0.08), transparent 60%)",
+        }}
+      />
 
-/* ─────────────── Data grouping ─────────────── */
-
-const freePages = supportPages.filter((sp) => sp.badge === "Gratis");
-const subsidyPages = supportPages.filter((sp) => sp.badge !== "Gratis");
-
-const freeGradients = [
-  "linear-gradient(to bottom, #10b981, #059669)", // emerald for Barn
-  "linear-gradient(to bottom, #18948A, #0E2A30)", // petrol teal for Eldre
-];
-
-const freeFills = [
-  "linear-gradient(135deg, rgba(16,185,129,0.06) 0%, rgba(5,150,105,0.02) 50%, transparent 100%)",
-  "linear-gradient(135deg, rgba(24,148,138,0.06) 0%, rgba(14,42,48,0.02) 50%, transparent 100%)",
-];
-
-const topGradients: Record<string, string> = {
-  "unge-voksne": "linear-gradient(to right, #18948A, #7CB1A7, #18948A)",
-  helfo: "linear-gradient(to right, #7CB1A7, #0E2A30, #7CB1A7)",
-  frikort: "linear-gradient(to right, #0E2A30, #18948A, #0E2A30)",
-  nav: "linear-gradient(to right, #6F938B, #7CB1A7, #6F938B)",
-};
-
-const subsidyFills: Record<string, string> = {
-  "unge-voksne": "linear-gradient(135deg, rgba(24,148,138,0.06) 0%, rgba(124,177,167,0.02) 50%, transparent 100%)",
-  helfo: "linear-gradient(135deg, rgba(124,177,167,0.06) 0%, rgba(14,42,48,0.02) 50%, transparent 100%)",
-  frikort: "linear-gradient(135deg, rgba(14,42,48,0.06) 0%, rgba(24,148,138,0.02) 50%, transparent 100%)",
-  nav: "linear-gradient(135deg, rgba(111,147,139,0.06) 0%, rgba(124,177,167,0.02) 50%, transparent 100%)",
-};
-
-const personaNav = [
-  { slug: "barn", label: "Barn 0–18", icon: SmilePlus, badge: "Gratis", desc: "Helt gratis tannbehandling gjennom offentlig tannhelsetjeneste" },
-  { slug: "unge-voksne", label: "19–28 år", icon: User, badge: "75 % rabatt", desc: "Sterkt subsidiert behandling for unge voksne" },
-  { slug: "helfo", label: "Diagnose", icon: Stethoscope, badge: "Refusjon", desc: "Folketrygden dekker ved spesifikke diagnoser" },
-  { slug: "frikort", label: "Høye utgifter", icon: Shield, badge: "kr 3 278", desc: "Egenandelstaket som begrenser årlige kostnader" },
-  { slug: "nav", label: "Lav inntekt", icon: HandHeart, badge: "Behovsprøvd", desc: "Økonomisk støtte fra NAV ved lav inntekt" },
-  { slug: "eldre", label: "Eldre / uføre", icon: Heart, badge: "Gratis", desc: "Gratis tannbehandling for eldre og uføre" },
-];
-
-/* ─────────────── PAGE ─────────────── */
-
-export default function InformasjonPage() {
-  return (
-    <main className="pt-20">
-      {/* ── Hero — Brown like other pages ── */}
-      <section className="relative bg-[var(--color-primary)] py-20 md:py-28 overflow-hidden">
-        <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-primary-light)] to-[var(--color-accent)]" />
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute -top-[30%] -right-[15%] w-[50vw] h-[50vw] rounded-full bg-[var(--color-accent)]/8 blur-3xl" />
-          <div className="absolute -bottom-[20%] -left-[10%] w-[30vw] h-[30vw] rounded-full bg-[var(--color-accent-light)]/5 blur-3xl" />
-        </div>
-
-        <div className="container-width relative z-10 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <h1 className="heading-display text-white mb-5">
-              Støtte og rettigheter
+      {/* ───────────────── HERO ───────────────── */}
+      <section className="relative mx-auto flex min-h-[76vh] w-full max-w-[82rem] flex-col justify-center px-6 pt-28 pb-16 md:px-10 md:pt-32">
+        <div className="relative">
+          <RevealOnScroll>
+            <h1
+              className={`${serif} max-w-[18ch] text-[var(--color-ink)]`}
+              style={{
+                fontSize: "clamp(2.7rem, 5.5vw, 4.3rem)",
+                lineHeight: 1.04,
+                letterSpacing: "-0.018em",
+              }}
+            >
+              Et lite sted, med{" "}
+              <span className={`${serif} italic text-[var(--color-stone)]`}>god tid</span> til deg.
             </h1>
-            <p className="text-lg md:text-xl text-white/80 font-sans font-400 leading-relaxed max-w-2xl mx-auto">
-              Mange har rett på hel eller delvis dekning av tannlegekostnader uten
-              å vite det. Her er en oversikt over ordningene som finnes i Norge.
+          </RevealOnScroll>
+
+          {/* Thread flourish — flows beneath the headline, aligned to the text */}
+          <svg
+            aria-hidden
+            viewBox="0 0 600 70"
+            fill="none"
+            className="pointer-events-none mt-8 h-[54px] w-[min(86%,580px)] overflow-visible"
+          >
+            <path
+              d="M 4 42 C 120 6, 220 66, 344 36 S 544 6, 596 46"
+              stroke="var(--color-amber-deep)"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              opacity="0.6"
+              className="thread-draw"
+            />
+            <path
+              d="M 40 52 C 150 30, 250 70, 360 50"
+              stroke="var(--color-brass)"
+              strokeWidth="1"
+              strokeLinecap="round"
+              opacity="0.3"
+              className="thread-draw thread-draw-slow"
+            />
+            <circle cx="4" cy="42" r="4" fill="var(--color-stone)" opacity="0.75" />
+            <circle cx="596" cy="46" r="5" fill="none" stroke="var(--color-amber-deep)" strokeWidth="1.3" opacity="0.75" />
+          </svg>
+
+          <RevealOnScroll delay={0.12}>
+            <p className="mt-7 max-w-[46ch] text-[1.0625rem] leading-relaxed text-[var(--color-text-secondary)] md:text-[1.125rem]">
+              Vi er en liten tannlegeklinikk i Ringebu. Her er det ikke stress og lange køer — bare
+              fokus på pasienten, og nok tid til å gjøre ting ordentlig.
             </p>
-          </motion.div>
-
+          </RevealOnScroll>
         </div>
       </section>
 
-      {/* ── Featured: Free Coverage (Barn + Eldre) — Bento Layout ── */}
-      <section className="py-16 md:py-24 bg-white">
-        <div className="container-width">
-          <div className="max-w-6xl mx-auto">
-            <SectionFade>
-              <div className="flex items-center gap-3 mb-8 md:mb-10">
-                <ShieldCheck className="size-6 shrink-0 text-emerald-600" />
-                <h2 className="font-heading font-700 text-2xl md:text-3xl text-[var(--color-primary)]">
-                  Helt gratis behandling
+      {/* ───────────────── BODY PASSAGES ───────────────── */}
+      <section className="relative mx-auto w-full max-w-[78rem] px-6 pb-8 md:px-10">
+        {/* Continuous meandering thread connecting the three passages */}
+        <svg
+          aria-hidden
+          viewBox="0 0 200 1000"
+          preserveAspectRatio="none"
+          fill="none"
+          className="pointer-events-none absolute left-6 top-0 -z-0 hidden h-full w-[120px] md:left-10 md:block"
+        >
+          <path
+            d="M 60 0 C 60 90, 120 140, 110 240 S 30 360, 50 470 S 130 600, 100 720 S 40 860, 70 1000"
+            stroke="var(--color-amber-deep)"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+            opacity="0.5"
+          />
+          <path
+            d="M 70 30 C 80 120, 30 180, 55 280"
+            stroke="var(--color-brass)"
+            strokeWidth="0.9"
+            strokeLinecap="round"
+            opacity="0.28"
+          />
+        </svg>
+
+        <div className="relative space-y-24 py-12 md:space-y-32 md:py-16 md:pl-32">
+          {passages.map((p, i) => (
+            <RevealOnScroll key={p.title} delay={i * 0.05}>
+              <article
+                className={`relative max-w-[52ch] ${
+                  i % 2 === 1 ? "md:ml-auto md:mr-12" : ""
+                }`}
+              >
+                {/* Node marker */}
+                <span
+                  aria-hidden
+                  className="absolute -left-8 top-3 hidden h-3 w-3 rounded-full border border-[var(--color-amber-deep)] bg-[var(--color-paper)] md:block"
+                />
+                <h2
+                  className={`${serif} text-[var(--color-ink)]`}
+                  style={{
+                    fontSize: "clamp(1.9rem, 4.4vw, 3.25rem)",
+                    lineHeight: 1.08,
+                    letterSpacing: "-0.01em",
+                  }}
+                >
+                  {p.title}
                 </h2>
-              </div>
-            </SectionFade>
+                <p className="mt-5 text-[1.0625rem] leading-relaxed text-[var(--color-text-secondary)]">
+                  {p.body}
+                </p>
+              </article>
+            </RevealOnScroll>
+          ))}
+        </div>
+      </section>
 
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-5 md:gap-6">
-              {freePages.map((sp, i) => (
-                <SectionFade key={sp.slug} delay={i * 0.1} className={i === 0 ? "md:col-span-3" : "md:col-span-2"}>
-                  <Link
-                    href={`/informasjon/${sp.slug}`}
-                    className="group block h-full"
+      {/* ───────────────── STEPS ALONG A THREAD ───────────────── */}
+      <section className="relative mx-auto w-full max-w-[78rem] px-6 py-20 md:px-10 md:py-28">
+        <RevealOnScroll>
+          <h2
+            className={`${serif} max-w-[16ch] text-[var(--color-ink)]`}
+            style={{
+              fontSize: "clamp(2rem, 5vw, 3.75rem)",
+              lineHeight: 1.04,
+              letterSpacing: "-0.012em",
+            }}
+          >
+            Slik er det å komme til oss
+          </h2>
+        </RevealOnScroll>
+
+        <div className="relative mt-16 md:mt-20">
+          {/* Curving descending thread that guides 1 → 4 */}
+          <svg
+            aria-hidden
+            viewBox="0 0 120 880"
+            preserveAspectRatio="none"
+            fill="none"
+            className="pointer-events-none absolute left-[26px] top-0 h-full w-[60px] md:left-[34px]"
+          >
+            <path
+              d="M 60 8 C 24 110, 96 200, 56 300 S 18 470, 64 560 S 98 700, 50 800 L 52 872"
+              stroke="var(--color-amber-deep)"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              opacity="0.55"
+              className="thread-draw"
+            />
+          </svg>
+
+          <ol className="relative space-y-12 md:space-y-16">
+            {steps.map((s, i) => (
+              <RevealOnScroll key={s.n} delay={i * 0.08}>
+                <li className="relative flex items-start gap-6 pl-2 md:gap-8">
+                  {/* Node ring */}
+                  <span
+                    aria-hidden
+                    className="relative z-10 mt-0.5 flex h-12 w-12 flex-none items-center justify-center rounded-full border border-[var(--color-amber-deep)] bg-[var(--color-paper)] shadow-[0_1px_0_rgba(26,20,16,0.04)] transition-transform duration-500 ease-out group-hover:scale-105"
                   >
-                    <div
-                      className="rounded-2xl border border-[var(--color-border)] h-full flex overflow-hidden transition-all duration-300 hover:shadow-[0_20px_60px_rgba(60,36,21,0.08)] hover:-translate-y-1 cursor-pointer"
-                      style={{ background: freeFills[i] }}
-                    >
-                      {/* Gradient left border */}
-                      <div
-                        className="w-2 shrink-0 rounded-l-2xl"
-                        style={{ background: freeGradients[i] }}
-                      />
-                      <div className="flex-1 p-10 md:p-12 flex flex-col">
-                        <h3 className="font-heading font-700 text-2xl md:text-3xl text-[var(--color-primary)] mb-4 group-hover:text-[var(--color-accent)] transition-colors">
-                          {sp.shortTitle}
-                        </h3>
-                        <p className="text-base md:text-lg text-[var(--color-text-secondary)] font-sans font-400 leading-relaxed mb-6 flex-1">
-                          {sp.hubSummary}
-                        </p>
-                        <div className="flex items-center gap-2 text-[var(--color-accent)] font-sans font-500 text-base group-hover:text-[var(--color-primary)] transition-colors">
-                          Les mer
-                          <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                </SectionFade>
-              ))}
-            </div>
-          </div>
+                    <span className="text-[1.5rem] font-medium leading-none tabular-nums text-[var(--color-stone)]">
+                      {s.n}
+                    </span>
+                  </span>
+                  <div className="max-w-[46ch] pt-1.5">
+                    <h3 className="text-[1.0625rem] font-medium tracking-tight text-[var(--color-ink)]">
+                      {s.title}
+                    </h3>
+                    <p className="mt-2 text-[1.0625rem] leading-relaxed text-[var(--color-text-secondary)]">
+                      {s.body}
+                    </p>
+                  </div>
+                </li>
+              </RevealOnScroll>
+            ))}
+          </ol>
         </div>
       </section>
 
-      {/* ── Subsidy Cards Grid ── */}
-      <section className="py-16 md:py-24 bg-white">
-        <div className="container-width">
-          <div className="max-w-6xl mx-auto">
-            <SectionFade>
-              <div className="flex items-center gap-3 mb-8 md:mb-10">
-                <Stethoscope className="size-6 shrink-0 text-[var(--color-accent)]" />
-                <h2 className="font-heading font-700 text-2xl md:text-3xl text-[var(--color-primary)]">
-                  Delvis dekning og støtte
-                </h2>
-              </div>
-            </SectionFade>
+      {/* ───────────────── CLOSING / CONTACT ───────────────── */}
+      <section className="relative mx-auto w-full max-w-[78rem] px-6 pb-32 pt-8 md:px-10 md:pb-40">
+        {/* The thread resolves into a single node */}
+        <svg
+          aria-hidden
+          viewBox="0 0 120 160"
+          fill="none"
+          className="pointer-events-none absolute left-1/2 -top-6 h-[150px] w-[120px] -translate-x-1/2"
+        >
+          <path
+            d="M 60 0 C 90 50, 30 80, 60 130"
+            stroke="var(--color-amber-deep)"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+            opacity="0.5"
+            className="thread-draw"
+          />
+          <circle cx="60" cy="140" r="6" fill="none" stroke="var(--color-amber-deep)" strokeWidth="1.3" opacity="0.8" />
+          <circle cx="60" cy="140" r="2.2" fill="var(--color-stone)" opacity="0.8" />
+        </svg>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              {subsidyPages.map((sp, i) => (
-                <SectionFade key={sp.slug} delay={i * 0.08}>
-                  <Link
-                    href={`/informasjon/${sp.slug}`}
-                    className="group block h-full"
-                  >
-                    <div
-                      className="relative rounded-2xl border border-[var(--color-border)] overflow-hidden p-8 md:p-9 h-full flex flex-col transition-all duration-300 hover:shadow-[0_16px_48px_rgba(60,36,21,0.08)] hover:-translate-y-1 cursor-pointer"
-                      style={{ background: subsidyFills[sp.slug] || "white" }}
-                    >
-                      {/* Gradient top accent strip */}
-                      <div
-                        className="absolute top-0 inset-x-0 h-1.5"
-                        style={{ background: topGradients[sp.slug] || "linear-gradient(to right, #18948A, #7CB1A7)" }}
-                      />
-                      <h3 className="font-heading font-700 text-xl md:text-2xl text-[var(--color-primary)] mb-3 group-hover:text-[var(--color-accent)] transition-colors">
-                        {sp.shortTitle}
-                      </h3>
-                      <p className="text-base md:text-lg text-[var(--color-text-secondary)] font-sans font-400 leading-relaxed mb-5 flex-1">
-                        {sp.hubSummary}
-                      </p>
-                      <div className="flex items-center gap-2 text-[var(--color-accent)] font-sans font-500 text-base group-hover:text-[var(--color-primary)] transition-colors">
-                        Les mer
-                        <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-                      </div>
-                    </div>
-                  </Link>
-                </SectionFade>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Persona Navigator ── */}
-      <section className="py-16 md:py-20 bg-white">
-        <div className="container-width">
-          <div className="max-w-5xl mx-auto">
-            <SectionFade>
-              <h2 className="heading-section text-[var(--color-primary)] text-center mb-10 md:mb-12">
-                Hvem gjelder det for?
-              </h2>
-            </SectionFade>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-              {personaNav.map((item, i) => {
-                const Icon = item.icon;
-                return (
-                  <SectionFade key={item.slug} delay={i * 0.06}>
-                    <Link
-                      href={`/informasjon/${item.slug}`}
-                      className="group block h-full"
-                    >
-                      <motion.div
-                        whileHover={{ y: -4 }}
-                        className="relative bg-white rounded-2xl border border-[var(--color-border)] p-6 md:p-8 transition-all duration-300 hover:shadow-lg hover:shadow-[var(--color-accent)]/5 hover:border-[var(--color-accent)]/30 cursor-pointer h-full flex flex-col overflow-hidden"
-                      >
-                        {/* Gradient bottom accent */}
-                        <div
-                          className="absolute bottom-0 inset-x-0 h-1"
-                          style={{ background: `linear-gradient(to right, transparent, var(--color-accent), transparent)` }}
-                        />
-                        <div className="flex items-center gap-4 mb-4">
-                          <div className="w-14 h-14 rounded-xl bg-[var(--color-accent)]/[0.08] flex items-center justify-center shrink-0">
-                            <Icon className="size-6 text-[var(--color-accent)]" />
-                          </div>
-                          <div>
-                            <span className="font-sans font-600 text-base text-[var(--color-primary)] block">
-                              {item.label}
-                            </span>
-                            <span className="font-heading font-700 text-sm text-[var(--color-accent)]">
-                              {item.badge}
-                            </span>
-                          </div>
-                        </div>
-                        <p className="text-base text-[var(--color-text-secondary)] font-sans font-400 leading-relaxed flex-1">
-                          {item.desc}
-                        </p>
-                      </motion.div>
-                    </Link>
-                  </SectionFade>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Bottom CTA ── */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-light)]" />
-        <div className="absolute inset-0">
-          <div className="absolute -top-[30%] -right-[15%] w-[50vw] h-[50vw] rounded-full bg-[var(--color-accent)]/10 blur-3xl" />
-        </div>
-        <div className="relative z-10 container-width py-20 md:py-28 text-center">
-          <SectionFade>
-            {/* Trust signal */}
-            <div className="flex items-center justify-center gap-2 mb-6">
-              <CheckCircle className="size-4 text-[var(--color-accent-light)]" />
-              <span className="text-sm font-sans font-500 text-white/60">
-                Vi hjelper deg å finne riktig ordning
-              </span>
-            </div>
-
-            <h2 className="heading-section text-white mb-5">
-              Har du spørsmål?
+        <RevealOnScroll>
+          <div className="relative mx-auto mt-12 max-w-[44rem] rounded-[2rem] border border-[var(--color-rule)] bg-[var(--color-paper-warm)]/55 px-7 py-12 text-center backdrop-blur-[1px] md:px-14 md:py-16">
+            <h2
+              className={`${serif} text-[var(--color-ink)]`}
+              style={{
+                fontSize: "clamp(2.25rem, 5.5vw, 4rem)",
+                lineHeight: 1.04,
+                letterSpacing: "-0.012em",
+              }}
+            >
+              Stikk innom oss
             </h2>
-            <p className="text-xl text-white/80 font-sans font-400 leading-relaxed max-w-lg mx-auto mb-10">
-              Finner du ikke svar på det du lurer på? Ta kontakt, så hjelper vi
-              deg gjerne.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
+
+            <dl className="mx-auto mt-10 grid max-w-[34rem] grid-cols-1 gap-x-10 gap-y-7 text-left sm:grid-cols-2">
+              <div className="flex items-start gap-3">
+                <MapPin className="mt-0.5 h-[18px] w-[18px] flex-none text-[var(--color-brass)]" strokeWidth={1.6} />
+                <div>
+                  <dt className="text-[0.8125rem] tracking-wide text-[var(--color-text-muted)]">
+                    Adresse
+                  </dt>
+                  <dd className="mt-1 text-[1.0625rem] leading-snug text-[var(--color-text-primary)]">
+                    Hanstadgata 2, 2630 Ringebu
+                  </dd>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <Clock className="mt-0.5 h-[18px] w-[18px] flex-none text-[var(--color-brass)]" strokeWidth={1.6} />
+                <div>
+                  <dt className="text-[0.8125rem] tracking-wide text-[var(--color-text-muted)]">
+                    Åpningstider
+                  </dt>
+                  <dd className="mt-1 text-[1.0625rem] leading-snug text-[var(--color-text-primary)]">
+                    Mandag–torsdag 08.00–15.30
+                    <br />
+                    Fredag 08.00–15.00
+                  </dd>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <Phone className="mt-0.5 h-[18px] w-[18px] flex-none text-[var(--color-brass)]" strokeWidth={1.6} />
+                <div>
+                  <dt className="text-[0.8125rem] tracking-wide text-[var(--color-text-muted)]">
+                    Telefon
+                  </dt>
+                  <dd className="mt-1 text-[1.0625rem] leading-snug">
+                    <a
+                      href="tel:+4761280412"
+                      className="text-[var(--color-text-primary)] underline-offset-4 transition-colors hover:text-[var(--color-stone)] hover:underline"
+                    >
+                      61 28 04 12
+                    </a>
+                  </dd>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <Mail className="mt-0.5 h-[18px] w-[18px] flex-none text-[var(--color-brass)]" strokeWidth={1.6} />
+                <div>
+                  <dt className="text-[0.8125rem] tracking-wide text-[var(--color-text-muted)]">
+                    E-post
+                  </dt>
+                  <dd className="mt-1 text-[1.0625rem] leading-snug">
+                    <a
+                      href="mailto:post@ringebutann.no"
+                      className="text-[var(--color-text-primary)] underline-offset-4 transition-colors hover:text-[var(--color-stone)] hover:underline"
+                    >
+                      post@ringebutann.no
+                    </a>
+                  </dd>
+                </div>
+              </div>
+            </dl>
+
+            <div className="mt-12">
               <Link
                 href="/kontakt"
-                className="btn-primary bg-white text-[var(--color-primary)] hover:bg-[var(--color-bg-cream)] px-8 py-4 text-base"
+                className="group inline-flex items-center gap-2.5 rounded-full bg-[var(--color-ink)] px-8 py-3.5 text-[0.95rem] font-medium text-[var(--color-paper)] shadow-[0_1px_2px_rgba(8,32,37,0.18)] transition-all duration-300 ease-out hover:bg-[var(--color-ink-warm)] hover:shadow-[0_6px_18px_rgba(8,32,37,0.22)]"
               >
-                Kontakt oss
+                Ta kontakt
+                <ArrowRight
+                  className="h-4 w-4 transition-transform duration-300 ease-out group-hover:translate-x-1"
+                  strokeWidth={1.8}
+                />
               </Link>
-              <a
-                href="tel:61280412"
-                className="btn-secondary text-base px-8 py-4"
-              >
-                <Phone className="size-5" />
-                Ring 61 28 04 12
-              </a>
             </div>
-          </SectionFade>
-        </div>
+          </div>
+        </RevealOnScroll>
       </section>
+
+      {/* Thread draw-in — respects reduced motion */}
+      <style>{`
+        .thread-draw {
+          stroke-dasharray: 2200;
+          stroke-dashoffset: 2200;
+          animation: thread-in 2.6s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+        }
+        .thread-draw-slow {
+          animation-duration: 3.4s;
+          animation-delay: 0.2s;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .thread-draw {
+            animation: none;
+            stroke-dashoffset: 0;
+          }
+        }
+        @keyframes thread-in {
+          to { stroke-dashoffset: 0; }
+        }
+      `}</style>
     </main>
   );
 }

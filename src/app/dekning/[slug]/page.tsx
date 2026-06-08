@@ -124,11 +124,11 @@ export default async function SupportPage({
       <section className="bg-[var(--color-primary)] py-16 md:py-24">
         <div className="container-width">
           <Link
-            href="/informasjon"
+            href="/dekning"
             className="inline-flex items-center gap-2 text-white/60 hover:text-white text-sm font-sans mb-8 transition-colors cursor-pointer"
           >
             <ArrowLeft className="size-4" />
-            Tilbake til informasjon
+            Tilbake til oversikten
           </Link>
 
           <div className="flex flex-wrap items-center gap-3 mb-5">
@@ -249,7 +249,7 @@ export default async function SupportPage({
                 {related.map((r) => (
                   <Link
                     key={r.slug}
-                    href={`/informasjon/${r.slug}`}
+                    href={`/dekning/${r.slug}`}
                     className="group block"
                   >
                     <div className="bg-white rounded-2xl border border-[var(--color-border)] p-6 h-full transition-all duration-300 hover:shadow-lg hover:-translate-y-1 cursor-pointer">

@@ -1,0 +1,310 @@
+"use client";
+
+import { useRef } from "react";
+import Link from "next/link";
+import { motion, useInView } from "framer-motion";
+import {
+  ArrowRight,
+  ShieldCheck,
+  CheckCircle,
+  SmilePlus,
+  User,
+  Stethoscope,
+  Shield,
+  HandHeart,
+  Heart,
+  Phone,
+} from "lucide-react";
+import { supportPages } from "@/data/content";
+
+/* ─────────────── Helpers ─────────────── */
+
+function SectionFade({
+  children,
+  className = "",
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+}) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 30 }}
+      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+      transition={{ duration: 0.6, delay, ease: [0.25, 0.1, 0.25, 1] }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+/* ─────────────── Data grouping ─────────────── */
+
+const freePages = supportPages.filter((sp) => sp.badge === "Gratis");
+const subsidyPages = supportPages.filter((sp) => sp.badge !== "Gratis");
+
+const freeGradients = [
+  "linear-gradient(to bottom, #10b981, #059669)", // emerald for Barn
+  "linear-gradient(to bottom, #18948A, #0E2A30)", // petrol teal for Eldre
+];
+
+const freeFills = [
+  "linear-gradient(135deg, rgba(16,185,129,0.06) 0%, rgba(5,150,105,0.02) 50%, transparent 100%)",
+  "linear-gradient(135deg, rgba(24,148,138,0.06) 0%, rgba(14,42,48,0.02) 50%, transparent 100%)",
+];
+
+const topGradients: Record<string, string> = {
+  "unge-voksne": "linear-gradient(to right, #18948A, #7CB1A7, #18948A)",
+  helfo: "linear-gradient(to right, #7CB1A7, #0E2A30, #7CB1A7)",
+  frikort: "linear-gradient(to right, #0E2A30, #18948A, #0E2A30)",
+  nav: "linear-gradient(to right, #6F938B, #7CB1A7, #6F938B)",
+};
+
+const subsidyFills: Record<string, string> = {
+  "unge-voksne": "linear-gradient(135deg, rgba(24,148,138,0.06) 0%, rgba(124,177,167,0.02) 50%, transparent 100%)",
+  helfo: "linear-gradient(135deg, rgba(124,177,167,0.06) 0%, rgba(14,42,48,0.02) 50%, transparent 100%)",
+  frikort: "linear-gradient(135deg, rgba(14,42,48,0.06) 0%, rgba(24,148,138,0.02) 50%, transparent 100%)",
+  nav: "linear-gradient(135deg, rgba(111,147,139,0.06) 0%, rgba(124,177,167,0.02) 50%, transparent 100%)",
+};
+
+const personaNav = [
+  { slug: "barn", label: "Barn 0–18", icon: SmilePlus, badge: "Gratis", desc: "Helt gratis tannbehandling gjennom offentlig tannhelsetjeneste" },
+  { slug: "unge-voksne", label: "19–28 år", icon: User, badge: "75 % rabatt", desc: "Sterkt subsidiert behandling for unge voksne" },
+  { slug: "helfo", label: "Diagnose", icon: Stethoscope, badge: "Refusjon", desc: "Folketrygden dekker ved spesifikke diagnoser" },
+  { slug: "frikort", label: "Høye utgifter", icon: Shield, badge: "kr 3 278", desc: "Egenandelstaket som begrenser årlige kostnader" },
+  { slug: "nav", label: "Lav inntekt", icon: HandHeart, badge: "Behovsprøvd", desc: "Økonomisk støtte fra NAV ved lav inntekt" },
+  { slug: "eldre", label: "Eldre / uføre", icon: Heart, badge: "Gratis", desc: "Gratis tannbehandling for eldre og uføre" },
+];
+
+/* ─────────────── PAGE ─────────────── */
+
+export default function InformasjonPage() {
+  return (
+    <main className="pt-20">
+      {/* ── Hero — Brown like other pages ── */}
+      <section className="relative bg-[var(--color-primary)] py-20 md:py-28 overflow-hidden">
+        <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-primary-light)] to-[var(--color-accent)]" />
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -top-[30%] -right-[15%] w-[50vw] h-[50vw] rounded-full bg-[var(--color-accent)]/8 blur-3xl" />
+          <div className="absolute -bottom-[20%] -left-[10%] w-[30vw] h-[30vw] rounded-full bg-[var(--color-accent-light)]/5 blur-3xl" />
+        </div>
+
+        <div className="container-width relative z-10 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h1 className="heading-display text-white mb-5">
+              Støtte og rettigheter
+            </h1>
+            <p className="text-lg md:text-xl text-white/80 font-sans font-400 leading-relaxed max-w-2xl mx-auto">
+              Mange har rett på hel eller delvis dekning av tannlegekostnader uten
+              å vite det. Her er en oversikt over ordningene som finnes i Norge.
+            </p>
+          </motion.div>
+
+        </div>
+      </section>
+
+      {/* ── Featured: Free Coverage (Barn + Eldre) — Bento Layout ── */}
+      <section className="py-16 md:py-24 bg-white">
+        <div className="container-width">
+          <div className="max-w-6xl mx-auto">
+            <SectionFade>
+              <div className="flex items-center gap-3 mb-8 md:mb-10">
+                <ShieldCheck className="size-6 shrink-0 text-emerald-600" />
+                <h2 className="font-heading font-700 text-2xl md:text-3xl text-[var(--color-primary)]">
+                  Helt gratis behandling
+                </h2>
+              </div>
+            </SectionFade>
+
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-5 md:gap-6">
+              {freePages.map((sp, i) => (
+                <SectionFade key={sp.slug} delay={i * 0.1} className={i === 0 ? "md:col-span-3" : "md:col-span-2"}>
+                  <Link
+                    href={`/dekning/${sp.slug}`}
+                    className="group block h-full"
+                  >
+                    <div
+                      className="rounded-2xl border border-[var(--color-border)] h-full flex overflow-hidden transition-all duration-300 hover:shadow-[0_20px_60px_rgba(60,36,21,0.08)] hover:-translate-y-1 cursor-pointer"
+                      style={{ background: freeFills[i] }}
+                    >
+                      {/* Gradient left border */}
+                      <div
+                        className="w-2 shrink-0 rounded-l-2xl"
+                        style={{ background: freeGradients[i] }}
+                      />
+                      <div className="flex-1 p-10 md:p-12 flex flex-col">
+                        <h3 className="font-heading font-700 text-2xl md:text-3xl text-[var(--color-primary)] mb-4 group-hover:text-[var(--color-accent)] transition-colors">
+                          {sp.shortTitle}
+                        </h3>
+                        <p className="text-base md:text-lg text-[var(--color-text-secondary)] font-sans font-400 leading-relaxed mb-6 flex-1">
+                          {sp.hubSummary}
+                        </p>
+                        <div className="flex items-center gap-2 text-[var(--color-accent)] font-sans font-500 text-base group-hover:text-[var(--color-primary)] transition-colors">
+                          Les mer
+                          <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </SectionFade>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Subsidy Cards Grid ── */}
+      <section className="py-16 md:py-24 bg-white">
+        <div className="container-width">
+          <div className="max-w-6xl mx-auto">
+            <SectionFade>
+              <div className="flex items-center gap-3 mb-8 md:mb-10">
+                <Stethoscope className="size-6 shrink-0 text-[var(--color-accent)]" />
+                <h2 className="font-heading font-700 text-2xl md:text-3xl text-[var(--color-primary)]">
+                  Delvis dekning og støtte
+                </h2>
+              </div>
+            </SectionFade>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {subsidyPages.map((sp, i) => (
+                <SectionFade key={sp.slug} delay={i * 0.08}>
+                  <Link
+                    href={`/dekning/${sp.slug}`}
+                    className="group block h-full"
+                  >
+                    <div
+                      className="relative rounded-2xl border border-[var(--color-border)] overflow-hidden p-8 md:p-9 h-full flex flex-col transition-all duration-300 hover:shadow-[0_16px_48px_rgba(60,36,21,0.08)] hover:-translate-y-1 cursor-pointer"
+                      style={{ background: subsidyFills[sp.slug] || "white" }}
+                    >
+                      {/* Gradient top accent strip */}
+                      <div
+                        className="absolute top-0 inset-x-0 h-1.5"
+                        style={{ background: topGradients[sp.slug] || "linear-gradient(to right, #18948A, #7CB1A7)" }}
+                      />
+                      <h3 className="font-heading font-700 text-xl md:text-2xl text-[var(--color-primary)] mb-3 group-hover:text-[var(--color-accent)] transition-colors">
+                        {sp.shortTitle}
+                      </h3>
+                      <p className="text-base md:text-lg text-[var(--color-text-secondary)] font-sans font-400 leading-relaxed mb-5 flex-1">
+                        {sp.hubSummary}
+                      </p>
+                      <div className="flex items-center gap-2 text-[var(--color-accent)] font-sans font-500 text-base group-hover:text-[var(--color-primary)] transition-colors">
+                        Les mer
+                        <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                      </div>
+                    </div>
+                  </Link>
+                </SectionFade>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Persona Navigator ── */}
+      <section className="py-16 md:py-20 bg-white">
+        <div className="container-width">
+          <div className="max-w-5xl mx-auto">
+            <SectionFade>
+              <h2 className="heading-section text-[var(--color-primary)] text-center mb-10 md:mb-12">
+                Hvem gjelder det for?
+              </h2>
+            </SectionFade>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+              {personaNav.map((item, i) => {
+                const Icon = item.icon;
+                return (
+                  <SectionFade key={item.slug} delay={i * 0.06}>
+                    <Link
+                      href={`/dekning/${item.slug}`}
+                      className="group block h-full"
+                    >
+                      <motion.div
+                        whileHover={{ y: -4 }}
+                        className="relative bg-white rounded-2xl border border-[var(--color-border)] p-6 md:p-8 transition-all duration-300 hover:shadow-lg hover:shadow-[var(--color-accent)]/5 hover:border-[var(--color-accent)]/30 cursor-pointer h-full flex flex-col overflow-hidden"
+                      >
+                        {/* Gradient bottom accent */}
+                        <div
+                          className="absolute bottom-0 inset-x-0 h-1"
+                          style={{ background: `linear-gradient(to right, transparent, var(--color-accent), transparent)` }}
+                        />
+                        <div className="flex items-center gap-4 mb-4">
+                          <div className="w-14 h-14 rounded-xl bg-[var(--color-accent)]/[0.08] flex items-center justify-center shrink-0">
+                            <Icon className="size-6 text-[var(--color-accent)]" />
+                          </div>
+                          <div>
+                            <span className="font-sans font-600 text-base text-[var(--color-primary)] block">
+                              {item.label}
+                            </span>
+                            <span className="font-heading font-700 text-sm text-[var(--color-accent)]">
+                              {item.badge}
+                            </span>
+                          </div>
+                        </div>
+                        <p className="text-base text-[var(--color-text-secondary)] font-sans font-400 leading-relaxed flex-1">
+                          {item.desc}
+                        </p>
+                      </motion.div>
+                    </Link>
+                  </SectionFade>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Bottom CTA ── */}
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-light)]" />
+        <div className="absolute inset-0">
+          <div className="absolute -top-[30%] -right-[15%] w-[50vw] h-[50vw] rounded-full bg-[var(--color-accent)]/10 blur-3xl" />
+        </div>
+        <div className="relative z-10 container-width py-20 md:py-28 text-center">
+          <SectionFade>
+            {/* Trust signal */}
+            <div className="flex items-center justify-center gap-2 mb-6">
+              <CheckCircle className="size-4 text-[var(--color-accent-light)]" />
+              <span className="text-sm font-sans font-500 text-white/60">
+                Vi hjelper deg å finne riktig ordning
+              </span>
+            </div>
+
+            <h2 className="heading-section text-white mb-5">
+              Har du spørsmål?
+            </h2>
+            <p className="text-xl text-white/80 font-sans font-400 leading-relaxed max-w-lg mx-auto mb-10">
+              Finner du ikke svar på det du lurer på? Ta kontakt, så hjelper vi
+              deg gjerne.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link
+                href="/kontakt"
+                className="btn-primary bg-white text-[var(--color-primary)] hover:bg-[var(--color-bg-cream)] px-8 py-4 text-base"
+              >
+                Kontakt oss
+              </Link>
+              <a
+                href="tel:61280412"
+                className="btn-secondary text-base px-8 py-4"
+              >
+                <Phone className="size-5" />
+                Ring 61 28 04 12
+              </a>
+            </div>
+          </SectionFade>
+        </div>
+      </section>
+    </main>
+  );
+}
