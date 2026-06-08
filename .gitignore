@@ -52,5 +52,6 @@ next-env.d.ts
 venv/
 .venv/
 
-# unused 7.3MB raster logo source — site renders the SVG at src/components/ui/Logo.tsx
+# 7.3MB raster logo source — kept local only; the recolored, web-sized
+# derivatives (logo-mark.png, logo-petrol.png) are committed and used by the site
 public/images/logo.png
