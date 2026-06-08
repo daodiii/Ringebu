@@ -10,7 +10,7 @@
 
   /* NOTE: copper/amber/brass names kept to avoid churn, but the palette is
      now fully cool blue-green (no warm tones). */
-  --color-copper:       #18948A;   /* vivid teal — primary CTAs, the action spark */
+  --color-copper:       #0E2A30;   /* deep petrol — primary CTAs & accents, matches the treatment boxes */
   --color-amber:        #D6E7E1;   /* pale cool teal — text and accents on dark surfaces */
   --color-amber-deep:   #7CB1A7;   /* eucalyptus teal — highlights on dark */
   --color-brass:        #6F938B;   /* muted teal — thin lines, eyebrow rules, labels */
