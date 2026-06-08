@@ -94,7 +94,7 @@ export function Xray() {
           className="relative mt-10 overflow-hidden rounded-[8px] border border-[var(--color-rule-dark)]"
           style={{
             background:
-              "radial-gradient(120% 140% at 50% 0%, rgba(245,233,203,0.10), transparent 60%), linear-gradient(180deg, #0b252a, #061a1e)",
+              "radial-gradient(120% 140% at 50% 0%, rgba(214,231,225,0.10), transparent 60%), linear-gradient(180deg, #0b252a, #061a1e)",
           }}
         >
           {/* scan beam */}
@@ -104,7 +104,7 @@ export function Xray() {
               className="pointer-events-none absolute inset-y-0 z-10 w-[120px]"
               style={{
                 background:
-                  "linear-gradient(90deg, transparent, rgba(245,233,203,0.16) 45%, rgba(245,233,203,0.22) 50%, rgba(245,233,203,0.16) 55%, transparent)",
+                  "linear-gradient(90deg, transparent, rgba(214,231,225,0.16) 45%, rgba(214,231,225,0.22) 50%, rgba(214,231,225,0.16) 55%, transparent)",
               }}
               initial={{ x: -140 }}
               animate={{ x: filmW + 20 }}
@@ -115,8 +115,8 @@ export function Xray() {
           <svg viewBox={`0 0 ${VW} ${VH}`} className="relative z-[1] block w-full" role="img" aria-label="Panoramisk røntgen av tannrekken">
             <defs>
               <linearGradient id="bone" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="rgba(245,233,203,0.34)" />
-                <stop offset="100%" stopColor="rgba(245,233,203,0.10)" />
+                <stop offset="0%" stopColor="rgba(214,231,225,0.34)" />
+                <stop offset="100%" stopColor="rgba(214,231,225,0.10)" />
               </linearGradient>
               <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
                 <feGaussianBlur stdDeviation="5" result="b" />
@@ -131,7 +131,7 @@ export function Xray() {
             <path
               d={`M40,${152} Q${VW / 2},${60} ${VW - 40},${152}`}
               fill="none"
-              stroke="rgba(245,233,203,0.12)"
+              stroke="rgba(214,231,225,0.12)"
               strokeWidth={26}
               strokeLinecap="round"
             />
@@ -151,13 +151,13 @@ export function Xray() {
                   <path
                     d={toothPath(t.width, t.height)}
                     fill="url(#bone)"
-                    stroke={on ? "var(--color-amber)" : "rgba(245,233,203,0.45)"}
+                    stroke={on ? "var(--color-amber)" : "rgba(214,231,225,0.45)"}
                     strokeWidth={on ? 2 : 1}
                   />
                   {/* pulp/root hint */}
                   <path
                     d={`M0,${-t.height * 0.32} L0,${t.height * 0.22}`}
-                    stroke={on ? "var(--color-copper)" : "rgba(245,233,203,0.25)"}
+                    stroke={on ? "var(--color-copper)" : "rgba(214,231,225,0.25)"}
                     strokeWidth={1.4}
                   />
                 </g>

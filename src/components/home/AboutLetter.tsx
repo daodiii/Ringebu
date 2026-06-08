@@ -120,7 +120,7 @@ export function AboutLetter() {
               style={{
                 border: "1.5px solid var(--color-brass)",
                 boxShadow:
-                  "inset 0 0 0 4px var(--color-paper-warm), inset 0 0 0 5px rgba(184,148,92,0.35)",
+                  "inset 0 0 0 4px var(--color-paper-warm), inset 0 0 0 5px rgba(14,42,48,0.3)",
               }}
             >
               <span className="font-mono text-[15px] font-bold uppercase tracking-[0.18em] text-[var(--color-brass)]">

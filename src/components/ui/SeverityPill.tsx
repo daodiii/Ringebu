@@ -15,7 +15,7 @@ const LABELS: Record<Severity, string> = {
 
 const STYLES: Record<Severity, string> = {
   now: "bg-[var(--color-urgent)] text-[var(--color-paper)]",
-  soon: "bg-[var(--color-amber-deep)] text-[#6B4F2C]",
+  soon: "bg-[var(--color-amber-deep)] text-[var(--color-ink)]",
   watch: "bg-[rgba(26,20,16,0.08)] text-[var(--color-text-secondary)]",
 };
 

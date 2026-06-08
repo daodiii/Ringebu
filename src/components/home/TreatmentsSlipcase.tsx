@@ -10,7 +10,7 @@ type Spine = {
   name: string;
   body: string;
   detail: string;
-  // Subtle tonal variation across the row — 5–8% within the warm palette.
+  // Monotonic white → cream ramp across the row — each spine a notch deeper.
   // Open spine ignores this and uses --color-ink for the cinematic contrast.
   closedTone: string;
 };
@@ -22,7 +22,7 @@ const SPINES: ReadonlyArray<Spine> = [
     body: "Den enkleste timen er den du tar i tide.",
     detail:
       "Rutinekontroll, profesjonell rens og fluorbehandling. Vi ser etter de små tegnene før de blir store problemer — i ro, uten hastverk.",
-    closedTone: "#EFE8DA",
+    closedTone: "#FFFFFF",
   },
   {
     id: "generell",
@@ -30,7 +30,7 @@ const SPINES: ReadonlyArray<Spine> = [
     body: "Tradisjonelt håndverk med moderne materialer.",
     detail:
       "Fyllinger, kroner og broer utført med vekt på presisjon og estetikk. Komposittfyllinger som matcher dine egne tenner.",
-    closedTone: "#EBE2CE",
+    closedTone: "#FAF8F2",
   },
   {
     id: "akutt",
@@ -38,7 +38,7 @@ const SPINES: ReadonlyArray<Spine> = [
     body: "Hurtig vurdering, samme dag.",
     detail:
       "Tannverk venter ikke. Vi setter av tid hver dag for akutte tilfeller — ring tidlig på dagen, så finner vi løsning.",
-    closedTone: "#F0E8D6",
+    closedTone: "#F5F0E5",
   },
   {
     id: "bleking",
@@ -46,7 +46,7 @@ const SPINES: ReadonlyArray<Spine> = [
     body: "Skånsom klinisk bleking, varig resultat.",
     detail:
       "Klinisk bleking under kontroll. Ikke butikkprodukter, ikke sjokkeffekter — bare et reelt, varig hvitere smil.",
-    closedTone: "#ECE6D6",
+    closedTone: "#F0E9D9",
   },
   {
     id: "implantater",
@@ -54,7 +54,7 @@ const SPINES: ReadonlyArray<Spine> = [
     body: "Permanente, naturlige løsninger.",
     detail:
       "Implantater som ser ut og føles som dine egne tenner. Hele forløpet — fra vurdering til ferdig tann — i én klinikk.",
-    closedTone: "#E8DCC2",
+    closedTone: "#EBE1CC",
   },
   {
     id: "rotbehandling",
@@ -62,7 +62,7 @@ const SPINES: ReadonlyArray<Spine> = [
     body: "Skånsom, smertefri behandling som bevarer tannen.",
     detail:
       "Moderne rotbehandling med digital røntgen og lokalbedøvelse. Målet er alltid å bevare din egen tann.",
-    closedTone: "#EEE3CC",
+    closedTone: "#E6DABF",
   },
 ];
 
