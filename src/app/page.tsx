@@ -1,7 +1,7 @@
 import { Hero } from "@/components/home/Hero";
 import { TreatmentsSlipcase } from "@/components/home/TreatmentsSlipcase";
 import { TrustSection } from "@/components/home/TrustSection";
-import { SymptomsIndex } from "@/components/home/SymptomsIndex";
+import { SymptomsConstellation } from "@/components/home/SymptomsConstellation";
 import { AboutLetter } from "@/components/home/AboutLetter";
 import { CtaCloseout } from "@/components/home/CtaCloseout";
 
@@ -11,7 +11,7 @@ export default function Home() {
       <Hero />
       <TreatmentsSlipcase />
       <TrustSection />
-      <SymptomsIndex />
+      <SymptomsConstellation />
       <AboutLetter />
       <CtaCloseout />
     </main>
