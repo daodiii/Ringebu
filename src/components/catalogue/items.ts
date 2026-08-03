@@ -8,7 +8,7 @@ export interface SpreadItem {
   title: string;
   /** Short editorial line (treatment.subtitle / symptom meta.subtitle). */
   kicker: string;
-  /** Category or anatomical region — used as the plate corner caption. */
+  /** Category or anatomical region. Not currently rendered. */
   tag: string;
   description: string;
   points: readonly string[];

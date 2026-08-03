@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -23,6 +23,17 @@ function Drawer({ item, open, onToggle, priority }: {
   // full width rather than sitting beside an empty square.
   const [photoFailed, setPhotoFailed] = useState(false);
   const showPlate = Boolean(item.photo) && !photoFailed;
+
+  // Must stay referentially stable: next/image keys its internal ref callback
+  // on `onError`, so a fresh closure each render re-attaches the ref and
+  // reassigns `img.src` on every row toggle.
+  const handlePhotoError = useCallback(() => {
+    // Degrading quietly would hide a renamed or missing file in production.
+    console.error(
+      `CatalogueDrawer: photo failed to load for "${item.title}" (${item.photo}). Rendering the row without a plate.`
+    );
+    setPhotoFailed(true);
+  }, [item.title, item.photo]);
 
   return (
     <div className="border-b border-[var(--color-brass)]/30">
@@ -129,7 +140,7 @@ function Drawer({ item, open, onToggle, priority }: {
                 photoTone={item.photoTone}
                 open={open}
                 priority={priority}
-                onError={() => setPhotoFailed(true)}
+                onError={handlePhotoError}
               />
             )}
           </div>
