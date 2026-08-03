@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Plate } from "./Plate";
 import type { SpreadItem } from "./items";
 
 interface Props {
@@ -12,18 +13,24 @@ interface Props {
   items: SpreadItem[];
 }
 
-function Drawer({ item, open, onToggle }: {
+function Drawer({ item, open, onToggle, priority }: {
   item: SpreadItem;
   open: boolean;
   onToggle: () => void;
+  priority?: boolean;
 }) {
+  // A row without a usable photograph carries no plate at all — the text runs
+  // full width rather than sitting beside an empty square.
+  const [photoFailed, setPhotoFailed] = useState(false);
+  const showPlate = Boolean(item.photo) && !photoFailed;
+
   return (
     <div className="border-b border-[var(--color-brass)]/30">
       <button
         type="button"
         onClick={onToggle}
         aria-expanded={open}
-        className="group relative grid w-full grid-cols-[1fr_auto] items-baseline gap-5 py-6 text-left transition-transform duration-150 ease-out active:scale-[0.997] md:py-7"
+        className="group relative grid w-full grid-cols-[1fr_auto] items-baseline gap-5 py-6 text-left transition-transform duration-150 ease-out active:scale-[0.997] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-copper)] md:py-7"
       >
         <span
           className="font-sans font-light transition-colors duration-300"
@@ -65,7 +72,12 @@ function Drawer({ item, open, onToggle }: {
         style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
       >
         <div className="overflow-hidden">
-          <div className="grid grid-cols-1 items-center gap-8 py-6 md:grid-cols-[1fr_minmax(0,343px)] md:gap-14 md:py-8">
+          <div
+            className={cn(
+              "grid grid-cols-1 items-center gap-8 py-6 md:gap-14 md:py-8",
+              showPlate && "md:grid-cols-[1fr_minmax(0,343px)]"
+            )}
+          >
             <div className="md:order-1">
               {item.kicker && (
                 <p className="text-[26px] italic leading-[1.4] text-[var(--color-copper)]">
@@ -110,35 +122,16 @@ function Drawer({ item, open, onToggle }: {
               )}
             </div>
 
-            {/* Plate reveals downward via vertical clip */}
-            <div className="md:order-2">
-              <div
-                className="relative aspect-square w-full overflow-hidden shadow-[inset_0_0_0_1px_rgba(14,42,48,0.16)] transition-[clip-path] duration-[600ms] ease-out"
-                style={{
-                  background: item.photoTone,
-                  clipPath: open ? "inset(0 0 0 0)" : "inset(0 0 100% 0)",
-                }}
-              >
-                {item.photo ? (
-                  <Image
-                    src={item.photo}
-                    alt={`${item.title}, illustrasjonsbilde fra Ringebu Tannlegesenter`}
-                    fill
-                    sizes="(min-width: 768px) 40vw, 100vw"
-                    className="object-cover"
-                  />
-                ) : (
-                  <div
-                    aria-hidden="true"
-                    className="absolute inset-0"
-                    style={{
-                      background:
-                        "radial-gradient(120% 100% at 78% 18%, rgba(255,255,255,0.42), transparent 60%)",
-                    }}
-                  />
-                )}
-              </div>
-            </div>
+            {showPlate && item.photo && (
+              <Plate
+                title={item.title}
+                photo={item.photo}
+                photoTone={item.photoTone}
+                open={open}
+                priority={priority}
+                onError={() => setPhotoFailed(true)}
+              />
+            )}
           </div>
         </div>
       </div>
@@ -185,6 +178,7 @@ export function CatalogueDrawer({ title, lead, items }: Props) {
               item={item}
               open={openSet.has(i)}
               onToggle={() => toggle(i)}
+              priority={i === 0}
             />
           ))}
         </div>

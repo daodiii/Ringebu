@@ -16,6 +16,7 @@ export interface SpreadItem {
   note?: { label: string; body: string };
   /** Symptom-only: link to the related article. */
   link?: { href: string; label: string };
+  /** When absent the row has no plate at all and the text runs full width. */
   photo?: string;
   photoTone: string;
 }
@@ -46,7 +47,6 @@ export const symptomItems: SpreadItem[] = symptoms.map((s) => {
     points: s.causes,
     note: { label: "Hva du gjør", body: s.whatToDo },
     link: s.slug ? { href: `/artikler/${s.slug}`, label: "Les artikkel" } : undefined,
-    photo: meta.photo,
     photoTone: meta.photoTone,
   };
 });
