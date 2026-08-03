@@ -3,25 +3,24 @@ export type SymptomRegion = "Tann" | "Tannkjøtt" | "Kjeve" | "Munn";
 export interface SymptomMeta {
   /** Short editorial caption shown above the title (mono small caps) */
   subtitle: string;
-  /** Anatomical region — shown as the corner caption on the photo plate */
+  /** Anatomical region. Carried through as `tag`; not currently rendered. */
   region: SymptomRegion;
-  /** Optional photo path. If absent or missing on disk, the plate falls back to `photoTone`. */
-  photo?: string;
   /** Plate background tone, same convention as TREATMENTS in /behandlinger/data.ts */
   photoTone: string;
 }
 
+// Symptoms carry no photography by design: /behandlinger shows the clinic,
+// /symptomer states what is happening. With no photo on any row, the drawer
+// drops its right-hand column and the text runs full width.
 export const SYMPTOM_META: Record<string, SymptomMeta> = {
   "Tannpine": {
     subtitle: "Smerten som ikke gir seg",
     region: "Tann",
-    photo: "/images/article-toothache.jpg",
     photoTone: "#DCE6E2",
   },
   "Blødende tannkjøtt": {
     subtitle: "De første tegnene",
     region: "Tannkjøtt",
-    photo: "/images/article-gum-health.jpg",
     photoTone: "#E6EDE9",
   },
   "Sensitive tenner": {
@@ -37,7 +36,6 @@ export const SYMPTOM_META: Record<string, SymptomMeta> = {
   "Dårlig ånde": {
     subtitle: "Når pusten ikke vil gi seg",
     region: "Munn",
-    photo: "/images/article-mouthwash.jpg",
     photoTone: "#E9EFEC",
   },
   "Tannkjøttbetennelse": {
@@ -53,7 +51,6 @@ export const SYMPTOM_META: Record<string, SymptomMeta> = {
   "Kjevesmerter": {
     subtitle: "Kjeven som jobber for mye",
     region: "Kjeve",
-    photo: "/images/article-teeth-grinding.jpg",
     photoTone: "#E6EDE9",
   },
 };
