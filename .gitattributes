@@ -1,0 +1,7 @@
+# Skallskriptene kjører på Linux — systemd på VPS-en, ubuntu-latest i CI.
+# Uten linja under gir core.autocrlf=true dem CRLF i arbeidstreet på Windows,
+# og CRLF ødelegger både shebangen og heredoc-terminatorene der de faktisk
+# kjøres. Innholdet i git er allerede LF; dette holder arbeidstreet i takt
+# uansett hvilken core.autocrlf den enkelte maskinen står på.
+* text=auto
+*.sh text eol=lf
