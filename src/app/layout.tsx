@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     template: "%s | Ringebu Tannlegesenter",
   },
   description:
-    "Ringebu Tannlegesenter tilbyr moderne tannbehandling med personlig omsorg. Erfarne tannleger, siste teknologi og fokus på din komfort. Bestill time i dag.",
+    "Tannlege i Ringebu sentrum. Vi tar én pasient om gangen og har god tid til deg. Ring 61 28 04 12 for time.",
   keywords: [
     "tannlege Ringebu",
     "tannlegesenter",
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Ringebu Tannlegesenter | Din Tannlege i Ringebu",
     description:
-      "Moderne tannbehandling med personlig omsorg i hjertet av Gudbrandsdalen.",
+      "Tannlege i Ringebu sentrum, med god tid til hver pasient.",
     type: "website",
     locale: "nb_NO",
     siteName: "Ringebu Tannlegesenter",
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Ringebu Tannlegesenter | Din Tannlege i Ringebu",
     description:
-      "Moderne tannbehandling med personlig omsorg i hjertet av Gudbrandsdalen.",
+      "Tannlege i Ringebu sentrum, med god tid til hver pasient.",
   },
   robots: {
     index: true,
@@ -93,7 +93,7 @@ export default function RootLayout({
               "@type": "Dentist",
               name: "Ringebu Tannlegesenter",
               description:
-                "Moderne tannbehandling med personlig omsorg i hjertet av Gudbrandsdalen.",
+                "Tannlege i Ringebu sentrum, med god tid til hver pasient.",
               url: "https://ringebutann.no",
               telephone: "+4761280412",
               email: "post@ringebutann.no",

@@ -101,7 +101,7 @@ export const supportPages: SupportPage[] = [
     hubSummary:
       "Alle barn og ungdom under 18 år får gratis tannbehandling. Du trenger ikke gjøre noe. Innkallingen kommer av seg selv.",
     metaDescription:
-      "Alt om gratis tannbehandling for barn og ungdom 0-18 år i Norge. Automatisk innkalling, hva som dekkes, tannregulering og akutt hjelp.",
+      "Gratis tannbehandling for barn og ungdom under 18. Slik fungerer innkallingen, og dette dekkes.",
     heroSubtitle: "0–18 år",
     intro: [
       "Barn og ungdom har gratis tannbehandling til de fyller 18. Det ordnes av den offentlige tannhelsetjenesten. Barnet ditt blir kalt inn automatisk.",
@@ -232,7 +232,7 @@ export const supportPages: SupportPage[] = [
     hubSummary:
       "Har du periodontitt, munntørrhet eller andre bestemte diagnoser? Da kan du få deler av tannlegeregningen dekket av HELFO.",
     metaDescription:
-      "HELFO dekker tannbehandling ved 15 bestemte tilstander. Finn ut om du kvalifiserer for stønad og hvordan søknadsprosessen fungerer.",
+      "HELFO dekker tannbehandling ved 15 bestemte tilstander. Se om du har rett på stønad, og hvordan du søker.",
     heroSubtitle: "Folketrygden",
     intro: [
       "Voksne betaler som regel tannlegen selv. Men det finnes unntak. Har du en av **15 bestemte tilstander**, dekker folketrygden hele eller deler av regningen. Det kalles HELFO-stønad.",
