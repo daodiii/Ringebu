@@ -14,7 +14,6 @@ const PRACTICAL = [
   { label: "Priser", href: "/behandlinger" },
   { label: "Støtteordninger", href: "/dekning" },
   { label: "Symptomer", href: "/symptomer" },
-  { label: "Tips & råd", href: "/artikler" },
   { label: "Slik finner du oss", href: "/kontakt" },
 ];
 

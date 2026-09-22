@@ -246,7 +246,7 @@ export function Xray() {
                   {current.whatToDo}
                 </p>
                 <Link
-                  href={current.slug ? `/artikler/${current.slug}` : "/symptomer"}
+                  href="/symptomer"
                   className="mt-6 inline-flex items-center gap-1.5 text-[16px] font-medium text-[var(--color-amber-deep)] transition-colors hover:text-[var(--color-amber)]"
                 >
                   Les mer

@@ -25,12 +25,12 @@ export interface Treatment {
 export const TREATMENTS: readonly Treatment[] = [
   {
     title: "Forebyggende behandling",
-    subtitle: "Grunnlaget for god tannhelse",
+    subtitle: "Kontroll, rens og fluor",
     category: "Forebyggende",
     refusion: "HELFO",
     duration: "30–45 min",
     description:
-      "Regelmessig forebygging holder tennene friske hele livet. Vi undersøker grundig, renser tennene og viser deg hvordan du best tar vare på dem hjemme.",
+      "Går du jevnlig til kontroll, holder tennene seg friske. Vi undersøker, renser og viser deg hva du bør gjøre hjemme.",
     features: [
       "Grundig tannundersøkelse med digitalt røntgen",
       "Profesjonell tannrens og polering",
@@ -48,7 +48,7 @@ export const TREATMENTS: readonly Treatment[] = [
   },
   {
     title: "Bleking",
-    subtitle: "Et lysere, hvitere smil",
+    subtitle: "Hvitere tenner",
     category: "Kosmetisk",
     refusion: "Egenandel",
     duration: "60–90 min",
@@ -66,12 +66,12 @@ export const TREATMENTS: readonly Treatment[] = [
   },
   {
     title: "Fyllingsterapi",
-    subtitle: "Moderne, usynlige fyllinger",
+    subtitle: "Fyllinger du ikke ser",
     category: "Restaurering",
     refusion: "HELFO",
     duration: "45–60 min",
     description:
-      "Fyllinger i tannfargen som fyller hull og gjør tenner hele igjen, du ser ikke forskjellen.",
+      "Vi fyller hullet med en fylling i samme farge som tannen. Du ser ikke forskjellen.",
     features: [
       "Tannfargede komposittfyllinger",
       "Utskifting av gamle amalgamfyllinger",
@@ -88,12 +88,12 @@ export const TREATMENTS: readonly Treatment[] = [
   },
   {
     title: "Kron og bro",
-    subtitle: "Holdbare restaureringer",
+    subtitle: "Når en tann må bygges opp",
     category: "Restaurering",
     refusion: "Delvis HELFO",
     duration: "Flere besøk",
     description:
-      "Kroner og broer erstatter eller reparerer tenner som er skadet eller borte, og ser helt naturlige ut.",
+      "En krone reparerer en skadet tann. En bro erstatter en som mangler. Begge ser naturlige ut.",
     features: [
       "Helkeramiske kroner for naturlig utseende",
       "Broer som erstatter manglende tenner",
@@ -151,12 +151,12 @@ export const TREATMENTS: readonly Treatment[] = [
   },
   {
     title: "Tannkjøtt & tannstein",
-    subtitle: "Friskt tannkjøtt, sterke tenner",
+    subtitle: "Behandling av tannkjøttet",
     category: "Forebyggende",
     refusion: "HELFO",
     duration: "45–60 min",
     description:
-      "Sunt tannkjøtt er det viktigste for at tennene skal holde lenge. Vi fjerner tannstein og behandler tannkjøttsykdom.",
+      "Tennene holder ikke uten friskt tannkjøtt. Vi fjerner tannstein og behandler betennelse.",
     features: [
       "Grundig fjerning av tannstein",
       "Behandling av gingivitt og periodontitt",
@@ -178,7 +178,7 @@ export const TREATMENTS: readonly Treatment[] = [
     refusion: "Egenandel",
     duration: "30 min",
     description:
-      "Gnisser du tenner om natten? Det sliter dem ned og gir smerter. En bittskinne tilpasset deg beskytter og lindrer.",
+      "Gnisser du tenner om natten? Det sliter dem ned og gir vondt. En bittskinne beskytter.",
     features: [
       "Individuelt tilpassede bittskinner",
       "Beskyttelse mot slitasje",
@@ -196,7 +196,7 @@ export const TREATMENTS: readonly Treatment[] = [
     refusion: "HELFO",
     duration: "45–60 min",
     description:
-      "Hos oss møter du et trygt, rolig miljø med ekstra tid og omsorg. Vi tar tannlegeskrekk på alvor.",
+      "Mange gruer seg. Hos oss får du ekstra tid, og vi tar pauser når du trenger det.",
     features: [
       "Rolig og trygt behandlingsmiljø",
       "Ekstra tid til å bli kjent og trygg",

@@ -65,11 +65,11 @@ export function SymptomsConstellation() {
           className="max-w-[18ch] font-sans font-extralight text-[var(--color-text-primary)]"
           style={{ fontSize: "clamp(32px, 4.2vw, 52px)", letterSpacing: "-0.045em", lineHeight: 0.92 }}
         >
-          Ulike symptomer du kan oppleve
-          <span className="text-[var(--color-copper)]">.</span>
+          Kjenner du noe av dette
+          <span className="text-[var(--color-copper)]">?</span>
         </h2>
         <p className="mt-5 max-w-[46ch] text-[17px] leading-[1.6] text-[var(--color-text-secondary)]">
-          Her finner du informasjon og råd om hva som bør gjøres.
+          Trykk på et symptom. Så sier vi hva du bør gjøre.
         </p>
 
         <div className="mt-8 grid grid-cols-1 items-center gap-x-14 gap-y-10 lg:grid-cols-[1.15fr_0.85fr]">
@@ -189,7 +189,7 @@ export function SymptomsConstellation() {
                   <p className="text-[16px] leading-[1.6] text-[var(--color-text-secondary)]">{current.whatToDo}</p>
                 </div>
                 <Link
-                  href={current.slug ? `/artikler/${current.slug}` : "/symptomer"}
+                  href="/symptomer"
                   className="mt-7 inline-flex items-center gap-1.5 text-[16px] font-medium text-[var(--color-copper)] transition-colors hover:text-[var(--color-text-primary)]"
                 >
                   Les mer

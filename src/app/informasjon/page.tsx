@@ -7,7 +7,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Om oss",
   description:
-    "En liten tannlegeklinikk i Ringebu med god tid til hver pasient. Bli kjent med oss — og se hvordan et besøk hos oss foregår.",
+    "En liten tannlegeklinikk i Ringebu med god tid til hver pasient. Her ser du hvordan et besøk hos oss foregår.",
   alternates: { canonical: "/informasjon" },
   openGraph: {
     title: "Om oss | Ringebu Tannlegesenter",
@@ -28,15 +28,15 @@ const serif = "font-[family-name:var(--font-display)]";
 const passages = [
   {
     title: "Du er ikke en i rekka her",
-    body: "Vi prioriterer kunden, og det får du merke med en gang. Vi tar én pasient om gangen, og vi har ikke det travelt. Du skal rekke å sette deg godt til rette før vi setter i gang.",
+    body: "Du merker det med en gang. Vi tar én pasient om gangen, og vi har ikke hastverk. Du skal rekke å sette deg godt til rette først.",
   },
   {
     title: "Vi sier det som det er",
-    body: "Du skal kunne stole på det vi sier. Vi anbefaler aldri behandling du ikke trenger, og vi er ærlige med deg hvis noe bør gjøres. Det skal aldri være tvil om hva du betaler for, eller hvorfor.",
+    body: "Vi anbefaler aldri behandling du ikke trenger. Og vi sier fra hvis noe bør gjøres. Du skal alltid vite hva du betaler for.",
   },
   {
     title: "Gruer du deg litt? Det er helt greit.",
-    body: "Mange synes det er ubehagelig å gå til tannlegen. Det skjønner vi godt. Vi går rolig fram, forteller deg hva vi gjør underveis, og tar en pause med en gang du trenger det. Du bestemmer takten.",
+    body: "Mange synes det er ubehagelig å gå til tannlegen. Det skjønner vi. Vi går rolig fram og sier hva vi gjør underveis. Trenger du pause, tar vi pause. Du bestemmer takten.",
   },
 ];
 

@@ -27,7 +27,7 @@ export function dirUrl(place: string) {
 }
 
 export const SEO_TEXT =
-  "Ringebu Tannlegesenter ligger i Hanstadgata 2 i Ringebu sentrum, like ved E6 i hjertet av Gudbrandsdalen. Vi er den nærmeste tannklinikken for deg som er på ferie i Kvitfjell, bor på hytta i Venabygdsfjellet, eller besøker dalføret. Vi prioriterer alltid akutte tilfeller.";
+  "Ringebu Tannlegesenter ligger i Hanstadgata 2, midt i Ringebu sentrum og like ved E6. Er du på ferie i Kvitfjell, på hytta i Venabygdsfjellet eller bare på gjennomreise, er vi nærmeste tannklinikk. Akutte tilfeller går alltid først.";
 
 type HourRow = { day: string; code: string; hours: string; closed?: boolean };
 

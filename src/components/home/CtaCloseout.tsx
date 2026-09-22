@@ -54,8 +54,8 @@ export function CtaCloseout() {
         {/* Main content — bottom left */}
         <div className="order-1 max-w-[640px] md:order-none md:col-start-1 md:row-start-3">
           <h2 className="font-sans text-[40px] font-semibold leading-[1] tracking-[-0.032em] text-[var(--color-paper)] md:text-[54px]">
-            Smilet ditt fortjener<br />
-            <span className="font-light text-[var(--color-amber)]">litt mer tid.</span>
+            Trenger du tannlege?<br />
+            <span className="font-light text-[var(--color-amber)]">Ta kontakt.</span>
           </h2>
           <Link
             href="/kontakt"

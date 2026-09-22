@@ -19,49 +19,49 @@ const SPINES: ReadonlyArray<Spine> = [
   {
     id: "forebyggende",
     name: "Forebyggende",
-    body: "Den enkleste timen er den du tar i tide.",
+    body: "Kontroll før det gjør vondt.",
     detail:
-      "Rutinekontroll, profesjonell rens og fluorbehandling. Vi ser etter de små tegnene før de blir store problemer — i ro, uten hastverk.",
+      "Kontroll, rens og fluor. Vi ser etter de små tegnene før de blir store problemer.",
     closedTone: "#FFFFFF",
   },
   {
     id: "generell",
     name: "Generell tannbehandling",
-    body: "Tradisjonelt håndverk med moderne materialer.",
+    body: "Fyllinger, kroner og broer.",
     detail:
-      "Fyllinger, kroner og broer utført med vekt på presisjon og estetikk. Komposittfyllinger som matcher dine egne tenner.",
+      "Fyllingene matcher fargen på dine egne tenner. Kroner og broer tilpasser vi så de sitter godt og ser naturlige ut.",
     closedTone: "#FAF8F2",
   },
   {
     id: "akutt",
     name: "Akutt tannhjelp",
-    body: "Hurtig vurdering, samme dag.",
+    body: "Vi hjelper deg samme dag.",
     detail:
-      "Tannverk venter ikke. Vi setter av tid hver dag for akutte tilfeller — ring tidlig på dagen, så finner vi løsning.",
+      "Tannverk kan ikke vente. Vi holder av tid hver dag. Ring tidlig, så finner vi en løsning.",
     closedTone: "#F5F0E5",
   },
   {
     id: "bleking",
     name: "Bleking & estetikk",
-    body: "Skånsom klinisk bleking, varig resultat.",
+    body: "Bleking hos tannlege.",
     detail:
-      "Klinisk bleking under kontroll. Ikke butikkprodukter, ikke sjokkeffekter — bare et reelt, varig hvitere smil.",
+      "Vi bleker under kontroll, ikke med produkter fra butikken. Resultatet blir naturlig og varer lenge.",
     closedTone: "#F0E9D9",
   },
   {
     id: "implantater",
     name: "Implantater",
-    body: "Permanente, naturlige løsninger.",
+    body: "En ny tann som varer.",
     detail:
-      "Implantater som ser ut og føles som dine egne tenner. Hele forløpet — fra vurdering til ferdig tann — i én klinikk.",
+      "Et implantat ser ut og føles som din egen tann. Vi gjør hele jobben her, fra første vurdering til ferdig tann.",
     closedTone: "#EBE1CC",
   },
   {
     id: "rotbehandling",
     name: "Rotbehandling",
-    body: "Skånsom, smertefri behandling som bevarer tannen.",
+    body: "Vi redder tannen.",
     detail:
-      "Moderne rotbehandling med digital røntgen og lokalbedøvelse. Målet er alltid å bevare din egen tann.",
+      "Du får lokalbedøvelse, så det gjør ikke vondt underveis. Målet er alltid å beholde din egen tann.",
     closedTone: "#E6DABF",
   },
 ];
@@ -81,8 +81,8 @@ export function TreatmentsSlipcase() {
         {/* Header */}
         <div className="mb-12 md:mb-16">
           <h2 className="display-section max-w-[640px] text-[var(--color-text-primary)]">
-            Skreddersydde løsninger for{" "}
-            <span className="font-light text-[var(--color-stone)]">ditt</span> smil.
+            Dette kan vi hjelpe{" "}
+            <span className="font-light text-[var(--color-stone)]">deg</span> med.
           </h2>
         </div>
 

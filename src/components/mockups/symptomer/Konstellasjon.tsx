@@ -188,7 +188,7 @@ export function Konstellasjon() {
                   <p className="text-[16px] leading-[1.6] text-[var(--color-text-secondary)]">{current.whatToDo}</p>
                 </div>
                 <Link
-                  href={current.slug ? `/artikler/${current.slug}` : "/symptomer"}
+                  href="/symptomer"
                   className="mt-7 inline-flex items-center gap-1.5 text-[16px] font-medium text-[var(--color-copper)] transition-colors hover:text-[var(--color-text-primary)]"
                 >
                   Les mer

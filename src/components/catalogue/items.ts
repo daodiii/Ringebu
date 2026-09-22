@@ -46,7 +46,8 @@ export const symptomItems: SpreadItem[] = symptoms.map((s) => {
     description: s.description,
     points: s.causes,
     note: { label: "Hva du gjør", body: s.whatToDo },
-    link: s.slug ? { href: `/artikler/${s.slug}`, label: "Les artikkel" } : undefined,
+    // The symptom articles were removed; the card keeps its "Hva du gjør" advice.
+    link: undefined,
     photoTone: meta.photoTone,
   };
 });
@@ -54,12 +55,12 @@ export const symptomItems: SpreadItem[] = symptoms.map((s) => {
 export const PAGE_COPY = {
   behandlinger: {
     title: "Behandlinger",
-    lead: "Ni fagområder, ett team, og god tid til hver enkelt.",
+    lead: "Dette gjør vi, og hva det koster.",
     items: treatmentItems,
   },
   symptomer: {
     title: "Symptomer",
-    lead: "Åtte ting tennene gjør når noe rører seg. Hva det er, og hva du gjør med det.",
+    lead: "Åtte vanlige plager. Hva de betyr, og hva du bør gjøre.",
     items: symptomItems,
   },
 } as const;

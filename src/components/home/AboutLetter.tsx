@@ -41,8 +41,7 @@ export function AboutLetter() {
         <RevealOnScroll delay={0.12}>
           <p className="mx-auto mt-8 max-w-[54ch] text-lg font-light leading-relaxed text-[var(--color-text-on-dark-muted)] md:text-xl">
             Vi er en liten tannlegeklinikk i Ringebu. Vi tar én pasient om
-            gangen, sier det som det er, og forteller deg alltid hva som skjer
-            videre.
+            gangen. Og du får alltid vite hva som skjer videre.
           </p>
         </RevealOnScroll>
 
