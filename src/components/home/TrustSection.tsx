@@ -2,16 +2,16 @@ import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 
 const CREDENTIALS = [
   {
-    name: "Medlem av Den norske tannlegeforening.",
-    sub: "Det forplikter oss til etiske regler og jevnlig etterutdanning.",
+    name: "Medlem av Den norske tannlegeforening (NTF).",
+    sub: "Etiske retningslinjer, kontinuerlig etterutdanning, kvalitetssikret praksis.",
   },
   {
-    name: "Vi ordner HELFO-oppgjøret.",
-    sub: "Folketrygden dekker deler av regningen ved enkelte diagnoser. Har du rett på stønad, tar vi oppgjøret direkte. Du slipper å søke selv.",
+    name: "Direkte oppgjør med HELFO i enkelte tilfeller.",
+    sub: "Folketrygden dekker deler av behandlingen ved noen bestemte diagnoser og situasjoner — for eksempel alvorlig tannkjøttsykdom, medfødte tilstander eller skader etter en ulykke. Har du rett på stønad, ordner vi oppgjøret direkte.",
   },
   {
     name: "Erfarne tannleger.",
-    sub: "Vi har lang erfaring og kurser oss jevnlig.",
+    sub: "Vi har mange år bak oss, og vi holder oss faglig oppdatert. Enten du kommer til en vanlig kontroll eller en større behandling, er du i trygge hender.",
   },
 ] as const;
 

@@ -11,8 +11,12 @@ type Spine = {
   body: string;
   detail: string;
   // Monotonic white → cream ramp across the row — each spine a notch deeper.
-  // Open spine ignores this and uses --color-ink for the cinematic contrast.
   closedTone: string;
+  // The open panel follows the same row in petrol: full --color-ink on the
+  // first, a notch lighter on each one to the right. The last stop is the
+  // lightest that keeps --color-amber text at 4.5:1; lighter than that and
+  // the text on the open panel would have to turn dark.
+  openTone: string;
 };
 
 const SPINES: ReadonlyArray<Spine> = [
@@ -23,6 +27,7 @@ const SPINES: ReadonlyArray<Spine> = [
     detail:
       "Kontroll, rens og fluor. Vi ser etter de små tegnene før de blir store problemer.",
     closedTone: "#FFFFFF",
+    openTone: "#0E2A30",
   },
   {
     id: "generell",
@@ -31,6 +36,7 @@ const SPINES: ReadonlyArray<Spine> = [
     detail:
       "Fyllingene matcher fargen på dine egne tenner. Kroner og broer tilpasser vi så de sitter godt og ser naturlige ut.",
     closedTone: "#FAF8F2",
+    openTone: "#17383C",
   },
   {
     id: "akutt",
@@ -39,6 +45,7 @@ const SPINES: ReadonlyArray<Spine> = [
     detail:
       "Tannverk kan ikke vente. Vi holder av tid hver dag. Ring tidlig, så finner vi en løsning.",
     closedTone: "#F5F0E5",
+    openTone: "#204548",
   },
   {
     id: "bleking",
@@ -47,6 +54,7 @@ const SPINES: ReadonlyArray<Spine> = [
     detail:
       "Vi bleker under kontroll, ikke med produkter fra butikken. Resultatet blir naturlig og varer lenge.",
     closedTone: "#F0E9D9",
+    openTone: "#295354",
   },
   {
     id: "implantater",
@@ -55,6 +63,7 @@ const SPINES: ReadonlyArray<Spine> = [
     detail:
       "Et implantat ser ut og føles som din egen tann. Vi gjør hele jobben her, fra første vurdering til ferdig tann.",
     closedTone: "#EBE1CC",
+    openTone: "#326060",
   },
   {
     id: "rotbehandling",
@@ -63,6 +72,7 @@ const SPINES: ReadonlyArray<Spine> = [
     detail:
       "Du får lokalbedøvelse, så det gjør ikke vondt underveis. Målet er alltid å beholde din egen tann.",
     closedTone: "#E6DABF",
+    openTone: "#3B6E6C",
   },
 ];
 
@@ -80,9 +90,8 @@ export function TreatmentsSlipcase() {
       <div className="mx-auto w-full max-w-[var(--container-max,1280px)] px-[var(--container-px,24px)]">
         {/* Header */}
         <div className="mb-12 md:mb-16">
-          <h2 className="display-section max-w-[640px] text-[var(--color-text-primary)]">
-            Dette kan vi hjelpe{" "}
-            <span className="font-light text-[var(--color-stone)]">deg</span> med.
+          <h2 className="display-section max-w-[720px] text-balance text-[var(--color-text-primary)]">
+            Dette kan vi hjelpe deg med.
           </h2>
         </div>
 
@@ -108,11 +117,9 @@ export function TreatmentsSlipcase() {
                     ? { duration: 0 }
                     : { duration: 0.7, ease: EASE }
                 }
-                style={isOpen ? undefined : { backgroundColor: spine.closedTone }}
+                style={{ backgroundColor: isOpen ? spine.openTone : spine.closedTone }}
                 className={`group relative overflow-hidden border-l border-[var(--color-rule)] text-left transition-colors ${
-                  isOpen
-                    ? "bg-[var(--color-ink)] text-white"
-                    : "text-[var(--color-text-primary)]"
+                  isOpen ? "text-white" : "text-[var(--color-text-primary)]"
                 } ${i === SPINES.length - 1 ? "border-r border-[var(--color-rule)]" : ""}`}
               >
                 {/* Top brass tick */}
@@ -168,7 +175,7 @@ export function TreatmentsSlipcase() {
                         <p className="text-[20px] leading-[1.4] text-[var(--color-amber)]">
                           {spine.body}
                         </p>
-                        <p className="mt-4 text-[14px] leading-[1.6] text-[var(--color-text-on-dark-muted)]">
+                        <p className="mt-4 text-[14px] leading-[1.6] text-[var(--color-amber)]">
                           {spine.detail}
                         </p>
                         <Link
@@ -192,7 +199,7 @@ export function TreatmentsSlipcase() {
 
         {/* Mobile — same slipcase language, stacked vertically.
             Closed panels carry the warm tonal spine; the open panel
-            expands into the cinematic ink block exactly like desktop. */}
+            expands into its petrol tone exactly like desktop. */}
         <div className="flex flex-col gap-2 md:hidden">
           {SPINES.map((spine) => {
             const isOpen = openId === spine.id;
@@ -209,11 +216,9 @@ export function TreatmentsSlipcase() {
                   type="button"
                   onClick={() => setOpenId(isOpen ? "" : spine.id)}
                   aria-expanded={isOpen}
-                  style={isOpen ? undefined : { backgroundColor: spine.closedTone }}
+                  style={{ backgroundColor: isOpen ? spine.openTone : spine.closedTone }}
                   className={`flex w-full items-center justify-between gap-4 px-5 py-5 text-left transition-colors duration-500 ${
-                    isOpen
-                      ? "bg-[var(--color-ink)] text-white"
-                      : "text-[var(--color-text-primary)]"
+                    isOpen ? "text-white" : "text-[var(--color-text-primary)]"
                   }`}
                 >
                   <span
@@ -242,13 +247,14 @@ export function TreatmentsSlipcase() {
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.45, ease: EASE }}
-                      className="overflow-hidden bg-[var(--color-ink)]"
+                      style={{ backgroundColor: spine.openTone }}
+                      className="overflow-hidden"
                     >
                       <div className="px-5 pb-8 pt-1">
                         <p className="text-[18px] leading-[1.4] text-[var(--color-amber)]">
                           {spine.body}
                         </p>
-                        <p className="mt-3 text-[14.5px] leading-[1.6] text-[var(--color-text-on-dark-muted)]">
+                        <p className="mt-3 text-[14.5px] leading-[1.6] text-[var(--color-amber)]">
                           {spine.detail}
                         </p>
                         <Link

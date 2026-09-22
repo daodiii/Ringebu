@@ -326,7 +326,7 @@ export function Hero() {
           </h1>
 
           <motion.p
-            className="mt-6 max-w-[34ch] text-[17px] font-light leading-[1.5] tracking-[-0.01em] text-[var(--color-text-secondary)] md:text-[19px]"
+            className="mt-6 max-w-[34ch] text-[26px] font-light leading-[1.25] tracking-[-0.02em] text-[var(--color-text-secondary)] md:text-[30px]"
             initial={prefersReduced ? false : { opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5, ease: EASE }}
