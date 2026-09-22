@@ -22,8 +22,14 @@ import { useHeroPointer } from "./useHeroPointer";
  */
 
 // next/image cannot paint into background-clip:text, so the optimizer
-// endpoint is addressed directly rather than shipping the 2.6 MB original.
-const VALLEY = "/_next/image?url=%2Fimages%2Fhero-valley-bg.jpg&w=1920&q=75";
+// endpoint is addressed directly rather than shipping the master.
+//
+// Stay at w=1920. This is a CSS background, so there is no srcset and one
+// URL serves every device: measured, w=3840 sent 944 KB to a 375px phone
+// against 288 KB at 1920. The upscaled master still earns its place here —
+// downsampling a clean 14400px source to 1920 gives a sharper result than
+// downsampling the artefacted 3600px JPEG did.
+const VALLEY = "/_next/image?url=%2Fimages%2Fhero-valley-bg.webp&w=1920&q=75";
 
 const FIXED = {
   backgroundSize: "cover",
@@ -41,8 +47,8 @@ const carvedFill = {
 const EASE = [0.25, 0.1, 0.25, 1] as const;
 
 const HEAD = [
-  { text: "Hos oss er", weight: 400 },
-  { text: "alle velkomne", weight: 700 },
+  { text: "Ringebu", weight: 700 },
+  { text: "Tannlegesenter", weight: 400 },
 ] as const;
 
 type Win = {
@@ -279,24 +285,18 @@ export function Hero() {
       {/* ── The carved headline ── */}
       <div className="pointer-events-none relative z-30 mx-auto flex min-h-[100svh] w-full max-w-[var(--container-max,1280px)] flex-col justify-start px-[var(--container-px,24px)] pt-[clamp(112px,16svh,170px)] md:justify-center md:pt-[clamp(104px,14svh,150px)]">
         <div className="max-w-full md:max-w-[50%]">
-          <motion.p
-            className="font-mono text-[10px] uppercase tracking-[0.3em] text-[var(--color-stone)]"
-            initial={prefersReduced ? false : { opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.15, ease: EASE }}
-          >
-            Ringebu Tannlegesenter
-          </motion.p>
-
           <h1
-            className="mt-5"
             style={{
-              fontSize: "clamp(38px, 6vw, 100px)",
+              // Capped at 92px, not 100: the column stops growing at the 1280
+              // container (604px wide) while 6vw keeps climbing, and
+              // "Tannlegesenter" is 14 unbreakable characters. At 100px it
+              // measured 631px and spilled into the windows on the right.
+              fontSize: "clamp(38px, 6vw, 92px)",
               lineHeight: 0.96,
               letterSpacing: "-0.05em",
             }}
           >
-            <span className="sr-only">Hos oss er alle velkomne</span>
+            <span className="sr-only">Ringebu Tannlegesenter</span>
             {HEAD.map((line, li) => (
               <span
                 key={li}
@@ -316,7 +316,7 @@ export function Hero() {
                     type: "spring",
                     stiffness: 74,
                     damping: 17,
-                    delay: 0.3 + li * 0.11,
+                    delay: 0.2 + li * 0.11,
                   }}
                 >
                   {line.text}
@@ -324,6 +324,15 @@ export function Hero() {
               </span>
             ))}
           </h1>
+
+          <motion.p
+            className="mt-6 max-w-[34ch] text-[17px] font-light leading-[1.5] tracking-[-0.01em] text-[var(--color-text-secondary)] md:text-[19px]"
+            initial={prefersReduced ? false : { opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.5, ease: EASE }}
+          >
+            Hos oss er alle velkomne
+          </motion.p>
 
           <motion.div
             className="pointer-events-auto mt-9 flex flex-wrap items-center gap-2.5"

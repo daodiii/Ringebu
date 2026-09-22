@@ -16,7 +16,7 @@ export function CtaCloseout() {
   return (
     <section className="relative isolate min-h-[80vh] overflow-hidden bg-[var(--color-ink)] md:min-h-[88vh]">
       <Image
-        src="/images/hero-valley-bg.jpg"
+        src="/images/hero-valley-bg.webp"
         alt=""
         fill
         sizes="100vw"
