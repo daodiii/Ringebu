@@ -47,8 +47,13 @@
   /* ── Spacing ── */
   --space-section:        clamp(72px, 8vw, 100px);
   --space-section-tight:  clamp(60px, 6vw, 80px);
-  --container-px:         clamp(20px, 4vw, 36px);
-  --container-max:        1280px;
+  /* --container-px and --container-max are deliberately NOT declared here.
+     Tailwind v4 feeds the --container-* namespace into w-* and max-w-*, so
+     keys named `px` and `max` silently override the built-in w-px / w-max /
+     max-w-max utilities — w-px compiled to clamp(20px, 4vw, 36px) instead of
+     1px, which turns every hairline into a 20–36px bar. They are declared in
+     the :root block below, where var() still reaches them but Tailwind does
+     not build utilities from them. */
 
   /* ── Motion ── */
   --ease-cinematic: cubic-bezier(0.25, 0.1, 0.25, 1);
@@ -76,6 +81,16 @@
   --color-stone-700: #4A3F33;
   --color-stone-800: #2C2620;
   --color-stone-900: #1A1410;
+}
+
+/* ── Page gutter and max width ──
+   Kept out of @theme on purpose (see the note in the Spacing section above):
+   inside it, the --container-* namespace hijacks w-px and w-max. Every call
+   site reads these through var(), e.g. px-[var(--container-px,24px)] and
+   max-w-[var(--container-max,1280px)], so they resolve exactly as before. */
+:root {
+  --container-px:  clamp(20px, 4vw, 36px);
+  --container-max: 1280px;
 }
 
 /* ── Reset & Base ── */
