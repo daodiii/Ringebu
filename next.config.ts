@@ -10,6 +10,8 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   images: {
+    // next/image qualities used across the site (Next 16 requires them listed).
+    qualities: [75, 90],
     remotePatterns: [
       {
         protocol: "https",
