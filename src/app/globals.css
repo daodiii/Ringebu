@@ -30,10 +30,13 @@
   /* ── Urgency (severity pill) ── */
   --color-urgent: #B8624A;
 
-  /* ── Typography ── */
-  --font-sans: var(--font-sans), system-ui, sans-serif;
-  --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, monospace;
-  --font-heading: var(--font-sans), system-ui, sans-serif;  /* alias so any legacy class still resolves */
+  /* ── Typography ──
+     Geist and Geist Mono everywhere, loaded by next/font in layout.tsx into
+     --font-geist-*. Keep those names distinct: --font-sans: var(--font-sans)
+     references itself, and only cascade-layer order kept that working. */
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+  --font-heading: var(--font-sans);  /* alias so any legacy class still resolves */
 
   /* ── Radius ── */
   --radius-tile:  14px;

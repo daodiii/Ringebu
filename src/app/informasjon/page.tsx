@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Instrument_Serif } from "next/font/google";
 import { Phone, Mail, MapPin, Clock, ArrowRight } from "lucide-react";
 import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 import type { Metadata } from "next";
@@ -15,15 +14,6 @@ export const metadata: Metadata = {
       "En liten tannlegeklinikk i Ringebu med god tid til hver pasient.",
   },
 };
-
-const display = Instrument_Serif({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-display",
-  display: "swap",
-});
-
-const serif = "font-[family-name:var(--font-display)]";
 
 const passages = [
   {
@@ -66,7 +56,7 @@ const steps = [
 export default function OmOss() {
   return (
     <main
-      className={`${display.variable} relative overflow-hidden bg-[var(--color-paper)] text-[var(--color-text-primary)]`}
+      className="relative overflow-hidden bg-[var(--color-paper)] text-[var(--color-text-primary)]"
     >
       {/* Soft ambient cream gradients */}
       <div
@@ -83,15 +73,14 @@ export default function OmOss() {
         <div className="relative">
           <RevealOnScroll>
             <h1
-              className={`${serif} max-w-[18ch] text-[var(--color-ink)]`}
+              className="max-w-[18ch] text-balance text-[var(--color-ink)]"
               style={{
                 fontSize: "clamp(2.7rem, 5.5vw, 4.3rem)",
                 lineHeight: 1.04,
-                letterSpacing: "-0.018em",
+                letterSpacing: "-0.03em",
               }}
             >
-              Et lite sted, med{" "}
-              <span className={`${serif} italic text-[var(--color-stone)]`}>god tid</span> til deg.
+              Et lite sted, med god tid til deg.
             </h1>
           </RevealOnScroll>
 
@@ -171,11 +160,11 @@ export default function OmOss() {
                   className="absolute -left-8 top-3 hidden h-3 w-3 rounded-full border border-[var(--color-amber-deep)] bg-[var(--color-paper)] md:block"
                 />
                 <h2
-                  className={`${serif} text-[var(--color-ink)]`}
+                  className="text-[var(--color-ink)]"
                   style={{
                     fontSize: "clamp(1.9rem, 4.4vw, 3.25rem)",
                     lineHeight: 1.08,
-                    letterSpacing: "-0.01em",
+                    letterSpacing: "-0.03em",
                   }}
                 >
                   {p.title}
@@ -193,11 +182,11 @@ export default function OmOss() {
       <section className="relative mx-auto w-full max-w-[78rem] px-6 py-20 md:px-10 md:py-28">
         <RevealOnScroll>
           <h2
-            className={`${serif} max-w-[16ch] text-[var(--color-ink)]`}
+            className="max-w-[16ch] text-[var(--color-ink)]"
             style={{
               fontSize: "clamp(2rem, 5vw, 3.75rem)",
               lineHeight: 1.04,
-              letterSpacing: "-0.012em",
+              letterSpacing: "-0.03em",
             }}
           >
             Slik er det å komme til oss
@@ -275,11 +264,11 @@ export default function OmOss() {
         <RevealOnScroll>
           <div className="relative mx-auto mt-12 max-w-[44rem] rounded-[2rem] border border-[var(--color-rule)] bg-[var(--color-paper-warm)]/55 px-7 py-12 text-center backdrop-blur-[1px] md:px-14 md:py-16">
             <h2
-              className={`${serif} text-[var(--color-ink)]`}
+              className="text-[var(--color-ink)]"
               style={{
                 fontSize: "clamp(2.25rem, 5.5vw, 4rem)",
                 lineHeight: 1.04,
-                letterSpacing: "-0.012em",
+                letterSpacing: "-0.03em",
               }}
             >
               Stikk innom oss
