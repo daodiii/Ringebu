@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: "Artikler om tannhelse",
   description:
     "Les nyttige artikler om tannhelse, forebygging, symptomer og behandlinger. Få ekspertråd fra Ringebu Tannlegesenter.",
+  alternates: { canonical: "/artikler" },
 };
 
 export default function ArtiklerPage() {

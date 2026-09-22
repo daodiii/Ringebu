@@ -12,7 +12,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/symptomer`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: `${baseUrl}/artikler`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
     { url: `${baseUrl}/informasjon`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${baseUrl}/priser`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
+    { url: `${baseUrl}/dekning`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
+    // /priser is deliberately absent: it 308s to /behandlinger, and a sitemap
+    // should list canonical URLs that return 200.
   ];
 
   const articlePages: MetadataRoute.Sitemap = articles.map((article) => ({
@@ -22,8 +24,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
+  // supportPages render at /dekning/<slug>, not /informasjon/<slug>. The old
+  // template pointed every one of these at a route that does not exist, so all
+  // six were 404s in the sitemap.
   const infoPages: MetadataRoute.Sitemap = supportPages.map((page) => ({
-    url: `${baseUrl}/informasjon/${page.slug}`,
+    url: `${baseUrl}/dekning/${page.slug}`,
     lastModified: new Date(),
     changeFrequency: "monthly" as const,
     priority: 0.6,

@@ -44,9 +44,10 @@ export const metadata: Metadata = {
     "implantater",
     "akutt tannlege",
   ],
-  alternates: {
-    canonical: "/",
-  },
+  // No `alternates.canonical` here on purpose. Next inherits it into every
+  // child route that does not override it, so declaring "/" at the root made
+  // /artikler and all 17 article pages announce themselves as duplicates of
+  // the homepage. Each route sets its own; the homepage sets "/" in page.tsx.
   openGraph: {
     title: "Ringebu Tannlegesenter | Din Tannlege i Ringebu",
     description:
