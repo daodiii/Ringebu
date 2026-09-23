@@ -21,7 +21,8 @@ import { NEAR_HILLS, PALETTES, withPalette, type PaletteName } from "@/component
 import { PapirStol } from "@/components/behandlinger/scenes/PapirMer";
 import { useStopSettle, useViewport } from "@/components/behandlinger/hooks";
 import type { Scene } from "@/components/behandlinger/scenes/types";
-import { EASE_OUT, SYMPTOMS, URGENCY_COLOR, type Symptom, type SymptomSlug } from "./data";
+import { SYMPTOMS, URGENCY_COLOR, type Symptom, type SymptomSlug } from "./data";
+import { Kartotek } from "./Kartotek";
 import { TOOTH, TOOTH_SHADE, paperScene } from "./scenes/Scener";
 
 /**
@@ -33,6 +34,12 @@ import { TOOTH, TOOTH_SHADE, paperScene } from "./scenes/Scener";
  *
  * It sits in the middle of the front page, so its headings start at h2 and
  * the hero keeps the page's only h1.
+ *
+ * The book needs a wide screen. Phones get Kartoteket, and so does the
+ * server: a phone paints the right thing before any JavaScript has run,
+ * and a wide screen swaps the book in once it has measured itself. That
+ * happens below the fold, so nobody sees it. It used to be the other way
+ * round, and every phone was sent the whole book only to throw it away.
  */
 
 const NAV = 72;
@@ -86,14 +93,16 @@ function geometry(vw: number, vh: number) {
 
 export function Bildeboka() {
   const vp = useViewport();
-  if (vp.ready && vp.w < 900) return <BildebokaListe />;
-  return <Bok vw={vp.w} vh={vp.h} />;
+  if (vp.ready && vp.w >= 900) return <Bok vw={vp.w} vh={vp.h} />;
+  return <Kartotek />;
 }
 
 function Bok({ vw, vh }: { vw: number; vh: number }) {
   const g = useMemo(() => geometry(vw, vh), [vw, vh]);
   const reduced = useReducedMotion() ?? false;
   const sectionRef = useRef<HTMLElement | null>(null);
+  // Off screen, the dog-ear and the scene on the left page stop.
+  const inView = useInView(sectionRef);
   const step = Math.round(vh * STEP);
 
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end end"] });
@@ -131,7 +140,7 @@ function Bok({ vw, vh }: { vw: number; vh: number }) {
   // An idle page folds its corner now and then, asking to be turned; under
   // the hand it folds further.
   useEffect(() => {
-    if (reduced || moving || k >= TURNS) {
+    if (reduced || moving || k >= TURNS || !inView) {
       animate(corner, 0, { duration: 0.25 });
       return;
     }
@@ -157,7 +166,7 @@ function Bok({ vw, vh }: { vw: number; vh: number }) {
       alive = false;
       corner.stop();
     };
-  }, [reduced, moving, hoverRight, k, corner]);
+  }, [reduced, moving, hoverRight, k, corner, inView]);
 
   // Rest on a spread, never between two.
   const [onBook, setOnBook] = useState(true);
@@ -298,7 +307,7 @@ function Bok({ vw, vh }: { vw: number; vh: number }) {
                 style={{ width: g.W, height: g.H, boxShadow: stack(k, -1) }}
                 onClick={() => goTo(k - 1)}
               >
-                <PageFace face={leftFace} W={g.W} H={g.H} live active={!lifting} d={lean} reduced={reduced} />
+                <PageFace face={leftFace} W={g.W} H={g.H} live active={!lifting && inView} d={lean} reduced={reduced} />
                 <motion.div
                   aria-hidden="true"
                   className="pointer-events-none absolute top-0 h-full w-[140px]"
@@ -706,53 +715,5 @@ function CtaFace({ W }: { W: number }) {
       </div>
       <GrainOverlay opacity={0.05} />
     </div>
-  );
-}
-
-/* ───────────── Narrow screens: the spreads, one under the other ───────────── */
-
-function BildebokaListe() {
-  const reduced = useReducedMotion() ?? false;
-  return (
-    <section id="symptomer" aria-labelledby="symptomer-tittel" className="bg-[var(--color-paper)] px-5 py-[var(--space-section)]">
-      <h2 id="symptomer-tittel" className="font-sans font-extralight text-[var(--color-ink)]" style={{ fontSize: 44, letterSpacing: "-0.045em", lineHeight: 0.95 }}>
-        Kjenner du noe av dette?
-      </h2>
-      <p className="mt-5 text-[18px] leading-[1.5] text-[var(--color-text-secondary)]">Åtte vanlige plager. Hva de betyr, og hva du bør gjøre.</p>
-      <div className="mt-10 space-y-10">
-        {SYMPTOMS.map((s) => (
-          <ListeSide key={s.slug} s={s} reduced={reduced} />
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function ListeSide({ s, reduced }: { s: Symptom; reduced: boolean }) {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const inView = useInView(ref, { amount: 0.6 });
-  const still = useMotionValue(0);
-  const S = SCENES[s.slug];
-  return (
-    <motion.article
-      ref={ref}
-      className="overflow-hidden rounded-[6px] bg-[#FFFCF6] shadow-[0_1px_0_rgba(14,42,48,0.08),0_18px_40px_-24px_rgba(14,42,48,0.35)]"
-      initial={reduced ? false : { opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.8, ease: EASE_OUT }}
-    >
-      <div className="relative aspect-[4/3]">
-        <S active={inView} d={still} reduced={reduced} mode="door" />
-      </div>
-      <div className="p-6">
-        <h3 className="font-sans text-[32px] font-light tracking-[-0.04em] text-[var(--color-ink)]">{s.title}</h3>
-        <p className="mt-3 text-[16px] leading-[1.55] text-[var(--color-text-secondary)]">{s.description}</p>
-        <p className="mt-4 text-[15px] leading-[1.55] text-[var(--color-text-primary)]">{s.whatToDo}</p>
-        <p className="mt-4 text-[14px] font-medium" style={{ color: URGENCY_COLOR[s.urgency] }}>
-          {s.severity}
-        </p>
-      </div>
-    </motion.article>
   );
 }

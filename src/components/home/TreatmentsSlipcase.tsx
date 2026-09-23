@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { AnimatePresence, motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
+import { useRef, useState } from "react";
+import { AnimatePresence, motion, useInView, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { PapirKrone, PapirSpeil, withPalette } from "@/components/behandlinger/scenes/Papir";
 import { PapirFargeskala, PapirImplantat, PapirLampe, PapirRotfil } from "@/components/behandlinger/scenes/PapirMer";
@@ -86,15 +86,22 @@ const SPINES: ReadonlyArray<Spine> = [
 
 const EASE = [0.25, 0.1, 0.25, 1] as const;
 
-/** The arched window a scene plays in. */
+/**
+ * The arched window a scene plays in. The scene only plays while the window
+ * is on screen: its loops repaint shadowed paper every frame, and they used
+ * to run on however far down the page you had scrolled.
+ */
 function Window({ spine, active, tilt, reduced }: { spine: Spine; active: boolean; tilt: ReturnType<typeof useSpring>; reduced: boolean }) {
   const { Scene } = spine;
+  const ref = useRef<HTMLDivElement | null>(null);
+  const inView = useInView(ref);
   return (
     <div
+      ref={ref}
       className="relative h-full overflow-hidden rounded-t-full shadow-[0_24px_50px_-28px_rgba(0,0,0,0.55)] ring-1 ring-white/15"
       style={{ aspectRatio: "300 / 540" }}
     >
-      <Scene active={active} d={tilt} reduced={reduced} mode="arch" />
+      <Scene active={active && inView} d={tilt} reduced={reduced} mode="arch" />
     </div>
   );
 }

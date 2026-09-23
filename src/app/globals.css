@@ -464,3 +464,147 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.01em;
   color: var(--color-text-primary);
 }
+
+/* ── Hero: the valley and the entrance ──
+   The valley is a CSS background, because the carved letters need
+   background-clip, so there is no srcset: the width is picked here.
+   Desktop stays at w=1920. Do not raise it casually: measured 2026-09-22,
+   w=3840 sent 944 KB to a 375px phone against 288 KB at 1920. Phones get
+   w=1080, 101 KB against 295 KB.
+   Keep the urls in these rules. Passed in through a custom property, the url
+   was resolved again on every frame of the drift, which more than doubled
+   the style work per frame on a slowed phone. */
+.hero-valley,
+.hero-carved {
+  background-size: cover;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+.hero-valley {
+  background-image: url("/_next/image?url=%2Fimages%2Fhero-valley-bg.webp&w=1080&q=75");
+}
+/* The same photograph pushed into ink range, so the carved letters read as
+   type against paper instead of dissolving into the sky. */
+.hero-carved {
+  background-image:
+    linear-gradient(rgba(8, 30, 35, 0.62), rgba(8, 30, 35, 0.62)),
+    url("/_next/image?url=%2Fimages%2Fhero-valley-bg.webp&w=1080&q=75");
+}
+@media (min-width: 768px) {
+  .hero-valley {
+    background-image: url("/_next/image?url=%2Fimages%2Fhero-valley-bg.webp&w=1920&q=75");
+  }
+  .hero-carved {
+    background-image:
+      linear-gradient(rgba(8, 30, 35, 0.62), rgba(8, 30, 35, 0.62)),
+      url("/_next/image?url=%2Fimages%2Fhero-valley-bg.webp&w=1920&q=75");
+  }
+}
+
+/* The entrance is CSS so it starts at the first paint, not after the page's
+   JavaScript has loaded. Each element brings its own animation-delay inline.
+   The keyframes give only where it starts from; it ends on the element's
+   own style. */
+@keyframes hero-ghost { from { opacity: 0; transform: scale(1.04); } }
+@keyframes hero-rise { from { transform: translateY(112%); } }
+@keyframes hero-lift { from { opacity: 0; transform: translateY(var(--from-y, 10px)); } }
+@keyframes hero-fade { from { opacity: 0; } }
+@keyframes hero-open { from { clip-path: inset(100% 0 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes hero-arrive { from { opacity: 0; } }
+@keyframes hero-settle { from { transform: scale(1.06); } }
+
+.hero-ghost { animation: hero-ghost 1.8s var(--ease-cinematic) backwards; }
+.hero-line {
+  animation: hero-rise 0.85s cubic-bezier(0.2, 0.8, 0.3, 1) backwards;
+  /* framer-motion's spring at stiffness 74, damping 17, sampled */
+  animation-timing-function: linear(0, 0.0637, 0.1973, 0.3473, 0.4877, 0.608, 0.7059, 0.7827, 0.8415, 0.8855, 0.9181, 0.9419, 0.9591, 0.9713, 0.98, 0.9862, 0.9905, 0.9935, 1);
+}
+.hero-lift { animation: hero-lift 0.8s var(--ease-cinematic) backwards; }
+.hero-fade { animation: hero-fade 0.8s var(--ease-cinematic) backwards; }
+/* A window keeps its inset(0) clip after it opens, as it did under
+   framer-motion; the clip also hides the window's box-shadow. */
+.hero-win {
+  clip-path: inset(0 0 0 0);
+  animation: hero-open 1.05s var(--ease-cinematic) backwards;
+}
+.hero-photo {
+  animation:
+    hero-arrive 1.1s var(--ease-cinematic) backwards,
+    hero-settle 1.4s var(--ease-cinematic) backwards;
+  transition: opacity 0.5s var(--ease-cinematic), transform 0.5s var(--ease-cinematic);
+}
+/* Hovering a window steps the photograph aside to show the valley. */
+@media (hover: hover) {
+  .hero-win:hover .hero-photo {
+    opacity: 0.12;
+    transform: scale(1.04);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-ghost,
+  .hero-line,
+  .hero-lift,
+  .hero-fade,
+  .hero-win,
+  .hero-photo {
+    animation: none;
+  }
+}
+
+/* ── Kartoteket: the symptoms on a phone (Kartotek.tsx) ──
+   A picked card sinks out of its slot behind the front of the box; the card
+   on the table goes back up under the front and returns to its slot; only
+   then does the picked card come out onto the table. Transitions rather than
+   keyframes, so a second tap mid-way turns them around from where they are. */
+.kartotek-slot {
+  transition: transform 300ms cubic-bezier(0.23, 1, 0.32, 1) 160ms;
+}
+.kartotek-slot[data-out="true"] {
+  transform: translateY(var(--sink));
+  transition: transform 220ms cubic-bezier(0.77, 0, 0.175, 1);
+}
+.kartotek-card {
+  z-index: 0;
+  visibility: hidden;
+  transform: translateY(calc(-100% - 48px));
+  transition:
+    transform 240ms cubic-bezier(0.77, 0, 0.175, 1),
+    visibility 0s linear 240ms;
+}
+.kartotek-card[data-out="true"] {
+  z-index: 1;
+  visibility: visible;
+  transform: none;
+  transition:
+    transform 460ms cubic-bezier(0.23, 1, 0.32, 1) 200ms,
+    visibility 0s linear 200ms;
+}
+.kartotek-tab {
+  transition: transform 160ms ease-out;
+}
+.kartotek-tab:active {
+  transform: scale(0.97);
+}
+@media (hover: hover) and (pointer: fine) {
+  .kartotek-tab:hover {
+    transform: translateY(-3px);
+  }
+}
+.kartotek-tab:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+}
+/* The chosen tab has gone out with its card, so its focus ring is drawn on
+   the tab of the card on the table. */
+.kartotek:has(.kartotek-tab[aria-selected="true"]:focus-visible) .kartotek-card[data-out="true"] .kartotek-cardtab {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .kartotek-slot,
+  .kartotek-slot[data-out="true"],
+  .kartotek-card,
+  .kartotek-card[data-out="true"] {
+    transition: none;
+  }
+}

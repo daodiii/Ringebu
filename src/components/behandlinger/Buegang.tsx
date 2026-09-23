@@ -6,6 +6,7 @@ import {
   AnimatePresence,
   motion,
   useAnimate,
+  useInView,
   useMotionTemplate,
   useMotionValue,
   useMotionValueEvent,
@@ -96,8 +97,22 @@ export function Buegang({ scenes }: { scenes: SceneSet }) {
 
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end end"] });
   const rawX = useTransform(scrollYProgress, (p) => -p * g.maxX);
-  // A little weight on the walk, so the wall glides rather than ticks.
-  const x = useSpring(rawX, reduced ? { stiffness: 1000, damping: 100 } : { stiffness: 170, damping: 32, mass: 0.35 });
+  // A little weight on the walk, so the wall glides rather than ticks. It
+  // comes to rest within half a pixel. Left to framer-motion's defaults, a
+  // walk that ended on a small last step crept on to within 0.005px for
+  // about two more seconds, moving every scene layer on the wall each frame
+  // to no visible effect.
+  const rest = { restDelta: 0.5, restSpeed: 10 };
+  const x = useSpring(
+    rawX,
+    reduced ? { stiffness: 1000, damping: 100, ...rest } : { stiffness: 170, damping: 32, mass: 0.35, ...rest }
+  );
+  // Once the wall has scrolled out of sight, what is left of the glide would
+  // only move scenes nobody can see: put it where it was going.
+  const inView = useInView(sectionRef);
+  useEffect(() => {
+    if (!inView) x.jump(rawX.get());
+  }, [inView, x, rawX]);
 
   const [active, setActive] = useState(0);
   useMotionValueEvent(x, "change", (v) => {

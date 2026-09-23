@@ -5,6 +5,7 @@ import {
   AnimatePresence,
   animate,
   motion,
+  useInView,
   useMotionValue,
   useReducedMotion,
   useSpring,
@@ -71,6 +72,10 @@ export function Hverdagen() {
   const floorW = sm ? vp.w - 40 : Math.min(stageW - 40, 900);
 
   const archRef = useRef<HTMLDivElement | null>(null);
+  // Off screen, the scene in the arch and the hopping on the table stop, so
+  // reading the list below costs nothing.
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const inView = useInView(sectionRef);
   const still = useMotionValue(0);
   const [placed, setPlaced] = useState<SymptomSlug | null>(null);
   const [over, setOver] = useState(false);
@@ -79,7 +84,7 @@ export function Hverdagen() {
 
   // Until the first touch, one thing now and then hops towards the arch.
   useEffect(() => {
-    if (touched || reduced) return;
+    if (touched || reduced || !inView) return;
     let i = 0;
     let t = setTimeout(function hop() {
       setNudge(TEASERS[i % TEASERS.length]);
@@ -90,7 +95,7 @@ export function Hverdagen() {
       }, 1400);
     }, 2600);
     return () => clearTimeout(t);
-  }, [touched, reduced]);
+  }, [touched, reduced, inView]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -115,6 +120,7 @@ export function Hverdagen() {
 
   return (
     <section
+      ref={sectionRef}
       aria-label="Symptomer"
       className="relative overflow-hidden bg-[var(--color-paper)]"
       style={{ minHeight: sm ? undefined : Math.max(760, vp.h), paddingTop: NAV }}
@@ -146,7 +152,7 @@ export function Hverdagen() {
                 exit={{ opacity: 0 }}
                 transition={{ duration: reduced ? 0 : 0.5 }}
               >
-                <Scene active d={still} reduced={reduced} mode="door" puppet={!!(current && KEEP_PUPPET[current.slug])} />
+                <Scene active={inView} d={still} reduced={reduced} mode="door" puppet={!!(current && KEEP_PUPPET[current.slug])} />
               </motion.div>
             </AnimatePresence>
             {/* The jamb: the wall has a thickness */}

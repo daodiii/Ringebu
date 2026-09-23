@@ -190,7 +190,7 @@ export function PapirSpeil({ active, reduced, d }: SceneProps) {
       <Sheet n={0} on={on} reduced={reduced} d={d} depth={0.6} shadow={false}>
         <motion.g
           animate={on && !reduced ? { x: [0, 10, 0] } : { x: 0 }}
-          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+          transition={on && !reduced ? { duration: 14, repeat: Infinity, ease: "easeInOut" } : { duration: 0.3 }}
           style={{ filter: SHADOW }}
         >
           <path d="M34,168 Q34,148 54,150 Q60,132 80,138 Q92,126 106,140 Q124,140 122,158 Q126,172 110,172 L46,172 Q34,172 34,168 Z" fill={p.paper} />

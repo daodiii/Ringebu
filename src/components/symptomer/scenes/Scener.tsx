@@ -792,7 +792,7 @@ export function SymptomKjeve({ active, reduced, d }: SymptomSceneProps) {
             style={centre}
             initial={{ opacity: 0.8 }}
             animate={on && !reduced ? { opacity: [0.4, 1, 0.4], scale: [0.85, 1.1, 0.85] } : { opacity: 0.8 }}
-            transition={{ duration: 2.4 + k * 0.5, repeat: Infinity, delay: k * 0.3 }}
+            transition={on && !reduced ? { duration: 2.4 + k * 0.5, repeat: Infinity, delay: k * 0.3 } : { duration: 0.3 }}
           />
         ))}
       </Sheet>
@@ -857,7 +857,7 @@ export function SymptomFrisk({ active, reduced, d }: SymptomSceneProps) {
       <Sheet n={0} on={on} reduced={reduced} d={d} depth={0.6} shadow={false}>
         <motion.g
           animate={on && !reduced ? { x: [0, 12, 0] } : { x: 0 }}
-          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+          transition={on && !reduced ? { duration: 14, repeat: Infinity, ease: "easeInOut" } : { duration: 0.3 }}
           style={{ filter: "drop-shadow(0 1px 1px rgba(14,42,48,0.16)) drop-shadow(0 7px 9px rgba(14,42,48,0.13))" }}
         >
           <path d="M34,148 Q34,128 54,130 Q60,112 80,118 Q92,106 106,120 Q124,120 122,138 Q126,152 110,152 L46,152 Q34,152 34,148 Z" fill={p.paper} />

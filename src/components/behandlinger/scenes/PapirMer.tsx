@@ -467,7 +467,7 @@ export function PapirBittskinne({ active, reduced, d }: SceneProps) {
             style={centre}
             initial={{ opacity: 0.8, scale: 1 }}
             animate={on && !reduced ? { opacity: [0.4, 1, 0.4], scale: [0.85, 1.1, 0.85] } : { opacity: 0.8 }}
-            transition={{ duration: 2.4 + k * 0.5, repeat: Infinity, delay: k * 0.3 }}
+            transition={on && !reduced ? { duration: 2.4 + k * 0.5, repeat: Infinity, delay: k * 0.3 } : { duration: 0.3 }}
           />
         ))}
       </Sheet>
@@ -560,7 +560,10 @@ export function PapirStol({ active, reduced, d }: SceneProps) {
         />
       </Sheet>
       <Sheet n={1} on={on} reduced={reduced} d={d} depth={1}>
-        <motion.g animate={breathe ? { x: [0, 14, 0] } : { x: 0 }} transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}>
+        <motion.g
+          animate={breathe ? { x: [0, 14, 0] } : { x: 0 }}
+          transition={breathe ? { duration: 16, repeat: Infinity, ease: "easeInOut" } : { duration: 0.5 }}
+        >
           <path d="M26,120 Q26,104 42,106 Q48,92 64,98 Q76,88 86,102 Q100,102 98,116 L34,118 Q26,118 26,120 Z" fill={p.paper} />
         </motion.g>
         <path d="M-420,440 C-200,428 60,436 150,430 C240,436 500,428 720,440 L720,540 L-420,540 Z" fill={p.near} />

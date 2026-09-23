@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, type CSSProperties } from "react";
 import { motion, useMotionTemplate, useReducedMotion, useTransform } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { GrainOverlay } from "@/components/ui/GrainOverlay";
@@ -19,46 +19,33 @@ import { useHeroPointer } from "./useHeroPointer";
  *
  * Both the ghost and the carved letters use `background-attachment: fixed`,
  * which is what keeps them registered with each other without measuring.
+ *
+ * The entrance is plain CSS (the hero-* classes in globals.css), not
+ * framer-motion: it plays from the first paint instead of waiting for the
+ * page's JavaScript, which left the hero blank for seconds on a slow phone.
+ * Only the drift is driven from here.
  */
 
 // next/image cannot paint into background-clip:text, so the optimizer
-// endpoint is addressed directly rather than shipping the master.
-//
-// Stay at w=1920. This is a CSS background, so there is no srcset and one
-// URL serves every device: measured, w=3840 sent 944 KB to a 375px phone
-// against 288 KB at 1920. The upscaled master still earns its place here —
-// downsampling a clean 14400px source to 1920 gives a sharper result than
-// downsampling the artefacted 3600px JPEG did.
-const VALLEY = "/_next/image?url=%2Fimages%2Fhero-valley-bg.webp&w=1920&q=75";
-
-const FIXED = {
-  backgroundSize: "cover",
-  backgroundAttachment: "fixed" as const,
-  backgroundRepeat: "no-repeat" as const,
-};
-const ghostFill = { ...FIXED, backgroundImage: `url("${VALLEY}")` };
-// The same photograph pushed into ink range, so the carved letters read as
-// type against paper instead of dissolving into the sky.
-const carvedFill = {
-  ...FIXED,
-  backgroundImage: `linear-gradient(rgba(8,30,35,0.62), rgba(8,30,35,0.62)), url("${VALLEY}")`,
-};
-
-const EASE = [0.25, 0.1, 0.25, 1] as const;
+// endpoint is addressed directly rather than shipping the master: the
+// .hero-valley and .hero-carved rules in globals.css, which also pick the
+// width (w=1920 from 768px up, w=1080 below). Only the position moves here.
 
 const HEAD = [
   { text: "Ringebu", weight: 700 },
   { text: "Tannlegesenter", weight: 400 },
 ] as const;
 
+type Box = { x: string; y: string; w: string; h: string };
+
 type Win = {
   key: string;
   src: string;
   alt: string;
-  /** absolute box on desktop, in % of the section */
-  box: string;
-  /** absolute box on phones */
-  boxSm: string;
+  /** box on desktop, in % of the section */
+  box: Box;
+  /** box on phones */
+  boxSm: Box;
   radius: string;
   /** order in which the clinic replaces the valley */
   step: number;
@@ -70,8 +57,8 @@ const WINDOWS: Win[] = [
     key: "room",
     src: "/images/ringebutannMain.jpg",
     alt: "Behandlingsrom ved Ringebu Tannlegesenter",
-    box: "left:56.5%; top:11%; width:21%; height:40%;",
-    boxSm: "left:5%; top:50%; width:42%; height:21%;",
+    box: { x: "56.5%", y: "11%", w: "21%", h: "40%" },
+    boxSm: { x: "5%", y: "50%", w: "42%", h: "21%" },
     radius: "4px",
     step: 0,
     objectPosition: "50% 55%",
@@ -80,8 +67,8 @@ const WINDOWS: Win[] = [
     key: "sign",
     src: "/images/clinic-sign.jpg",
     alt: "Skiltet utenfor klinikken",
-    box: "left:79.5%; top:17%; width:15%; height:28%;",
-    boxSm: "left:53%; top:54%; width:42%; height:18%;",
+    box: { x: "79.5%", y: "17%", w: "15%", h: "28%" },
+    boxSm: { x: "53%", y: "54%", w: "42%", h: "18%" },
     radius: "999px 999px 4px 4px",
     step: 1,
     objectPosition: "50% 38%",
@@ -90,8 +77,8 @@ const WINDOWS: Win[] = [
     key: "instruments",
     src: "/images/clinic-instruments.jpg",
     alt: "Tannlegeinstrumenter",
-    box: "left:56.5%; top:55%; width:21%; height:29%;",
-    boxSm: "left:5%; top:73%; width:42%; height:16%;",
+    box: { x: "56.5%", y: "55%", w: "21%", h: "29%" },
+    boxSm: { x: "5%", y: "73%", w: "42%", h: "16%" },
     radius: "4px",
     step: 3,
     objectPosition: "50% 50%",
@@ -100,34 +87,24 @@ const WINDOWS: Win[] = [
     key: "valley",
     src: "/images/clinic-valley.jpg",
     alt: "Klinikken i Gudbrandsdalen",
-    box: "left:79.5%; top:49%; width:15%; height:32%;",
-    boxSm: "left:53%; top:75%; width:42%; height:18%;",
+    box: { x: "79.5%", y: "49%", w: "15%", h: "32%" },
+    boxSm: { x: "53%", y: "75%", w: "42%", h: "18%" },
     radius: "4px",
     step: 2,
     objectPosition: "50% 50%",
   },
 ];
 
-const parseStyle = (s: string): Record<string, string> =>
-  Object.fromEntries(
-    s
-      .split(";")
-      .filter(Boolean)
-      .map((d) => {
-        const [k, v] = d.split(":");
-        return [k.trim().replace(/-([a-z])/g, (_, c) => c.toUpperCase()), v.trim()];
-      })
-  );
-
 // The windows are cut first; the clinic only starts arriving once they are open.
 const OPEN_AT = 0.45;
 const ARRIVE_AT = 1.75;
 
+/** Custom properties for a style prop: a window's boxes, a starting offset. */
+const vars = (v: Record<string, string>) => v as CSSProperties;
+
 export function Hero() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const prefersReduced = useReducedMotion();
-  const [peek, setPeek] = useState<string | null>(null);
-  const [isSm, setIsSm] = useState(false);
 
   // Tell the floating nav when it is over the hero.
   useEffect(() => {
@@ -149,18 +126,11 @@ export function Hero() {
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    const m = window.matchMedia("(max-width: 767px)");
-    const sync = () => setIsSm(m.matches);
-    sync();
-    m.addEventListener("change", sync);
-    return () => m.removeEventListener("change", sync);
-  }, []);
-
   const { nx, ny } = useHeroPointer(sectionRef, !prefersReduced);
   const bgX = useTransform(nx, [-1, 1], [56, 44]);
   const bgY = useTransform(ny, [-1, 1], [56, 44]);
   const bgPos = useMotionTemplate`${bgX}% ${bgY}%`;
+  const position = prefersReduced ? "50% 50%" : bgPos;
 
   return (
     <section
@@ -171,15 +141,8 @@ export function Hero() {
       {/* ── The valley, lying under the whole page ── */}
       <motion.div
         aria-hidden="true"
-        className="absolute inset-0 saturate-[0.55] [filter:contrast(0.94)_brightness(1.06)]"
-        style={
-          prefersReduced
-            ? { ...ghostFill, backgroundPosition: "50% 50%", opacity: 0.2 }
-            : { ...ghostFill, backgroundPosition: bgPos }
-        }
-        initial={prefersReduced ? false : { opacity: 0, scale: 1.04 }}
-        animate={{ opacity: 0.2, scale: 1 }}
-        transition={{ duration: 1.8, ease: EASE }}
+        className="hero-valley hero-ghost absolute inset-0 saturate-[0.55] [filter:contrast(0.94)_brightness(1.06)]"
+        style={{ backgroundPosition: position, opacity: 0.2 }}
       />
       {/* Paper comes back over it so the page still reads white */}
       <div
@@ -194,92 +157,66 @@ export function Hero() {
 
       {/* ── The window wall ── */}
       <div className="absolute inset-0">
-        {WINDOWS.map((w) => {
-          const peeking = peek === w.key;
-          return (
+        {WINDOWS.map((w) => (
+          <div
+            key={w.key}
+            className="hero-win absolute left-[var(--xs)] top-[var(--ys)] h-[var(--hs)] w-[var(--ws)] overflow-hidden md:left-[var(--x)] md:top-[var(--y)] md:h-[var(--h)] md:w-[var(--w)]"
+            style={{
+              ...vars({
+                "--x": w.box.x,
+                "--y": w.box.y,
+                "--w": w.box.w,
+                "--h": w.box.h,
+                "--xs": w.boxSm.x,
+                "--ys": w.boxSm.y,
+                "--ws": w.boxSm.w,
+                "--hs": w.boxSm.h,
+              }),
+              animationDelay: `${OPEN_AT + w.step * 0.11}s`,
+              borderRadius: w.radius,
+              boxShadow:
+                "0 2px 6px rgba(14,42,48,0.05), 0 22px 46px -24px rgba(14,42,48,0.28)",
+            }}
+          >
+            {/* Underneath: the same valley the letters are cut from */}
             <motion.div
-              key={w.key}
-              className="absolute overflow-hidden"
-              style={{
-                ...parseStyle(isSm ? w.boxSm : w.box),
-                borderRadius: w.radius,
-                boxShadow:
-                  "0 2px 6px rgba(14,42,48,0.05), 0 22px 46px -24px rgba(14,42,48,0.28)",
-              }}
-              onHoverStart={() => setPeek(w.key)}
-              onHoverEnd={() => setPeek((v) => (v === w.key ? null : v))}
-              initial={prefersReduced ? false : { clipPath: "inset(100% 0 0 0)" }}
-              animate={{ clipPath: "inset(0% 0 0 0)" }}
-              transition={{
-                duration: 1.05,
-                delay: OPEN_AT + w.step * 0.11,
-                ease: EASE,
-              }}
+              aria-hidden="true"
+              className="hero-valley absolute inset-0"
+              style={{ backgroundPosition: position }}
+            />
+
+            {/* Over it: the clinic, arriving one window at a time */}
+            <div
+              className="hero-photo absolute inset-0"
+              style={{ animationDelay: `${ARRIVE_AT + w.step * 0.26}s` }}
             >
-              {/* Underneath: the same valley the letters are cut from */}
-              <motion.div
-                aria-hidden="true"
-                className="absolute inset-0"
-                style={
-                  prefersReduced
-                    ? { ...ghostFill, backgroundPosition: "50% 50%" }
-                    : { ...ghostFill, backgroundPosition: bgPos }
-                }
+              <Image
+                src={w.src}
+                alt={w.alt}
+                fill
+                quality={90}
+                sizes="(max-width: 767px) 44vw, 22vw"
+                className="object-cover"
+                style={{ objectPosition: w.objectPosition }}
               />
+            </div>
 
-              {/* Over it: the clinic, arriving one window at a time */}
-              <motion.div
-                className="absolute inset-0"
-                initial={prefersReduced ? false : { opacity: 0, scale: 1.06 }}
-                animate={{
-                  opacity: peeking ? 0.12 : 1,
-                  scale: peeking ? 1.04 : 1,
-                }}
-                transition={
-                  peek === null
-                    ? {
-                        opacity: {
-                          duration: 1.1,
-                          delay: ARRIVE_AT + w.step * 0.26,
-                          ease: EASE,
-                        },
-                        scale: {
-                          duration: 1.4,
-                          delay: ARRIVE_AT + w.step * 0.26,
-                          ease: EASE,
-                        },
-                      }
-                    : { duration: 0.5, ease: EASE }
-                }
-              >
-                <Image
-                  src={w.src}
-                  alt={w.alt}
-                  fill
-                  quality={90}
-                  sizes="(max-width: 767px) 44vw, 22vw"
-                  className="object-cover"
-                  style={{ objectPosition: w.objectPosition }}
-                />
-              </motion.div>
-
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-[rgba(14,42,48,0.10)]"
-                style={{ borderRadius: w.radius }}
-              />
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-0"
-                style={{
-                  borderRadius: w.radius,
-                  background:
-                    "linear-gradient(to bottom, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0) 26%)",
-                }}
-              />
-            </motion.div>
-          );
-        })}
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-[rgba(14,42,48,0.10)]"
+              style={{ borderRadius: w.radius }}
+            />
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0"
+              style={{
+                borderRadius: w.radius,
+                background:
+                  "linear-gradient(to bottom, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0) 26%)",
+              }}
+            />
+          </div>
+        ))}
       </div>
 
       {/* ── The carved headline ── */}
@@ -304,19 +241,11 @@ export function Hero() {
                 className="block overflow-hidden pb-[0.07em]"
               >
                 <motion.span
-                  className="inline-block bg-clip-text text-transparent [-webkit-background-clip:text]"
-                  style={
-                    prefersReduced
-                      ? { ...carvedFill, backgroundPosition: "50% 50%", fontWeight: line.weight }
-                      : { ...carvedFill, backgroundPosition: bgPos, fontWeight: line.weight }
-                  }
-                  initial={prefersReduced ? false : { y: "112%" }}
-                  animate={{ y: 0 }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 74,
-                    damping: 17,
-                    delay: 0.2 + li * 0.11,
+                  className="hero-carved hero-line inline-block bg-clip-text text-transparent [-webkit-background-clip:text]"
+                  style={{
+                    animationDelay: `${0.2 + li * 0.11}s`,
+                    backgroundPosition: position,
+                    fontWeight: line.weight,
                   }}
                 >
                   {line.text}
@@ -325,20 +254,16 @@ export function Hero() {
             ))}
           </h1>
 
-          <motion.p
-            className="mt-6 max-w-[34ch] text-[26px] font-light leading-[1.25] tracking-[-0.02em] text-[var(--color-text-secondary)] md:text-[30px]"
-            initial={prefersReduced ? false : { opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5, ease: EASE }}
+          <p
+            className="hero-lift mt-6 max-w-[34ch] text-[26px] font-light leading-[1.25] tracking-[-0.02em] text-[var(--color-text-secondary)] md:text-[30px]"
+            style={{ animationDelay: "0.5s", ...vars({ "--from-y": "10px" }) }}
           >
             Hos oss er alle velkomne
-          </motion.p>
+          </p>
 
-          <motion.div
-            className="pointer-events-auto mt-9 flex flex-wrap items-center gap-2.5"
-            initial={prefersReduced ? false : { opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.72, ease: EASE }}
+          <div
+            className="hero-lift pointer-events-auto mt-9 flex flex-wrap items-center gap-2.5"
+            style={{ animationDelay: "0.72s", ...vars({ "--from-y": "12px" }) }}
           >
             <Link
               href="/kontakt"
@@ -356,21 +281,19 @@ export function Hero() {
             >
               61 28 04 12
             </a>
-          </motion.div>
+          </div>
         </div>
       </div>
 
-      <motion.div
-        className="absolute inset-x-0 bottom-0 z-30 hidden border-t border-[rgba(14,42,48,0.08)] bg-white/55 backdrop-blur-[2px] md:block"
-        initial={prefersReduced ? false : { opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 1.5, ease: EASE }}
+      <div
+        className="hero-fade absolute inset-x-0 bottom-0 z-30 hidden border-t border-[rgba(14,42,48,0.08)] bg-white/55 backdrop-blur-[2px] md:block"
+        style={{ animationDelay: "1.5s" }}
       >
         <div className="mx-auto flex w-full max-w-[var(--container-max,1280px)] items-center justify-between gap-6 px-[var(--container-px,24px)] py-3 font-mono text-[9.5px] uppercase tracking-[0.2em] text-[var(--color-text-muted)]">
           <span>Hanstadgata 2, 2630 Ringebu</span>
           <span>Man–tor 08.00–15.30 · Fre 08.00–15.00</span>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }
