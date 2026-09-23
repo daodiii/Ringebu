@@ -19,7 +19,7 @@ import { ArrowRight } from "lucide-react";
 import { GrainOverlay } from "@/components/ui/GrainOverlay";
 import { NEAR_HILLS, PALETTES, PaperShadow, withPalette, type PaletteName } from "@/components/behandlinger/scenes/Papir";
 import { PapirStol } from "@/components/behandlinger/scenes/PapirMer";
-import { useStopSettle, useViewport } from "@/components/behandlinger/hooks";
+import { useIsoLayoutEffect, useStopSettle, useViewport } from "@/components/behandlinger/hooks";
 import type { Scene } from "@/components/behandlinger/scenes/types";
 import { SYMPTOMS, type Symptom, type SymptomSlug } from "./data";
 import { Kartotek } from "./Kartotek";
@@ -120,7 +120,20 @@ function Bok({ vw, vh }: { vw: number; vh: number }) {
   const moving = at.t > 0;
   const lifting = at.t >= 0.06;
 
-  const t = useTransform(pos, (v) => split(v).t);
+  // How far over the leaf is, measured from the leaf React has drawn, not the
+  // one the position has reached. Framer moves the leaf in the same frame the
+  // position changes, but React draws the next page a task later: measured
+  // from the position alone, a page that had just gone over was put back flat
+  // on the right, still showing its old face and tab, for a frame or two at
+  // every turn.
+  const drawn = useMotionValue(0);
+  useIsoLayoutEffect(() => {
+    drawn.set(k);
+  }, [k, drawn]);
+  const t = useTransform([pos, drawn], ([v, d]: number[]) => {
+    const u = v - d;
+    return u < 0.015 ? 0 : u > 0.985 ? 1 : u;
+  });
   // The leaf bends as it turns: the outer part leads, as it does when a
   // hand lifts a page by its edge.
   const inner = useTransform(t, (v) => (reduced ? -180 * v : -180 * v + 11 * Math.sin(Math.PI * v)));
