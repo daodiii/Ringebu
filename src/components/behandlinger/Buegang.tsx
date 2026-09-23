@@ -1,38 +1,42 @@
 "use client";
 
 import Link from "next/link";
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import {
   AnimatePresence,
   motion,
   useAnimate,
-  useInView,
   useMotionValue,
   useMotionValueEvent,
   useReducedMotion,
-  useScroll,
-  useSpring,
   useTransform,
   type MotionValue,
 } from "framer-motion";
 import { ArrowLeft, ArrowRight, X } from "lucide-react";
-import { GrainOverlay } from "@/components/ui/GrainOverlay";
 import { ARCADE_TREATMENTS as T, EASE_OUT, type ArcadeTreatment } from "./data";
 import { TreatmentBody } from "./TreatmentBody";
-import { useLayerKeys, useScrollLock, useStopSettle, useViewport } from "./hooks";
+import { useElementSize, useLayerKeys, useScrollLock } from "./hooks";
 import type { SceneSet } from "./scenes/types";
 
 /**
- * Buegangen. The page is a long wall with a row of arches cut into it.
- * Scrolling walks you along the wall. Each arch is one solid colour, taken
- * from its scene's paper, until it reaches the middle of the screen; then the
- * paper theatre inside it stands up and plays. Choosing an arch walks you
- * through it: the opening grows until the scene fills the screen, and the
- * treatment's details slide in beside it.
+ * Buegangen. A wall one screen tall with a row of arches cut into it. Two
+ * arrows walk you along it an arch at a time; on a phone you can swipe it
+ * sideways as well, and scrolling the page goes straight past it to the list
+ * below. Each arch is one solid colour, taken from its scene's
+ * paper, until it reaches the middle of the screen; then the paper theatre
+ * inside it stands up and plays. Choosing an arch walks you through it: the
+ * opening grows until the scene fills the screen, and the treatment's details
+ * slide in beside it.
+ *
+ * The wall is a sideways scroller, so the browser slides it. It used to be
+ * walked by scrolling the page down, which people found awkward, and which
+ * moved the wall from JavaScript at every step.
  */
 
 const NAV = 72;
 const DOOR_EASE = [0.76, 0, 0.24, 1] as const;
+/** A phone's pair of arrows under the arch names: 16px above, 44px of button. */
+const ARROWS_SM = 60;
 
 type Geo = {
   vw: number;
@@ -40,6 +44,7 @@ type Geo = {
   sm: boolean;
   archW: number;
   archH: number;
+  labelH: number;
   r: number;
   gap: number;
   top: number;
@@ -56,9 +61,12 @@ function geometry(vw: number, vh: number): Geo {
   const sm = vw < 768;
   const archW = sm ? Math.round(vw * 0.6) : Math.round(Math.min(330, Math.max(230, vw * 0.2)));
   const labelH = sm ? 92 : 112;
-  const archH = Math.round(Math.min(vh - NAV - labelH - (sm ? 56 : 72), archW * (sm ? 1.5 : 1.8)));
+  // On a phone the arrows are a pair under the names, not at the sides,
+  // where they would cover the words at either end of the wall.
+  const arrowsH = sm ? ARROWS_SM : 0;
+  const archH = Math.round(Math.min(vh - NAV - labelH - arrowsH - (sm ? 56 : 72), archW * (sm ? 1.5 : 1.8)));
   const gap = sm ? Math.round(vw * 0.1) : Math.round(Math.min(96, Math.max(48, vw * 0.05)));
-  const top = Math.round(NAV + (vh - NAV - archH - labelH) / 2);
+  const top = Math.round(NAV + (vh - NAV - archH - labelH - arrowsH) / 2);
   const padL = sm ? 20 : Math.round(Math.max(24, (vw - 1280) / 2 + 36));
   const introW = sm ? Math.round(vw - 40) : Math.round(Math.min(560, vw * 0.4));
   // Far enough right that the first arch starts out plain, not half-open.
@@ -68,7 +76,7 @@ function geometry(vw: number, vh: number): Geo {
   const endW = sm ? Math.round(vw - 40) : Math.round(Math.min(560, vw * 0.42));
   const trackW = endLeft + endW + padL;
   return {
-    vw, vh, sm, archW, archH, r: archW / 2, gap, top, padL, introW, lefts,
+    vw, vh, sm, archW, archH, labelH, r: archW / 2, gap, top, padL, introW, lefts,
     endLeft, endW, trackW, maxX: Math.max(0, trackW - vw),
   };
 }
@@ -85,36 +93,62 @@ function wallPath(g: Geo) {
   return `M0,0 H${g.trackW} V${g.vh} H0 Z ${holes}`;
 }
 
+/**
+ * Where the wall can come to rest: its start, each arch in the middle of the
+ * screen, and its end. Stop k + 1 is arch k.
+ */
+function stopsOf(g: Geo) {
+  const clamp = (v: number) => Math.min(g.maxX, Math.max(0, Math.round(v)));
+  return [0, ...g.lefts.map((l) => clamp(l + g.archW / 2 - g.vw / 2)), g.maxX];
+}
+
+/** The stop nearest to a scroll position. */
+const nearest = (stops: number[], at: number) =>
+  stops.reduce((best, s, k) => (Math.abs(s - at) < Math.abs(stops[best] - at) ? k : best), 0);
+
 /** The arcade, with one scene per treatment. */
 export function Buegang({ scenes }: { scenes: SceneSet }) {
-  const vp = useViewport();
-  const g = useMemo(() => geometry(vp.w, vp.h), [vp.w, vp.h]);
+  const scrollerRef = useRef<HTMLDivElement | null>(null);
+  const size = useElementSize(scrollerRef);
+  const g = useMemo(() => geometry(size.w, size.h), [size.w, size.h]);
+  const stops = useMemo(() => stopsOf(g), [g]);
   const reduced = useReducedMotion() ?? false;
-
-  const sectionRef = useRef<HTMLElement | null>(null);
   const holeRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const prevRef = useRef<HTMLButtonElement | null>(null);
+  const nextRef = useRef<HTMLButtonElement | null>(null);
 
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end end"] });
-  const rawX = useTransform(scrollYProgress, (p) => -p * g.maxX);
-  // A little weight on the walk, so the wall glides rather than ticks. It
-  // comes to rest within half a pixel. Left to framer-motion's defaults, a
-  // walk that ended on a small last step crept on to within 0.005px for
-  // about two more seconds, moving every scene layer on the wall each frame
-  // to no visible effect.
-  const rest = { restDelta: 0.5, restSpeed: 10 };
-  const x = useSpring(
-    rawX,
-    reduced ? { stiffness: 1000, damping: 100, ...rest } : { stiffness: 170, damping: 32, mass: 0.35, ...rest }
-  );
-  // Once the wall has scrolled out of sight, what is left of the glide would
-  // only move scenes nobody can see: put it where it was going.
-  const inView = useInView(sectionRef);
+  // How far the wall has slid, as a (negative) offset: the arches, their
+  // jambs and their scenes all answer to it.
+  const x = useMotionValue(0);
+  // The stop a walk is heading for, so that a second press of an arrow while
+  // the wall is still sliding goes one further instead of starting over.
+  const heading = useRef<number | null>(null);
+
   useEffect(() => {
-    if (!inView) x.jump(rawX.get());
-  }, [inView, x, rawX]);
+    const el = scrollerRef.current;
+    if (!el) return;
+    let idle: ReturnType<typeof setTimeout> | undefined;
+    const arrive = () => {
+      heading.current = null;
+    };
+    const onScroll = () => {
+      x.set(-el.scrollLeft);
+      clearTimeout(idle);
+      idle = setTimeout(arrive, 250);
+    };
+    x.set(-el.scrollLeft);
+    el.addEventListener("scroll", onScroll, { passive: true });
+    el.addEventListener("scrollend", arrive);
+    return () => {
+      el.removeEventListener("scroll", onScroll);
+      el.removeEventListener("scrollend", arrive);
+      clearTimeout(idle);
+    };
+  }, [x]);
 
   const [active, setActive] = useState(0);
-  useMotionValueEvent(x, "change", (v) => {
+  const [edge, setEdge] = useState<"start" | "end" | null>("start");
+  const follow = (v: number) => {
     let best = 0;
     let bestD = Infinity;
     g.lefts.forEach((l, i) => {
@@ -125,51 +159,89 @@ export function Buegang({ scenes }: { scenes: SceneSet }) {
       }
     });
     setActive((a) => (a === best ? a : best));
-  });
+    const e = -v < 2 ? "start" : -v > g.maxX - 2 ? "end" : null;
+    setEdge((p) => (p === e ? p : e));
+  };
+  useMotionValueEvent(x, "change", follow);
 
-  /** Page scroll position that puts arch i in the middle of the screen. */
-  const scrollForArch = useCallback(
-    (i: number) => {
-      const top = (sectionRef.current?.getBoundingClientRect().top ?? 0) + window.scrollY;
-      const want = g.lefts[i] + g.archW / 2 - g.vw / 2;
-      return top + Math.min(g.maxX, Math.max(0, want));
+  const walkTo = useCallback(
+    (k: number) => {
+      const el = scrollerRef.current;
+      if (!el) return;
+      heading.current = k;
+      el.scrollTo({ left: stops[k], behavior: reduced ? "auto" : "smooth" });
     },
-    [g]
+    [stops, reduced]
   );
+
+  /** Walks one stop left or right; returns the stop it went to, or null at an end. */
+  const step = useCallback(
+    (dir: 1 | -1) => {
+      const el = scrollerRef.current;
+      if (!el) return null;
+      const from = heading.current ?? nearest(stops, el.scrollLeft);
+      // An arch too near an end to be centred shares its stop with that end.
+      let k = from + dir;
+      while (k > 0 && k < stops.length - 1 && Math.abs(stops[k] - stops[from]) < 2) k += dir;
+      if (k < 0 || k > stops.length - 1 || Math.abs(stops[k] - stops[from]) < 2) return null;
+      walkTo(k);
+      // The arrow for the way the wall can no longer go is about to be put
+      // away; hand its focus to the other one.
+      if (k === 0 && document.activeElement === prevRef.current) nextRef.current?.focus({ preventScroll: true });
+      if (k === stops.length - 1 && document.activeElement === nextRef.current) prevRef.current?.focus({ preventScroll: true });
+      return k;
+    },
+    [stops, walkTo]
+  );
+
+  // The arrow keys walk too. From an arch they go from arch to arch and take
+  // the focus along, so Enter opens the one now in the middle; they stop at
+  // the first and last arch rather than leave the focus on one walked past.
+  const onKeyDown = (e: KeyboardEvent<HTMLElement>) => {
+    if ((e.key !== "ArrowLeft" && e.key !== "ArrowRight") || e.altKey || e.ctrlKey || e.metaKey) return;
+    e.preventDefault();
+    const dir = e.key === "ArrowRight" ? 1 : -1;
+    const j = holeRefs.current.findIndex((b) => b !== null && b === document.activeElement);
+    if (j < 0) {
+      step(dir);
+      return;
+    }
+    // Focusing the arch walks the wall to it (onFocusArch).
+    holeRefs.current[j + dir]?.focus({ preventScroll: true });
+  };
 
   const [layer, setLayer] = useState<{ i: number; rect: DOMRect } | null>(null);
   useScrollLock(layer !== null);
-
-  // Where scrolling comes to rest, an arch comes to rest in the middle, so the
-  // walk never stops between two half-open rooms. The stops are the start and
-  // end of the wall and the scroll position that centres each arch. Only
-  // while the wall is pinned, though: page-wide snapping once pulled readers
-  // of the list underneath back up to the wall.
-  const stops = useMemo(
-    () => [0, ...g.lefts.map((l) => Math.min(g.maxX, Math.max(0, l + g.archW / 2 - g.vw / 2))), g.maxX],
-    [g]
-  );
-  useStopSettle(sectionRef, stops, !reduced && layer === null);
   const [hovered, setHovered] = useState<number | null>(null);
 
   const openArch = (i: number) => {
     const el = holeRefs.current[i];
     if (!el) return;
+    setHovered(null);
     setLayer({ i, rect: el.getBoundingClientRect() });
   };
 
   return (
     <>
       <section
-        ref={sectionRef}
         aria-label="Behandlinger"
-        className="relative bg-[var(--color-paper)]"
-        style={{ height: g.vh + g.maxX }}
+        className="relative h-[100svh] overflow-hidden bg-[var(--color-paper)]"
+        onKeyDown={onKeyDown}
       >
-        <div className="sticky top-0 h-[100svh] overflow-hidden">
-          {/* Its own layer, so walking slides the painted wall instead of
-              painting it again at every step. */}
-          <motion.div className="absolute left-0 top-0" style={{ x, width: g.trackW, height: g.vh, willChange: "transform" }}>
+        <WalkArrow dir={-1} g={g} off={edge === "start"} btnRef={prevRef} onClick={() => step(-1)} />
+        <WalkArrow dir={1} g={g} off={edge === "end"} btnRef={nextRef} onClick={() => step(1)} />
+
+        {/* The wall slides sideways inside this. Its stops are snap points, so
+            a swipe comes to rest with an arch in the middle, never between two. */}
+        <div
+          ref={scrollerRef}
+          className="absolute inset-0 snap-x snap-mandatory overflow-x-auto overflow-y-hidden overscroll-x-contain bg-[var(--color-paper)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
+          <div className="relative" style={{ width: g.trackW, height: g.vh }}>
+            {stops.map((s, k) => (
+              <span key={k} aria-hidden="true" className="pointer-events-none absolute top-0 h-px w-px snap-start" style={{ left: s }} />
+            ))}
+
             {/* Scenes, behind the wall */}
             {T.map((t, i) => (
               <SceneRoom
@@ -242,8 +314,8 @@ export function Buegang({ scenes }: { scenes: SceneSet }) {
                 onOpen={() => openArch(i)}
                 onFocusArch={() => {
                   // Focus can land on an arch that is off to the side; walk to it.
-                  const y = scrollForArch(i);
-                  if (Math.abs(window.scrollY - y) > 4) window.scrollTo({ top: y, behavior: reduced ? "auto" : "smooth" });
+                  const el = scrollerRef.current;
+                  if (el && Math.abs(el.scrollLeft - stops[i + 1]) > 2) walkTo(i + 1);
                 }}
               />
             ))}
@@ -277,9 +349,7 @@ export function Buegang({ scenes }: { scenes: SceneSet }) {
                 </a>
               </div>
             </div>
-          </motion.div>
-
-          <GrainOverlay opacity={0.035} />
+          </div>
         </div>
       </section>
 
@@ -289,14 +359,17 @@ export function Buegang({ scenes }: { scenes: SceneSet }) {
             key="doorway"
             start={layer}
             reduced={reduced}
-            vp={g}
+            sm={g.sm}
             scenes={scenes}
             onIndex={(i) => setLayer((l) => (l ? { ...l, i } : l))}
             prepareClose={async (i) => {
-              window.scrollTo({ top: scrollForArch(i), behavior: "auto" });
-              // Let the springs settle on the new position before measuring.
-              await new Promise((r) => setTimeout(r, reduced ? 0 : 60));
-              x.jump(rawX.get());
+              // Bring the arch you are leaving by to the middle of the wall.
+              const el = scrollerRef.current;
+              if (el) {
+                heading.current = null;
+                el.scrollLeft = stops[i + 1];
+                x.set(-el.scrollLeft);
+              }
               await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
               return holeRefs.current[i]?.getBoundingClientRect() ?? null;
             }}
@@ -311,6 +384,40 @@ export function Buegang({ scenes }: { scenes: SceneSet }) {
   );
 }
 
+/**
+ * One of the two arrows: at the sides of the wall, level with the middle of
+ * the arches, or on a phone side by side under the names. At either end of
+ * the wall the one pointing off it is put away; on a phone it only fades, so
+ * the pair still reads as a pair.
+ */
+function WalkArrow({
+  dir, g, off, btnRef, onClick,
+}: {
+  dir: 1 | -1;
+  g: Geo;
+  off: boolean;
+  btnRef: React.RefObject<HTMLButtonElement | null>;
+  onClick: () => void;
+}) {
+  const size = g.sm ? 44 : 52;
+  const place = g.sm
+    ? { top: g.top + g.archH + g.labelH + ARROWS_SM - size, left: g.vw / 2 + (dir < 0 ? -size - 8 : 8) }
+    : { top: g.top + g.archH / 2 - size / 2, ...(dir < 0 ? { left: 24 } : { right: 24 }) };
+  return (
+    <button
+      ref={btnRef}
+      type="button"
+      aria-label={dir < 0 ? "Forrige behandling" : "Neste behandling"}
+      onClick={onClick}
+      disabled={off}
+      className={`absolute z-10 grid place-items-center rounded-full bg-[var(--color-paper)] text-[var(--color-ink)] shadow-[0_0_0_1px_rgba(14,42,48,0.14),0_10px_24px_-14px_rgba(8,30,35,0.55)] transition-[opacity,background-color,scale] duration-300 hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-ink)] active:scale-95 disabled:pointer-events-none ${g.sm ? "disabled:opacity-35" : "disabled:opacity-0"}`}
+      style={{ width: size, height: size, ...place }}
+    >
+      {dir < 0 ? <ArrowLeft className="size-5" aria-hidden="true" /> : <ArrowRight className="size-5" aria-hidden="true" />}
+    </button>
+  );
+}
+
 /** Distance of an arch's centre from the middle of the screen, in half-screens. */
 function useArchDistance(i: number, g: Geo, x: MotionValue<number>) {
   return useTransform(x, (v) => (g.lefts[i] + g.archW / 2 + v - g.vw / 2) / (g.vw / 2));
@@ -318,6 +425,9 @@ function useArchDistance(i: number, g: Geo, x: MotionValue<number>) {
 
 // A scene plays while its arch is within this distance of the middle.
 const SCENE_ZONE = 0.2;
+// A scene is built while its arch is within this distance: the next one or
+// two along on a phone, a few more on a wide screen.
+const NEAR = 2;
 // How long a scene takes to fold away once its arch leaves the middle, in ms.
 const FOLDING = 800;
 
@@ -325,9 +435,14 @@ const FOLDING = 800;
  * The scene behind one arch. It is told when it is on stage, and only then
  * does it perform; the rest of the time the arch shows its plain colour.
  *
- * Once it has folded away the scene is hidden outright, and the room shows
- * that colour itself. Folded sheets are still layers that the browser sorts
- * on every step of the walk, and nine scenes of them cost more than the walk.
+ * Only the scenes near the middle exist at all. Nine kept mounted cost the
+ * page most of its start-up work, and their sheets were moved at every step
+ * of the walk. A scene is built ahead of its arch, in a deferred render that
+ * React puts together in short pieces between frames: built in one go as
+ * the arch arrived, it held up a slow phone for a tenth of a second or more.
+ * Built but off stage, it is hidden outright, and the room shows its colour
+ * itself: folded sheets are still layers the browser would sort at every
+ * step.
  */
 const SceneRoom = memo(function SceneRoom({
   Scene, i, g, x, reduced, hovered,
@@ -341,9 +456,11 @@ const SceneRoom = memo(function SceneRoom({
 }) {
   const d = useArchDistance(i, g, x);
   const [centred, setCentred] = useState(() => Math.abs(d.get()) < SCENE_ZONE);
+  const [near, setNear] = useState(() => Math.abs(d.get()) < NEAR);
   useMotionValueEvent(d, "change", (v) => {
-    const on = Math.abs(v) < SCENE_ZONE;
-    setCentred((c) => (c === on ? c : on));
+    const a = Math.abs(v);
+    setCentred((c) => (c === a < SCENE_ZONE ? c : a < SCENE_ZONE));
+    setNear((n) => (n === a < NEAR ? n : a < NEAR));
   });
   const on = centred || hovered;
   // Shown while on stage, and for as long as it takes to fold away after.
@@ -352,6 +469,9 @@ const SceneRoom = memo(function SceneRoom({
     const t = setTimeout(() => setShown(on), on ? 0 : FOLDING);
     return () => clearTimeout(t);
   }, [on]);
+  // Deferred, so the building happens in a background render that React
+  // can break off for a frame; on stage, the scene is needed at once.
+  const built = useDeferredValue(near || on || shown, false);
   if (!Scene) return null;
   return (
     <div
@@ -366,9 +486,11 @@ const SceneRoom = memo(function SceneRoom({
         background: Scene.ground,
       }}
     >
-      <div className="absolute inset-0" style={{ display: on || shown ? undefined : "none" }}>
-        <Scene active={on} d={d} reduced={reduced} mode="arch" />
-      </div>
+      {(built || on) && (
+        <div className="absolute inset-0" style={{ display: on || shown ? undefined : "none" }}>
+          <Scene active={on} d={d} reduced={reduced} mode="arch" />
+        </div>
+      )}
     </div>
   );
 });
@@ -406,11 +528,14 @@ function Arch({
       type="button"
       onClick={onOpen}
       onFocus={onFocusArch}
-      onMouseEnter={() => onHover(true)}
-      onMouseLeave={() => onHover(false)}
+      // Only a pointer that can hover plays the scene early. A tap sends a
+      // mouseenter too, and often no mouseleave, which left that arch's
+      // scene playing after you had walked away from it.
+      onPointerEnter={(e) => e.pointerType !== "touch" && onHover(true)}
+      onPointerLeave={(e) => e.pointerType !== "touch" && onHover(false)}
       aria-label={`${t.title}. ${t.subtitle}`}
       className="group absolute cursor-pointer text-left outline-none"
-      style={{ left: g.lefts[i], top: g.top, width: g.archW, height: g.archH + (g.sm ? 92 : 112) }}
+      style={{ left: g.lefts[i], top: g.top, width: g.archW, height: g.archH + g.labelH }}
     >
       {/* Jamb shadow inside the opening. The side that changes is painted
           once, on a sheet larger than the opening that slides sideways inside
@@ -461,11 +586,10 @@ function Arch({
           {t.title}
         </span>
         <span
-          className="mt-1.5 flex items-baseline justify-between gap-3 text-[14px] transition-opacity duration-500"
+          className="mt-1.5 block text-[14px] text-[var(--color-text-secondary)] transition-opacity duration-500"
           style={{ opacity: active ? 1 : 0 }}
         >
-          <span className="text-[var(--color-text-secondary)]">{t.subtitle}</span>
-          <span className="shrink-0 tabular-nums text-[var(--color-text-muted)]">{t.duration}</span>
+          {t.subtitle}
         </span>
       </span>
     </button>
@@ -475,11 +599,11 @@ function Arch({
 /* ───────────── Walking through ───────────── */
 
 function Doorway({
-  start, reduced, vp, scenes, onIndex, prepareClose, onClosed,
+  start, reduced, sm, scenes, onIndex, prepareClose, onClosed,
 }: {
   start: { i: number; rect: DOMRect };
   reduced: boolean;
-  vp: Geo;
+  sm: boolean;
   scenes: SceneSet;
   onIndex: (i: number) => void;
   prepareClose: (i: number) => Promise<DOMRect | null>;
@@ -503,12 +627,21 @@ function Doorway({
     borderTopLeftRadius: r.width / 2,
     borderTopRightRadius: r.width / 2,
   });
-  const FULL = { left: 0, top: 0, width: vp.vw, height: vp.vh, borderTopLeftRadius: 0, borderTopRightRadius: 0 };
+  // The whole window, read when the opening grows rather than kept in state:
+  // a phone's address bar changes the window's height as it comes and goes.
+  const full = () => ({
+    left: 0,
+    top: 0,
+    width: window.innerWidth,
+    height: window.innerHeight,
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 0,
+  });
 
   useEffect(() => {
     let alive = true;
     (async () => {
-      await animate("[data-room-box]", FULL, reduced ? { duration: 0.01 } : { duration: 1.05, ease: DOOR_EASE });
+      await animate("[data-room-box]", full(), reduced ? { duration: 0.01 } : { duration: 1.05, ease: DOOR_EASE });
       if (!alive) return;
       setPanel(true);
       closeBtn.current?.focus({ preventScroll: true });
@@ -567,7 +700,7 @@ function Doorway({
           initial={false}
           animate={
             panel
-              ? vp.sm
+              ? sm
                 ? { width: "100%", height: "24%" }
                 : { width: "52%", height: "100%" }
               : { width: "100%", height: "100%" }
@@ -594,9 +727,9 @@ function Doorway({
           <motion.aside
             key="panel"
             className="absolute bottom-0 right-0 flex max-h-[76svh] w-full flex-col overflow-y-auto overscroll-contain bg-[var(--color-paper)] shadow-[-30px_0_80px_-40px_rgba(8,30,35,0.45)] md:top-0 md:max-h-none md:w-[min(620px,48vw)]"
-            initial={vp.sm ? { y: "100%" } : { x: "100%" }}
-            animate={vp.sm ? { y: 0 } : { x: 0 }}
-            exit={vp.sm ? { y: "100%" } : { x: "100%" }}
+            initial={sm ? { y: "100%" } : { x: "100%" }}
+            animate={sm ? { y: 0 } : { x: 0 }}
+            exit={sm ? { y: "100%" } : { x: "100%" }}
             transition={{ duration: reduced ? 0.01 : 0.6, ease: DOOR_EASE }}
           >
             <div className="sticky top-0 z-10 flex items-center justify-between bg-[var(--color-paper)]/92 px-6 py-4 backdrop-blur md:px-12 md:pt-8">

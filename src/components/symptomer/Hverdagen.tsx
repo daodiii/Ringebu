@@ -12,10 +12,9 @@ import {
   useTransform,
   useVelocity,
 } from "framer-motion";
-import { GrainOverlay } from "@/components/ui/GrainOverlay";
 import { PALETTES, PaperShadow, type PaletteName } from "@/components/behandlinger/scenes/Papir";
 import { useViewport } from "@/components/behandlinger/hooks";
-import { EASE_OUT, SYMPTOMS, URGENCY_COLOR, type Symptom, type SymptomSlug } from "./data";
+import { EASE_OUT, SYMPTOMS, type Symptom, type SymptomSlug } from "./data";
 import { paperScene } from "./scenes/Scener";
 import { THING_BOX, Thing } from "./scenes/Ting";
 
@@ -222,7 +221,7 @@ export function Hverdagen() {
                   <Detail s={current} sm={sm} />
                 ) : (
                   <p className="max-w-[32ch] text-[19px] leading-[1.5] text-[var(--color-text-secondary)]">
-                    Åtte vanlige plager. Hva de betyr, og hva du bør gjøre.
+                    Åtte vanlige plager. Hva de betyr.
                   </p>
                 )}
               </motion.div>
@@ -230,7 +229,6 @@ export function Hverdagen() {
           </div>
         </div>
       </div>
-      <GrainOverlay opacity={0.03} />
     </section>
   );
 }
@@ -257,13 +255,6 @@ function Detail({ s, sm }: { s: Symptom; sm: boolean }) {
           </li>
         ))}
       </ul>
-      <div className="mt-6 border-t pt-5" style={{ borderColor: "rgba(14,42,48,0.12)" }}>
-        <p className="text-[16.5px] leading-[1.55] text-[var(--color-text-primary)]">{s.whatToDo}</p>
-        <p className="mt-3 flex items-center gap-2.5 text-[14.5px] font-medium" style={{ color: URGENCY_COLOR[s.urgency] }}>
-          <span aria-hidden="true" className="inline-block size-2 rounded-full" style={{ background: URGENCY_COLOR[s.urgency] }} />
-          {s.severity}
-        </p>
-      </div>
     </div>
   );
 }

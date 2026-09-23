@@ -2,7 +2,7 @@
 
 import { useState, useSyncExternalStore } from "react";
 import { X } from "lucide-react";
-import { SYMPTOMS, URGENCY_COLOR, type Symptom } from "./data";
+import { SYMPTOMS, type Symptom } from "./data";
 
 /**
  * Every symptom in full, as plain text under the arch. The arch only shows
@@ -95,13 +95,6 @@ function Entry({ s }: { s: Symptom }) {
               </li>
             ))}
           </ul>
-        </Block>
-        <Block label="Hva du gjør">
-          <p className="max-w-[46ch] text-[16px] leading-[1.55]">{s.whatToDo}</p>
-          <p className="mt-3 flex items-center gap-2.5 text-[14.5px] font-medium" style={{ color: URGENCY_COLOR[s.urgency] }}>
-            <span aria-hidden="true" className="inline-block size-2 rounded-full" style={{ background: URGENCY_COLOR[s.urgency] }} />
-            {s.severity}
-          </p>
         </Block>
       </div>
     </li>

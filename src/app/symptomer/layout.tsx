@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Symptomer og veiledning",
+  title: "Symptomer",
   description:
-    "Har du tannpine, blødende tannkjøtt eller andre symptomer? Finn ut hva som kan være årsaken og når du bør kontakte tannlegen.",
+    "Har du tannpine, blødende tannkjøtt eller andre symptomer? Se hva som kan være årsaken.",
   alternates: { canonical: "/symptomer" },
   openGraph: {
-    title: "Symptomer og veiledning | Ringebu Tannlegesenter",
+    title: "Symptomer | Ringebu Tannlegesenter",
     description:
-      "Finn ut hva tannsmertene dine betyr og når du bør oppsøke tannlegen.",
+      "Se hva tannsmertene dine kan bety.",
   },
 };
 

@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useEffect, useRef, type CSSProperties } from "react";
 import { motion, useMotionTemplate, useReducedMotion, useTransform } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { GrainOverlay } from "@/components/ui/GrainOverlay";
 import { useHeroPointer } from "./useHeroPointer";
 
 /**
@@ -153,7 +152,6 @@ export function Hero() {
             "linear-gradient(to top, #FFFFFF 0%, rgba(255,255,255,0.9) 16%, rgba(255,255,255,0.34) 52%, rgba(255,255,255,0.2) 100%)",
         }}
       />
-      <GrainOverlay opacity={0.035} />
 
       {/* ── The window wall ── */}
       <div className="absolute inset-0">

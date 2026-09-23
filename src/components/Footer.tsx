@@ -9,9 +9,6 @@ const TREATMENTS = [
 ];
 
 const PRACTICAL = [
-  // Points at /behandlinger directly rather than /priser, which only 308s
-  // there. The destination is titled "Behandlinger og priser".
-  { label: "Priser", href: "/behandlinger" },
   { label: "Støtteordninger", href: "/dekning" },
   { label: "Symptomer", href: "/symptomer" },
   { label: "Slik finner du oss", href: "/kontakt" },

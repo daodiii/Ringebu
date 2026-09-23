@@ -2,20 +2,13 @@
 
 export type Refusion = "HELFO" | "Delvis HELFO" | "Egenandel";
 
-export interface PriceItem {
-  name: string;
-  description: string;
-}
-
 export interface Treatment {
   title: string;
   subtitle: string;
   category: "Forebyggende" | "Kosmetisk" | "Restaurering" | "Kirurgi" | "Spesialbehandling";
   refusion: Refusion;
-  duration: string;
   description: string;
   features: readonly string[];
-  prices: readonly PriceItem[];
 }
 
 export const TREATMENTS: readonly Treatment[] = [
@@ -24,7 +17,6 @@ export const TREATMENTS: readonly Treatment[] = [
     subtitle: "Kontroll, rens og fluor",
     category: "Forebyggende",
     refusion: "HELFO",
-    duration: "30–45 min",
     description:
       "Går du jevnlig til kontroll, holder tennene seg friske. Vi undersøker, renser og viser deg hva du bør gjøre hjemme.",
     features: [
@@ -33,19 +25,12 @@ export const TREATMENTS: readonly Treatment[] = [
       "Fluorbehandling for sterkere emalje",
       "Individuelle råd for munnhygiene hjemme",
     ],
-    prices: [
-      { name: "Undersøkelse med rens og kostnadsoverslag", description: "Fullstendig tannhelsesjekk" },
-      { name: "Studentrabatt på undersøkelse",              description: "Gyldig med studentbevis" },
-      { name: "Enkel etterkontroll",                         description: "Etter kirurgiske inngrep" },
-      { name: "Omfattende etterkontroll",                    description: "Etter oralmedisinske undersøkelser" },
-    ],
   },
   {
     title: "Bleking",
     subtitle: "Hvitere tenner",
     category: "Kosmetisk",
     refusion: "Egenandel",
-    duration: "60–90 min",
     description:
       "Få hvitere tenner med profesjonell bleking. Det er trygt, gjør ikke vondt, og resultatet holder lenge.",
     features: [
@@ -54,14 +39,12 @@ export const TREATMENTS: readonly Treatment[] = [
       "Skånsom behandling for emaljen",
       "Langvarig og naturlig resultat",
     ],
-    prices: [],
   },
   {
     title: "Fyllingsterapi",
     subtitle: "Fyllinger du ikke ser",
     category: "Restaurering",
     refusion: "HELFO",
-    duration: "45–60 min",
     description:
       "Vi fyller hullet med en fylling i samme farge som tannen. Du ser ikke forskjellen.",
     features: [
@@ -70,18 +53,12 @@ export const TREATMENTS: readonly Treatment[] = [
       "Smertefri behandling med lokalbedøvelse",
       "Holdbare materialer med naturlig utseende",
     ],
-    prices: [
-      { name: "Fylling, liten",       description: "Én flate" },
-      { name: "Fylling, mellomstor",  description: "To flater" },
-      { name: "Fylling, stor",        description: "Tre eller flere flater" },
-    ],
   },
   {
     title: "Kron og bro",
     subtitle: "Når en tann må bygges opp",
     category: "Restaurering",
     refusion: "Delvis HELFO",
-    duration: "Flere besøk",
     description:
       "En krone reparerer en skadet tann. En bro erstatter en som mangler. Begge ser naturlige ut.",
     features: [
@@ -90,16 +67,12 @@ export const TREATMENTS: readonly Treatment[] = [
       "Lang holdbarhet med riktig vedlikehold",
       "Skreddersydd tilpasning til ditt bitt",
     ],
-    prices: [
-      { name: "Fullkrone", description: "Hel krone over tann" },
-    ],
   },
   {
     title: "Rotfylling",
     subtitle: "Redd tannen din",
     category: "Restaurering",
     refusion: "HELFO",
-    duration: "60–90 min",
     description:
       "Rotfylling redder tenner som er skadet eller infisert. Det er ikke vondt, og du får beholde tannen.",
     features: [
@@ -108,18 +81,12 @@ export const TREATMENTS: readonly Treatment[] = [
       "Avansert utstyr for presis behandling",
       "Bevarer din naturlige tann",
     ],
-    prices: [
-      { name: "Rotfylling, 1 rotkanal",     description: "Tann med én rotkanal" },
-      { name: "Rotfylling, 2 rotkanaler",    description: "Tann med to rotkanaler" },
-      { name: "Rotfylling, 3–4 rotkanaler",  description: "Tann med tre til fire rotkanaler" },
-    ],
   },
   {
     title: "Visdomstennene",
     subtitle: "Vurdering og fjerning",
     category: "Kirurgi",
     refusion: "Delvis HELFO",
-    duration: "45–90 min",
     description:
       "Vi sjekker om visdomstennene dine trenger å fjernes, og hvis ja, gjør vi det skånsomt.",
     features: [
@@ -128,17 +95,12 @@ export const TREATMENTS: readonly Treatment[] = [
       "God smertelindring under og etter",
       "Tett oppfølging i etterkant",
     ],
-    prices: [
-      { name: "Ukomplisert ekstraksjon", description: "Enkel fjerning av tann eller rot" },
-      { name: "Kirurgisk fjerning",       description: "Fjerning av retinert tann" },
-    ],
   },
   {
     title: "Tannkjøtt & tannstein",
     subtitle: "Behandling av tannkjøttet",
     category: "Forebyggende",
     refusion: "HELFO",
-    duration: "45–60 min",
     description:
       "Tennene holder ikke uten friskt tannkjøtt. Vi fjerner tannstein og behandler betennelse.",
     features: [
@@ -147,18 +109,12 @@ export const TREATMENTS: readonly Treatment[] = [
       "Veiledning i effektiv munnhygiene",
       "Regelmessig oppfølging og vedlikehold",
     ],
-    prices: [
-      { name: "Periodontal behandling",     description: "Behandling av tannkjøttsykdom" },
-      { name: "Behandling av periodontitt", description: "Tannkjøttbetennelse" },
-      { name: "Fiksering av tenner",         description: "Stabilisering av løse tenner" },
-    ],
   },
   {
     title: "Bittskinner",
     subtitle: "Beskyttelse mot tanngnissing",
     category: "Spesialbehandling",
     refusion: "Egenandel",
-    duration: "30 min",
     description:
       "Gnisser du tenner om natten? Det sliter dem ned og gir vondt. En bittskinne beskytter.",
     features: [
@@ -167,14 +123,12 @@ export const TREATMENTS: readonly Treatment[] = [
       "Lindring av kjevesmerter og hodepine",
       "Veiledning om årsaker og forebygging",
     ],
-    prices: [],
   },
   {
     title: "Tannlegeskrekk",
     subtitle: "Vi forstår deg",
     category: "Spesialbehandling",
     refusion: "HELFO",
-    duration: "45–60 min",
     description:
       "Mange gruer seg. Hos oss får du ekstra tid, og vi tar pauser når du trenger det.",
     features: [
@@ -183,6 +137,5 @@ export const TREATMENTS: readonly Treatment[] = [
       "Skånsomme behandlingsteknikker",
       "Mulighet for pauser underveis",
     ],
-    prices: [],
   },
 ];

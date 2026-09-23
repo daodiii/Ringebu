@@ -21,7 +21,7 @@ import { NEAR_HILLS, PALETTES, PaperShadow, withPalette, type PaletteName } from
 import { PapirStol } from "@/components/behandlinger/scenes/PapirMer";
 import { useStopSettle, useViewport } from "@/components/behandlinger/hooks";
 import type { Scene } from "@/components/behandlinger/scenes/types";
-import { SYMPTOMS, URGENCY_COLOR, type Symptom, type SymptomSlug } from "./data";
+import { SYMPTOMS, type Symptom, type SymptomSlug } from "./data";
 import { Kartotek } from "./Kartotek";
 import { TOOTH, TOOTH_SHADE, paperScene } from "./scenes/Scener";
 
@@ -248,7 +248,7 @@ function Bok({ vw, vh }: { vw: number; vh: number }) {
             Kjenner du noe av dette?
           </h2>
           <p className="mt-6 max-w-[30ch] text-[19px] leading-[1.5] text-[var(--color-text-secondary)]">
-            Åtte vanlige plager. Hva de betyr, og hva du bør gjøre.
+            Åtte vanlige plager. Hva de betyr.
           </p>
         </motion.div>
 
@@ -351,7 +351,6 @@ function Bok({ vw, vh }: { vw: number; vh: number }) {
             )}
           </motion.div>
         </div>
-        <GrainOverlay opacity={0.03} />
       </div>
     </section>
   );
@@ -638,7 +637,7 @@ function CoverFace({ W, H }: { W: number; H: number }) {
           Symptomer
         </div>
         <div className="mt-4 text-[var(--color-ink)]/70" style={{ fontSize: Math.round(W * 0.031) }}>
-          Hva de betyr, og hva du bør gjøre.
+          Hva de betyr.
         </div>
         <div className="mt-auto pb-[9%] text-[var(--color-ink)]/60" style={{ fontSize: Math.round(W * 0.025), fontWeight: 500 }}>
           Ringebu Tannlegesenter
@@ -678,18 +677,6 @@ function TextFace({ s, W }: { s: Symptom; W: number }) {
             ))}
           </ul>
         </div>
-        <div className="mt-8 border-t pt-6" style={{ borderColor: "rgba(14,42,48,0.12)" }}>
-          <div className="font-medium" style={{ fontSize: f(0.026), color: p.deep }}>
-            Hva du gjør
-          </div>
-          <p className="mt-2 text-[var(--color-text-primary)]" style={{ fontSize: f(0.031), lineHeight: 1.55 }}>
-            {s.whatToDo}
-          </p>
-        </div>
-        <p className="mt-auto flex items-center gap-2.5 font-medium" style={{ fontSize: f(0.027), color: URGENCY_COLOR[s.urgency] }}>
-          <span aria-hidden="true" className="inline-block size-2 rounded-full" style={{ background: URGENCY_COLOR[s.urgency] }} />
-          {s.severity}
-        </p>
       </div>
       <GrainOverlay opacity={0.05} />
     </div>

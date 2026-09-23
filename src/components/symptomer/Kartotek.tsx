@@ -6,17 +6,17 @@ import { useInView, useMotionValue, useReducedMotion, type MotionValue } from "f
 import { ArrowUpRight } from "lucide-react";
 import { PALETTES } from "@/components/behandlinger/scenes/Papir";
 import type { Scene } from "@/components/behandlinger/scenes/types";
-import { SYMPTOMS, URGENCY_COLOR, type Symptom, type SymptomSlug } from "./data";
+import { SYMPTOMS, type Symptom, type SymptomSlug } from "./data";
 import { paperScene } from "./scenes/Scener";
 
 /**
  * Kartoteket, the symptoms on a phone: a box of index cards like the patient
  * files at a dental office. The cards stand in the box one behind the other,
  * each with a tab in its own colours, the tabs to either side so every name
- * can be read. One card is out on the table below with its paper theatre and
- * what to do, and its slot in the box stands empty. Tap another tab and the
- * card on the table goes back in, and that one comes out from under the
- * front of the box, tab first.
+ * can be read. One card is out on the table below with its paper theatre,
+ * and its slot in the box stands empty. Tap another tab and the card on the
+ * table goes back in, and that one comes out from under the front of the
+ * box, tab first.
  *
  * The front page is about the clinic and the symptoms are a side trip, so
  * this keeps them to about one screen; the stack of eight cards it replaced
@@ -90,7 +90,7 @@ export function Kartotek() {
           Kjenner du noe av dette?
         </h2>
         <p className="mt-5 text-[18px] leading-[1.5] text-[var(--color-text-secondary)]">
-          Åtte vanlige plager. Hva de betyr, og hva du bør gjøre.
+          Åtte vanlige plager. Hva de betyr.
         </p>
 
         {/* The box: every card but the one on the table, standing in its slot */}
@@ -228,27 +228,7 @@ function Card({
           >
             {live && <S active={active} d={d} reduced={reduced} mode="arch" />}
           </div>
-          <div className="flex min-w-0 flex-col">
-            <p className="text-[15px] leading-[1.55] text-[var(--color-text-secondary)]">{s.description}</p>
-            <p
-              className="mt-auto flex items-baseline gap-2 pt-4 text-[13.5px] font-medium leading-[1.35]"
-              style={{ color: URGENCY_COLOR[s.urgency] }}
-            >
-              <span
-                aria-hidden="true"
-                className="inline-block size-2 shrink-0 translate-y-[-1px] rounded-full"
-                style={{ background: URGENCY_COLOR[s.urgency] }}
-              />
-              {s.severity}
-            </p>
-          </div>
-        </div>
-
-        <div className="mt-5 border-t pt-4" style={{ borderColor: "rgba(14,42,48,0.12)" }}>
-          <h4 className="text-[13px] font-medium" style={{ color: p.ink }}>
-            Hva du gjør
-          </h4>
-          <p className="mt-1.5 text-[15px] leading-[1.55] text-[var(--color-text-primary)]">{s.whatToDo}</p>
+          <p className="min-w-0 text-[15px] leading-[1.55] text-[var(--color-text-secondary)]">{s.description}</p>
         </div>
 
         <Link

@@ -18,6 +18,27 @@ export function useViewport() {
 }
 
 /**
+ * An element's inner size, kept in sync as it changes. Measure a box sized in
+ * `svh` with this rather than reading the window: a phone's address bar
+ * changes innerHeight as it comes and goes, and every change would lay the
+ * whole box out again.
+ */
+export function useElementSize(ref: RefObject<HTMLElement | null>, fallback = { w: 1440, h: 900 }) {
+  const [size, setSize] = useState(fallback);
+  useIsoLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const sync = () =>
+      setSize((s) => (s.w === el.clientWidth && s.h === el.clientHeight ? s : { w: el.clientWidth, h: el.clientHeight }));
+    sync();
+    const ro = new ResizeObserver(sync);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [ref]);
+  return size;
+}
+
+/**
  * Stops the page scrolling under a full-screen layer. The scrollbar's width is
  * padded back so nothing behind the layer jumps sideways when it disappears.
  *

@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Behandlinger og priser",
+  title: "Behandlinger",
   description:
-    "Behandlinger og priser hos Ringebu Tannlegesenter. Kontroll, fyllinger, kroner, rotfylling, bleking og akutt hjelp.",
+    "Behandlinger hos Ringebu Tannlegesenter. Kontroll, fyllinger, kroner, rotfylling, bleking og akutt hjelp.",
   alternates: { canonical: "/behandlinger" },
   openGraph: {
-    title: "Behandlinger og priser | Ringebu Tannlegesenter",
+    title: "Behandlinger | Ringebu Tannlegesenter",
     description:
-      "Se hva vi gjør, og hva det koster.",
+      "Fra vanlig kontroll til rotfylling. Her er alt vi gjør.",
   },
 };
 
