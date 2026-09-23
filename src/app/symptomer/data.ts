@@ -5,7 +5,7 @@ export interface SymptomMeta {
   subtitle: string;
   /** Anatomical region. Carried through as `tag`; not currently rendered. */
   region: SymptomRegion;
-  /** Plate background tone, same convention as TREATMENTS in /behandlinger/data.ts */
+  /** Plate background tone, shown behind a row with no photo. */
   photoTone: string;
 }
 

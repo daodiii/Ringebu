@@ -16,10 +16,6 @@ export interface Treatment {
   description: string;
   features: readonly string[];
   prices: readonly PriceItem[];
-  /** Photo path. If the file does not exist, the spread falls back to `photoTone`. */
-  photo?: string;
-  /** Fallback tone shown when `photo` is undefined or missing on disk. */
-  photoTone: string;
 }
 
 export const TREATMENTS: readonly Treatment[] = [
@@ -43,8 +39,6 @@ export const TREATMENTS: readonly Treatment[] = [
       { name: "Enkel etterkontroll",                         description: "Etter kirurgiske inngrep" },
       { name: "Omfattende etterkontroll",                    description: "Etter oralmedisinske undersøkelser" },
     ],
-    photo: "/images/hero-clinic.jpg",
-    photoTone: "#DCE6E2",
   },
   {
     title: "Bleking",
@@ -61,8 +55,6 @@ export const TREATMENTS: readonly Treatment[] = [
       "Langvarig og naturlig resultat",
     ],
     prices: [],
-    photo: "/images/klinikk-rontgen-maskin.jpg",
-    photoTone: "#E6EDE9",
   },
   {
     title: "Fyllingsterapi",
@@ -83,8 +75,6 @@ export const TREATMENTS: readonly Treatment[] = [
       { name: "Fylling, mellomstor",  description: "To flater" },
       { name: "Fylling, stor",        description: "Tre eller flere flater" },
     ],
-    photo: "/images/clinic-instruments.jpg",
-    photoTone: "#E4ECE7",
   },
   {
     title: "Kron og bro",
@@ -103,8 +93,6 @@ export const TREATMENTS: readonly Treatment[] = [
     prices: [
       { name: "Fullkrone", description: "Hel krone over tann" },
     ],
-    photo: "/images/klinikk-instrumenter.jpg",
-    photoTone: "#DCE6E2",
   },
   {
     title: "Rotfylling",
@@ -125,8 +113,6 @@ export const TREATMENTS: readonly Treatment[] = [
       { name: "Rotfylling, 2 rotkanaler",    description: "Tann med to rotkanaler" },
       { name: "Rotfylling, 3–4 rotkanaler",  description: "Tann med tre til fire rotkanaler" },
     ],
-    photo: "/images/klinikk-rontgen-detalj.jpg",
-    photoTone: "#E1EAE5",
   },
   {
     title: "Visdomstennene",
@@ -146,8 +132,6 @@ export const TREATMENTS: readonly Treatment[] = [
       { name: "Ukomplisert ekstraksjon", description: "Enkel fjerning av tann eller rot" },
       { name: "Kirurgisk fjerning",       description: "Fjerning av retinert tann" },
     ],
-    photo: "/images/ringebutannMain.jpg",
-    photoTone: "#E9EFEC",
   },
   {
     title: "Tannkjøtt & tannstein",
@@ -168,8 +152,6 @@ export const TREATMENTS: readonly Treatment[] = [
       { name: "Behandling av periodontitt", description: "Tannkjøttbetennelse" },
       { name: "Fiksering av tenner",         description: "Stabilisering av løse tenner" },
     ],
-    photo: "/images/klinikk-rontgen-skjerm.jpg",
-    photoTone: "#E7EEEA",
   },
   {
     title: "Bittskinner",
@@ -186,8 +168,6 @@ export const TREATMENTS: readonly Treatment[] = [
       "Veiledning om årsaker og forebygging",
     ],
     prices: [],
-    photo: "/images/clinic-valley.jpg",
-    photoTone: "#E6EDE9",
   },
   {
     title: "Tannlegeskrekk",
@@ -204,7 +184,5 @@ export const TREATMENTS: readonly Treatment[] = [
       "Mulighet for pauser underveis",
     ],
     prices: [],
-    photo: "/images/clinic-sign.jpg",
-    photoTone: "#E1EAE5",
   },
 ];

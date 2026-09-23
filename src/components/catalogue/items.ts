@@ -1,6 +1,5 @@
-// Shared, normalized item shape so the three mockup concepts can render
-// both /behandlinger (treatments) and /symptomer (symptoms) identically.
-import { TREATMENTS } from "@/app/behandlinger/data";
+// The item shape CatalogueDrawer renders. /symptomer is its only page now:
+// /behandlinger moved to the arcade in components/behandlinger.
 import { symptoms } from "@/data/content";
 import { SYMPTOM_META, type SymptomMeta } from "@/app/symptomer/data";
 
@@ -20,16 +19,6 @@ export interface SpreadItem {
   photo?: string;
   photoTone: string;
 }
-
-export const treatmentItems: SpreadItem[] = TREATMENTS.map((t) => ({
-  title: t.title,
-  kicker: t.subtitle,
-  tag: t.category,
-  description: t.description,
-  points: t.features,
-  photo: t.photo,
-  photoTone: t.photoTone,
-}));
 
 const FALLBACK_META: SymptomMeta = {
   subtitle: "",
@@ -53,11 +42,6 @@ export const symptomItems: SpreadItem[] = symptoms.map((s) => {
 });
 
 export const PAGE_COPY = {
-  behandlinger: {
-    title: "Behandlinger",
-    lead: "Dette gjør vi, og hva det koster.",
-    items: treatmentItems,
-  },
   symptomer: {
     title: "Symptomer",
     lead: "Åtte vanlige plager. Hva de betyr, og hva du bør gjøre.",
