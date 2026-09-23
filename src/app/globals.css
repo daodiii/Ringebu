@@ -608,3 +608,102 @@ h1, h2, h3, h4, h5, h6 {
     transition: none;
   }
 }
+
+/* ── Papirteater: the shadow cut paper throws (PaperShadow in Papir.tsx) ──
+   The shapes again, a little lower, all in one ink. The opacity is on the
+   group, so where two pieces overlap their shadows do not add up. Strokes
+   are left out, and so are outlines, which keep their empty fill. */
+.paper-shadow {
+  opacity: 0.13;
+}
+.paper-shadow * {
+  fill: #0e2a30 !important;
+  stroke: none !important;
+}
+.paper-shadow [fill="none"] {
+  fill: none !important;
+}
+
+/* ── Papirteater: pieces that never stop (Loose in Papir.tsx) ──
+   Each is a layer the size of the scene's 300 × 540 box, fitted into the
+   stage (a size container) the way the sheets' viewBox is: as wide as the
+   stage or 300/540 of its height, whichever is less. The loops move the
+   layer, so nothing in it is drawn again. The timings are the ones the
+   pieces had when framer-motion moved them inside the sheet. */
+.paper-loose {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: min(100cqw, 55.5556cqh);
+  height: min(180cqw, 100cqh);
+  will-change: transform;
+}
+/* Clouds drift out and back. --drift is the distance as a share of the
+   box's width (10 units of 300 is 3.3333%), --drift-time the round trip. */
+.paper-drift[data-on="true"] {
+  animation: paper-drift var(--drift-time, 14s) ease-in-out infinite;
+}
+@keyframes paper-drift {
+  50% { transform: translateX(var(--drift, 3.3333%)); }
+}
+/* The mirror sways from the foot of its rod, the middle of the box's floor. */
+.paper-sway {
+  transform-origin: 50% 100%;
+}
+.paper-sway[data-on="true"] {
+  animation: paper-sway 6.5s ease-in-out 1.2s infinite;
+}
+@keyframes paper-sway {
+  0%, 100% { transform: rotate(-3.5deg); }
+  50% { transform: rotate(3.5deg); }
+}
+/* The chair's room breathes, in for four and out for four (PapirStol).
+   --at is the circle's centre in the box; --in and --out the scales it
+   breathes between, --rest the scale it holds when still. */
+.paper-breathe {
+  transform-origin: var(--at);
+  transform: scale(var(--rest, 1));
+  transition: transform 0.5s ease;
+}
+.paper-breathe[data-on="true"] {
+  animation: paper-breathe 8s ease-in-out var(--delay, 0s) infinite;
+}
+@keyframes paper-breathe {
+  0%, 100% { transform: scale(var(--in)); }
+  50% { transform: scale(var(--out)); }
+}
+/* The lamp over the chair glows in time with the breath. */
+.paper-glow {
+  transform-origin: 68% 23.3333%;
+  opacity: 0.25;
+  transition: opacity 0.4s ease;
+}
+.paper-glow[data-on="true"] {
+  animation: paper-glow 8s ease-in-out infinite;
+}
+@keyframes paper-glow {
+  0%, 100% { transform: scale(0.9); opacity: 0.2; }
+  50% { transform: scale(1.25); opacity: 0.45; }
+}
+/* The chair's back reclines from its hinge at the seat, a little further
+   with each breath out. --rest is where it holds when not breathing. */
+.paper-recline {
+  transform-origin: 34.6667% 70.7407%;
+  transform: var(--rest, none);
+  transition: transform 0.6s ease;
+}
+.paper-recline[data-on="true"] {
+  animation: paper-recline 16s ease-in-out 0.8s infinite;
+}
+@keyframes paper-recline {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(-16deg); }
+  50% { transform: rotate(-12deg); }
+  75% { transform: rotate(-20deg); }
+  100% { transform: rotate(-16deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .paper-loose {
+    animation: none !important;
+  }
+}

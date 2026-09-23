@@ -12,7 +12,10 @@ import {
   MOLAR,
   MOLAR_SHADE,
   NEAR_HILLS,
-  SHADOW,
+  Loose,
+  NoShadow,
+  PaperShadow,
+  Piece,
   STEEL,
   Sheet,
   Stage,
@@ -61,8 +64,9 @@ export function PapirFargeskala({ active, reduced, d }: SceneProps) {
         <path d={NEAR_HILLS} fill={p.near} />
       </Sheet>
       <Sheet n={2} on={on} reduced={reduced} d={d} depth={2.2}>
+        {/* Each tab throws its own shadow, onto the tab under it */}
         {SHADES.map((fill, k) => (
-          <motion.g
+          <Piece
             key={k}
             style={pivot(150, 452)}
             initial={{ rotate: 0 }}
@@ -76,8 +80,8 @@ export function PapirFargeskala({ active, reduced, d }: SceneProps) {
             }
           >
             <rect x={147} y={330} width={6} height={124} rx={3} fill={p.ink} />
-            <path d={TAB} fill={fill} style={{ filter: SHADOW }} />
-          </motion.g>
+            <path d={TAB} fill={fill} />
+          </Piece>
         ))}
         <circle cx={150} cy={452} r={9} fill={p.ink} />
         <circle cx={150} cy={452} r={3.5} fill={p.accent} />
@@ -142,15 +146,9 @@ export function PapirHerdelampe({ active, reduced, d }: SceneProps) {
         <path d={MOLAR_SHADE} fill={p.shade} />
         <path d={CAVITY} fill={p.ink} opacity={0.72} />
         {/* The filling drops in soft, and turns hard white under the light */}
-        <motion.path
-          d={CAVITY}
-          style={centre}
-          initial={{ y: -130, opacity: 0, fill: "#EFE6CF" }}
-          animate={
-            filled
-              ? { y: 0, opacity: 1, fill: hard ? "#FFFFFF" : "#EFE6CF" }
-              : { y: -130, opacity: 0, fill: "#EFE6CF" }
-          }
+        <Piece
+          initial={{ y: -130, opacity: 0 }}
+          animate={filled ? { y: 0, opacity: 1 } : { y: -130, opacity: 0 }}
           transition={
             reduced
               ? { duration: 0 }
@@ -158,40 +156,52 @@ export function PapirHerdelampe({ active, reduced, d }: SceneProps) {
                 ? { y: { type: "spring", stiffness: 90, damping: 10 }, opacity: { duration: 0.2 } }
                 : { duration: 0.8 }
           }
-        />
+          shadow={<path d={CAVITY} />}
+        >
+          <motion.path
+            d={CAVITY}
+            initial={{ fill: "#EFE6CF" }}
+            animate={{ fill: hard ? "#FFFFFF" : "#EFE6CF" }}
+            transition={{ duration: reduced ? 0 : 0.8 }}
+          />
+        </Piece>
         <Star x={170} y={236} s={0.8} show={phase === "done"} delay={0.2} reduced={reduced} />
       </Sheet>
       <Sheet n={3} on={on} reduced={reduced} d={d} depth={2.6}>
         <path d={GUM_FRONT(482)} fill={p.mid} />
       </Sheet>
       <Sheet n={4} on={on} reduced={reduced} d={d} depth={3.3}>
-        <motion.g
+        <Piece
           initial={{ x: 110, y: -110 }}
           animate={wand && !reduced ? { x: 0, y: 0 } : { x: 110, y: -110 }}
           transition={{ type: "spring", stiffness: 55, damping: 12 }}
         >
           {/* Light cone from the tip down onto the filling */}
-          <motion.path
-            d="M160,224 L118,268 L176,268 Z"
-            fill={CURE_BLUE}
-            initial={{ opacity: 0 }}
-            animate={curing ? { opacity: [0.25, 0.7, 0.4, 0.75, 0.3] } : { opacity: 0 }}
-            transition={curing ? { duration: 2.2, ease: "easeInOut" } : { duration: 0.3 }}
-          />
+          <NoShadow>
+            <motion.path
+              d="M160,224 L118,268 L176,268 Z"
+              fill={CURE_BLUE}
+              initial={{ opacity: 0 }}
+              animate={curing ? { opacity: [0.25, 0.7, 0.4, 0.75, 0.3] } : { opacity: 0 }}
+              transition={curing ? { duration: 2.2, ease: "easeInOut" } : { duration: 0.3 }}
+            />
+          </NoShadow>
           <path d="M232,64 L264,78 L224,196 L196,186 Z" fill={p.ink} />
           <path d="M236,96 L256,104 L250,122 L230,114 Z" fill={CURE_BLUE} />
           <path d="M204,186 L216,190 C208,214 188,226 164,228 L160,220 C182,218 198,208 204,186 Z" fill={STEEL} />
-          <motion.circle
-            cx={162}
-            cy={224}
-            r={5}
-            fill={CURE_BLUE}
-            style={{ filter: "drop-shadow(0 0 6px rgba(142,197,238,0.9))" }}
-            initial={{ opacity: 0 }}
-            animate={curing ? { opacity: [0.6, 1, 0.6] } : { opacity: 0 }}
-            transition={curing ? { duration: 0.5, repeat: Infinity } : { duration: 0.2 }}
-          />
-        </motion.g>
+          <NoShadow>
+            <motion.circle
+              cx={162}
+              cy={224}
+              r={5}
+              fill={CURE_BLUE}
+              style={{ filter: "drop-shadow(0 0 6px rgba(142,197,238,0.9))" }}
+              initial={{ opacity: 0 }}
+              animate={curing ? { opacity: [0.6, 1, 0.6] } : { opacity: 0 }}
+              transition={curing ? { duration: 0.5, repeat: Infinity } : { duration: 0.2 }}
+            />
+          </NoShadow>
+        </Piece>
       </Sheet>
       <Sheet n={5} on={on} reduced={reduced} d={d} depth={3.9}>
         <path d={scallops(514, 12)} fill={p.lip} />
@@ -237,20 +247,22 @@ export function PapirRotfil({ active, reduced, d }: SceneProps) {
         <path d="M-420,318 C-200,306 60,316 150,306 C240,316 500,306 720,318 L720,334 C500,322 240,332 150,322 C60,332 -200,322 -420,334 Z" fill={p.mid} />
       </Sheet>
       <Sheet n={2} on={on} reduced={reduced} d={d} depth={2}>
-        <defs>
-          {/* The filling rises up the canals from the root tips */}
-          <clipPath id={`fill-${id}`}>
-            <motion.rect
-              x={120}
-              y={236}
-              width={60}
-              height={210}
-              initial={{ y: 210 }}
-              animate={{ y: filled ? 0 : 210 }}
-              transition={{ duration: reduced ? 0 : filled ? 1.6 : 0.4, ease: [0.4, 0, 0.2, 1] }}
-            />
-          </clipPath>
-        </defs>
+        <NoShadow>
+          <defs>
+            {/* The filling rises up the canals from the root tips */}
+            <clipPath id={`fill-${id}`}>
+              <motion.rect
+                x={120}
+                y={236}
+                width={60}
+                height={210}
+                initial={{ y: 210 }}
+                animate={{ y: filled ? 0 : 210 }}
+                transition={{ duration: reduced ? 0 : filled ? 1.6 : 0.4, ease: [0.4, 0, 0.2, 1] }}
+              />
+            </clipPath>
+          </defs>
+        </NoShadow>
         <path d={WHOLE_TOOTH} fill={p.paper} />
         <path d={DENTIN} fill={p.shade} />
         {/* Empty canals are dark, so the filling rising up them reads in any palette */}
@@ -261,13 +273,15 @@ export function PapirRotfil({ active, reduced, d }: SceneProps) {
         <Star x={196} y={200} s={0.8} show={phase === "done"} delay={0.2} reduced={reduced} />
       </Sheet>
       <Sheet n={3} on={on} reduced={reduced} d={d} depth={2.8}>
-        <defs>
-          <clipPath id={`shaft-${id}`}>
-            <path d="M136,64 L142,64 L140,252 Q139,258 138,252 Z" />
-          </clipPath>
-        </defs>
+        <NoShadow>
+          <defs>
+            <clipPath id={`shaft-${id}`}>
+              <path d="M136,64 L142,64 L140,252 Q139,258 138,252 Z" />
+            </clipPath>
+          </defs>
+        </NoShadow>
         {/* The file screws down into the left canal and back out */}
-        <motion.g
+        <Piece
           initial={{ y: -80, opacity: 0 }}
           animate={
             filing
@@ -281,17 +295,19 @@ export function PapirRotfil({ active, reduced, d }: SceneProps) {
           <rect x={126} y={36} width={26} height={24} rx={6} fill={p.accent} />
           <rect x={134} y={58} width={10} height={8} fill={p.ink} />
           <path d="M136,64 L142,64 L140,252 Q139,258 138,252 Z" fill={STEEL} />
-          <g clipPath={`url(#shaft-${id})`}>
-            <motion.g
-              animate={filing ? { y: [0, -8] } : { y: 0 }}
-              transition={filing ? { duration: 0.18, repeat: Infinity, ease: "linear" } : { duration: 0.1 }}
-            >
-              {Array.from({ length: 28 }, (_, k) => (
-                <path key={k} d={`M132,${70 + k * 8} L148,${62 + k * 8}`} stroke={p.ink} strokeWidth={1.4} opacity={0.55} />
-              ))}
-            </motion.g>
-          </g>
-        </motion.g>
+          <NoShadow>
+            <g clipPath={`url(#shaft-${id})`}>
+              <motion.g
+                animate={filing ? { y: [0, -8] } : { y: 0 }}
+                transition={filing ? { duration: 0.18, repeat: Infinity, ease: "linear" } : { duration: 0.1 }}
+              >
+                {Array.from({ length: 28 }, (_, k) => (
+                  <path key={k} d={`M132,${70 + k * 8} L148,${62 + k * 8}`} stroke={p.ink} strokeWidth={1.4} opacity={0.55} />
+                ))}
+              </motion.g>
+            </g>
+          </NoShadow>
+        </Piece>
       </Sheet>
       <Sheet n={4} on={on} reduced={reduced} d={d} depth={3.6}>
         <path d={scallops(512, 12)} fill={p.lip} />
@@ -336,29 +352,31 @@ export function PapirRontgen({ active, reduced, d }: SceneProps) {
         {/* The machine: a column and the arm that swings round your head */}
         <rect x={144} y={40} width={12} height={132} rx={4} fill={p.ink} />
         <rect x={70} y={164} width={160} height={12} rx={6} fill={p.ink} />
-        <motion.g
+        <Piece
           initial={{ x: 0 }}
           animate={scanning ? { x: [0, 150, 0] } : { x: 0 }}
           transition={scanning ? { duration: 2.2, ease: "easeInOut" } : { duration: 0.4 }}
         >
           <rect x={66} y={176} width={34} height={48} rx={8} fill={p.paper} />
           <rect x={72} y={206} width={22} height={8} rx={3} fill={p.accent} />
-        </motion.g>
+        </Piece>
       </Sheet>
       <Sheet n={2} on={on} reduced={reduced} d={d} depth={2}>
-        <defs>
-          {/* The picture appears behind the scan bar as it passes */}
-          <clipPath id={`scan-${id}`}>
-            <motion.rect
-              x={FILM.x}
-              y={FILM.y}
-              height={FILM.h}
-              initial={{ width: 0 }}
-              animate={{ width: scanned ? FILM.w : 0 }}
-              transition={{ duration: reduced ? 0 : scanning ? 2.2 : 0.4, ease: "linear" }}
-            />
-          </clipPath>
-        </defs>
+        <NoShadow>
+          <defs>
+            {/* The picture appears behind the scan bar as it passes */}
+            <clipPath id={`scan-${id}`}>
+              <motion.rect
+                x={FILM.x}
+                y={FILM.y}
+                height={FILM.h}
+                initial={{ width: 0 }}
+                animate={{ width: scanned ? FILM.w : 0 }}
+                transition={{ duration: reduced ? 0 : scanning ? 2.2 : 0.4, ease: "linear" }}
+              />
+            </clipPath>
+          </defs>
+        </NoShadow>
         <rect x={FILM.x} y={FILM.y} width={FILM.w} height={FILM.h} rx={16} fill={p.deep} />
         <g clipPath={`url(#scan-${id})`}>
           <path d={`M${FILM.x + 8},${FILM.y + 58} L${FILM.x + FILM.w - 8},${FILM.y + 58}`} stroke={p.near} strokeWidth={2} opacity={0.5} />
@@ -369,34 +387,38 @@ export function PapirRontgen({ active, reduced, d }: SceneProps) {
             <path key={`l${k}`} d={lowerTooth(x)} fill={p.paper} transform={k === 0 ? `rotate(14 ${x} 386)` : undefined} />
           ))}
         </g>
-        {/* The scan bar */}
-        <motion.rect
-          x={FILM.x}
-          y={FILM.y - 6}
-          width={10}
-          height={FILM.h + 12}
-          rx={5}
-          fill={p.accent}
-          initial={{ opacity: 0, x: 0 }}
-          animate={scanning ? { opacity: [0, 0.8, 0.8, 0], x: [0, FILM.w - 10] } : { opacity: 0, x: 0 }}
-          transition={scanning ? { duration: 2.2, ease: "linear" } : { duration: 0.2 }}
-        />
+        {/* The scan bar, which is light */}
+        <NoShadow>
+          <motion.rect
+            x={FILM.x}
+            y={FILM.y - 6}
+            width={10}
+            height={FILM.h + 12}
+            rx={5}
+            fill={p.accent}
+            initial={{ opacity: 0, x: 0 }}
+            animate={scanning ? { opacity: [0, 0.8, 0.8, 0], x: [0, FILM.w - 10] } : { opacity: 0, x: 0 }}
+            transition={scanning ? { duration: 2.2, ease: "linear" } : { duration: 0.2 }}
+          />
+        </NoShadow>
       </Sheet>
       <Sheet n={3} on={on} reduced={reduced} d={d} depth={2.8}>
         {/* The wisdom tooth, ringed, then lifted out */}
-        <motion.circle
-          cx={258}
-          cy={380}
-          r={22}
-          fill="none"
-          stroke={p.accent}
-          strokeWidth={3}
-          initial={{ opacity: 0, pathLength: 0 }}
-          animate={phase === "mark" || lifted ? { opacity: phase === "mark" ? 1 : 0, pathLength: 1 } : { opacity: 0, pathLength: 0 }}
-          transition={{ duration: 0.5 }}
-        />
-        <motion.g
-          style={centre}
+        <NoShadow>
+          <motion.circle
+            cx={258}
+            cy={380}
+            r={22}
+            fill="none"
+            stroke={p.accent}
+            strokeWidth={3}
+            initial={{ opacity: 0, pathLength: 0 }}
+            animate={phase === "mark" || lifted ? { opacity: phase === "mark" ? 1 : 0, pathLength: 1 } : { opacity: 0, pathLength: 0 }}
+            transition={{ duration: 0.5 }}
+          />
+        </NoShadow>
+        <Piece
+          style={pivot(258, 380)}
           initial={{ opacity: 0 }}
           animate={
             !scanned
@@ -408,7 +430,7 @@ export function PapirRontgen({ active, reduced, d }: SceneProps) {
           transition={lifted ? { type: "spring", stiffness: 40, damping: 10 } : { duration: phase === "scan" ? 0.3 : 0.5, delay: phase === "scan" ? 2 : 0 }}
         >
           <path d={WISDOM} fill={p.paper} transform="rotate(-18 258 380)" />
-        </motion.g>
+        </Piece>
         <Star x={196} y={236} s={0.9} show={phase === "rest"} delay={0.1} reduced={reduced} />
       </Sheet>
       <Sheet n={4} on={on} reduced={reduced} d={d} depth={3.5}>
@@ -450,26 +472,42 @@ export function PapirBittskinne({ active, reduced, d }: SceneProps) {
 
   return (
     <Stage active={active} reduced={reduced}>
-      <Sheet n={0} on={on} reduced={reduced} d={d} depth={0.6} shadow={false}>
-        <motion.path
-          d={MOON}
-          fill={p.accent}
-          style={{ filter: `${SHADOW} drop-shadow(0 0 10px ${p.accent})` }}
+      <Sheet
+        n={0}
+        on={on}
+        reduced={reduced}
+        d={d}
+        depth={0.6}
+        shadow={false}
+        loose={
+          // The stars are only light. They twinkle on a layer of their own,
+          // so each twinkle repaints a star and not the moon's glow beside it.
+          <Loose shadow={false}>
+            {NIGHT_STARS.map(([x, y, s], k) => (
+              <motion.path
+                key={k}
+                d={starPath(x, y, s)}
+                fill={p.paper}
+                style={centre}
+                initial={{ opacity: 0.8, scale: 1 }}
+                animate={on && !reduced ? { opacity: [0.4, 1, 0.4], scale: [0.85, 1.1, 0.85] } : { opacity: 0.8 }}
+                transition={on && !reduced ? { duration: 2.4 + k * 0.5, repeat: Infinity, delay: k * 0.3 } : { duration: 0.3 }}
+              />
+            ))}
+          </Loose>
+        }
+      >
+        {/* The moon is paper that glows */}
+        <motion.g
           initial={{ y: 0, opacity: 0.9 }}
           animate={phase === "rest" ? { y: -6, opacity: 1 } : { y: 0, opacity: 0.9 }}
           transition={{ duration: 2 }}
-        />
-        {NIGHT_STARS.map(([x, y, s], k) => (
-          <motion.path
-            key={k}
-            d={starPath(x, y, s)}
-            fill={p.paper}
-            style={centre}
-            initial={{ opacity: 0.8, scale: 1 }}
-            animate={on && !reduced ? { opacity: [0.4, 1, 0.4], scale: [0.85, 1.1, 0.85] } : { opacity: 0.8 }}
-            transition={on && !reduced ? { duration: 2.4 + k * 0.5, repeat: Infinity, delay: k * 0.3 } : { duration: 0.3 }}
-          />
-        ))}
+        >
+          <PaperShadow>
+            <path d={MOON} />
+          </PaperShadow>
+          <path d={MOON} fill={p.accent} style={{ filter: `drop-shadow(0 0 10px ${p.accent})` }} />
+        </motion.g>
       </Sheet>
       <Sheet n={1} on={on} reduced={reduced} d={d} depth={1}>
         <path d={FAR_HILLS} fill={p.far} />
@@ -480,18 +518,18 @@ export function PapirBittskinne({ active, reduced, d }: SceneProps) {
           <path key={x} d={`M${x - 13},240 L${x + 13},240 L${x + 12},286 Q${x},300 ${x - 12},286 Z`} fill={p.paper} />
         ))}
         <path d="M48,214 C90,206 210,206 252,214 L252,246 C230,238 214,250 196,242 C178,250 162,238 150,246 C138,238 122,250 104,242 C86,250 70,238 48,246 Z" fill={p.mid} />
-        <motion.g
+        <Piece
           initial={{ y: -150, opacity: 0 }}
           animate={splint ? { y: 0, opacity: 1 } : { y: -150, opacity: 0 }}
           transition={reduced ? { duration: 0 } : splint ? { type: "spring", stiffness: 60, damping: 12 } : { duration: 0.5 }}
         >
           <rect x={52} y={262} width={196} height={40} rx={18} fill={p.paper} opacity={0.62} />
           <path d="M66,272 L234,272" stroke={p.paper} strokeWidth={3} strokeLinecap="round" opacity={0.9} />
-        </motion.g>
+        </Piece>
       </Sheet>
       <Sheet n={3} on={on} reduced={reduced} d={d} depth={2.6}>
         {/* Lower jaw: it closes, grinds when there is nothing between, rests when there is */}
-        <motion.g
+        <Piece
           initial={{ y: 44 }}
           animate={grinding ? { y: 0, x: [0, 5, -5, 5, -5, 0] } : { y: jawY, x: 0 }}
           transition={grinding ? { x: { duration: 1.4, ease: "easeInOut" }, y: { duration: 0.3 } } : { duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
@@ -500,25 +538,27 @@ export function PapirBittskinne({ active, reduced, d }: SceneProps) {
             <path key={x} d={`M${x - 13},352 L${x + 13},352 L${x + 12},312 Q${x},298 ${x - 12},312 Z`} fill={p.paper} />
           ))}
           <path d="M48,380 C90,388 210,388 252,380 L252,346 C230,354 214,342 196,350 C178,342 162,354 150,346 C138,354 122,342 104,350 C86,342 70,354 48,346 Z" fill={p.deep} />
-        </motion.g>
+        </Piece>
         {/* Grinding: little jolts at the sides, only without the splint */}
-        {[
-          "M34,294 L44,300 L36,306 L46,312",
-          "M266,294 L256,300 L264,306 L254,312",
-        ].map((z, k) => (
-          <motion.path
-            key={k}
-            d={z}
-            fill="none"
-            stroke={p.ink}
-            strokeWidth={3}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            initial={{ opacity: 0 }}
-            animate={grinding ? { opacity: [0, 1, 0, 1, 0], x: k ? [0, 3, 0] : [0, -3, 0] } : { opacity: 0 }}
-            transition={grinding ? { duration: 1.4 } : { duration: 0.2 }}
-          />
-        ))}
+        <NoShadow>
+          {[
+            "M34,294 L44,300 L36,306 L46,312",
+            "M266,294 L256,300 L264,306 L254,312",
+          ].map((z, k) => (
+            <motion.path
+              key={k}
+              d={z}
+              fill="none"
+              stroke={p.ink}
+              strokeWidth={3}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              initial={{ opacity: 0 }}
+              animate={grinding ? { opacity: [0, 1, 0, 1, 0], x: k ? [0, 3, 0] : [0, -3, 0] } : { opacity: 0 }}
+              transition={grinding ? { duration: 1.4 } : { duration: 0.2 }}
+            />
+          ))}
+        </NoShadow>
       </Sheet>
       <Sheet n={4} on={on} reduced={reduced} d={d} depth={3.4}>
         <path d={scallops(506, 12)} fill={p.lip} />
@@ -529,7 +569,10 @@ export function PapirBittskinne({ active, reduced, d }: SceneProps) {
 
 /* ───────────── Tannlegeskrekk: the chair, breathing ───────────── */
 
-const BREATH = 8;
+// Everything here moves for as long as the scene is on, so every loop is a
+// Loose layer (paper-breathe, paper-glow and paper-recline in globals.css):
+// in for four, out for four, and the chair's back in time with it.
+const vars = (v: Record<string, string>) => v as React.CSSProperties;
 
 export function PapirStol({ active, reduced, d }: SceneProps) {
   const { p } = usePaper();
@@ -538,67 +581,69 @@ export function PapirStol({ active, reduced, d }: SceneProps) {
 
   return (
     <Stage active={active} reduced={reduced}>
-      <Sheet n={0} on={on} reduced={reduced} d={d} depth={0.5} shadow={false}>
-        {/* In for four, out for four */}
-        <motion.circle
-          cx={150}
-          cy={250}
-          r={112}
-          fill={p.far}
-          style={centre}
-          animate={breathe ? { scale: [0.86, 1.06, 0.86] } : { scale: 0.95 }}
-          transition={breathe ? { duration: BREATH, repeat: Infinity, ease: "easeInOut" } : { duration: 0.5 }}
-        />
-        <motion.circle
-          cx={150}
-          cy={250}
-          r={70}
-          fill={p.sky}
-          style={centre}
-          animate={breathe ? { scale: [0.8, 1.12, 0.8] } : { scale: 1 }}
-          transition={breathe ? { duration: BREATH, repeat: Infinity, ease: "easeInOut", delay: 0.3 } : { duration: 0.5 }}
-        />
-      </Sheet>
-      <Sheet n={1} on={on} reduced={reduced} d={d} depth={1}>
-        <motion.g
-          animate={breathe ? { x: [0, 14, 0] } : { x: 0 }}
-          transition={breathe ? { duration: 16, repeat: Infinity, ease: "easeInOut" } : { duration: 0.5 }}
-        >
-          <path d="M26,120 Q26,104 42,106 Q48,92 64,98 Q76,88 86,102 Q100,102 98,116 L34,118 Q26,118 26,120 Z" fill={p.paper} />
-        </motion.g>
+      <Sheet
+        n={0}
+        on={on}
+        reduced={reduced}
+        d={d}
+        depth={0.5}
+        shadow={false}
+        loose={
+          <>
+            <Loose loop="breathe" on={breathe} shadow={false} style={vars({ "--at": "50% 46.2963%", "--in": "0.86", "--out": "1.06", "--rest": "0.95" })}>
+              <circle cx={150} cy={250} r={112} fill={p.far} />
+            </Loose>
+            <Loose loop="breathe" on={breathe} shadow={false} style={vars({ "--at": "50% 46.2963%", "--in": "0.8", "--out": "1.12", "--delay": "0.3s" })}>
+              <circle cx={150} cy={250} r={70} fill={p.sky} />
+            </Loose>
+          </>
+        }
+      />
+      <Sheet
+        n={1}
+        on={on}
+        reduced={reduced}
+        d={d}
+        depth={1}
+        loose={
+          // Fourteen units out and back over sixteen seconds.
+          <Loose loop="drift" on={breathe} style={vars({ "--drift": "4.6667%", "--drift-time": "16s" })}>
+            <path d="M26,120 Q26,104 42,106 Q48,92 64,98 Q76,88 86,102 Q100,102 98,116 L34,118 Q26,118 26,120 Z" fill={p.paper} />
+          </Loose>
+        }
+      >
         <path d="M-420,440 C-200,428 60,436 150,430 C240,436 500,428 720,440 L720,540 L-420,540 Z" fill={p.near} />
       </Sheet>
-      <Sheet n={2} on={on} reduced={reduced} d={d} depth={2}>
-        {/* The lamp, glowing softly in time with the breath */}
+      <Sheet
+        n={2}
+        on={on}
+        reduced={reduced}
+        d={d}
+        depth={2}
+        loose={
+          <>
+            {/* The lamp's glow, and the lamp's head over it */}
+            <Loose loop="glow" on={breathe} shadow={false}>
+              <ellipse cx={204} cy={126} rx={34} ry={22} fill={p.accent} />
+            </Loose>
+            <Loose>
+              <rect x={184} y={110} width={40} height={24} rx={11} fill={p.paper} />
+            </Loose>
+            {/* The back and headrest; held back a little when the scene is still */}
+            <Loose loop="recline" on={breathe} style={vars({ "--rest": on && reduced ? "rotate(-16deg)" : "none" })}>
+              <path d="M92,382 L66,276 Q64,266 74,264 L90,262 Q100,262 102,272 L118,378 Z" fill={p.mid} />
+              <rect x={60} y={226} width={40} height={30} rx={13} fill={p.paper} />
+              <rect x={76} y={252} width={8} height={14} fill={p.ink} />
+            </Loose>
+          </>
+        }
+      >
         <path d="M296,20 L292,26 L214,112 L208,106 Z" fill={p.ink} />
-        <motion.ellipse
-          cx={204}
-          cy={126}
-          rx={34}
-          ry={22}
-          fill={p.accent}
-          style={centre}
-          initial={{ opacity: 0.25, scale: 1 }}
-          animate={breathe ? { scale: [0.9, 1.25, 0.9], opacity: [0.2, 0.45, 0.2] } : { opacity: 0.25 }}
-          transition={breathe ? { duration: BREATH, repeat: Infinity, ease: "easeInOut" } : { duration: 0.4 }}
-        />
-        <rect x={184} y={110} width={40} height={24} rx={11} fill={p.paper} />
         {/* Base, seat and leg rest */}
         <path d="M112,452 Q150,440 188,452 L188,462 L112,462 Z" fill={p.ink} />
         <rect x={140} y={392} width={20} height={62} fill={p.ink} />
         <rect x={98} y={370} width={104} height={24} rx={11} fill={p.mid} />
         <path d="M196,372 L250,410 Q256,418 248,424 L236,428 L186,392 Z" fill={p.mid} />
-        {/* The back and headrest recline, a little further with each breath out */}
-        <motion.g
-          style={pivot(104, 382)}
-          initial={{ rotate: 0 }}
-          animate={breathe ? { rotate: [0, -16, -12, -20, -16] } : { rotate: on ? -16 : 0 }}
-          transition={breathe ? { duration: BREATH * 2, times: [0, 0.25, 0.5, 0.75, 1], repeat: Infinity, ease: "easeInOut", delay: 0.8 } : { duration: 0.6 }}
-        >
-          <path d="M92,382 L66,276 Q64,266 74,264 L90,262 Q100,262 102,272 L118,378 Z" fill={p.mid} />
-          <rect x={60} y={226} width={40} height={30} rx={13} fill={p.paper} />
-          <rect x={76} y={252} width={8} height={14} fill={p.ink} />
-        </motion.g>
       </Sheet>
       <Sheet n={3} on={on} reduced={reduced} d={d} depth={3}>
         <path d={scallops(506, 12)} fill={p.lip} />
@@ -641,30 +686,34 @@ export function PapirLampe({ active, reduced, d }: SceneProps) {
       </Sheet>
       <Sheet n={2} on={on} reduced={reduced} d={d} depth={2}>
         {/* Soft light pooling on the tooth */}
-        <motion.path
-          d="M186,122 L96,300 L220,300 Z"
-          fill={p.paper}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: lit ? 0.55 : 0 }}
-          transition={{ duration: 0.9 }}
-        />
+        <NoShadow>
+          <motion.path
+            d="M186,122 L96,300 L220,300 Z"
+            fill={p.paper}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: lit ? 0.55 : 0 }}
+            transition={{ duration: 0.9 }}
+          />
+        </NoShadow>
         <path d={MOLAR} fill={p.paper} />
         <path d={MOLAR_SHADE} fill={p.shade} />
-        {JOLTS.map((z, k) => (
-          <motion.path
-            key={k}
-            d={z}
-            fill="none"
-            stroke={p.ink}
-            strokeWidth={4}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            style={centre}
-            initial={{ opacity: 0, scale: 0.6 }}
-            animate={pain ? { opacity: 1, scale: [1, 1.18, 1], x: [0, k === 0 ? -2 : 2, 0] } : { opacity: 0, scale: 0.6 }}
-            transition={pain ? { duration: 0.5, repeat: Infinity, delay: k * 0.12 } : { duration: 0.5 }}
-          />
-        ))}
+        <NoShadow>
+          {JOLTS.map((z, k) => (
+            <motion.path
+              key={k}
+              d={z}
+              fill="none"
+              stroke={p.ink}
+              strokeWidth={4}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              style={centre}
+              initial={{ opacity: 0, scale: 0.6 }}
+              animate={pain ? { opacity: 1, scale: [1, 1.18, 1], x: [0, k === 0 ? -2 : 2, 0] } : { opacity: 0, scale: 0.6 }}
+              transition={pain ? { duration: 0.5, repeat: Infinity, delay: k * 0.12 } : { duration: 0.5 }}
+            />
+          ))}
+        </NoShadow>
         <Star x={178} y={226} s={0.85} show={phase === "rest"} delay={0.1} reduced={reduced} />
       </Sheet>
       <Sheet n={3} on={on} reduced={reduced} d={d} depth={2.6}>
@@ -672,11 +721,17 @@ export function PapirLampe({ active, reduced, d }: SceneProps) {
       </Sheet>
       <Sheet n={4} on={on} reduced={reduced} d={d} depth={3.2}>
         {/* The lamp swings in on its arm and switches on */}
-        <motion.g
+        <Piece
           style={pivot(300, 0)}
           initial={{ rotate: -40 }}
           animate={{ rotate: lampIn ? 0 : -40 }}
           transition={reduced ? { duration: 0 } : { type: "spring", stiffness: 45, damping: 9 }}
+          shadow={
+            <>
+              <path d="M300,0 L306,8 L206,108 L198,100 Z" />
+              <rect x={160} y={98} width={62} height={34} rx={16} />
+            </>
+          }
         >
           <path d="M300,0 L306,8 L206,108 L198,100 Z" fill={p.ink} />
           <rect x={160} y={98} width={62} height={34} rx={16} fill={p.paper} />
@@ -692,7 +747,7 @@ export function PapirLampe({ active, reduced, d }: SceneProps) {
             transition={{ duration: 0.4 }}
             style={{ filter: lit ? `drop-shadow(0 0 8px ${p.accent})` : undefined }}
           />
-        </motion.g>
+        </Piece>
       </Sheet>
       <Sheet n={5} on={on} reduced={reduced} d={d} depth={3.8}>
         <path d={scallops(514, 12)} fill={p.lip} />
@@ -734,28 +789,32 @@ export function PapirImplantat({ active, reduced, d }: SceneProps) {
         <path d="M-420,392 C-200,384 60,392 150,388 C240,392 500,384 720,392 L720,540 L-420,540 Z" fill={p.deep} />
       </Sheet>
       <Sheet n={2} on={on} reduced={reduced} d={d} depth={1.9}>
-        <defs>
-          <clipPath id={`screw-${id}`}>
-            <path d={SCREW} />
-          </clipPath>
-        </defs>
-        <motion.g
+        <NoShadow>
+          <defs>
+            <clipPath id={`screw-${id}`}>
+              <path d={SCREW} />
+            </clipPath>
+          </defs>
+        </NoShadow>
+        <Piece
           initial={{ y: -260 }}
           animate={{ y: inBone ? 84 : -260 }}
           transition={reduced ? { duration: 0 } : screwing ? { duration: 2.2, ease: [0.3, 0, 0.3, 1] } : { duration: 0.6 }}
         >
           <path d={SCREW} fill={STEEL} />
-          <g clipPath={`url(#screw-${id})`}>
-            <motion.g
-              animate={screwing ? { y: [0, -9] } : { y: 0 }}
-              transition={screwing ? { duration: 0.16, repeat: Infinity, ease: "linear" } : { duration: 0.1 }}
-            >
-              {Array.from({ length: 14 }, (_, k) => (
-                <path key={k} d={`M130,${306 + k * 9} L170,${298 + k * 9}`} stroke={p.ink} strokeWidth={2.2} opacity={0.4} />
-              ))}
-            </motion.g>
-          </g>
-        </motion.g>
+          <NoShadow>
+            <g clipPath={`url(#screw-${id})`}>
+              <motion.g
+                animate={screwing ? { y: [0, -9] } : { y: 0 }}
+                transition={screwing ? { duration: 0.16, repeat: Infinity, ease: "linear" } : { duration: 0.1 }}
+              >
+                {Array.from({ length: 14 }, (_, k) => (
+                  <path key={k} d={`M130,${306 + k * 9} L170,${298 + k * 9}`} stroke={p.ink} strokeWidth={2.2} opacity={0.4} />
+                ))}
+              </motion.g>
+            </g>
+          </NoShadow>
+        </Piece>
       </Sheet>
       <Sheet n={3} on={on} reduced={reduced} d={d} depth={2.5}>
         {/* Bone in front, cut away where the implant goes, and the gum over it */}
@@ -764,14 +823,14 @@ export function PapirImplantat({ active, reduced, d }: SceneProps) {
       </Sheet>
       <Sheet n={4} on={on} reduced={reduced} d={d} depth={3}>
         {/* The post drops onto the implant, then the crown onto the post */}
-        <motion.path
-          d="M140,352 L160,352 L164,384 L136,384 Z"
-          fill={STEEL}
+        <Piece
           initial={{ y: -200, opacity: 0 }}
           animate={post ? { y: 0, opacity: 1 } : { y: -200, opacity: 0 }}
           transition={reduced ? { duration: 0 } : post ? { type: "spring", stiffness: 90, damping: 11 } : { duration: 0.4 }}
-        />
-        <motion.g
+        >
+          <path d="M140,352 L160,352 L164,384 L136,384 Z" fill={STEEL} />
+        </Piece>
+        <Piece
           initial={{ y: -260, opacity: 0 }}
           animate={crown ? { y: 0, opacity: 1 } : { y: -260, opacity: 0 }}
           transition={reduced ? { duration: 0 } : crown ? { type: "spring", stiffness: 42, damping: 8 } : { duration: 0.4 }}
@@ -780,7 +839,7 @@ export function PapirImplantat({ active, reduced, d }: SceneProps) {
             <path d={CROWN} fill={p.paper} />
             <path d={CROWN_SHADE} fill={p.shade} />
           </g>
-        </motion.g>
+        </Piece>
         <Star x={200} y={258} s={0.85} show={phase === "rest"} delay={0.3} reduced={reduced} />
       </Sheet>
       <Sheet n={5} on={on} reduced={reduced} d={d} depth={3.7}>

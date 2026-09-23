@@ -1,13 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   AnimatePresence,
   motion,
   useAnimate,
   useInView,
-  useMotionTemplate,
   useMotionValue,
   useMotionValueEvent,
   useReducedMotion,
@@ -168,7 +167,9 @@ export function Buegang({ scenes }: { scenes: SceneSet }) {
         style={{ height: g.vh + g.maxX }}
       >
         <div className="sticky top-0 h-[100svh] overflow-hidden">
-          <motion.div className="absolute left-0 top-0" style={{ x, width: g.trackW, height: g.vh }}>
+          {/* Its own layer, so walking slides the painted wall instead of
+              painting it again at every step. */}
+          <motion.div className="absolute left-0 top-0" style={{ x, width: g.trackW, height: g.vh, willChange: "transform" }}>
             {/* Scenes, behind the wall */}
             {T.map((t, i) => (
               <SceneRoom
@@ -317,12 +318,18 @@ function useArchDistance(i: number, g: Geo, x: MotionValue<number>) {
 
 // A scene plays while its arch is within this distance of the middle.
 const SCENE_ZONE = 0.2;
+// How long a scene takes to fold away once its arch leaves the middle, in ms.
+const FOLDING = 800;
 
 /**
  * The scene behind one arch. It is told when it is on stage, and only then
  * does it perform; the rest of the time the arch shows its plain colour.
+ *
+ * Once it has folded away the scene is hidden outright, and the room shows
+ * that colour itself. Folded sheets are still layers that the browser sorts
+ * on every step of the walk, and nine scenes of them cost more than the walk.
  */
-function SceneRoom({
+const SceneRoom = memo(function SceneRoom({
   Scene, i, g, x, reduced, hovered,
 }: {
   Scene?: SceneSet[string];
@@ -338,6 +345,13 @@ function SceneRoom({
     const on = Math.abs(v) < SCENE_ZONE;
     setCentred((c) => (c === on ? c : on));
   });
+  const on = centred || hovered;
+  // Shown while on stage, and for as long as it takes to fold away after.
+  const [shown, setShown] = useState(on);
+  useEffect(() => {
+    const t = setTimeout(() => setShown(on), on ? 0 : FOLDING);
+    return () => clearTimeout(t);
+  }, [on]);
   if (!Scene) return null;
   return (
     <div
@@ -349,12 +363,23 @@ function SceneRoom({
         width: g.archW,
         height: g.archH,
         borderRadius: `${g.r}px ${g.r}px 0 0`,
+        background: Scene.ground,
       }}
     >
-      <Scene active={centred || hovered} d={d} reduced={reduced} mode="arch" />
+      <div className="absolute inset-0" style={{ display: on || shown ? undefined : "none" }}>
+        <Scene active={on} d={d} reduced={reduced} mode="arch" />
+      </div>
     </div>
   );
-}
+});
+
+/** How far the jamb's sliding sheet reaches past the opening on every side. */
+const JAMB_PAD = 40;
+// The side of the jamb is an inset shadow whose inner edge lies 16px outside
+// the opening (a spread of -16). On the sheet, which is JAMB_PAD larger all
+// round, the same edge is its own edge pulled in by JAMB_PAD - 16.
+const JAMB_SIDE = `inset 0 0 26px ${JAMB_PAD - 16}px rgba(8,30,35,0.42)`;
+const JAMB_TOP = "inset 0 14px 22px -16px rgba(8,30,35,0.35), inset 0 0 0 1px rgba(14,42,48,0.10)";
 
 function Arch({
   t, i, g, x, active, reduced, onHover, refCb, onOpen, onFocusArch,
@@ -374,7 +399,6 @@ function Arch({
   // The inside of the opening: you see the jamb on the side facing you, and
   // it changes sides as the arch passes — the wall has a thickness.
   const side = useTransform(d, (v) => (reduced ? 0 : Math.max(-1, Math.min(1, v)) * -18));
-  const jamb = useMotionTemplate`inset ${side}px 0 26px -16px rgba(8,30,35,0.42), inset 0 14px 22px -16px rgba(8,30,35,0.35), inset 0 0 0 1px rgba(14,42,48,0.10)`;
 
   return (
     <button
@@ -388,17 +412,35 @@ function Arch({
       className="group absolute cursor-pointer text-left outline-none"
       style={{ left: g.lefts[i], top: g.top, width: g.archW, height: g.archH + (g.sm ? 92 : 112) }}
     >
-      {/* Jamb shadow inside the opening */}
-      <motion.span
+      {/* Jamb shadow inside the opening. The side that changes is painted
+          once, on a sheet larger than the opening that slides sideways inside
+          it, so the shadow moves across without being drawn again. Redrawing
+          a blurred shadow in every arch at every step of the walk was most of
+          what the walk cost a phone. */}
+      <span
         aria-hidden="true"
-        className="absolute left-0 top-0 block"
+        className="absolute left-0 top-0 block overflow-hidden"
         style={{
           width: g.archW,
           height: g.archH,
           borderRadius: `${g.r}px ${g.r}px 0 0`,
-          boxShadow: jamb,
+          boxShadow: JAMB_TOP,
         }}
-      />
+      >
+        <motion.span
+          className="absolute block"
+          style={{
+            left: -JAMB_PAD,
+            top: -JAMB_PAD,
+            width: g.archW + 2 * JAMB_PAD,
+            height: g.archH + 2 * JAMB_PAD,
+            borderRadius: `${g.r + JAMB_PAD}px ${g.r + JAMB_PAD}px 0 0`,
+            boxShadow: JAMB_SIDE,
+            x: side,
+            willChange: "transform",
+          }}
+        />
+      </span>
       {/* Focus ring follows the arch */}
       <span
         aria-hidden="true"

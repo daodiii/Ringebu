@@ -1,9 +1,12 @@
 "use client";
 
-import type { ComponentType } from "react";
+import type { ComponentType, CSSProperties } from "react";
 import { motion } from "framer-motion";
 import {
   FAR_HILLS,
+  Loose,
+  NoShadow,
+  Piece,
   SAND,
   Sheet,
   Stage,
@@ -92,7 +95,7 @@ export function AcheArcs({
   width?: number;
 }) {
   return (
-    <g>
+    <NoShadow>
       {[-1, 1].map((side) =>
         Array.from({ length: rings }, (_, k) => {
           const r = spread + k * 13;
@@ -117,11 +120,11 @@ export function AcheArcs({
           );
         })
       )}
-    </g>
+    </NoShadow>
   );
 }
 
-export const DROP = "M0,-7 C3,-3 6,1 6,5 A6,6 0 0 1 -6,5 C-6,1 -3,-3 0,-7 Z";
+export const DROP ="M0,-7 C3,-3 6,1 6,5 A6,6 0 0 1 -6,5 C-6,1 -3,-3 0,-7 Z";
 
 // Bolts of cold, running out from the tooth neck.
 const BOLTS = [
@@ -135,7 +138,7 @@ const BOLTS = [
 
 export function Bolts({ show, reduced, color = ICE_BLUE, paths = BOLTS }: { show: boolean; reduced: boolean; color?: string; paths?: string[] }) {
   return (
-    <g>
+    <NoShadow>
       {paths.map((b, k) => (
         <motion.path
           key={k}
@@ -156,7 +159,7 @@ export function Bolts({ show, reduced, color = ICE_BLUE, paths = BOLTS }: { show
           transition={show && !reduced ? { duration: 0.75, repeat: Infinity, delay: k * 0.09, repeatDelay: 0.15 } : { duration: 0.2 }}
         />
       ))}
-    </g>
+    </NoShadow>
   );
 }
 
@@ -165,22 +168,24 @@ export const wispPath = (x: number, y: number) =>
 
 export function Wisp({ d, show, faint = false, delay = 0, reduced, color }: { d: string; show: boolean; faint?: boolean; delay?: number; reduced: boolean; color: string }) {
   return (
-    <motion.path
-      d={d}
-      fill="none"
-      stroke={color}
-      strokeWidth={10}
-      strokeLinecap="round"
-      initial={{ pathLength: 0, opacity: 0, y: 0 }}
-      animate={
-        show
-          ? reduced
-            ? { pathLength: 1, opacity: faint ? 0.4 : 0.9, y: 0 }
-            : { pathLength: [0, 1, 1], opacity: [0, faint ? 0.45 : 0.9, 0], y: [0, -24, -46] }
-          : { pathLength: 0, opacity: 0, y: 0 }
-      }
-      transition={show && !reduced ? { duration: 2.6, repeat: Infinity, delay, ease: "easeOut" } : { duration: 0.4 }}
-    />
+    <NoShadow>
+      <motion.path
+        d={d}
+        fill="none"
+        stroke={color}
+        strokeWidth={10}
+        strokeLinecap="round"
+        initial={{ pathLength: 0, opacity: 0, y: 0 }}
+        animate={
+          show
+            ? reduced
+              ? { pathLength: 1, opacity: faint ? 0.4 : 0.9, y: 0 }
+              : { pathLength: [0, 1, 1], opacity: [0, faint ? 0.45 : 0.9, 0], y: [0, -24, -46] }
+            : { pathLength: 0, opacity: 0, y: 0 }
+        }
+        transition={show && !reduced ? { duration: 2.6, repeat: Infinity, delay, ease: "easeOut" } : { duration: 0.4 }}
+      />
+    </NoShadow>
   );
 }
 
@@ -219,10 +224,11 @@ export function SymptomTannpine({ active, reduced, d, puppet = true }: SymptomSc
         <Tooth dx={-96} fill={p.paper} shade={p.shade} />
         <Tooth dx={96} fill={p.paper} shade={p.shade} />
         {/* The aching tooth throbs, and warms */}
-        <motion.g
+        <Piece
           style={pivot(150, 470)}
           animate={aching && !reduced ? { scale: [1, 1.045, 1, 1.03, 1] } : { scale: 1 }}
           transition={aching && !reduced ? { duration: 1.05, repeat: Infinity, ease: "easeInOut" } : { duration: 0.4 }}
+          shadow={<path d={TOOTH} />}
         >
           <motion.path d={TOOTH} initial={{ fill: p.paper }} animate={{ fill: aching ? "#FFE6D8" : p.paper }} transition={{ duration: 0.8 }} />
           <path d={TOOTH_SHADE} fill={p.shade} />
@@ -234,7 +240,7 @@ export function SymptomTannpine({ active, reduced, d, puppet = true }: SymptomSc
             animate={holed ? { scale: 1, opacity: 0.85 } : { scale: 0, opacity: 0 }}
             transition={{ duration: reduced ? 0 : 0.5, delay: reduced ? 0 : 0.3 }}
           />
-        </motion.g>
+        </Piece>
       </Sheet>
       <Sheet n={3} on={on} reduced={reduced} d={d} depth={2.6}>
         <path d={gumFront(458)} fill={p.mid} />
@@ -242,7 +248,7 @@ export function SymptomTannpine({ active, reduced, d, puppet = true }: SymptomSc
       <Sheet n={4} on={on} reduced={reduced} d={d} depth={3.2}>
         <AcheArcs x={150} y={344} spread={64} show={aching} reduced={reduced} />
         {puppet && (
-          <motion.g
+          <Piece
             style={centre}
             initial={{ x: 230, y: -300, rotate: 20 }}
             animate={choc}
@@ -252,7 +258,7 @@ export function SymptomTannpine({ active, reduced, d, puppet = true }: SymptomSc
               <path d="M30,-26 L260,-440" stroke={p.ink} strokeWidth={1.4} />
               <Sjokolade p={p} />
             </g>
-          </motion.g>
+          </Piece>
         )}
       </Sheet>
       <Sheet n={5} on={on} reduced={reduced} d={d} depth={3.8}>
@@ -305,9 +311,7 @@ export function SymptomBlodende({ active, reduced, d, puppet = true }: SymptomSc
         <path d={gumFront(458)} fill={p.mid} />
         {DROPS.map(([x, y, s], k) => (
           <g key={k} transform={`translate(${x},${y}) scale(${s})`}>
-            <motion.path
-              d={DROP}
-              fill={BLOOD}
+            <Piece
               style={{ transformBox: "fill-box", originX: 0.5, originY: 0 }}
               initial={{ scaleX: 0, scaleY: 0, y: 0 }}
               animate={bleeding ? { scaleX: 1, scaleY: dripping ? 1.35 : 1, y: dripping ? 12 : 0 } : { scaleX: 0, scaleY: 0, y: 0 }}
@@ -316,26 +320,35 @@ export function SymptomBlodende({ active, reduced, d, puppet = true }: SymptomSc
                 scaleY: { duration: dripping ? 1.6 : reduced ? 0 : 0.35, delay: brushing ? 0.5 + k * 0.38 : 0 },
                 y: { duration: 1.6, ease: "easeIn" },
               }}
-            />
+            >
+              <path d={DROP} fill={BLOOD} />
+            </Piece>
           </g>
         ))}
       </Sheet>
       <Sheet n={4} on={on} reduced={reduced} d={d} depth={3.2}>
         {puppet && (
-          <motion.g
-            initial={off}
-            animate={reduced ? off : phase === "enter" || phase === "brush" ? { x: 0, y: 0 } : phase === "drip" ? { x: 130, y: -40 } : off}
-            transition={{ type: "spring", stiffness: 60, damping: 14 }}
-          >
+          <NoShadow>
             <motion.g
-              animate={brushing ? { x: [0, 42, 0, 42, 0, 42, 0, 42, 0] } : { x: 0 }}
-              transition={brushing ? { duration: 2.4, ease: "easeInOut" } : { duration: 0.3 }}
+              initial={off}
+              animate={reduced ? off : phase === "enter" || phase === "brush" ? { x: 0, y: 0 } : phase === "drip" ? { x: 130, y: -40 } : off}
+              transition={{ type: "spring", stiffness: 60, damping: 14 }}
             >
-              <g transform="translate(118,418) rotate(-8)">
-                <Tannborste p={p} bloody={dripping || (reduced && on)} reduced={reduced} />
-              </g>
+              <Piece
+                animate={brushing ? { x: [0, 42, 0, 42, 0, 42, 0, 42, 0] } : { x: 0 }}
+                transition={brushing ? { duration: 2.4, ease: "easeInOut" } : { duration: 0.3 }}
+                shadow={
+                  <g transform="translate(118,418) rotate(-8)">
+                    <Tannborste p={p} />
+                  </g>
+                }
+              >
+                <g transform="translate(118,418) rotate(-8)">
+                  <Tannborste p={p} bloody={dripping || (reduced && on)} reduced={reduced} />
+                </g>
+              </Piece>
             </motion.g>
-          </motion.g>
+          </NoShadow>
         )}
       </Sheet>
       <Sheet n={5} on={on} reduced={reduced} d={d} depth={3.8}>
@@ -372,14 +385,14 @@ export function SymptomSensitive({ active, reduced, d, puppet = true }: SymptomS
       <Sheet n={2} on={on} reduced={reduced} d={d} depth={2}>
         <Tooth dx={-96} fill={p.paper} shade={p.shade} />
         <Tooth dx={96} fill={p.paper} shade={p.shade} />
-        <motion.g
+        <Piece
           animate={zinging && !reduced ? { x: [0, -1.8, 1.8, -1.4, 1.4, 0] } : { x: 0 }}
           transition={zinging && !reduced ? { duration: 0.22, repeat: Infinity } : { duration: 0.2 }}
         >
           <Tooth fill={p.paper} shade={p.shade} />
           {/* The bare neck, where the gum has drawn back */}
           <rect x={121} y={444} width={58} height={40} rx={6} fill={DENTIN} />
-        </motion.g>
+        </Piece>
       </Sheet>
       <Sheet n={3} on={on} reduced={reduced} d={d} depth={2.6}>
         <path d={gumFront(458, 24, 14)} fill={p.mid} />
@@ -394,24 +407,26 @@ export function SymptomSensitive({ active, reduced, d, puppet = true }: SymptomS
           <Star key={k} x={x} y={y} s={s} show={zinging} delay={delay} reduced={reduced} color="#FFFFFF" />
         ))}
         {puppet && (
-          <motion.g
-            initial={{ y: -520 }}
-            animate={{ y: down ? 0 : -520 }}
-            transition={
-              reduced ? { duration: 0 } : down ? { type: "spring", stiffness: 42, damping: 8, mass: 1.1 } : { duration: 1.1, ease: [0.45, 0, 0.3, 1] }
-            }
-          >
-            <path d="M150,366 L150,-400" stroke={p.ink} strokeWidth={1} opacity={0.75} />
+          <NoShadow>
             <motion.g
-              style={pivot(150, 366)}
-              animate={phase === "enter" && !reduced ? { rotate: [5, -4, 2, -1, 0] } : { rotate: 0 }}
-              transition={{ duration: 1.8, ease: "easeOut" }}
+              initial={{ y: -520 }}
+              animate={{ y: down ? 0 : -520 }}
+              transition={
+                reduced ? { duration: 0 } : down ? { type: "spring", stiffness: 42, damping: 8, mass: 1.1 } : { duration: 1.1, ease: [0.45, 0, 0.3, 1] }
+              }
             >
-              <g transform="translate(150,396)">
-                <Isbit p={p} />
-              </g>
+              <path d="M150,366 L150,-400" stroke={p.ink} strokeWidth={1} opacity={0.75} />
+              <Piece
+                style={pivot(150, 366)}
+                animate={phase === "enter" && !reduced ? { rotate: [5, -4, 2, -1, 0] } : { rotate: 0 }}
+                transition={{ duration: 1.8, ease: "easeOut" }}
+              >
+                <g transform="translate(150,396)">
+                  <Isbit p={p} />
+                </g>
+              </Piece>
             </motion.g>
-          </motion.g>
+          </NoShadow>
         )}
       </Sheet>
       <Sheet n={5} on={on} reduced={reduced} d={d} depth={3.8}>
@@ -453,7 +468,7 @@ export function SymptomHovne({ active, reduced, d, puppet = true }: SymptomScene
       </Sheet>
       <Sheet n={3} on={on} reduced={reduced} d={d} depth={2.6}>
         <path d={gumFront(458)} fill={p.mid} />
-        <motion.g
+        <Piece
           style={pivot(246, 504)}
           initial={{ scale: 0.25 }}
           animate={
@@ -469,16 +484,21 @@ export function SymptomHovne({ active, reduced, d, puppet = true }: SymptomScene
         >
           <ellipse cx={246} cy={476} rx={46} ry={30} fill={INFLAMED} />
           <ellipse cx={234} cy={464} rx={17} ry={8} fill={INFLAMED_LIGHT} />
-        </motion.g>
+        </Piece>
       </Sheet>
       <Sheet n={4} on={on} reduced={reduced} d={d} depth={3.2}>
         <AcheArcs x={246} y={470} spread={60} show={throbbing} reduced={reduced} rings={2} />
         {puppet && (
-          <motion.g
+          <Piece
             initial={{ x: -190, rotate: -30 }}
             animate={mirrorIn ? { x: 0, rotate: 0 } : { x: -190, rotate: -30 }}
             style={pivot(60, 420)}
             transition={reduced ? { duration: 0 } : { type: "spring", stiffness: 50, damping: 12 }}
+            shadow={
+              <g transform="translate(62,300) rotate(-16)">
+                <Speil p={p} />
+              </g>
+            }
           >
             <g transform="translate(62,300) rotate(-16)">
               <Speil
@@ -492,7 +512,7 @@ export function SymptomHovne({ active, reduced, d, puppet = true }: SymptomScene
                 }
               />
             </g>
-          </motion.g>
+          </Piece>
         )}
       </Sheet>
       <Sheet n={5} on={on} reduced={reduced} d={d} depth={3.8}>
@@ -554,7 +574,7 @@ export function SymptomAande({ active, reduced, d, puppet = true }: SymptomScene
           <Star key={k} x={x} y={y} s={s} show={phase === "fresh"} delay={delay} reduced={reduced} />
         ))}
         {puppet && (
-          <motion.g
+          <Piece
             initial={{ y: -560, opacity: 1 }}
             animate={minty ? { y: 0, opacity: 1 } : { y: phase === "back" ? 40 : -560, opacity: phase === "back" ? 0 : 1 }}
             transition={reduced ? { duration: 0 } : minty ? { type: "spring", stiffness: 120, damping: 9 } : { duration: 0.6 }}
@@ -562,7 +582,7 @@ export function SymptomAande({ active, reduced, d, puppet = true }: SymptomScene
             <g transform="translate(150,478)">
               <Pastiller p={p} />
             </g>
-          </motion.g>
+          </Piece>
         )}
       </Sheet>
       <Sheet n={5} on={on} reduced={reduced} d={d} depth={3.8}>
@@ -616,46 +636,51 @@ export function SymptomBetennelse({ active, reduced, d, puppet = true }: Symptom
         ))}
       </Sheet>
       <Sheet n={3} on={on} reduced={reduced} d={d} depth={2.6}>
-        <motion.path d={gumFront(458)} initial={{ fill: p.mid }} animate={{ fill: sore ? "#D9A79A" : p.mid }} transition={{ duration: 1.2 }} />
-        {[EDGE_LEFT, EDGE_RIGHT].map((e) => (
-          <motion.path
-            key={e}
-            d={e}
-            fill="none"
-            stroke={INFLAMED}
-            strokeWidth={9}
-            strokeLinecap="round"
-            initial={{ pathLength: 0, opacity: 0 }}
-            animate={
-              red
-                ? sore && !reduced
-                  ? { pathLength: 1, opacity: [1, 0.55, 1] }
-                  : { pathLength: 1, opacity: 1 }
-                : { pathLength: 0, opacity: 0 }
-            }
-            transition={
-              sore && !reduced
-                ? { opacity: { duration: 1.2, repeat: Infinity }, pathLength: { duration: 0 } }
-                : { duration: reduced ? 0 : 2, ease: "easeOut", delay: reduced ? 0 : 0.3 }
-            }
-          />
-        ))}
+        {/* The gum's own shadow would fall behind it, out of sight */}
+        <NoShadow>
+          <motion.path d={gumFront(458)} initial={{ fill: p.mid }} animate={{ fill: sore ? "#D9A79A" : p.mid }} transition={{ duration: 1.2 }} />
+          {[EDGE_LEFT, EDGE_RIGHT].map((e) => (
+            <motion.path
+              key={e}
+              d={e}
+              fill="none"
+              stroke={INFLAMED}
+              strokeWidth={9}
+              strokeLinecap="round"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={
+                red
+                  ? sore && !reduced
+                    ? { pathLength: 1, opacity: [1, 0.55, 1] }
+                    : { pathLength: 1, opacity: 1 }
+                  : { pathLength: 0, opacity: 0 }
+              }
+              transition={
+                sore && !reduced
+                  ? { opacity: { duration: 1.2, repeat: Infinity }, pathLength: { duration: 0 } }
+                  : { duration: reduced ? 0 : 2, ease: "easeOut", delay: reduced ? 0 : 0.3 }
+              }
+            />
+          ))}
+        </NoShadow>
       </Sheet>
       <Sheet n={4} on={on} reduced={reduced} d={d} depth={3.2}>
         <AcheArcs x={198} y={424} spread={34} show={sore} reduced={reduced} rings={2} width={4} />
         {puppet && (
-          <motion.g
-            initial={{ y: -560 }}
-            animate={{ y: flossDown ? 0 : -560 }}
-            transition={reduced ? { duration: 0 } : flossDown ? { type: "spring", stiffness: 50, damping: 12 } : { duration: 0.9, ease: [0.45, 0, 0.3, 1] }}
-          >
+          <NoShadow>
             <motion.g
-              animate={phase === "floss" && !reduced ? { y: [0, -16, 0, -16, 0, -16, 0] } : { y: 0 }}
-              transition={{ duration: 2.2, ease: "easeInOut" }}
+              initial={{ y: -560 }}
+              animate={{ y: flossDown ? 0 : -560 }}
+              transition={reduced ? { duration: 0 } : flossDown ? { type: "spring", stiffness: 50, damping: 12 } : { duration: 0.9, ease: [0.45, 0, 0.3, 1] }}
             >
-              <path d="M198,442 L360,-140 M198,442 L40,-140" fill="none" stroke={p.ink} strokeWidth={1.8} strokeLinecap="round" opacity={0.85} />
+              <motion.g
+                animate={phase === "floss" && !reduced ? { y: [0, -16, 0, -16, 0, -16, 0] } : { y: 0 }}
+                transition={{ duration: 2.2, ease: "easeInOut" }}
+              >
+                <path d="M198,442 L360,-140 M198,442 L40,-140" fill="none" stroke={p.ink} strokeWidth={1.8} strokeLinecap="round" opacity={0.85} />
+              </motion.g>
             </motion.g>
-          </motion.g>
+          </NoShadow>
         )}
       </Sheet>
       <Sheet n={5} on={on} reduced={reduced} d={d} depth={3.8}>
@@ -693,7 +718,7 @@ export function SymptomLose({ active, reduced, d, puppet = true }: SymptomSceneP
       <Sheet n={2} on={on} reduced={reduced} d={d} depth={2}>
         <Tooth dx={-96} fill={p.paper} shade={p.shade} />
         <Tooth dx={96} fill={p.paper} shade={p.shade} />
-        <motion.g
+        <Piece
           style={pivot(150, 484)}
           animate={
             wobbling
@@ -705,28 +730,33 @@ export function SymptomLose({ active, reduced, d, puppet = true }: SymptomSceneP
           transition={wobbling ? { duration: 2.4, ease: "easeInOut" } : biting ? { duration: 1.1, delay: 0.05 } : { duration: 0.5 }}
         >
           <Tooth fill={p.paper} shade={p.shade} />
-        </motion.g>
+        </Piece>
       </Sheet>
       <Sheet n={3} on={on} reduced={reduced} d={d} depth={2.6}>
-        <motion.path d={gumFront(458, 24, loose ? 12 : 0)} initial={false} animate={{ d: gumFront(458, 24, loose ? 12 : 0) }} fill={p.mid} transition={{ duration: 0.8 }} />
+        {/* The gum's own shadow would fall behind it, out of sight */}
+        <NoShadow>
+          <motion.path d={gumFront(458, 24, loose ? 12 : 0)} initial={false} animate={{ d: gumFront(458, 24, loose ? 12 : 0) }} fill={p.mid} transition={{ duration: 0.8 }} />
+        </NoShadow>
       </Sheet>
       <Sheet n={4} on={on} reduced={reduced} d={d} depth={3.2}>
         {/* Wiggle marks either side of the crown */}
-        {["M96,282 Q86,298 96,314", "M204,282 Q214,298 204,314", "M84,276 Q72,298 84,320", "M216,276 Q228,298 216,320"].map((m, k) => (
-          <motion.path
-            key={m}
-            d={m}
-            fill="none"
-            stroke={p.ink}
-            strokeWidth={3}
-            strokeLinecap="round"
-            initial={{ opacity: 0 }}
-            animate={wobbling ? { opacity: [0, 0.7, 0, 0.7, 0] } : { opacity: reduced && on ? 0.6 : 0 }}
-            transition={wobbling ? { duration: 1.6, delay: (k % 2) * 0.2 + (k > 1 ? 0.1 : 0) } : { duration: 0.2 }}
-          />
-        ))}
+        <NoShadow>
+          {["M96,282 Q86,298 96,314", "M204,282 Q214,298 204,314", "M84,276 Q72,298 84,320", "M216,276 Q228,298 216,320"].map((m, k) => (
+            <motion.path
+              key={m}
+              d={m}
+              fill="none"
+              stroke={p.ink}
+              strokeWidth={3}
+              strokeLinecap="round"
+              initial={{ opacity: 0 }}
+              animate={wobbling ? { opacity: [0, 0.7, 0, 0.7, 0] } : { opacity: reduced && on ? 0.6 : 0 }}
+              transition={wobbling ? { duration: 1.6, delay: (k % 2) * 0.2 + (k > 1 ? 0.1 : 0) } : { duration: 0.2 }}
+            />
+          ))}
+        </NoShadow>
         {puppet && (
-          <motion.g
+          <Piece
             initial={{ x: -220 }}
             animate={
               reduced
@@ -740,12 +770,17 @@ export function SymptomLose({ active, reduced, d, puppet = true }: SymptomSceneP
                       : { x: -240 }
             }
             transition={biting ? { duration: 1.1 } : { type: "spring", stiffness: 55, damping: 13 }}
+            shadow={
+              <g transform="translate(40,312)">
+                <Eple p={p} />
+              </g>
+            }
           >
             <g transform="translate(40,312)">
               <path d="M-4,-50 L-220,-460" stroke={p.ink} strokeWidth={1.4} />
               <Eple p={p} bitten={phase === "wobble" || phase === "settle"} reduced={reduced} />
             </g>
-          </motion.g>
+          </Piece>
         )}
       </Sheet>
       <Sheet n={5} on={on} reduced={reduced} d={d} depth={3.8}>
@@ -777,24 +812,37 @@ export function SymptomKjeve({ active, reduced, d }: SymptomSceneProps) {
 
   return (
     <Stage active={active} reduced={reduced}>
-      <Sheet n={0} on={on} reduced={reduced} d={d} depth={0.6} shadow={false}>
+      <Sheet
+        n={0}
+        on={on}
+        reduced={reduced}
+        d={d}
+        depth={0.6}
+        shadow={false}
+        loose={
+          // The stars twinkle on a layer of their own, so each twinkle
+          // repaints a star and not the moon's glow beside it.
+          <Loose shadow={false}>
+            {[
+              [60, 90, 0.5],
+              [104, 56, 0.35],
+              [176, 64, 0.45],
+              [126, 120, 0.3],
+            ].map(([x, y, s], k) => (
+              <motion.path
+                key={k}
+                d={starPath(x, y, s)}
+                fill={p.paper}
+                style={centre}
+                initial={{ opacity: 0.8 }}
+                animate={on && !reduced ? { opacity: [0.4, 1, 0.4], scale: [0.85, 1.1, 0.85] } : { opacity: 0.8 }}
+                transition={on && !reduced ? { duration: 2.4 + k * 0.5, repeat: Infinity, delay: k * 0.3 } : { duration: 0.3 }}
+              />
+            ))}
+          </Loose>
+        }
+      >
         <path d={MOON} fill={p.accent} style={{ filter: `drop-shadow(0 0 10px ${p.accent})` }} />
-        {[
-          [60, 90, 0.5],
-          [104, 56, 0.35],
-          [176, 64, 0.45],
-          [126, 120, 0.3],
-        ].map(([x, y, s], k) => (
-          <motion.path
-            key={k}
-            d={starPath(x, y, s)}
-            fill={p.paper}
-            style={centre}
-            initial={{ opacity: 0.8 }}
-            animate={on && !reduced ? { opacity: [0.4, 1, 0.4], scale: [0.85, 1.1, 0.85] } : { opacity: 0.8 }}
-            transition={on && !reduced ? { duration: 2.4 + k * 0.5, repeat: Infinity, delay: k * 0.3 } : { duration: 0.3 }}
-          />
-        ))}
       </Sheet>
       <Sheet n={1} on={on} reduced={reduced} d={d} depth={1}>
         <path d={FAR_HILLS} fill={p.far} />
@@ -806,7 +854,7 @@ export function SymptomKjeve({ active, reduced, d }: SymptomSceneProps) {
         <path d="M48,214 C90,206 210,206 252,214 L252,246 C230,238 214,250 196,242 C178,250 162,238 150,246 C138,238 122,250 104,242 C86,250 70,238 48,246 Z" fill={p.mid} />
       </Sheet>
       <Sheet n={3} on={on} reduced={reduced} d={d} depth={2.6}>
-        <motion.g
+        <Piece
           initial={{ y: 40 }}
           animate={grinding ? { y: 0, x: [0, 6, -6, 6, -6, 6, -6, 0] } : { y: jawY, x: 0 }}
           transition={grinding ? { x: { duration: 2.4, ease: "easeInOut" }, y: { duration: 0.3 } } : { duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
@@ -815,21 +863,23 @@ export function SymptomKjeve({ active, reduced, d }: SymptomSceneProps) {
             <path key={x} d={`M${x - 13},352 L${x + 13},352 L${x + 12},312 Q${x},298 ${x - 12},312 Z`} fill={p.paper} />
           ))}
           <path d="M48,380 C90,388 210,388 252,380 L252,346 C230,354 214,342 196,350 C178,342 162,354 150,346 C138,354 122,342 104,350 C86,342 70,354 48,346 Z" fill={p.deep} />
-        </motion.g>
-        {["M32,288 L42,294 L34,300 L44,306", "M268,288 L258,294 L266,300 L256,306"].map((z, k) => (
-          <motion.path
-            key={z}
-            d={z}
-            fill="none"
-            stroke={p.paper}
-            strokeWidth={3}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            initial={{ opacity: 0 }}
-            animate={grinding ? { opacity: [0, 1, 0, 1, 0, 1, 0], x: k ? [0, 3, 0] : [0, -3, 0] } : { opacity: 0 }}
-            transition={grinding ? { duration: 2.4 } : { duration: 0.2 }}
-          />
-        ))}
+        </Piece>
+        <NoShadow>
+          {["M32,288 L42,294 L34,300 L44,306", "M268,288 L258,294 L266,300 L256,306"].map((z, k) => (
+            <motion.path
+              key={z}
+              d={z}
+              fill="none"
+              stroke={p.paper}
+              strokeWidth={3}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              initial={{ opacity: 0 }}
+              animate={grinding ? { opacity: [0, 1, 0, 1, 0, 1, 0], x: k ? [0, 3, 0] : [0, -3, 0] } : { opacity: 0 }}
+              transition={grinding ? { duration: 2.4 } : { duration: 0.2 }}
+            />
+          ))}
+        </NoShadow>
       </Sheet>
       <Sheet n={4} on={on} reduced={reduced} d={d} depth={3.2}>
         <AcheArcs x={150} y={300} spread={118} show={aching} reduced={reduced} />
@@ -854,16 +904,20 @@ export function SymptomFrisk({ active, reduced, d }: SymptomSceneProps) {
   const phase = usePhase(active, REST_STEPS);
   return (
     <Stage active={active} reduced={reduced}>
-      <Sheet n={0} on={on} reduced={reduced} d={d} depth={0.6} shadow={false}>
-        <motion.g
-          animate={on && !reduced ? { x: [0, 12, 0] } : { x: 0 }}
-          transition={on && !reduced ? { duration: 14, repeat: Infinity, ease: "easeInOut" } : { duration: 0.3 }}
-          style={{ filter: "drop-shadow(0 1px 1px rgba(14,42,48,0.16)) drop-shadow(0 7px 9px rgba(14,42,48,0.13))" }}
-        >
-          <path d="M34,148 Q34,128 54,130 Q60,112 80,118 Q92,106 106,120 Q124,120 122,138 Q126,152 110,152 L46,152 Q34,152 34,148 Z" fill={p.paper} />
-          <path d="M198,102 Q198,88 212,90 Q218,76 234,82 Q246,74 254,88 Q268,90 264,104 L206,106 Q198,106 198,102 Z" fill={p.paper} />
-        </motion.g>
-      </Sheet>
+      <Sheet
+        n={0}
+        on={on}
+        reduced={reduced}
+        d={d}
+        depth={0.6}
+        loose={
+          // Twelve units out and back: 12 of the box's 300 is 4% of its width.
+          <Loose loop="drift" on={on && !reduced} style={{ "--drift": "4%" } as CSSProperties}>
+            <path d="M34,148 Q34,128 54,130 Q60,112 80,118 Q92,106 106,120 Q124,120 122,138 Q126,152 110,152 L46,152 Q34,152 34,148 Z" fill={p.paper} />
+            <path d="M198,102 Q198,88 212,90 Q218,76 234,82 Q246,74 254,88 Q268,90 264,104 L206,106 Q198,106 198,102 Z" fill={p.paper} />
+          </Loose>
+        }
+      />
       <Sheet n={1} on={on} reduced={reduced} d={d} depth={1}>
         <path d={FAR_HILLS} fill={p.far} />
       </Sheet>

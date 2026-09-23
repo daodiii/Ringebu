@@ -13,7 +13,7 @@ import {
   useVelocity,
 } from "framer-motion";
 import { GrainOverlay } from "@/components/ui/GrainOverlay";
-import { PALETTES, type PaletteName } from "@/components/behandlinger/scenes/Papir";
+import { PALETTES, PaperShadow, type PaletteName } from "@/components/behandlinger/scenes/Papir";
 import { useViewport } from "@/components/behandlinger/hooks";
 import { EASE_OUT, SYMPTOMS, URGENCY_COLOR, type Symptom, type SymptomSlug } from "./data";
 import { paperScene } from "./scenes/Scener";
@@ -437,17 +437,13 @@ function Ting({
           transition={{ type: "spring", stiffness: 160, damping: 11, delay: reduced ? 0 : 0.3 + i * 0.08 }}
         >
         <motion.span className="absolute inset-0 block" style={{ rotate: tilt }}>
-          <svg
-            viewBox={`${bx} ${by} ${bw} ${bh}`}
-            className="h-full w-full overflow-visible"
-            style={{
-              filter: dragging
-                ? "drop-shadow(0 2px 2px rgba(14,42,48,0.18)) drop-shadow(0 22px 22px rgba(14,42,48,0.22))"
-                : "drop-shadow(0 1px 1px rgba(14,42,48,0.16)) drop-shadow(0 7px 9px rgba(14,42,48,0.13))",
-              transition: "filter 200ms",
-            }}
-            aria-hidden="true"
-          >
+          <svg viewBox={`${bx} ${by} ${bw} ${bh}`} className="h-full w-full overflow-visible" aria-hidden="true">
+            {/* Its shadow on the table, falling further off while it is held */}
+            <motion.g initial={false} animate={{ y: dragging ? 14 : 0 }} transition={{ duration: 0.2 }}>
+              <PaperShadow dy={6}>
+                <Thing slug={s.slug} p={p} />
+              </PaperShadow>
+            </motion.g>
             <Thing slug={s.slug} p={p} />
           </svg>
         </motion.span>

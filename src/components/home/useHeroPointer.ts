@@ -3,15 +3,22 @@
 import { useEffect, useRef, type RefObject } from "react";
 import { useMotionValue, useSpring, type MotionValue } from "framer-motion";
 
+/** The hero's phone layout: the same breakpoint as its windows and valley size. */
+const PHONE = "(max-width: 767px)";
+
 /**
  * Pointer position over the hero, as springy −1…1 values measured from the
- * centre. With no mouse — on a phone, or before the first move on desktop —
- * the values drift along a slow Lissajous path so the hero is never static.
+ * centre. On a wide screen, before the first mouse move, the values drift
+ * along a slow Lissajous path so the hero is never static.
  *
- * The drift only runs while the hero is on screen and the tab is visible.
- * Every step repaints the valley in the ghost, the windows and the letters,
- * and it used to run forever: scrolled down to the footer, a phone was still
- * repainting a hero it could not see, every frame.
+ * Phones get no drift, the owner's choice: every step repaints the valley in
+ * the ghost, the windows and the letters, and on a phone that was all of the
+ * top of the page's cost while it sat still. The windows still open onto the
+ * valley before the clinic arrives; that is CSS and costs nothing after.
+ *
+ * Elsewhere the drift only runs while the hero is on screen and the tab is
+ * visible. It used to run forever: scrolled down to the footer, the page was
+ * still repainting a hero it could not see, every frame.
  */
 export function useHeroPointer(
   ref: RefObject<HTMLElement | null>,
@@ -28,6 +35,7 @@ export function useHeroPointer(
   useEffect(() => {
     const el = ref.current;
     if (!el || !enabled) return;
+    const phone = window.matchMedia(PHONE);
 
     let frame = 0;
     let onScreen = false;
@@ -59,7 +67,7 @@ export function useHeroPointer(
     };
 
     const sync = () => {
-      const run = onScreen && !document.hidden;
+      const run = onScreen && !document.hidden && !phone.matches;
       if (run && !frame) {
         last = 0;
         frame = requestAnimationFrame(drift);
@@ -75,10 +83,12 @@ export function useHeroPointer(
     });
     observer.observe(el);
     document.addEventListener("visibilitychange", sync);
+    phone.addEventListener("change", sync);
 
     return () => {
       observer.disconnect();
       document.removeEventListener("visibilitychange", sync);
+      phone.removeEventListener("change", sync);
       cancelAnimationFrame(frame);
       el.removeEventListener("pointermove", onMove);
     };

@@ -17,7 +17,7 @@ import {
 } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { GrainOverlay } from "@/components/ui/GrainOverlay";
-import { NEAR_HILLS, PALETTES, withPalette, type PaletteName } from "@/components/behandlinger/scenes/Papir";
+import { NEAR_HILLS, PALETTES, PaperShadow, withPalette, type PaletteName } from "@/components/behandlinger/scenes/Papir";
 import { PapirStol } from "@/components/behandlinger/scenes/PapirMer";
 import { useStopSettle, useViewport } from "@/components/behandlinger/hooks";
 import type { Scene } from "@/components/behandlinger/scenes/types";
@@ -456,18 +456,18 @@ function Clip({
   );
 }
 
+const FLAP = "polygon(100% 0, 0 0, 0 100%)";
+
 /** The folded corner: the back of the page, in the colour of the scene printed there. */
 function DogEar({ size, color }: { size: MotionValue<number>; color: string }) {
   return (
-    <motion.div
-      aria-hidden="true"
-      className="pointer-events-none absolute bottom-0 right-0"
-      style={{ width: size, height: size, filter: "drop-shadow(-3px -3px 4px rgba(20,34,36,0.18))" }}
-    >
+    <motion.div aria-hidden="true" className="pointer-events-none absolute bottom-0 right-0" style={{ width: size, height: size }}>
+      {/* Its shadow on the page: the flap again, up and to the left, in one flat tint */}
+      <div className="absolute inset-0" style={{ clipPath: FLAP, background: "rgba(20,34,36,0.14)", transform: "translate(-3px, -3px)" }} />
       <div
         className="absolute inset-0"
         style={{
-          clipPath: "polygon(100% 0, 0 0, 0 100%)",
+          clipPath: FLAP,
           background: `linear-gradient(to top left, rgba(255,255,255,0.55), ${color} 45%, ${color})`,
         }}
       />
@@ -625,7 +625,10 @@ function CoverFace({ W, H }: { W: number; H: number }) {
       />
       <div className="absolute inset-0 flex flex-col items-center" style={{ paddingTop: H * 0.2 }}>
         <svg viewBox="98 254 104 196" className="overflow-visible" style={{ height: H * 0.15 }} aria-hidden="true">
-          <path d={TOOTH} fill="#FFFFFF" style={{ filter: "drop-shadow(0 1px 1px rgba(14,42,48,0.16)) drop-shadow(0 7px 9px rgba(14,42,48,0.13))" }} />
+          <PaperShadow dy={8}>
+            <path d={TOOTH} />
+          </PaperShadow>
+          <path d={TOOTH} fill="#FFFFFF" />
           <path d={TOOTH_SHADE} fill="#E3EBE9" />
         </svg>
         <div
