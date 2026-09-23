@@ -19,7 +19,7 @@ import { ArrowLeft, ArrowRight, X } from "lucide-react";
 import { GrainOverlay } from "@/components/ui/GrainOverlay";
 import { ARCADE_TREATMENTS as T, VALLEY, EASE_OUT, type ArcadeTreatment } from "./data";
 import { TreatmentBody } from "./TreatmentBody";
-import { useLayerKeys, useScrollLock, useViewport } from "./hooks";
+import { useLayerKeys, useScrollLock, useStopSettle, useViewport } from "./hooks";
 import type { SceneSet } from "./scenes/types";
 
 /**
@@ -126,27 +126,19 @@ export function Buegang({ scenes }: { scenes: SceneSet }) {
     [g]
   );
 
-  // Where scrolling comes to rest, an arch comes to rest in the middle, so the
-  // walk never stops between two half-open rooms. Only while the wall is
-  // pinned, though: snapping is page-wide, and left on below the arcade it
-  // pulled readers of the list underneath back up to the wall.
-  const [onWall, setOnWall] = useState(true);
-  useMotionValueEvent(scrollYProgress, "change", (p) => {
-    const on = p < 0.998;
-    setOnWall((w) => (w === on ? w : on));
-  });
-  useEffect(() => {
-    if (reduced || !onWall) return;
-    const html = document.documentElement;
-    const prev = html.style.scrollSnapType;
-    html.style.scrollSnapType = "y proximity";
-    return () => {
-      html.style.scrollSnapType = prev;
-    };
-  }, [reduced, onWall]);
-
   const [layer, setLayer] = useState<{ i: number; rect: DOMRect } | null>(null);
   useScrollLock(layer !== null);
+
+  // Where scrolling comes to rest, an arch comes to rest in the middle, so the
+  // walk never stops between two half-open rooms. The stops are the start and
+  // end of the wall and the scroll position that centres each arch. Only
+  // while the wall is pinned, though: page-wide snapping once pulled readers
+  // of the list underneath back up to the wall.
+  const stops = useMemo(
+    () => [0, ...g.lefts.map((l) => Math.min(g.maxX, Math.max(0, l + g.archW / 2 - g.vw / 2))), g.maxX],
+    [g]
+  );
+  useStopSettle(sectionRef, stops, !reduced && layer === null);
   const [hovered, setHovered] = useState<number | null>(null);
 
   const openArch = (i: number) => {
@@ -163,18 +155,6 @@ export function Buegang({ scenes }: { scenes: SceneSet }) {
         className="relative bg-[var(--color-paper)]"
         style={{ height: g.vh + g.maxX }}
       >
-        {/* Snap points: the start and end of the wall, and one scroll position
-            per arch, the one that centres it. Without the start point the
-            browser snaps a fresh page load onto the first arch. */}
-        {!reduced &&
-          [0, ...g.lefts.map((l) => l + g.archW / 2 - g.vw / 2), g.maxX].map((y, i) => (
-            <div
-              key={i}
-              aria-hidden="true"
-              className="pointer-events-none absolute left-0 h-px w-px"
-              style={{ top: Math.min(g.maxX, Math.max(0, y)), scrollSnapAlign: "start" }}
-            />
-          ))}
         <div className="sticky top-0 h-[100svh] overflow-hidden">
           {/* The valley, far away and nearly still */}
           <motion.div
