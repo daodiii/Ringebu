@@ -17,16 +17,15 @@ import {
 } from "framer-motion";
 import { ArrowLeft, ArrowRight, X } from "lucide-react";
 import { GrainOverlay } from "@/components/ui/GrainOverlay";
-import { ARCADE_TREATMENTS as T, VALLEY, EASE_OUT, type ArcadeTreatment } from "./data";
+import { ARCADE_TREATMENTS as T, EASE_OUT, type ArcadeTreatment } from "./data";
 import { TreatmentBody } from "./TreatmentBody";
 import { useLayerKeys, useScrollLock, useStopSettle, useViewport } from "./hooks";
 import type { SceneSet } from "./scenes/types";
 
 /**
  * Buegangen. The page is a long wall with a row of arches cut into it.
- * Scrolling walks you along the wall: the arches travel past while the valley
- * behind them stays almost still, as a far landscape does. Every arch looks
- * out onto that valley until it reaches the middle of the screen; then the
+ * Scrolling walks you along the wall. Each arch is one solid colour, taken
+ * from its scene's paper, until it reaches the middle of the screen; then the
  * paper theatre inside it stands up and plays. Choosing an arch walks you
  * through it: the opening grows until the scene fills the screen, and the
  * treatment's details slide in beside it.
@@ -62,7 +61,7 @@ function geometry(vw: number, vh: number): Geo {
   const top = Math.round(NAV + (vh - NAV - archH - labelH) / 2);
   const padL = sm ? 20 : Math.round(Math.max(24, (vw - 1280) / 2 + 36));
   const introW = sm ? Math.round(vw - 40) : Math.round(Math.min(560, vw * 0.4));
-  // Far enough right that the first arch starts out on the valley, not half-open.
+  // Far enough right that the first arch starts out plain, not half-open.
   const first = Math.max(padL + introW + gap, Math.round(vw * 0.67 - archW / 2));
   const lefts = T.map((_, i) => first + i * (archW + gap));
   const endLeft = lefts[lefts.length - 1] + archW + gap * 1.5;
@@ -86,7 +85,7 @@ function wallPath(g: Geo) {
   return `M0,0 H${g.trackW} V${g.vh} H0 Z ${holes}`;
 }
 
-/** The arcade, with one scene per treatment. An arch without a scene looks out on the valley. */
+/** The arcade, with one scene per treatment. */
 export function Buegang({ scenes }: { scenes: SceneSet }) {
   const vp = useViewport();
   const g = useMemo(() => geometry(vp.w, vp.h), [vp.w, vp.h]);
@@ -99,8 +98,6 @@ export function Buegang({ scenes }: { scenes: SceneSet }) {
   const rawX = useTransform(scrollYProgress, (p) => -p * g.maxX);
   // A little weight on the walk, so the wall glides rather than ticks.
   const x = useSpring(rawX, reduced ? { stiffness: 1000, damping: 100 } : { stiffness: 170, damping: 32, mass: 0.35 });
-  // The far valley barely moves: that difference is what reads as depth.
-  const valleyX = useTransform(x, (v) => (reduced ? 0 : v * 0.035));
 
   const [active, setActive] = useState(0);
   useMotionValueEvent(x, "change", (v) => {
@@ -156,18 +153,6 @@ export function Buegang({ scenes }: { scenes: SceneSet }) {
         style={{ height: g.vh + g.maxX }}
       >
         <div className="sticky top-0 h-[100svh] overflow-hidden">
-          {/* The valley, far away and nearly still */}
-          <motion.div
-            aria-hidden="true"
-            className="absolute inset-y-0 -left-[8%] w-[116%] saturate-[0.8]"
-            style={{
-              x: valleyX,
-              backgroundImage: `url("${VALLEY}")`,
-              backgroundSize: "cover",
-              backgroundPosition: "50% 62%",
-            }}
-          />
-
           <motion.div className="absolute left-0 top-0" style={{ x, width: g.trackW, height: g.vh }}>
             {/* Scenes, behind the wall */}
             {T.map((t, i) => (
@@ -189,14 +174,7 @@ export function Buegang({ scenes }: { scenes: SceneSet }) {
               height={g.vh}
               className="pointer-events-none absolute left-0 top-0"
             >
-              <defs>
-                <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0" stopColor="#FCF9F2" stopOpacity="0.87" />
-                  <stop offset="0.55" stopColor="#FCF9F2" stopOpacity="0.93" />
-                  <stop offset="1" stopColor="#FCF9F2" stopOpacity="0.99" />
-                </linearGradient>
-              </defs>
-              <path d={wallPath(g)} fill="url(#wall)" fillRule="evenodd" />
+              <path d={wallPath(g)} fill="var(--color-paper)" fillRule="evenodd" />
               {/* The floor the arches stand on */}
               <line
                 x1={0}
@@ -327,7 +305,7 @@ const SCENE_ZONE = 0.2;
 
 /**
  * The scene behind one arch. It is told when it is on stage, and only then
- * does it perform; the rest of the time the arch looks out on the valley.
+ * does it perform; the rest of the time the arch shows its plain colour.
  */
 function SceneRoom({
   Scene, i, g, x, reduced, hovered,
@@ -520,19 +498,13 @@ function Doorway({
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
     >
-      <div data-room-box className="absolute overflow-hidden bg-[var(--color-ink)]" style={boxOf(start.rect)}>
-        {/* The valley, pinned to the screen: at the first frame it is exactly
-            what the arch was showing, and it holds still while the opening grows. */}
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 saturate-[0.8]"
-          style={{
-            backgroundImage: `url("${VALLEY}")`,
-            backgroundSize: "cover",
-            backgroundPosition: "50% 62%",
-            backgroundAttachment: "fixed",
-          }}
-        />
+      {/* The room is the arch's own colour, so the opening grows without a seam
+          and the strip beside the scene matches it once the details slide in. */}
+      <div
+        data-room-box
+        className="absolute overflow-hidden transition-[background-color] duration-500"
+        style={{ ...boxOf(start.rect), backgroundColor: Scene?.ground ?? "var(--color-paper)" }}
+      >
         <motion.div
           className="absolute left-0 top-0"
           initial={false}

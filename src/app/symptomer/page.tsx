@@ -1,13 +1,13 @@
-import { CatalogueDrawer } from "@/components/catalogue/CatalogueDrawer";
-import { PAGE_COPY } from "@/components/catalogue/items";
+import { Hverdagen } from "@/components/symptomer/Hverdagen";
+import { SymptomIndex } from "@/components/symptomer/SymptomIndex";
 import { CtaCloseout } from "@/components/home/CtaCloseout";
 
 export default function SymptomerPage() {
-  const { title, lead, items } = PAGE_COPY.symptomer;
   return (
-    <>
-      <CatalogueDrawer title={title} lead={lead} items={items} />
+    <main>
+      <Hverdagen />
+      <SymptomIndex />
       <CtaCloseout />
-    </>
+    </main>
   );
 }

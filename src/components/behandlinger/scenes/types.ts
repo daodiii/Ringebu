@@ -3,8 +3,8 @@ import type { MotionValue } from "framer-motion";
 
 /**
  * One animated scene inside an arch of the arcade, in place of a photograph.
- * The valley is always behind it: in an arch the page's own valley shows
- * through, and in the doorway the room paints the valley under the scene.
+ * The scene paints its own backdrop, so it looks the same in an arch and in
+ * the doorway.
  */
 export type SceneProps = {
   /** True while the arch is in the middle of the screen, hovered, or walked into. */
@@ -16,9 +16,10 @@ export type SceneProps = {
   mode: "arch" | "door";
 };
 
-export type Scene = ComponentType<SceneProps>;
+/** `ground` is the solid colour the scene paints behind itself in an arch. */
+export type Scene = ComponentType<SceneProps> & { ground?: string };
 
-/** Scenes by treatment slug. Arches without one look out on the valley. */
+/** Scenes by treatment slug. Arches without one stay bare paper. */
 export type SceneSet = Partial<Record<string, Scene>>;
 
 /** Every scene is drawn in this box, the shape of an arch. */

@@ -16,8 +16,4 @@ const slugify = (s: string) =>
 
 export const ARCADE_TREATMENTS: ArcadeTreatment[] = TREATMENTS.map((t) => ({ ...t, slug: slugify(t.title) }));
 
-// next/image cannot paint into CSS backgrounds or SVG <image>, so the
-// optimizer endpoint is addressed directly, at the same w=1920 the hero uses.
-export const VALLEY = `/_next/image?url=${encodeURIComponent("/images/hero-valley-bg.webp")}&w=1920&q=75`;
-
 export const EASE_OUT = [0.16, 1, 0.3, 1] as const;

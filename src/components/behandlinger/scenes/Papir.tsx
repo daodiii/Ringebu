@@ -3,7 +3,6 @@
 import { createContext, useContext, useId } from "react";
 import { motion, useTransform, type MotionValue } from "framer-motion";
 import { GrainOverlay } from "@/components/ui/GrainOverlay";
-import { VALLEY } from "../data";
 import { usePhase } from "./usePhase";
 import { VB, type Scene, type SceneProps } from "./types";
 
@@ -12,7 +11,7 @@ import { VB, type Scene, type SceneProps } from "./types";
  * holds a little paper theatre. The scenery lies folded flat until its arch
  * reaches the middle (or its box opens), then each sheet stands up in turn,
  * like a pop-up book opening. The sheets sit at different depths, so as the
- * wall walks past they shift against each other and the valley behind. The
+ * wall walks past they shift against each other and the arch around them. The
  * instruments are puppets: the crown is lowered on strings.
  *
  * Every scene is cut from one palette of paper, supplied by `withPalette`, so
@@ -22,7 +21,9 @@ import { VB, type Scene, type SceneProps } from "./types";
 /* ── Paper ── */
 
 export type Palette = {
-  /** Behind everything when the stage has no valley behind it, and the wash over the valley when it does. */
+  /** The one solid colour behind the scene in an arch. */
+  ground: string;
+  /** The top of the painted sky in the front page's boxes and the book. */
   sky: string;
   far: string;
   near: string;
@@ -38,15 +39,15 @@ export type Palette = {
 };
 
 export const PALETTES = {
-  eukalyptus: { sky: "#EAF1EF", far: "#DEE7E6", near: "#BCD5CE", deep: "#5C9A90", mid: "#8DBBB1", paper: "#FFFFFF", shade: "#DEE7E6", ink: "#0E2A30", accent: "#7CB1A7", lip: "#FBF8F1" },
-  fjord: { sky: "#E6F0F4", far: "#D3E3EA", near: "#A8C7D3", deep: "#4F8497", mid: "#7FAABA", paper: "#FFFFFF", shade: "#D9E6EC", ink: "#143845", accent: "#3F8AA0", lip: "#F7FAFB" },
-  frost: { sky: "#EEF3F7", far: "#DDE7EF", near: "#C3D4E2", deep: "#6E8BA4", mid: "#9DB4C8", paper: "#FFFFFF", shade: "#E3EBF2", ink: "#1E3243", accent: "#8FB9DA", lip: "#F8FAFC" },
-  lav: { sky: "#F1F3E9", far: "#E3E9D4", near: "#C8D6AC", deep: "#778F55", mid: "#A3B982", paper: "#FFFFFF", shade: "#E6EBDA", ink: "#2C3A1F", accent: "#9DB86A", lip: "#FAFBF5" },
-  lyng: { sky: "#F2EFF5", far: "#E4DEEC", near: "#CBC0DA", deep: "#786A96", mid: "#A396BD", paper: "#FFFFFF", shade: "#E8E3EF", ink: "#2A233D", accent: "#9C8BC4", lip: "#FAF8FB" },
-  bjork: { sky: "#F4F1EC", far: "#E8E2D8", near: "#D2C8B8", deep: "#86796A", mid: "#AFA391", paper: "#FFFFFF", shade: "#ECE6DC", ink: "#2D2822", accent: "#B59F7E", lip: "#FBF9F5" },
-  mose: { sky: "#EDF2EE", far: "#DAE6DC", near: "#B1CCB6", deep: "#4B7A57", mid: "#7BA285", paper: "#FFFFFF", shade: "#E0EAE2", ink: "#1B3121", accent: "#6FA07B", lip: "#F7FAF7" },
-  skumring: { sky: "#DDE2EE", far: "#CDD3E6", near: "#A9B2D2", deep: "#4B5784", mid: "#7883AD", paper: "#FFFFFF", shade: "#DDE1EE", ink: "#1B2140", accent: "#F2E7B8", lip: "#F3F4F9" },
-  molte: { sky: "#F8F0E8", far: "#F1E3D6", near: "#E6C9B2", deep: "#B07E62", mid: "#D2A386", paper: "#FFFFFF", shade: "#F2E6DB", ink: "#3B271C", accent: "#E0A77E", lip: "#FCF8F4" },
+  eukalyptus: { ground: "#CDDEDA", sky: "#EAF1EF", far: "#DEE7E6", near: "#BCD5CE", deep: "#5C9A90", mid: "#8DBBB1", paper: "#FFFFFF", shade: "#DEE7E6", ink: "#0E2A30", accent: "#7CB1A7", lip: "#FBF8F1" },
+  fjord: { ground: "#BED5DF", sky: "#E6F0F4", far: "#D3E3EA", near: "#A8C7D3", deep: "#4F8497", mid: "#7FAABA", paper: "#FFFFFF", shade: "#D9E6EC", ink: "#143845", accent: "#3F8AA0", lip: "#F7FAFB" },
+  frost: { ground: "#D0DEE9", sky: "#EEF3F7", far: "#DDE7EF", near: "#C3D4E2", deep: "#6E8BA4", mid: "#9DB4C8", paper: "#FFFFFF", shade: "#E3EBF2", ink: "#1E3243", accent: "#8FB9DA", lip: "#F8FAFC" },
+  lav: { ground: "#D6E0C0", sky: "#F1F3E9", far: "#E3E9D4", near: "#C8D6AC", deep: "#778F55", mid: "#A3B982", paper: "#FFFFFF", shade: "#E6EBDA", ink: "#2C3A1F", accent: "#9DB86A", lip: "#FAFBF5" },
+  lyng: { ground: "#D8CFE3", sky: "#F2EFF5", far: "#E4DEEC", near: "#CBC0DA", deep: "#786A96", mid: "#A396BD", paper: "#FFFFFF", shade: "#E8E3EF", ink: "#2A233D", accent: "#9C8BC4", lip: "#FAF8FB" },
+  bjork: { ground: "#DDD5C8", sky: "#F4F1EC", far: "#E8E2D8", near: "#D2C8B8", deep: "#86796A", mid: "#AFA391", paper: "#FFFFFF", shade: "#ECE6DC", ink: "#2D2822", accent: "#B59F7E", lip: "#FBF9F5" },
+  mose: { ground: "#C6D9C9", sky: "#EDF2EE", far: "#DAE6DC", near: "#B1CCB6", deep: "#4B7A57", mid: "#7BA285", paper: "#FFFFFF", shade: "#E0EAE2", ink: "#1B3121", accent: "#6FA07B", lip: "#F7FAF7" },
+  skumring: { ground: "#BBC3DC", sky: "#DDE2EE", far: "#CDD3E6", near: "#A9B2D2", deep: "#4B5784", mid: "#7883AD", paper: "#FFFFFF", shade: "#DDE1EE", ink: "#1B2140", accent: "#F2E7B8", lip: "#F3F4F9" },
+  molte: { ground: "#ECD6C4", sky: "#F8F0E8", far: "#F1E3D6", near: "#E6C9B2", deep: "#B07E62", mid: "#D2A386", paper: "#FFFFFF", shade: "#F2E6DB", ink: "#3B271C", accent: "#E0A77E", lip: "#FCF8F4" },
 } satisfies Record<string, Palette>;
 
 export type PaletteName = keyof typeof PALETTES;
@@ -60,8 +61,10 @@ const PaperCtx = createContext<PaperSetting>({ p: PALETTES.eukalyptus, sky: fals
 export const usePaper = () => useContext(PaperCtx);
 
 /**
- * Sets a scene in a palette. `sky` gives the stage its own paper sky, for
- * places with no valley behind it, like the boxes on the front page.
+ * Sets a scene in a palette. In an arch the stage is one solid colour, the
+ * palette's `ground`, which the scene also carries so a room around it can
+ * match. `sky` paints a sky that fades down to the hills instead, as in the
+ * boxes on the front page.
  */
 export function withPalette(S: Scene, name: PaletteName, sky = false): Scene {
   const setting = { p: PALETTES[name], sky };
@@ -71,6 +74,7 @@ export function withPalette(S: Scene, name: PaletteName, sky = false): Scene {
     </PaperCtx.Provider>
   );
   Set.displayName = `${S.displayName ?? S.name}(${name})`;
+  Set.ground = PALETTES[name].ground;
   return Set;
 }
 
@@ -82,19 +86,7 @@ export function Stage({ active, reduced, children }: { active: boolean; reduced:
   const { p, sky } = usePaper();
   return (
     <div className="absolute inset-0" style={{ perspective: 900, perspectiveOrigin: "50% 20%" }}>
-      {sky ? (
-        // No valley behind: the stage paints its own sky.
-        <div className="absolute inset-0" style={{ background: `linear-gradient(to bottom, ${p.sky}, ${p.far})` }} />
-      ) : (
-        // A wash in the palette's sky colour, so the valley sits back as the painted backdrop.
-        <motion.div
-          className="absolute inset-0"
-          style={{ background: p.sky }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: active ? 0.42 : 0 }}
-          transition={{ duration: reduced ? 0 : 0.6 }}
-        />
-      )}
+      <div className="absolute inset-0" style={{ background: sky ? `linear-gradient(to bottom, ${p.sky}, ${p.far})` : p.ground }} />
       {children}
       <motion.div
         className="absolute inset-0"
@@ -228,16 +220,13 @@ export function PapirSpeil({ active, reduced, d }: SceneProps) {
           <path d="M146,300 L146,270 Q146,252 154,236 L160,240 Q153,254 153,272 L153,300 Z" fill={p.ink} />
           <circle cx={160} cy={206} r={58} fill={p.paper} />
           <circle cx={160} cy={206} r={52} fill={p.far} />
+          {/* The glass shows hills, cut from the same paper, drifting as the arch passes */}
           <g clipPath={`url(#pglass-${id})`}>
-            <motion.image
-              href={VALLEY}
-              x={40}
-              y={146}
-              width={240}
-              height={126}
-              preserveAspectRatio="xMidYMid slice"
-              style={{ x: glassX }}
-            />
+            <circle cx={160} cy={206} r={46} fill={p.sky} />
+            <motion.g style={{ x: glassX }}>
+              <path d="M40,228 C82,210 114,224 148,208 C178,194 212,216 280,206 L280,260 L40,260 Z" fill={p.near} />
+              <path d="M40,242 C88,232 130,248 170,236 C206,226 240,242 280,238 L280,260 L40,260 Z" fill={p.mid} />
+            </motion.g>
           </g>
           <path d="M128,184 Q136,166 156,160" fill="none" stroke={p.paper} strokeWidth={5} strokeLinecap="round" opacity={0.85} />
         </motion.g>
