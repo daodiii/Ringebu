@@ -14,18 +14,6 @@ export const KONTAKT = {
   },
 };
 
-export const DISTANCES = [
-  { place: "Sør-Fron", drive: "~10 min", km: "12 km" },
-  { place: "Vinstra", drive: "~15 min", km: "18 km" },
-  { place: "Kvitfjell", drive: "~25 min", km: "30 km" },
-  { place: "Lillehammer", drive: "~45 min", km: "55 km" },
-  { place: "Sjusjøen", drive: "~50 min", km: "60 km" },
-];
-
-export function dirUrl(place: string) {
-  return `https://www.google.com/maps/dir/${encodeURIComponent(place)},+Norge/Jernbanegata+4,+2630+Ringebu`;
-}
-
 export const SEO_TEXT =
   "Ringebu Tannlegesenter ligger i Jernbanegata 4, midt i Ringebu sentrum og like ved E6. Er du på ferie i Kvitfjell, på hytta i Venabygdsfjellet eller bare på gjennomreise, er vi nærmeste tannklinikk. Akutte tilfeller går alltid først.";
 

@@ -1,5 +1,9 @@
-import { SplitKontakt } from "@/components/kontakt/SplitKontakt";
+import { Postkassa } from "@/components/kontakt/Postkassa";
 
 export default function KontaktPage() {
-  return <SplitKontakt />;
+  return (
+    <main>
+      <Postkassa />
+    </main>
+  );
 }
