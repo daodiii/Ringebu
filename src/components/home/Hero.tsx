@@ -43,7 +43,7 @@ type Win = {
   alt: string;
   /** box on desktop, in % of the section */
   box: Box;
-  /** box on phones */
+  /** box on phones, in % of the wall's own row below the words */
   boxSm: Box;
   radius: string;
   /** order in which the clinic replaces the valley */
@@ -57,7 +57,7 @@ const WINDOWS: Win[] = [
     src: "/images/ringebutannMain.jpg",
     alt: "Behandlingsrom ved Ringebu Tannlegesenter",
     box: { x: "56.5%", y: "11%", w: "21%", h: "40%" },
-    boxSm: { x: "5%", y: "50%", w: "42%", h: "21%" },
+    boxSm: { x: "5%", y: "0%", w: "42%", h: "42%" },
     radius: "4px",
     step: 0,
     objectPosition: "50% 55%",
@@ -67,7 +67,7 @@ const WINDOWS: Win[] = [
     src: "/images/clinic-sign.jpg",
     alt: "Skiltet utenfor klinikken",
     box: { x: "79.5%", y: "17%", w: "15%", h: "28%" },
-    boxSm: { x: "53%", y: "54%", w: "42%", h: "18%" },
+    boxSm: { x: "53%", y: "8%", w: "42%", h: "36%" },
     radius: "999px 999px 4px 4px",
     step: 1,
     objectPosition: "50% 38%",
@@ -77,7 +77,7 @@ const WINDOWS: Win[] = [
     src: "/images/clinic-instruments.jpg",
     alt: "Tannlegeinstrumenter",
     box: { x: "56.5%", y: "55%", w: "21%", h: "29%" },
-    boxSm: { x: "5%", y: "73%", w: "42%", h: "16%" },
+    boxSm: { x: "5%", y: "46%", w: "42%", h: "32%" },
     radius: "4px",
     step: 3,
     objectPosition: "50% 50%",
@@ -87,7 +87,7 @@ const WINDOWS: Win[] = [
     src: "/images/clinic-valley.jpg",
     alt: "Klinikken i Gudbrandsdalen",
     box: { x: "79.5%", y: "49%", w: "15%", h: "32%" },
-    boxSm: { x: "53%", y: "75%", w: "42%", h: "18%" },
+    boxSm: { x: "53%", y: "50%", w: "42%", h: "36%" },
     radius: "4px",
     step: 2,
     objectPosition: "50% 50%",
@@ -136,7 +136,7 @@ export function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative isolate min-h-[100svh] overflow-hidden bg-white"
+      className="relative isolate grid min-h-[100svh] grid-rows-[minmax(50svh,auto)_max(50svh,300px)] overflow-hidden bg-white md:block"
       aria-label="Velkommen"
     >
       {/* ── The valley, lying under the whole page ── */}
@@ -155,8 +155,13 @@ export function Hero() {
         }}
       />
 
-      {/* ── The window wall ── */}
-      <div className="absolute inset-0">
+      {/* ── The window wall ──
+          Beside the words on a desktop. On a phone it is a row of its own
+          under them: half the screen down as before, or lower when the words
+          need the room. With the browser's bars showing, half the screen
+          began above the buttons on most iPhones, and «Bestill time» sat on
+          the first window. */}
+      <div className="relative row-start-2 md:absolute md:inset-0">
         {WINDOWS.map((w) => (
           <div
             key={w.key}
@@ -220,7 +225,7 @@ export function Hero() {
       </div>
 
       {/* ── The carved headline ── */}
-      <div className="pointer-events-none relative z-30 mx-auto flex min-h-[100svh] w-full max-w-[var(--container-max,1280px)] flex-col justify-start px-[var(--container-px,24px)] pt-[clamp(112px,16svh,170px)] md:justify-center md:pt-[clamp(104px,14svh,150px)]">
+      <div className="pointer-events-none relative z-30 row-start-1 mx-auto flex w-full max-w-[var(--container-max,1280px)] flex-col justify-start px-[var(--container-px,24px)] pt-[clamp(112px,16svh,170px)] pb-10 md:min-h-[100svh] md:justify-center md:pb-0 md:pt-[clamp(104px,14svh,150px)]">
         <div className="max-w-full md:max-w-[50%]">
           <h1
             style={{
