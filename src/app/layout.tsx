@@ -25,7 +25,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://ringebutann.no"),
+  metadataBase: new URL("https://ringebutannlegesenter.no"),
   title: {
     default: "Ringebu Tannlegesenter | Din Tannlege i Ringebu",
     template: "%s | Ringebu Tannlegesenter",
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "nb_NO",
     siteName: "Ringebu Tannlegesenter",
-    url: "https://ringebutann.no",
+    url: "https://ringebutannlegesenter.no",
   },
   twitter: {
     card: "summary_large_image",
@@ -94,7 +94,7 @@ export default function RootLayout({
               name: "Ringebu Tannlegesenter",
               description:
                 "Tannlege i Ringebu sentrum, med god tid til hver pasient.",
-              url: "https://ringebutann.no",
+              url: "https://ringebutannlegesenter.no",
               telephone: "+4761280412",
               email: "post@ringebutannlegesenter.no",
               address: {

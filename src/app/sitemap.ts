@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { supportPages } from "@/data/content";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://ringebutann.no";
+  const baseUrl = "https://ringebutannlegesenter.no";
 
   const staticPages: MetadataRoute.Sitemap = [
     { url: baseUrl, lastModified: new Date(), changeFrequency: "weekly", priority: 1.0 },
