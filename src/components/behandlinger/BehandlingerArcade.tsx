@@ -11,7 +11,7 @@ const SCENES: SceneSet = {
   "forebyggende-behandling": withPalette(PapirSpeil, "fjord"),
   bleking: withPalette(PapirFargeskala, "frost"),
   fyllingsterapi: withPalette(PapirHerdelampe, "lav"),
-  "kron-og-bro": withPalette(PapirKrone, "lyng"),
+  "kroner-og-broer": withPalette(PapirKrone, "lyng"),
   rotfylling: withPalette(PapirRotfil, "bjork"),
   visdomstennene: withPalette(PapirRontgen, "mose"),
   "tannkjott-tannstein": withPalette(PapirSkraper, "eukalyptus"),

@@ -351,7 +351,7 @@ export function PapirSpeil({ active, reduced, d }: SceneProps) {
   );
 }
 
-/* ───────────── Kron og bro: the crown on strings ───────────── */
+/* ───────────── Kroner og broer: the crown on strings ───────────── */
 
 const CROWN_STEPS = [
   ["enter", 1300],

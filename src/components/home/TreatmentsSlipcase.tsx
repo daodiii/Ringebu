@@ -34,7 +34,7 @@ const BOXES: ReadonlyArray<{ slug: string; closedTone: string; openTone: string;
   { slug: "forebyggende-behandling", closedTone: "#FFFFFF", openTone: "#0E2A30", Scene: withPalette(PapirSpeil, "fjord", true) },
   { slug: "bleking", closedTone: "#F9F6EF", openTone: "#193B3F", Scene: withPalette(PapirFargeskala, "frost", true) },
   { slug: "fyllingsterapi", closedTone: "#F3ECDF", openTone: "#254C4E", Scene: withPalette(PapirHerdelampe, "lav", true) },
-  { slug: "kron-og-bro", closedTone: "#ECE3CF", openTone: "#305D5D", Scene: withPalette(PapirKrone, "lyng", true) },
+  { slug: "kroner-og-broer", closedTone: "#ECE3CF", openTone: "#305D5D", Scene: withPalette(PapirKrone, "lyng", true) },
   { slug: "rotfylling", closedTone: "#E6DABF", openTone: "#3B6E6C", Scene: withPalette(PapirRotfil, "bjork", true) },
 ];
 

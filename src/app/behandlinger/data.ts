@@ -55,7 +55,7 @@ export const TREATMENTS: readonly Treatment[] = [
     ],
   },
   {
-    title: "Kron og bro",
+    title: "Kroner og broer",
     subtitle: "Når en tann må bygges opp",
     category: "Restaurering",
     refusion: "Delvis HELFO",
