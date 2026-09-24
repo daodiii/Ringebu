@@ -202,13 +202,13 @@ export function Hverdagen() {
           <motion.h1
             className="font-sans font-extralight text-[var(--color-ink)]"
             initial={false}
-            animate={{ fontSize: current ? (sm ? 26 : 30) : sm ? 48 : 88, letterSpacing: current ? "-0.03em" : "-0.05em" }}
+            animate={{ fontSize: current ? (sm ? 26 : 34) : sm ? 48 : 92, letterSpacing: current ? "-0.03em" : "-0.05em" }}
             transition={{ duration: reduced ? 0 : 0.7, ease: EASE_DOOR }}
             style={{ lineHeight: 0.95 }}
           >
             Når merker du det?
           </motion.h1>
-          <div className="relative mt-6" style={{ minHeight: sm ? undefined : 470 }}>
+          <div className="relative mt-6" style={{ minHeight: sm ? undefined : 500 }}>
             <AnimatePresence initial={false}>
               <motion.div
                 key={current?.slug ?? "intro"}
@@ -220,7 +220,7 @@ export function Hverdagen() {
                 {current ? (
                   <Detail s={current} sm={sm} />
                 ) : (
-                  <p className="max-w-[32ch] text-[19px] leading-[1.5] text-[var(--color-text-secondary)]">
+                  <p className="max-w-[32ch] leading-[1.5] text-[var(--color-text-secondary)]" style={{ fontSize: sm ? 19 : 26 }}>
                     Åtte vanlige plager. Hva de betyr.
                   </p>
                 )}
@@ -234,22 +234,22 @@ export function Hverdagen() {
 }
 
 /** One long word, like Tannkjøttbetennelse, is set smaller so it fits the column. */
-const titleSize = (t: string) => (!t.includes(" ") && t.length > 12 ? "clamp(34px, 3.3vw, 48px)" : "clamp(42px, 4.4vw, 66px)");
+const titleSize = (t: string) => (!t.includes(" ") && t.length > 12 ? "clamp(38px, 3.9vw, 58px)" : "clamp(48px, 5.4vw, 84px)");
 
 function Detail({ s, sm }: { s: Symptom; sm: boolean }) {
   const p = PALETTES[s.palette];
   return (
-    <div className="max-w-[520px]">
-      <p className="text-[20px] leading-[1.4]" style={{ color: p.deep }}>
+    <div className={sm ? "max-w-[520px]" : "max-w-[620px]"}>
+      <p className="leading-[1.4]" style={{ color: p.deep, fontSize: sm ? 20 : 24 }}>
         {s.moment}
       </p>
-      <h2 className="mt-3 font-sans font-light text-[var(--color-ink)]" style={{ fontSize: sm ? 36 : titleSize(s.title), letterSpacing: "-0.045em", lineHeight: 0.98 }}>
+      <h2 className="mt-4 font-sans font-light text-[var(--color-ink)]" style={{ fontSize: sm ? 36 : titleSize(s.title), letterSpacing: "-0.045em", lineHeight: 0.98 }}>
         {s.title}
       </h2>
-      <p className="mt-5 text-[18px] leading-[1.55] text-[var(--color-text-secondary)]">{s.description}</p>
-      <ul className="mt-6 grid grid-cols-2 gap-x-6 gap-y-2">
+      <p className="mt-6 leading-[1.55] text-[var(--color-text-secondary)]" style={{ fontSize: sm ? 18 : 22 }}>{s.description}</p>
+      <ul className={sm ? "mt-6 grid grid-cols-2 gap-x-6 gap-y-2" : "mt-8 grid grid-cols-2 gap-x-8 gap-y-3"}>
         {s.causes.map((c) => (
-          <li key={c} className="flex items-baseline gap-2.5 text-[15.5px] text-[var(--color-text-primary)]">
+          <li key={c} className="flex items-baseline gap-2.5 text-[var(--color-text-primary)]" style={{ fontSize: sm ? 15.5 : 19 }}>
             <span aria-hidden="true" className="inline-block size-1.5 shrink-0 translate-y-[-2px] rounded-full" style={{ background: p.accent }} />
             {c}
           </li>

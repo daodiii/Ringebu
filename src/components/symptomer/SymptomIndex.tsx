@@ -23,11 +23,11 @@ export function SymptomIndex() {
         <h2 id="alle-symptomer" className="display-section text-[var(--color-text-primary)]">
           Alle symptomer
         </h2>
-        <p className="mt-5 max-w-[46ch] text-[18px] leading-[1.5] text-[var(--color-text-secondary)]">
+        <p className="mt-5 max-w-[46ch] text-[18px] leading-[1.5] text-[var(--color-text-secondary)] lg:text-[22px]">
           Alt fra buen over, samlet på ett sted.
         </p>
 
-        <ul className="mt-12 border-t border-[var(--color-rule)]">
+        <ul className="mt-12 border-t lg:mt-16 border-[var(--color-rule)]">
           {SYMPTOMS.map((s) => (
             <Entry key={s.slug} s={s} />
           ))}
@@ -53,17 +53,17 @@ function Entry({ s }: { s: Symptom }) {
   return (
     <li
       id={s.slug}
-      className="grid scroll-mt-28 grid-cols-1 gap-x-16 gap-y-2 border-b border-[var(--color-rule)] py-7 md:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)] md:py-14"
+      className="grid scroll-mt-28 grid-cols-1 gap-x-16 gap-y-2 border-b border-[var(--color-rule)] py-7 md:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)] md:py-14 lg:gap-x-24 lg:py-20"
     >
       <div className="relative pr-10 md:pr-0">
         <h3
           id={titleId}
           className="font-sans font-light text-[var(--color-ink)]"
-          style={{ fontSize: "clamp(28px, 2.8vw, 40px)", letterSpacing: "-0.035em", lineHeight: 1.02 }}
+          style={{ fontSize: "clamp(28px, 3.8vw, 58px)", letterSpacing: "-0.035em", lineHeight: 1.02 }}
         >
           {s.title}
         </h3>
-        <p className="mt-2 text-[17px] text-[var(--color-stone)]">{s.kicker}</p>
+        <p className="mt-2 text-[17px] text-[var(--color-stone)] lg:mt-3 lg:text-[21px]">{s.kicker}</p>
         {/* On a phone the whole row opens and closes */}
         <button
           type="button"
@@ -81,15 +81,15 @@ function Entry({ s }: { s: Symptom }) {
         </button>
       </div>
       <div id={bodyId} className={`${open ? "block" : "hidden"} pt-3 text-[var(--color-text-primary)] md:block md:pt-0`}>
-        <p className="max-w-[46ch] text-pretty text-[18px] leading-[1.6] text-[var(--color-text-secondary)]">
+        <p className="max-w-[46ch] text-pretty text-[18px] leading-[1.6] text-[var(--color-text-secondary)] lg:text-[23px] lg:leading-[1.55]">
           {s.description}
         </p>
         <Block label="Mulige årsaker">
-          <ul>
+          <ul className="lg:grid lg:grid-cols-2 lg:gap-x-10">
             {s.causes.map((c) => (
               <li
                 key={c}
-                className="border-t border-[var(--color-rule)] py-3 text-[16px] leading-[1.45] first:border-t-0 first:pt-0"
+                className="border-t border-[var(--color-rule)] py-3 text-[16px] leading-[1.45] first:border-t-0 first:pt-0 lg:py-4 lg:text-[19px] lg:[&:nth-child(2)]:border-t-0 lg:[&:nth-child(-n+2)]:pt-0"
               >
                 {c}
               </li>
@@ -103,8 +103,8 @@ function Entry({ s }: { s: Symptom }) {
 
 function Block({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <section className="mt-9">
-      <h4 className="mb-3 text-[13px] font-medium tracking-[-0.005em] text-[var(--color-text-muted)]">{label}</h4>
+    <section className="mt-9 lg:mt-12">
+      <h4 className="mb-3 text-[13px] font-medium tracking-[-0.005em] text-[var(--color-text-muted)] lg:mb-5 lg:text-[15px]">{label}</h4>
       {children}
     </section>
   );
