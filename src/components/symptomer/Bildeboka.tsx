@@ -768,7 +768,7 @@ function CtaFace({ W }: { W: number }) {
       <Gutter side="left" />
       <div className="relative flex h-full flex-col justify-end" style={{ padding: `${W * 0.1}px ${W * 0.1}px ${W * 0.12}px ${W * 0.12}px` }}>
         <h3 className="font-sans font-light text-[var(--color-ink)]" style={{ fontSize: Math.round(W * 0.09), letterSpacing: "-0.045em", lineHeight: 0.98 }}>
-          Kjenner du deg igjen?
+          Trenger du hjelp?
         </h3>
         <p className="mt-5 max-w-[30ch] text-[var(--color-text-secondary)]" style={{ fontSize: Math.round(W * 0.035), lineHeight: 1.5 }}>
           Ring oss, så finner vi ut av det sammen.
