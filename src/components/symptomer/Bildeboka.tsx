@@ -12,27 +12,31 @@ import {
   useMotionValue,
   useMotionValueEvent,
   useReducedMotion,
-  useScroll,
   useSpring,
   useTransform,
   type MotionValue,
 } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { GrainOverlay } from "@/components/ui/GrainOverlay";
 import { NEAR_HILLS, PALETTES, PaperShadow, withPalette, type PaletteName } from "@/components/behandlinger/scenes/Papir";
 import { PapirStol } from "@/components/behandlinger/scenes/PapirMer";
-import { useIsoLayoutEffect, useStopSettle, useViewport } from "@/components/behandlinger/hooks";
+import { useIsoLayoutEffect, useViewport } from "@/components/behandlinger/hooks";
 import type { Scene } from "@/components/behandlinger/scenes/types";
 import { SYMPTOMS, type Symptom, type SymptomSlug } from "./data";
 import { Kartotek } from "./Kartotek";
 import { TOOTH, TOOTH_SHADE, paperScene } from "./scenes/Scener";
 
 /**
- * Bildeboka. The symptoms are a pop-up book lying open on the page.
- * Scrolling turns the leaves: each one lifts from its outer edge, bends as
- * it goes over and lands on the left, and the paper theatre printed on its
- * back stands up out of the page. Coloured index tabs stick out of the page
- * edges, one per symptom, and travel over with their leaf.
+ * Bildeboka. The symptoms are a pop-up book lying on the page. It opens by
+ * itself the first time it comes into view; after that the arrows under it,
+ * its index tabs, a click on either page or the arrow keys turn the leaves.
+ * Scrolling never does: it carries straight on past the book. It used to
+ * turn a leaf per half screen, and you had to scroll through all nine.
+ *
+ * Each leaf lifts from its outer edge, bends as it goes over and lands on
+ * the left, and the paper theatre printed on its back stands up out of the
+ * page. Coloured index tabs stick out of the page edges, one per symptom,
+ * and travel over with their leaf.
  *
  * It sits in the middle of the front page, so its headings start at h2 and
  * the hero keeps the page's only h1.
@@ -50,8 +54,9 @@ const TURNS = SYMPTOMS.length + 1;
 const PAGE = "#FFFCF6";
 const BOARD = "#D5E2DF";
 const FOLD = 0.62;
-/** Scroll per turn, in screen heights: nine turns come to 4.5 screens of page. */
-const STEP = 0.5;
+/** Room under the book for its arrows: the gap above them and the buttons. */
+const ARROWS = 72;
+const ARROW = 48;
 const FINAL: PaletteName = "lav";
 const FinalScene = withPalette(PapirStol, FINAL, true);
 // Every symptom's scene in its own paper, made once.
@@ -82,14 +87,14 @@ function split(v: number) {
 
 function geometry(vw: number, vh: number) {
   const tabW = 172;
-  let H = Math.min(740, vh - NAV - 92);
+  let H = Math.min(720, vh - NAV - 76 - ARROWS);
   let W = Math.round(H * 0.74);
   const maxW = Math.floor((vw - 2 * tabW - 72) / 2);
   if (W > maxW) {
     W = maxW;
     H = Math.round(W / 0.74);
   }
-  const top = NAV + Math.round((vh - NAV - H) / 2) + 4;
+  const top = NAV + Math.round((vh - NAV - H - ARROWS) / 2) + 4;
   return { W, H, tabW, top, spine: Math.round(vw / 2) };
 }
 
@@ -105,12 +110,12 @@ function Bok({ vw, vh }: { vw: number; vh: number }) {
   const sectionRef = useRef<HTMLElement | null>(null);
   // Off screen, the dog-ear and the scene on the left page stop.
   const inView = useInView(sectionRef);
-  const step = Math.round(vh * STEP);
+  // Most of the book on screen: time for it to open.
+  const arrived = useInView(sectionRef, { amount: 0.6 });
 
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end end"] });
-  const raw = useTransform(scrollYProgress, (v) => v * TURNS);
-  const sprung = useSpring(raw, { stiffness: 95, damping: 22, mass: 0.6 });
-  const pos = reduced ? raw : sprung;
+  // Where the book is: 0 closed, 1 open at the first symptom, TURNS at the
+  // last page. Arrows, tabs, clicks and keys move it; the scroll never does.
+  const pos = useMotionValue(0);
 
   const [at, setAt] = useState(() => split(0));
   useMotionValueEvent(pos, "change", (v) => {
@@ -190,36 +195,57 @@ function Bok({ vw, vh }: { vw: number; vh: number }) {
     };
   }, [reduced, moving, hoverRight, k, corner, inView]);
 
-  // Rest on a spread, never between two.
-  const [onBook, setOnBook] = useState(true);
-  useMotionValueEvent(scrollYProgress, "change", (v) => {
-    const on = v < 0.999;
-    setOnBook((o) => (o === on ? o : on));
-  });
-  const stops = useMemo(() => Array.from({ length: TURNS + 1 }, (_, i) => i * step), [step]);
-  useStopSettle(sectionRef, stops, !reduced);
-
+  // A turn goes one leaf over, or a run of them when a tab is far away. The
+  // spread it is heading for is kept apart from where it is, so a second press
+  // during a turn goes one further.
+  const target = useRef(0);
+  const opened = useRef(false);
+  const [turning, setTurning] = useState(false);
+  // The spread the book last came to rest on. Its scene on the left stays up
+  // when a turn starts; a new one is only built once the book stops again, so
+  // a run of pages does not build a paper theatre for every page it passes.
+  const [rested, setRested] = useState(0);
   const goTo = useCallback(
     (spread: number) => {
-      const top = (sectionRef.current?.getBoundingClientRect().top ?? 0) + window.scrollY;
-      window.scrollTo({ top: top + Math.max(0, Math.min(TURNS, spread)) * step, behavior: reduced ? "auto" : "smooth" });
+      const to = Math.max(0, Math.min(TURNS, spread));
+      opened.current = true;
+      if (to === target.current) return;
+      target.current = to;
+      const n = Math.abs(to - pos.get());
+      setTurning(true);
+      animate(pos, to, {
+        duration: reduced ? 0 : Math.min(2.2, 0.85 + (n - 1) * 0.28),
+        ease: [0.45, 0.05, 0.3, 1],
+        onComplete: () => {
+          setTurning(false);
+          setRested(to);
+        },
+      });
     },
-    [step, reduced]
+    [pos, reduced]
   );
 
+  // It opens by itself the first time it comes into view.
   useEffect(() => {
-    if (!onBook) return;
+    if (!arrived || opened.current) return;
+    const id = setTimeout(() => {
+      if (!opened.current) goTo(1);
+    }, reduced ? 0 : 350);
+    return () => clearTimeout(id);
+  }, [arrived, goTo, reduced]);
+
+  // The arrow keys turn the pages while the book is across the middle of the screen.
+  useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      if ((e.key !== "ArrowLeft" && e.key !== "ArrowRight") || e.altKey || e.ctrlKey || e.metaKey) return;
       const r = sectionRef.current?.getBoundingClientRect();
-      if (!r || r.top > 10 || r.bottom < vh - 10) return;
-      if (e.key === "ArrowRight") goTo(k + 1);
-      else if (e.key === "ArrowLeft") goTo(k - 1);
-      else return;
+      if (!r || r.top > vh / 2 || r.bottom < vh / 2) return;
+      goTo(target.current + (e.key === "ArrowRight" ? 1 : -1));
       e.preventDefault();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [onBook, goTo, k, vh]);
+  }, [goTo, vh]);
 
   const introOpacity = useTransform(pos, [0, 0.35], [1, 0]);
   const introX = useTransform(pos, [0, 0.5], [0, -40]);
@@ -250,13 +276,13 @@ function Bok({ vw, vh }: { vw: number; vh: number }) {
       id="symptomer"
       aria-labelledby="symptomer-tittel"
       className="relative bg-[var(--color-paper)]"
-      style={{ height: vh + TURNS * step }}
+      style={{ height: vh }}
       onPointerMove={(e) => {
         px.set((e.clientX / vw) * 2 - 1);
         py.set((e.clientY / vh) * 2 - 1);
       }}
     >
-      <div className="sticky top-0 h-[100svh] overflow-hidden">
+      <div className="relative h-full overflow-hidden">
         {/* Intro, beside the closed book */}
         <motion.div
           className="absolute flex flex-col justify-center"
@@ -327,9 +353,9 @@ function Bok({ vw, vh }: { vw: number; vh: number }) {
               <div
                 className="absolute left-0 top-0 cursor-pointer overflow-hidden"
                 style={{ width: g.W, height: g.H, boxShadow: stack(k, -1) }}
-                onClick={() => goTo(k - 1)}
+                onClick={() => goTo(target.current - 1)}
               >
-                <PageFace face={leftFace} W={g.W} H={g.H} live active={!lifting && inView} d={lean} reduced={reduced} />
+                <PageFace face={leftFace} W={g.W} H={g.H} live={!turning || k === rested} active={!lifting && inView} d={lean} reduced={reduced} />
                 <motion.div
                   aria-hidden="true"
                   className="pointer-events-none absolute top-0 h-full w-[140px]"
@@ -368,10 +394,16 @@ function Bok({ vw, vh }: { vw: number; vh: number }) {
                 }
                 onEnter={() => setHoverRight(true)}
                 onLeave={() => setHoverRight(false)}
-                onClick={() => goTo(k + 1)}
+                onClick={() => goTo(target.current + 1)}
               />
             )}
           </motion.div>
+        </div>
+
+        {/* The arrows, under the spine */}
+        <div className="absolute flex gap-4" style={{ left: g.spine - ARROW - 8, top: g.top + g.H + ARROWS - ARROW }}>
+          <PageArrow dir={-1} off={k === 0 && !moving} onClick={() => goTo(target.current - 1)} />
+          <PageArrow dir={1} off={k >= TURNS} onClick={() => goTo(target.current + 1)} />
         </div>
       </div>
     </section>
@@ -493,6 +525,24 @@ function DogEar({ size, color }: { size: MotionValue<number>; color: string }) {
         }}
       />
     </motion.div>
+  );
+}
+
+/* ───────────── Arrows ───────────── */
+
+/** One of the pair under the book, drawn like Buegangen's. At either end the one that cannot go further fades. */
+function PageArrow({ dir, off, onClick }: { dir: 1 | -1; off: boolean; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      aria-label={dir < 0 ? "Forrige side" : "Neste side"}
+      onClick={onClick}
+      disabled={off}
+      className="grid place-items-center rounded-full bg-[var(--color-paper)] text-[var(--color-ink)] shadow-[0_0_0_1px_rgba(14,42,48,0.14),0_10px_24px_-14px_rgba(8,30,35,0.55)] transition-[opacity,background-color,scale] duration-300 hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-ink)] active:scale-95 disabled:pointer-events-none disabled:opacity-35"
+      style={{ width: ARROW, height: ARROW }}
+    >
+      {dir < 0 ? <ArrowLeft className="size-5" aria-hidden="true" /> : <ArrowRight className="size-5" aria-hidden="true" />}
+    </button>
   );
 }
 
