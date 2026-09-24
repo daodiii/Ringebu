@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   AnimatePresence,
@@ -12,6 +13,7 @@ import {
   useTransform,
   useVelocity,
 } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 import { PALETTES, PaperShadow, type PaletteName } from "@/components/behandlinger/scenes/Papir";
 import { useViewport } from "@/components/behandlinger/hooks";
 import { EASE_OUT, SYMPTOMS, type Symptom, type SymptomSlug } from "./data";
@@ -198,17 +200,26 @@ export function Hverdagen() {
         </div>
 
         {/* The words */}
-        <div className="relative flex flex-col justify-center pb-12 pr-[max(32px,calc((100vw-1280px)/2+36px))]" style={sm ? { padding: "8px 20px 64px" } : { paddingLeft: 8 }}>
+        <div className="relative flex flex-col justify-center py-10 pr-[max(32px,calc((100vw-1280px)/2+36px))]" style={sm ? { padding: "8px 20px 64px" } : { paddingLeft: 8 }}>
           <motion.h1
             className="font-sans font-extralight text-[var(--color-ink)]"
             initial={false}
-            animate={{ fontSize: current ? (sm ? 26 : 34) : sm ? 48 : 92, letterSpacing: current ? "-0.03em" : "-0.05em" }}
+            animate={{ fontSize: current ? (sm ? 26 : 34) : sm ? 44 : 76, letterSpacing: current ? "-0.03em" : "-0.05em" }}
             transition={{ duration: reduced ? 0 : 0.7, ease: EASE_DOOR }}
             style={{ lineHeight: 0.95 }}
           >
-            Når merker du det?
+            Har du noen av disse plagene?
           </motion.h1>
-          <div className="relative mt-6" style={{ minHeight: sm ? undefined : 500 }}>
+          {/* Room for the tallest symptom, so the heading stands still from one
+              to the next; grows as the heading shrinks, so the intro sits centred. */}
+          <div
+            className="relative mt-6"
+            style={{
+              minHeight: sm ? undefined : current ? 560 : 140,
+              // A CSS transition: framer left this min-height where it started.
+              transition: reduced ? undefined : "min-height 0.7s cubic-bezier(0.76, 0, 0.24, 1)",
+            }}
+          >
             <AnimatePresence initial={false}>
               <motion.div
                 key={current?.slug ?? "intro"}
@@ -224,12 +235,21 @@ export function Hverdagen() {
                     Åtte vanlige plager. Hva de betyr.
                   </p>
                 )}
+                <KontaktOss />
               </motion.div>
             </AnimatePresence>
           </div>
         </div>
       </div>
     </section>
+  );
+}
+
+function KontaktOss() {
+  return (
+    <Link href="/kontakt" className="mt-8 inline-flex items-center gap-2 rounded-full bg-[var(--color-ink)] px-6 py-3.5 text-[14px] font-semibold text-white">
+      Kontakt oss <ArrowRight className="size-4" aria-hidden="true" />
+    </Link>
   );
 }
 

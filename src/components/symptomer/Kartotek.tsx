@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
 import { useInView, useMotionValue, useReducedMotion, type MotionValue } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { PALETTES } from "@/components/behandlinger/scenes/Papir";
 import type { Scene } from "@/components/behandlinger/scenes/types";
 import { SYMPTOMS, type Symptom, type SymptomSlug } from "./data";
@@ -87,11 +87,14 @@ export function Kartotek() {
           className="font-sans font-extralight text-[var(--color-ink)]"
           style={{ fontSize: 44, letterSpacing: "-0.045em", lineHeight: 0.95 }}
         >
-          Kjenner du noe av dette?
+          Har du noen av disse plagene?
         </h2>
         <p className="mt-5 text-[18px] leading-[1.5] text-[var(--color-text-secondary)]">
           Åtte vanlige plager. Hva de betyr.
         </p>
+        <Link href="/kontakt" className="mt-6 inline-flex items-center gap-2 rounded-full bg-[var(--color-ink)] px-6 py-3.5 text-[14px] font-semibold text-white">
+          Kontakt oss <ArrowRight className="size-4" aria-hidden="true" />
+        </Link>
 
         {/* The box: every card but the one on the table, standing in its slot */}
         <div

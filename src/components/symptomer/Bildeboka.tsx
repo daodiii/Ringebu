@@ -249,6 +249,8 @@ function Bok({ vw, vh }: { vw: number; vh: number }) {
 
   const introOpacity = useTransform(pos, [0, 0.35], [1, 0]);
   const introX = useTransform(pos, [0, 0.5], [0, -40]);
+  // Once faded, out of the way of the pointer and the Tab key too.
+  const introVisibility = useTransform(pos, (v) => (v < 0.35 ? "visible" : "hidden"));
   const boardLeft = useTransform(pos, [0.9, 0.99], [0, 1]);
 
   // Shadow thrown by the turning leaf on the page it uncovers.
@@ -286,18 +288,23 @@ function Bok({ vw, vh }: { vw: number; vh: number }) {
         {/* Intro, beside the closed book */}
         <motion.div
           className="absolute flex flex-col justify-center"
-          style={{ left: Math.max(24, g.spine - g.W + 8), width: g.W - 80, top: g.top, height: g.H, opacity: introOpacity, x: introX }}
+          style={{ left: Math.max(24, g.spine - g.W + 8), width: g.W - 80, top: g.top, height: g.H, opacity: introOpacity, x: introX, visibility: introVisibility }}
         >
           <h2
             id="symptomer-tittel"
             className="font-sans font-extralight text-[var(--color-ink)]"
             style={{ fontSize: "clamp(44px, 4.6vw, 72px)", letterSpacing: "-0.045em", lineHeight: 0.95 }}
           >
-            Kjenner du noe av dette?
+            Har du noen av disse plagene?
           </h2>
           <p className="mt-6 max-w-[30ch] text-[19px] leading-[1.5] text-[var(--color-text-secondary)]">
             Åtte vanlige plager. Hva de betyr.
           </p>
+          <div className="mt-8">
+            <Link href="/kontakt" className="inline-flex items-center gap-2 rounded-full bg-[var(--color-ink)] px-6 py-3.5 text-[14px] font-semibold text-white">
+              Kontakt oss <ArrowRight className="size-4" aria-hidden="true" />
+            </Link>
+          </div>
         </motion.div>
 
         {/* A soft shadow on the table */}
