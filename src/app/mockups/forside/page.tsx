@@ -2,8 +2,7 @@ import { Hero } from "@/components/home/Hero";
 import { TreatmentsSlipcase } from "@/components/home/TreatmentsSlipcase";
 import { Vardene } from "@/components/home/Vardene";
 import { Bildeboka } from "@/components/symptomer/Bildeboka";
-import { AboutLetter } from "@/components/home/AboutLetter";
-import { CtaCloseout } from "@/components/home/CtaCloseout";
+import { Sauene } from "@/components/home/Sauene";
 
 export const metadata = { title: "Forsiden · papirteater i boksene", robots: { index: false } };
 
@@ -15,8 +14,7 @@ export default function Page() {
       <TreatmentsSlipcase />
       <Vardene />
       <Bildeboka />
-      <AboutLetter />
-      <CtaCloseout />
+      <Sauene />
     </main>
   );
 }
