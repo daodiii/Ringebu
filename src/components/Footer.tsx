@@ -27,7 +27,7 @@ export default function Footer() {
               </div>
             </Link>
             <p className="mt-4 max-w-xs text-[13px] leading-relaxed text-white/80">
-              Tannhelse med tid og omtanke — for hele dalen, og for de som besøker den.
+              Tannhelse med tid og omtanke. For hele dalen, og for de som besøker den.
             </p>
           </div>
 
