@@ -37,7 +37,7 @@ export interface Symptom {
 type Staging = Pick<Symptom, "slug" | "kicker" | "palette" | "thing" | "moment">;
 
 const STAGING: Record<string, Staging> = {
-  Tannpine: { slug: "tannpine", kicker: "Smerten som ikke gir seg", palette: "molte", thing: "Sjokolade", moment: "Du tar en bit sjokolade, og det jager i tannen." },
+  Tannpine: { slug: "tannpine", kicker: "Smerten som ikke gir seg", palette: "molte", thing: "Sjokolade", moment: "Du tar en bit sjokolade, og det gjør vondt i tennene." },
   "Blødende tannkjøtt": { slug: "blodende", kicker: "De første tegnene", palette: "lyng", thing: "Tannbørste", moment: "Du pusser tennene, og det kommer blod." },
   "Sensitive tenner": { slug: "sensitive", kicker: "Når noe kaldt blir for kaldt", palette: "frost", thing: "Isbit", moment: "Du drikker noe kaldt, og det isner." },
   "Hovne tannkjøtt": { slug: "hovne", kicker: "Når noe har bygd seg opp", palette: "bjork", thing: "Speil", moment: "Du ser i speilet, og tannkjøttet er hovent." },
