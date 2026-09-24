@@ -4,16 +4,18 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import { AnimatePresence, motion, useInView, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
+import { ARCADE_TREATMENTS } from "@/components/behandlinger/data";
 import { PapirKrone, PapirSpeil, withPalette } from "@/components/behandlinger/scenes/Papir";
-import { PapirFargeskala, PapirImplantat, PapirLampe, PapirRotfil } from "@/components/behandlinger/scenes/PapirMer";
+import { PapirFargeskala, PapirHerdelampe, PapirRotfil } from "@/components/behandlinger/scenes/PapirMer";
 import type { Scene } from "@/components/behandlinger/scenes/types";
 
 /**
- * "Dette kan vi hjelpe deg med." Six boxes side by side: the closed ones run
- * white to cream, the open one turns petrol (darkest on the left, a step
- * lighter to the right) and gains an arched window where that treatment's
- * paper theatre pops up, in its own colours. Moving the pointer over the open
- * box tilts the scene's layers against each other.
+ * "Dette kan vi hjelpe deg med." The first five treatments from /behandlinger,
+ * as boxes side by side: the closed ones run white to cream, the open one
+ * turns petrol (darkest on the left, a step lighter to the right) and gains
+ * an arched window where that treatment's paper theatre pops up, in the same
+ * scene and paper as its arch on /behandlinger. Moving the pointer over the
+ * open box tilts the scene's layers against each other.
  */
 
 type Spine = {
@@ -26,63 +28,21 @@ type Spine = {
   Scene: Scene;
 };
 
-// Each box: its copy, its closed and open tones, and its scene in its own paper.
-const SPINES: ReadonlyArray<Spine> = [
-  {
-    id: "forebyggende",
-    name: "Forebyggende",
-    body: "Kontroll før det gjør vondt.",
-    detail: "Kontroll, rens og fluor. Vi ser etter de små tegnene før de blir store problemer.",
-    closedTone: "#FFFFFF",
-    openTone: "#0E2A30",
-    Scene: withPalette(PapirSpeil, "fjord", true),
-  },
-  {
-    id: "generell",
-    name: "Generell tannbehandling",
-    body: "Fyllinger, kroner og broer.",
-    detail: "Fyllingene matcher fargen på dine egne tenner. Kroner og broer tilpasser vi så de sitter godt og ser naturlige ut.",
-    closedTone: "#FAF8F2",
-    openTone: "#17383C",
-    Scene: withPalette(PapirKrone, "lyng", true),
-  },
-  {
-    id: "akutt",
-    name: "Akutt tannhjelp",
-    body: "Vi hjelper deg samme dag.",
-    detail: "Tannverk kan ikke vente. Vi holder av tid hver dag. Ring tidlig, så finner vi en løsning.",
-    closedTone: "#F5F0E5",
-    openTone: "#204548",
-    Scene: withPalette(PapirLampe, "molte", true),
-  },
-  {
-    id: "bleking",
-    name: "Bleking & estetikk",
-    body: "Bleking hos tannlege.",
-    detail: "Vi bleker under kontroll, ikke med produkter fra butikken. Resultatet blir naturlig og varer lenge.",
-    closedTone: "#F0E9D9",
-    openTone: "#295354",
-    Scene: withPalette(PapirFargeskala, "frost", true),
-  },
-  {
-    id: "implantater",
-    name: "Implantater",
-    body: "En ny tann som varer.",
-    detail: "Et implantat ser ut og føles som din egen tann. Vi gjør hele jobben her, fra første vurdering til ferdig tann.",
-    closedTone: "#EBE1CC",
-    openTone: "#326060",
-    Scene: withPalette(PapirImplantat, "mose", true),
-  },
-  {
-    id: "rotbehandling",
-    name: "Rotbehandling",
-    body: "Vi redder tannen.",
-    detail: "Du får lokalbedøvelse, så det gjør ikke vondt underveis. Målet er alltid å beholde din egen tann.",
-    closedTone: "#E6DABF",
-    openTone: "#3B6E6C",
-    Scene: withPalette(PapirRotfil, "bjork", true),
-  },
+// Each box: its closed and open tones, and its scene in its own paper. The
+// copy comes from /behandlinger, so the two pages cannot drift apart.
+const BOXES: ReadonlyArray<{ slug: string; closedTone: string; openTone: string; Scene: Scene }> = [
+  { slug: "forebyggende-behandling", closedTone: "#FFFFFF", openTone: "#0E2A30", Scene: withPalette(PapirSpeil, "fjord", true) },
+  { slug: "bleking", closedTone: "#F9F6EF", openTone: "#193B3F", Scene: withPalette(PapirFargeskala, "frost", true) },
+  { slug: "fyllingsterapi", closedTone: "#F3ECDF", openTone: "#254C4E", Scene: withPalette(PapirHerdelampe, "lav", true) },
+  { slug: "kron-og-bro", closedTone: "#ECE3CF", openTone: "#305D5D", Scene: withPalette(PapirKrone, "lyng", true) },
+  { slug: "rotfylling", closedTone: "#E6DABF", openTone: "#3B6E6C", Scene: withPalette(PapirRotfil, "bjork", true) },
 ];
+
+const SPINES: ReadonlyArray<Spine> = BOXES.map(({ slug, ...box }) => {
+  const t = ARCADE_TREATMENTS.find((a) => a.slug === slug);
+  if (!t) throw new Error(`No treatment "${slug}" on /behandlinger`);
+  return { id: slug, name: t.title, body: t.subtitle, detail: t.description, ...box };
+});
 
 const EASE = [0.25, 0.1, 0.25, 1] as const;
 
