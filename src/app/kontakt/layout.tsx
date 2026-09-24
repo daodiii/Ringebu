@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Kontakt oss",
   description:
-    "Ring 61 28 04 12 eller send e-post til post@ringebutann.no. Du finner oss i Hanstadgata 2 i Ringebu sentrum.",
+    "Ring 61 28 04 12 eller send e-post til post@ringebutannlegesenter.no. Du finner oss i Jernbanegata 4 i Ringebu sentrum.",
   alternates: { canonical: "/kontakt" },
   openGraph: {
     title: "Kontakt oss | Ringebu Tannlegesenter",

@@ -49,13 +49,13 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="mailto:post@ringebutann.no"
+                  href="mailto:post@ringebutannlegesenter.no"
                   className="text-white/80 transition-colors hover:text-white"
                 >
-                  post@ringebutann.no
+                  post@ringebutannlegesenter.no
                 </a>
               </li>
-              <li className="text-white/80">Hanstadgata 2</li>
+              <li className="text-white/80">Jernbanegata 4</li>
               <li className="text-white/80">2630 Ringebu</li>
             </ul>
           </div>

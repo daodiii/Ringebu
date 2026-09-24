@@ -294,9 +294,10 @@ export function Hero() {
         className="hero-fade absolute inset-x-0 bottom-0 z-30 hidden border-t border-[rgba(14,42,48,0.08)] bg-white/55 backdrop-blur-[2px] md:block"
         style={{ animationDelay: "1.5s" }}
       >
-        <div className="mx-auto flex w-full max-w-[var(--container-max,1280px)] items-center justify-between gap-6 px-[var(--container-px,24px)] py-3 font-mono text-[9.5px] uppercase tracking-[0.2em] text-[var(--color-text-muted)]">
-          <span>Hanstadgata 2, 2630 Ringebu</span>
-          <span>Man–tor 08.00–15.30 · Fre 08.00–15.00</span>
+        {/* Five days of hours need ~900px beside the address: one line from lg, two below */}
+        <div className="mx-auto flex w-full max-w-[var(--container-max,1280px)] flex-col items-start gap-1.5 px-[var(--container-px,24px)] py-3 font-mono text-[9.5px] uppercase tracking-[0.2em] text-[var(--color-text-muted)] lg:flex-row lg:items-center lg:justify-between lg:gap-6">
+          <span>Jernbanegata 4, 2630 Ringebu</span>
+          <span>Man 08.00–15.30 · Tir 08.30–18.00 · Ons 08.00–15.00 · Tor 09.00–18.00 · Fre 08.00–15.00</span>
         </div>
       </div>
     </section>

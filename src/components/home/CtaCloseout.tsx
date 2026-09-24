@@ -1,16 +1,22 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Fragment } from "react";
 import { ArrowRight } from "lucide-react";
 import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
+import { HOURS, KONTAKT } from "@/components/kontakt/data";
 
 type ContactRow = { value: string; href?: string };
 
 const CONTACT_ROWS: ContactRow[] = [
-  { value: "61 28 04 12", href: "tel:61280412" },
-  { value: "post@ringebutann.no", href: "mailto:post@ringebutann.no" },
-  { value: "Hanstadgata 2, 2630 Ringebu" },
-  { value: "Man – Tor · 08:00 – 15:30 · Fre · 08:00 – 15:00" },
+  { value: KONTAKT.phone.display, href: KONTAKT.phone.href },
+  { value: KONTAKT.email.display, href: KONTAKT.email.href },
+  { value: KONTAKT.address.display },
 ];
+
+const OPEN_DAYS = HOURS.filter((h) => !h.closed);
+
+const ROW =
+  "border-t border-[var(--color-rule-dark)] py-4 text-[17px] font-medium leading-[1.4] tracking-[-0.01em] last:border-b last:border-[var(--color-rule-dark)]";
 
 export function CtaCloseout() {
   return (
@@ -36,10 +42,7 @@ export function CtaCloseout() {
         {/* Contact info — top right */}
         <ul className="order-2 text-white md:order-none md:col-start-2 md:row-start-1 md:text-[var(--color-text-on-dark)]">
           {CONTACT_ROWS.map((row) => (
-            <li
-              key={row.value}
-              className="border-t border-[var(--color-rule-dark)] py-4 text-[17px] font-medium leading-[1.4] tracking-[-0.01em] last:border-b last:border-[var(--color-rule-dark)]"
-            >
+            <li key={row.value} className={ROW}>
               {row.href ? (
                 <a href={row.href} className="transition-colors hover:text-[var(--color-amber-deep)]">
                   {row.value}
@@ -49,6 +52,14 @@ export function CtaCloseout() {
               )}
             </li>
           ))}
+          <li className={`${ROW} grid grid-cols-[auto_1fr] gap-x-5 tabular-nums`}>
+            {OPEN_DAYS.map((h) => (
+              <Fragment key={h.code}>
+                <span>{h.code}</span>
+                <span>{h.hours}</span>
+              </Fragment>
+            ))}
+          </li>
         </ul>
 
         {/* Main content — bottom left */}

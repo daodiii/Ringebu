@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { memo } from "react";
+import { Fragment, memo } from "react";
 import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { NoShadow, PaperShadow } from "@/components/behandlinger/scenes/Papir";
-import { KONTAKT } from "@/components/kontakt/data";
+import { HOURS, KONTAKT } from "@/components/kontakt/data";
 import {
   Bjork, Blomst, Cloud, Gran, Strip, Tannskilt,
   bumpy, lip, r2, ridge, ridgeY, rng, snowcap, useLean, usePopUp, useShift, type Pts,
@@ -27,8 +27,8 @@ import s from "./landskap.module.css";
 const H = 580;
 const SKY = "#EFF3EA";
 
-// The front page's own opening hours, which differ from the table on /kontakt.
-const HOURS = ["Man – Tor 08:00 – 15:30", "Fre 08:00 – 15:00"];
+// The hours from the table on /kontakt, less the closed weekend.
+const OPEN_DAYS = HOURS.filter((h) => !h.closed);
 
 /* ── The land, back to front ── */
 
@@ -305,8 +305,13 @@ function Kontakt() {
         <li className={row}>
           <a href={KONTAKT.address.href} target="_blank" rel="noopener noreferrer" className={link}>{KONTAKT.address.display}</a>
         </li>
-        <li className={`${row} border-b font-normal text-[rgba(14,42,48,0.8)]`}>
-          {HOURS.map((h) => <span key={h} className="block">{h}</span>)}
+        <li className={`${row} grid grid-cols-[auto_1fr] gap-x-5 border-b font-normal tabular-nums text-[rgba(14,42,48,0.8)]`}>
+          {OPEN_DAYS.map((h) => (
+            <Fragment key={h.code}>
+              <span>{h.code}</span>
+              <span>{h.hours}</span>
+            </Fragment>
+          ))}
         </li>
       </ul>
       <Link

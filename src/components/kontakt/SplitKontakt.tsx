@@ -25,12 +25,14 @@ export function SplitKontakt() {
             {KONTAKT.lead}
           </p>
 
-          {/* Lines */}
-          <div className="mt-6">
+          {/* Lines. The e-mail and the address shrink to the column rather than
+              be cut off: 30px is the icon and gap, and 14.3 and 13.9 are each
+              line's width per px of type, with a little to spare. */}
+          <div className="@container mt-6">
             {[
               { ...KONTAKT.phone, label: "Telefon", Icon: Phone, ext: false, size: "text-[36px]" },
-              { ...KONTAKT.email, label: "E-post", Icon: Mail, ext: false, size: "text-[26px]" },
-              { ...KONTAKT.address, label: "Adresse", Icon: ArrowUpRight, ext: true, size: "text-[22px]" },
+              { ...KONTAKT.email, label: "E-post", Icon: Mail, ext: false, size: "text-[length:min(26px,calc((100cqw-30px)/14.3))]" },
+              { ...KONTAKT.address, label: "Adresse", Icon: ArrowUpRight, ext: true, size: "text-[length:min(22px,calc((100cqw-30px)/13.9))]" },
             ].map((row) => (
               <a
                 key={row.label}
@@ -89,7 +91,7 @@ export function SplitKontakt() {
           <div className="relative h-[150px] w-full overflow-hidden shadow-[inset_0_0_0_1px_var(--color-rule-dark)] sm:h-[180px]">
             <iframe
               src={MAPS_EMBED}
-              title="Ringebu Tannlegesenter i Hanstadgata 2 på kartet"
+              title={`Ringebu Tannlegesenter i ${KONTAKT.address.short} på kartet`}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               className="size-full grayscale-[45%] contrast-[1.05]"
