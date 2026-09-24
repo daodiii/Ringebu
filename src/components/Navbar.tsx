@@ -52,17 +52,17 @@ export default function Navbar() {
             : "bg-[var(--color-paper)]/90 backdrop-blur-md border-b border-[var(--color-rule)]"
         )}
       >
-        <div className="mx-auto flex w-full max-w-[var(--container-max,1280px)] items-center justify-between px-[var(--container-px,24px)] py-4">
-          <Link href="/" className="relative z-50 flex items-center gap-2.5 leading-none">
+        <div className="mx-auto flex w-full max-w-[var(--container-max,1280px)] items-center justify-between px-[var(--container-px,24px)] py-4 lg:py-2.5">
+          <Link href="/" className="relative z-50 flex items-center gap-2.5 leading-none lg:gap-3">
             <Image
               src="/images/logo-mark.png"
               alt=""
               width={217}
               height={200}
-              className="h-10 w-auto"
+              className="h-10 w-auto lg:h-[52px]"
               priority
             />
-            <span className="font-sans text-[15px] font-semibold tracking-[-0.01em]">
+            <span className="font-sans text-[15px] font-semibold tracking-[-0.01em] lg:text-[18px]">
               Ringebu Tannlegesenter
             </span>
           </Link>
