@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   animate,
+  cancelFrame,
+  frame,
   motion,
   useInView,
   useMotionTemplate,
@@ -128,7 +130,14 @@ function Bok({ vw, vh }: { vw: number; vh: number }) {
   // every turn.
   const drawn = useMotionValue(0);
   useIsoLayoutEffect(() => {
-    drawn.set(k);
+    // Set on framer's next frame, still before the paint, and not here: during
+    // this commit the transforms that listen to it are between unsubscribing
+    // and subscribing again, and a change made now reached none of them. A
+    // turn that ended in one step (reduced motion jumps a page at once) was
+    // left drawn a whole page too far.
+    const set = () => drawn.set(k);
+    frame.preRender(set);
+    return () => cancelFrame(set);
   }, [k, drawn]);
   const t = useTransform([pos, drawn], ([v, d]: number[]) => {
     const u = v - d;
