@@ -66,6 +66,8 @@ export function Hverdagen() {
   const vp = useViewport();
   const reduced = useReducedMotion() ?? false;
   const sm = vp.w < 900;
+  // A short desktop window (a 768px-tall laptop): the same words, closer together.
+  const short = !sm && vp.h < 860;
 
   const stageW = sm ? vp.w - 40 : Math.round(vp.w * 0.62);
   const archW = sm ? Math.round(Math.min(300, vp.w * 0.66)) : Math.round(Math.min(440, Math.max(300, stageW * 0.46)));
@@ -200,7 +202,7 @@ export function Hverdagen() {
         </div>
 
         {/* The words */}
-        <div className="relative flex flex-col justify-center py-10 pr-[max(32px,calc((100vw-1280px)/2+36px))]" style={sm ? { padding: "8px 20px 64px" } : { paddingLeft: 8 }}>
+        <div className={`relative flex flex-col justify-center ${short ? "py-6" : "py-10"} pr-[max(32px,calc((100vw-1280px)/2+36px))]`} style={sm ? { padding: "8px 20px 64px" } : { paddingLeft: 8 }}>
           <motion.h1
             className="font-sans font-extralight text-[var(--color-ink)]"
             initial={false}
@@ -215,7 +217,7 @@ export function Hverdagen() {
           <div
             className="relative mt-6"
             style={{
-              minHeight: sm ? undefined : current ? 560 : 140,
+              minHeight: sm ? undefined : current ? (short ? 510 : 560) : 140,
               // A CSS transition: framer left this min-height where it started.
               transition: reduced ? undefined : "min-height 0.7s cubic-bezier(0.76, 0, 0.24, 1)",
             }}
@@ -229,13 +231,13 @@ export function Hverdagen() {
                 exit={reduced ? undefined : { opacity: 0, y: -10, transition: { duration: 0.22, ease: "easeIn" } }}
               >
                 {current ? (
-                  <Detail s={current} sm={sm} />
+                  <Detail s={current} sm={sm} short={short} />
                 ) : (
                   <p className="max-w-[32ch] leading-[1.5] text-[var(--color-text-secondary)]" style={{ fontSize: sm ? 19 : 26 }}>
                     Åtte vanlige plager. Hva de betyr.
                   </p>
                 )}
-                <KontaktOss />
+                <KontaktOss short={short} />
               </motion.div>
             </AnimatePresence>
           </div>
@@ -245,9 +247,9 @@ export function Hverdagen() {
   );
 }
 
-function KontaktOss() {
+function KontaktOss({ short }: { short: boolean }) {
   return (
-    <Link href="/kontakt" className="mt-8 inline-flex items-center gap-2 rounded-full bg-[var(--color-ink)] px-6 py-3.5 text-[14px] font-semibold text-white">
+    <Link href="/kontakt" className={`${short ? "mt-6" : "mt-8"} inline-flex items-center gap-2 rounded-full bg-[var(--color-ink)] px-6 py-3.5 text-[14px] font-semibold text-white`}>
       Kontakt oss <ArrowRight className="size-4" aria-hidden="true" />
     </Link>
   );
@@ -256,18 +258,18 @@ function KontaktOss() {
 /** One long word, like Tannkjøttbetennelse, is set smaller so it fits the column. */
 const titleSize = (t: string) => (!t.includes(" ") && t.length > 12 ? "clamp(38px, 3.9vw, 58px)" : "clamp(48px, 5.4vw, 84px)");
 
-function Detail({ s, sm }: { s: Symptom; sm: boolean }) {
+function Detail({ s, sm, short }: { s: Symptom; sm: boolean; short: boolean }) {
   const p = PALETTES[s.palette];
   return (
     <div className={sm ? "max-w-[520px]" : "max-w-[620px]"}>
       <p className="leading-[1.4]" style={{ color: p.deep, fontSize: sm ? 20 : 24 }}>
         {s.moment}
       </p>
-      <h2 className="mt-4 font-sans font-light text-[var(--color-ink)]" style={{ fontSize: sm ? 36 : titleSize(s.title), letterSpacing: "-0.045em", lineHeight: 0.98 }}>
+      <h2 className={`${short ? "mt-3" : "mt-4"} font-sans font-light text-[var(--color-ink)]`} style={{ fontSize: sm ? 36 : titleSize(s.title), letterSpacing: "-0.045em", lineHeight: 0.98 }}>
         {s.title}
       </h2>
-      <p className="mt-6 leading-[1.55] text-[var(--color-text-secondary)]" style={{ fontSize: sm ? 18 : 22 }}>{s.description}</p>
-      <ul className={sm ? "mt-6 grid grid-cols-2 gap-x-6 gap-y-2" : "mt-8 grid grid-cols-2 gap-x-8 gap-y-3"}>
+      <p className={`${short ? "mt-4" : "mt-6"} leading-[1.55] text-[var(--color-text-secondary)]`} style={{ fontSize: sm ? 18 : 22 }}>{s.description}</p>
+      <ul className={sm ? "mt-6 grid grid-cols-2 gap-x-6 gap-y-2" : short ? "mt-5 grid grid-cols-2 gap-x-8 gap-y-2" : "mt-8 grid grid-cols-2 gap-x-8 gap-y-3"}>
         {s.causes.map((c) => (
           <li key={c} className="flex items-baseline gap-2.5 text-[var(--color-text-primary)]" style={{ fontSize: sm ? 15.5 : 19 }}>
             <span aria-hidden="true" className="inline-block size-1.5 shrink-0 translate-y-[-2px] rounded-full" style={{ background: p.accent }} />
