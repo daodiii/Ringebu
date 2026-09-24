@@ -388,9 +388,11 @@ function Ting({
         aria-pressed={placed}
         className="relative cursor-grab touch-none outline-none active:cursor-grabbing focus-visible:ring-2 focus-visible:ring-[var(--color-ink)] focus-visible:ring-offset-4 focus-visible:ring-offset-[var(--color-paper)]"
         style={{ x, y, scale, rotate, zIndex: dragging || placed ? 40 : 1, width: bw * unit, height: bh * unit }}
-        initial={reduced ? false : { opacity: 0 }}
+        // Hidden at first for everyone, as in the server's HTML, which cannot
+        // know the motion setting; reduced motion skips the fade and the fall.
+        initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.4, delay: reduced ? 0 : 0.3 + i * 0.08 }}
+        transition={reduced ? { duration: 0 } : { duration: 0.4, delay: 0.3 + i * 0.08 }}
         drag
         dragMomentum={false}
         onDragStart={() => {
@@ -423,9 +425,9 @@ function Ting({
         {/* Falls onto the table, and tilts in the hand */}
         <motion.span
           className="absolute inset-0 block"
-          initial={reduced ? false : { y: -70, rotate: -14 }}
+          initial={{ y: -70, rotate: -14 }}
           animate={{ y: 0, rotate: 0 }}
-          transition={{ type: "spring", stiffness: 160, damping: 11, delay: reduced ? 0 : 0.3 + i * 0.08 }}
+          transition={reduced ? { duration: 0 } : { type: "spring", stiffness: 160, damping: 11, delay: 0.3 + i * 0.08 }}
         >
         <motion.span className="absolute inset-0 block" style={{ rotate: tilt }}>
           <svg viewBox={`${bx} ${by} ${bw} ${bh}`} className="h-full w-full overflow-visible" aria-hidden="true">

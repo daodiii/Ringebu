@@ -273,7 +273,9 @@ export function Buegang({ scenes }: { scenes: SceneSet }) {
               />
             </svg>
 
-            {/* Intro, painted on the wall */}
+            {/* Intro, painted on the wall. Hidden at first for everyone, as in
+                the server's HTML, which cannot know the motion setting;
+                reduced motion skips the rise instead. */}
             <div
               className="absolute flex flex-col justify-end"
               style={{ left: g.padL, top: g.top, width: g.introW, height: g.archH }}
@@ -281,17 +283,17 @@ export function Buegang({ scenes }: { scenes: SceneSet }) {
               <motion.h1
                 className="font-sans font-extralight text-[var(--color-ink)]"
                 style={{ fontSize: g.sm ? 56 : "clamp(64px, 7.4vw, 112px)", letterSpacing: "-0.05em", lineHeight: 0.9 }}
-                initial={reduced ? false : { opacity: 0, y: 24 }}
+                initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1.1, ease: EASE_OUT, delay: 0.1 }}
+                transition={reduced ? { duration: 0 } : { duration: 1.1, ease: EASE_OUT, delay: 0.1 }}
               >
                 Behandlinger
               </motion.h1>
               <motion.p
                 className="mt-6 max-w-[34ch] text-balance text-[18px] leading-[1.5] text-[var(--color-text-secondary)] md:text-[20px]"
-                initial={reduced ? false : { opacity: 0, y: 16 }}
+                initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, ease: EASE_OUT, delay: 0.3 }}
+                transition={reduced ? { duration: 0 } : { duration: 1, ease: EASE_OUT, delay: 0.3 }}
               >
                 Fra vanlig kontroll til rotfylling. Her er alt vi gjør.
               </motion.p>
@@ -306,7 +308,6 @@ export function Buegang({ scenes }: { scenes: SceneSet }) {
                 g={g}
                 x={x}
                 active={active === i}
-                reduced={reduced}
                 onHover={(on) => setHovered((h) => (on ? i : h === i ? null : h))}
                 refCb={(el) => {
                   holeRefs.current[i] = el;
@@ -504,14 +505,13 @@ const JAMB_SIDE = `inset 0 0 26px ${JAMB_PAD - 16}px rgba(8,30,35,0.42)`;
 const JAMB_TOP = "inset 0 14px 22px -16px rgba(8,30,35,0.35), inset 0 0 0 1px rgba(14,42,48,0.10)";
 
 function Arch({
-  t, i, g, x, active, reduced, onHover, refCb, onOpen, onFocusArch,
+  t, i, g, x, active, onHover, refCb, onOpen, onFocusArch,
 }: {
   t: ArcadeTreatment;
   i: number;
   g: Geo;
   x: MotionValue<number>;
   active: boolean;
-  reduced: boolean;
   onHover: (on: boolean) => void;
   refCb: (el: HTMLButtonElement | null) => void;
   onOpen: () => void;
@@ -519,8 +519,10 @@ function Arch({
 }) {
   const d = useArchDistance(i, g, x);
   // The inside of the opening: you see the jamb on the side facing you, and
-  // it changes sides as the arch passes — the wall has a thickness.
-  const side = useTransform(d, (v) => (reduced ? 0 : Math.max(-1, Math.min(1, v)) * -18));
+  // it changes sides as the arch passes — the wall has a thickness. Reduced
+  // motion holds it still in globals.css (.buegang-jamb), not here: the
+  // server cannot know the setting, and its HTML must match the first render.
+  const side = useTransform(d, (v) => Math.max(-1, Math.min(1, v)) * -18);
 
   return (
     <button
@@ -553,7 +555,7 @@ function Arch({
         }}
       >
         <motion.span
-          className="absolute block"
+          className="buegang-jamb absolute block"
           style={{
             left: -JAMB_PAD,
             top: -JAMB_PAD,

@@ -128,8 +128,10 @@ export function Hero() {
   const { nx, ny } = useHeroPointer(sectionRef, !prefersReduced);
   const bgX = useTransform(nx, [-1, 1], [56, 44]);
   const bgY = useTransform(ny, [-1, 1], [56, 44]);
-  const bgPos = useMotionTemplate`${bgX}% ${bgY}%`;
-  const position = prefersReduced ? "50% 50%" : bgPos;
+  // Reduced motion turns the pointer off, so this holds at 50% 50%. It stays a
+  // motion value all the same: a plain string in its place orders the style
+  // differently from the server's HTML, which React flags when it hydrates.
+  const position = useMotionTemplate`${bgX}% ${bgY}%`;
 
   return (
     <section

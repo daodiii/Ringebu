@@ -707,3 +707,14 @@ h1, h2, h3, h4, h5, h6 {
     animation: none !important;
   }
 }
+
+/* ── Buegangen: the jamb that changes sides (Arch in Buegang.tsx) ──
+   Its shadow slides across the opening as the wall moves. Reduced motion
+   holds it still here rather than in the component: the server cannot know
+   the setting, and the transform in its HTML has to match the browser's
+   first render. */
+@media (prefers-reduced-motion: reduce) {
+  .buegang-jamb {
+    transform: none !important;
+  }
+}

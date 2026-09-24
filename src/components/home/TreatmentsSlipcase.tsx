@@ -184,10 +184,13 @@ export function TreatmentsSlipcase() {
                   {isOpen && (
                     <motion.div
                       key="expanded"
-                      initial={reduced ? false : { opacity: 0 }}
+                      // Hidden at first for everyone, as in the server's HTML:
+                      // the server cannot know the motion setting. Reduced
+                      // motion skips the fade instead.
+                      initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.5, delay: 0.15, ease: EASE }}
+                      transition={reduced ? { duration: 0 } : { duration: 0.5, delay: 0.15, ease: EASE }}
                       className="relative flex h-full gap-8 p-8 md:p-10"
                     >
                       <div className="flex min-w-0 flex-1 flex-col justify-between">
