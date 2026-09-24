@@ -718,3 +718,95 @@ h1, h2, h3, h4, h5, h6 {
     transform: none !important;
   }
 }
+
+/* ── Om oss: the meadow (Enga.tsx) ──
+   Every flower and strip of ground grows, and sways, from its foot. The
+   motion itself is Web Animations started in Enga.tsx; until the meadow is
+   first seen (data-grown) it lies flat here. With reduced motion none of
+   that applies, and the meadow is simply there. */
+.enga-vind,
+.enga-vekst,
+.enga-jord {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .enga:not([data-grown]) .enga-vekst {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+  .enga:not([data-grown]) .enga-jord {
+    transform: scaleY(0.2);
+    opacity: 0;
+  }
+}
+
+/* ── Om oss: the bumblebee over the meadow (Humle in Enga.tsx) ──
+   It flies its round only while the meadow has grown and is on screen
+   (data-on); otherwise it waits out of sight to the left. Its bob and its
+   wings stop with it. Every part of it moves on the compositor, and the
+   main thread only wakes when an animation starts a new round: so the wings
+   are an SVG of their own (beating inside the body's SVG, they were drawn
+   again at every beat), and the quick beat and the bob are written as long
+   rounds of many beats rather than one short beat going back and forth. */
+.humle-bane {
+  transform: translate(-10%, 60%);
+  will-change: transform;
+}
+.humle-bane[data-on="true"] {
+  animation: humle-bane 26s linear infinite;
+}
+@keyframes humle-bane {
+  0%   { transform: translate(8%, 62%); }
+  12%  { transform: translate(20%, 44%); }
+  24%  { transform: translate(34%, 58%); }
+  36%  { transform: translate(46%, 70%); }
+  48%  { transform: translate(58%, 52%); }
+  60%  { transform: translate(72%, 62%); }
+  72%  { transform: translate(86%, 40%); }
+  84%  { transform: translate(64%, 30%); }
+  92%  { transform: translate(30%, 36%); }
+  100% { transform: translate(8%, 62%); }
+}
+/* It flies right for the first 72% of the round and back left for the rest. */
+.humle-bane[data-on="true"] .humle-snu {
+  animation: humle-snu 26s linear infinite;
+}
+@keyframes humle-snu {
+  0%, 71.9% { transform: scaleX(1); }
+  72%, 99.9% { transform: scaleX(-1); }
+  100% { transform: scaleX(1); }
+}
+/* Up and down, 0.9 s each way: five times over in one 9 s round. */
+.humle-bane[data-on="true"] .humle-dupp {
+  animation: humle-dupp 9s ease-in-out infinite;
+}
+@keyframes humle-dupp {
+  0%, 20%, 40%, 60%, 80%, 100% { transform: translateY(-3px); }
+  10%, 30%, 50%, 70%, 90% { transform: translateY(3px); }
+}
+/* Where the wings meet the body: the foot of the box around both wings,
+   as Chrome measured it when they were a group in the body's SVG. */
+.humle-vinger {
+  transform-origin: 48.96% 54.89%;
+}
+/* A beat is 0.07 s down and 0.07 s up: twenty beats in one 2.8 s round. */
+.humle-bane[data-on="true"] .humle-vinger {
+  animation: humle-vinge 2.8s linear infinite;
+}
+@keyframes humle-vinge {
+  0%, 5%, 10%, 15%, 20%, 25%, 30%, 35%, 40%, 45%, 50%, 55%, 60%, 65%, 70%, 75%, 80%, 85%, 90%, 95%, 100% {
+    transform: scaleY(1);
+  }
+  2.5%, 7.5%, 12.5%, 17.5%, 22.5%, 27.5%, 32.5%, 37.5%, 42.5%, 47.5%, 52.5%, 57.5%, 62.5%, 67.5%, 72.5%, 77.5%, 82.5%, 87.5%, 92.5%, 97.5% {
+    transform: scaleY(0.45);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .humle-bane,
+  .humle-snu,
+  .humle-dupp,
+  .humle-vinger {
+    animation: none !important;
+  }
+}
