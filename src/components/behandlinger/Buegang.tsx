@@ -694,7 +694,6 @@ function Doorway({
       await animate("[data-room-box]", full(), reduced ? { duration: 0.01 } : { duration: 1.05, ease: DOOR_EASE });
       if (!alive) return;
       setPanel(true);
-      closeBtn.current?.focus({ preventScroll: true });
     })();
     return () => {
       alive = false;
@@ -702,6 +701,12 @@ function Doorway({
     // Runs once, when the doorway is first walked through.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Into the details as they arrive. Not straight after setPanel: the close
+  // button is not rendered until then, and focus stayed behind the doorway.
+  useEffect(() => {
+    if (panel) closeBtn.current?.focus({ preventScroll: true });
+  }, [panel]);
 
   const go = useCallback(
     (to: number) => {
