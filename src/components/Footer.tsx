@@ -1,12 +1,12 @@
 import Link from "next/link";
+import { ARCADE_TREATMENTS } from "@/components/behandlinger/data";
 
-const TREATMENTS = [
-  { label: "Forebyggende", href: "/behandlinger" },
-  { label: "Generell", href: "/behandlinger" },
-  { label: "Akutt tannhjelp", href: "/behandlinger" },
-  { label: "Estetisk", href: "/behandlinger" },
-  { label: "Implantater", href: "/behandlinger" },
-];
+// The five on the front page, each straight to its arch on /behandlinger.
+const TREATMENTS = ["forebyggende-behandling", "bleking", "fyllingsterapi", "kroner-og-broer", "rotfylling"].map((slug) => {
+  const t = ARCADE_TREATMENTS.find((a) => a.slug === slug);
+  if (!t) throw new Error(`No treatment "${slug}" on /behandlinger`);
+  return { label: t.title, href: `/behandlinger#${slug}` };
+});
 
 const PRACTICAL = [
   { label: "Støtteordninger", href: "/dekning" },

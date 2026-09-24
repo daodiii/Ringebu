@@ -106,6 +106,9 @@ function stopsOf(g: Geo) {
 const nearest = (stops: number[], at: number) =>
   stops.reduce((best, s, k) => (Math.abs(s - at) < Math.abs(stops[best] - at) ? k : best), 0);
 
+/** The treatment a link's hash names, or -1. */
+const slugIndex = (hash: string) => T.findIndex((t) => `#${t.slug}` === hash);
+
 /** The arcade, with one scene per treatment. */
 export function Buegang({ scenes }: { scenes: SceneSet }) {
   const scrollerRef = useRef<HTMLDivElement | null>(null);
@@ -220,6 +223,51 @@ export function Buegang({ scenes }: { scenes: SceneSet }) {
     setHovered(null);
     setLayer({ i, rect: el.getBoundingClientRect() });
   };
+
+  // A link to a treatment (/behandlinger#rotfylling, as "Les mer" on the
+  // front page and the footer use) walks the wall to its arch and goes
+  // through it.
+  const goThrough = useCallback(
+    (i: number) => {
+      const el = scrollerRef.current;
+      if (!el) return;
+      // The wall is at the top of the page; coming back out of the arch
+      // should find it there, not wherever the last page was scrolled to.
+      window.scrollTo({ top: 0, behavior: "instant" });
+      el.scrollLeft = stops[i + 1];
+      x.set(-el.scrollLeft);
+      requestAnimationFrame(() => requestAnimationFrame(() => openArch(i)));
+    },
+    [stops, x]
+  );
+
+  // Arriving with one: once, and only after the wall has been measured, or
+  // the stops are still the guess.
+  const arrived = useRef(false);
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (arrived.current || !el || el.clientWidth !== g.vw) return;
+    arrived.current = true;
+    const i = slugIndex(window.location.hash);
+    if (i >= 0) goThrough(i);
+  }, [g.vw, goThrough]);
+
+  // Following one from this page, from the footer: a hash change alone would
+  // do nothing, so go up to the wall and through the arch here.
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const a = (e.target as Element | null)?.closest?.("a[href^='/behandlinger#']");
+      const href = a?.getAttribute("href");
+      const i = href ? slugIndex(href.slice(href.indexOf("#"))) : -1;
+      if (i < 0 || !href) return;
+      e.preventDefault();
+      window.history.pushState(null, "", href);
+      goThrough(i);
+    };
+    document.addEventListener("click", onClick, true);
+    return () => document.removeEventListener("click", onClick, true);
+  }, [goThrough]);
 
   return (
     <>

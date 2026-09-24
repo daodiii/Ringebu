@@ -164,7 +164,7 @@ export function TreatmentsSlipcase() {
                           <p className="text-[20px] leading-[1.4] text-[var(--color-amber)]">{spine.body}</p>
                           <p className="mt-4 text-[14px] leading-[1.6] text-[var(--color-amber)]">{spine.detail}</p>
                           <Link
-                            href="/behandlinger"
+                            href={`/behandlinger#${spine.id}`}
                             className="mt-8 inline-flex items-center gap-1.5 text-[15px] font-medium text-[var(--color-amber)] transition-colors hover:text-white"
                           >
                             Les mer
@@ -232,7 +232,7 @@ export function TreatmentsSlipcase() {
                         <p className="text-[18px] leading-[1.4] text-[var(--color-amber)]">{spine.body}</p>
                         <p className="mt-3 text-[14.5px] leading-[1.6] text-[var(--color-amber)]">{spine.detail}</p>
                         <Link
-                          href="/behandlinger"
+                          href={`/behandlinger#${spine.id}`}
                           className="mt-6 inline-flex items-center gap-1.5 text-[15px] font-medium text-[var(--color-amber)] transition-colors hover:text-white"
                         >
                           Les mer
