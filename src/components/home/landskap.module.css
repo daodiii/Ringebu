@@ -30,7 +30,7 @@
   opacity: 1;
 }
 
-/* A sheep pops up onto the grass. */
+/* An animal pops up onto the grass. */
 .hop {
   position: absolute;
   transform: translateY(14px);
@@ -72,8 +72,8 @@
   50% { transform: translateX(var(--d, 40px)); }
 }
 
-/* A sheep lifts its head from the grass now and then, and puts it down
-   again: the head is a layer of its own, turned round the neck. */
+/* An animal lifts its head now and then, and puts it down again: the head
+   is a layer of its own, turned round the neck. */
 .head {
   position: absolute;
   inset: 0;
