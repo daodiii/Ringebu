@@ -6,7 +6,7 @@ import { AnimatePresence, motion, useInView, useMotionValue, useReducedMotion, u
 import { ArrowUpRight } from "lucide-react";
 import { ARCADE_TREATMENTS } from "@/components/behandlinger/data";
 import { PapirKrone, PapirSpeil, withPalette } from "@/components/behandlinger/scenes/Papir";
-import { PapirFargeskala, PapirHerdelampe, PapirRotfil } from "@/components/behandlinger/scenes/PapirMer";
+import { PapirHerdelampe, PapirImplantatSnitt, PapirRotfil } from "@/components/behandlinger/scenes/PapirMer";
 import type { Scene } from "@/components/behandlinger/scenes/types";
 
 /**
@@ -32,10 +32,10 @@ type Spine = {
 // copy comes from /behandlinger, so the two pages cannot drift apart.
 const BOXES: ReadonlyArray<{ slug: string; closedTone: string; openTone: string; Scene: Scene }> = [
   { slug: "forebyggende-behandling", closedTone: "#FFFFFF", openTone: "#0E2A30", Scene: withPalette(PapirSpeil, "fjord", true) },
-  { slug: "bleking", closedTone: "#F9F6EF", openTone: "#193B3F", Scene: withPalette(PapirFargeskala, "frost", true) },
-  { slug: "fyllingsterapi", closedTone: "#F3ECDF", openTone: "#254C4E", Scene: withPalette(PapirHerdelampe, "lav", true) },
+  { slug: "fyllingsterapi", closedTone: "#F9F6EF", openTone: "#193B3F", Scene: withPalette(PapirHerdelampe, "lav", true) },
+  { slug: "rotfylling", closedTone: "#F3ECDF", openTone: "#254C4E", Scene: withPalette(PapirRotfil, "bjork", true) },
   { slug: "kroner-og-broer", closedTone: "#ECE3CF", openTone: "#305D5D", Scene: withPalette(PapirKrone, "lyng", true) },
-  { slug: "rotfylling", closedTone: "#E6DABF", openTone: "#3B6E6C", Scene: withPalette(PapirRotfil, "bjork", true) },
+  { slug: "tannimplantater", closedTone: "#E6DABF", openTone: "#3B6E6C", Scene: withPalette(PapirImplantatSnitt, "frost", true) },
 ];
 
 const SPINES: ReadonlyArray<Spine> = BOXES.map(({ slug, ...box }) => {

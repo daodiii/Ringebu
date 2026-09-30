@@ -2,20 +2,31 @@
 
 import { Buegang } from "./Buegang";
 import { PapirKrone, PapirSkraper, PapirSpeil, withPalette } from "./scenes/Papir";
-import { PapirBittskinne, PapirFargeskala, PapirHerdelampe, PapirRontgen, PapirRotfil, PapirStol } from "./scenes/PapirMer";
+import {
+  PapirBittskinne,
+  PapirDelprotese,
+  PapirFotball,
+  PapirHerdelampe,
+  PapirImplantatSnitt,
+  PapirRontgen,
+  PapirRotfil,
+  PapirStol,
+} from "./scenes/PapirMer";
 import type { SceneSet } from "./scenes/types";
 
 // Every arch its own scene and its own paper. The hues step along the walk,
 // so no two neighbours share a colour. Keys are the treatment slugs from ./data.
 const SCENES: SceneSet = {
   "forebyggende-behandling": withPalette(PapirSpeil, "fjord"),
-  bleking: withPalette(PapirFargeskala, "frost"),
   fyllingsterapi: withPalette(PapirHerdelampe, "lav"),
-  "kroner-og-broer": withPalette(PapirKrone, "lyng"),
   rotfylling: withPalette(PapirRotfil, "bjork"),
-  visdomstennene: withPalette(PapirRontgen, "mose"),
-  "tannkjott-tannstein": withPalette(PapirSkraper, "eukalyptus"),
-  bittskinner: withPalette(PapirBittskinne, "skumring"),
+  "kroner-og-broer": withPalette(PapirKrone, "lyng"),
+  tannimplantater: withPalette(PapirImplantatSnitt, "frost"),
+  tannkjottbehandling: withPalette(PapirSkraper, "eukalyptus"),
+  tanntrekking: withPalette(PapirRontgen, "mose"),
+  proteser: withPalette(PapirDelprotese, "fjord"),
+  tannskader: withPalette(PapirFotball, "bjork"),
+  stabiliseringsskinner: withPalette(PapirBittskinne, "skumring"),
   tannlegeskrekk: withPalette(PapirStol, "molte"),
 };
 

@@ -27,7 +27,7 @@ const GRUNNER = [
   },
   {
     name: "Erfarne tannleger.",
-    sub: "Vi har mange år bak oss, og vi holder oss faglig oppdatert. Enten du kommer til en vanlig kontroll eller en større behandling, er du i trygge hender.",
+    sub: "Vi har mange år bak oss, og vi holder oss faglig oppdatert. Enten du kommer til en vanlig undersøkelse eller en større behandling, er du i trygge hender.",
   },
 ] as const;
 

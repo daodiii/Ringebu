@@ -215,7 +215,7 @@ export const supportPages: SupportPage[] = [
         "Ring og bestill time. Si at du er ung voksen med rett på rabatt",
         "Møt opp med legitimasjon (for eksempel bankkort eller pass)",
         "Du betaler bare 25 % av behandlingen — det trekkes automatisk",
-        "Bestill neste kontroll før du går, så slipper du å huske på det selv",
+        "Bestill neste undersøkelse før du går, så slipper du å huske på det selv",
       ],
     },
     externalLinks: [

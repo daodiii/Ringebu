@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     "Gudbrandsdalen",
     "tannpine",
     "tannkjøtt",
-    "tannbleking",
+    "karies",
     "implantater",
     "akutt tannlege",
   ],

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ARCADE_TREATMENTS } from "@/components/behandlinger/data";
 
 // The five on the front page, each straight to its arch on /behandlinger.
-const TREATMENTS = ["forebyggende-behandling", "bleking", "fyllingsterapi", "kroner-og-broer", "rotfylling"].map((slug) => {
+const TREATMENTS = ["forebyggende-behandling", "fyllingsterapi", "rotfylling", "kroner-og-broer", "tannimplantater"].map((slug) => {
   const t = ARCADE_TREATMENTS.find((a) => a.slug === slug);
   if (!t) throw new Error(`No treatment "${slug}" on /behandlinger`);
   return { label: t.title, href: `/behandlinger#${slug}` };

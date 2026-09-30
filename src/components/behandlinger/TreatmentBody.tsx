@@ -6,8 +6,8 @@ import type { ArcadeTreatment } from "./data";
  * The facts of one treatment: beside its scene when you walk through an arch,
  * and again in the plain list under the arcade.
  *
- * `cta` adds the booking buttons (the doorway wants them; nine copies down the
- * list would not). `level` is the heading level of the small section labels,
+ * `cta` adds the booking buttons (the doorway wants them; eleven copies down
+ * the list would not). `level` is the heading level of the small section labels,
  * one below whatever titles the treatment where it is shown.
  */
 export function TreatmentBody({ t, cta = true, level = 3 }: { t: ArcadeTreatment; cta?: boolean; level?: 3 | 4 }) {

@@ -343,7 +343,7 @@ export function Buegang({ scenes }: { scenes: SceneSet }) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={reduced ? { duration: 0 } : { duration: 1, ease: EASE_OUT, delay: 0.3 }}
               >
-                Fra vanlig kontroll til rotfylling. Her er alt vi gjør.
+                Fra vanlig undersøkelse til rotfylling. Her er alt vi gjør.
               </motion.p>
             </div>
 
@@ -818,7 +818,7 @@ function Doorway({
               >
                 <h2
                   className="font-sans font-light text-[var(--color-ink)]"
-                  style={{ fontSize: "clamp(40px, 4.4vw, 64px)", letterSpacing: "-0.045em", lineHeight: 0.95 }}
+                  style={{ fontSize: "clamp(32px, 3.52vw, 51px)", letterSpacing: "-0.045em", lineHeight: 0.95 }}
                 >
                   {t.title}
                 </h2>

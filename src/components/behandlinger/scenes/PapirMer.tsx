@@ -4,12 +4,13 @@ import { useId } from "react";
 import { motion } from "framer-motion";
 import { usePhase } from "./usePhase";
 import {
+  CROWN,
+  CROWN_SHADE,
   FAR_HILLS,
   GUM_BACK,
   GUM_FRONT,
   MOLAR,
   MOLAR_SHADE,
-  NEAR_HILLS,
   Loose,
   NoShadow,
   PaperShadow,
@@ -33,80 +34,6 @@ import type { SceneProps } from "./types";
 /** Rotates a group about a point in the drawing, not about its own box. */
 const pivot = (x: number, y: number) => ({ transformBox: "view-box" as const, originX: `${x}px`, originY: `${y}px` });
 const centre = { transformBox: "fill-box" as const, originX: 0.5, originY: 0.5 };
-
-/* ───────────── Bleking: the shade guide ───────────── */
-
-const FAN_STEPS = [
-  ["open", 3000],
-  ["glint", 2400],
-  ["fold", 1100],
-] as const;
-
-// Real shade tabs run from ivory to white; these do too, lightest last.
-const SHADES = ["#E9DDBE", "#EEE4C9", "#F2EAD4", "#F6F0DF", "#F9F5EA", "#FCFAF4", "#FFFFFF"];
-const FAN = [-48, -32, -16, 0, 16, 32, 48];
-const TAB = "M136,336 C132,300 132,262 138,246 C142,234 158,234 162,246 C168,262 168,300 164,336 Z";
-
-export function PapirFargeskala({ active, reduced, d }: SceneProps) {
-  const { p } = usePaper();
-  const on = active;
-  const phase = usePhase(active, FAN_STEPS);
-  const spread = reduced ? 1 : phase === "open" || phase === "glint" ? 1 : phase === "fold" ? 0.2 : 0;
-
-  return (
-    <Stage active={active} reduced={reduced}>
-      <Sheet n={0} on={on} reduced={reduced} d={d} depth={0.8}>
-        <path d={FAR_HILLS} fill={p.far} />
-      </Sheet>
-      <Sheet n={1} on={on} reduced={reduced} d={d} depth={1.4}>
-        <path d={NEAR_HILLS} fill={p.near} />
-      </Sheet>
-      <Sheet n={2} on={on} reduced={reduced} d={d} depth={2.2}>
-        {/* Each tab throws its own shadow, onto the tab under it */}
-        {SHADES.map((fill, k) => (
-          <Piece
-            key={k}
-            style={pivot(150, 452)}
-            initial={{ rotate: 0 }}
-            animate={{ rotate: FAN[k] * spread }}
-            transition={
-              reduced
-                ? { duration: 0 }
-                : phase === "open"
-                  ? { type: "spring", stiffness: 70, damping: 11, delay: 0.5 + Math.abs(k - 3) * 0.09 }
-                  : { duration: 0.9, ease: [0.45, 0, 0.3, 1] }
-            }
-          >
-            <rect x={147} y={330} width={6} height={124} rx={3} fill={p.ink} />
-            <path d={TAB} fill={fill} />
-          </Piece>
-        ))}
-        <circle cx={150} cy={452} r={9} fill={p.ink} />
-        <circle cx={150} cy={452} r={3.5} fill={p.accent} />
-      </Sheet>
-      <Sheet n={3} on={on} reduced={reduced} d={d} depth={2.9}>
-        {/* A glint runs out along the tips, whitest last */}
-        {[0, 2, 4, 6].map((k, j) => {
-          const a = (FAN[k] * Math.PI) / 180;
-          return (
-            <Star
-              key={k}
-              x={150 + Math.sin(a) * 210}
-              y={452 - Math.cos(a) * 210}
-              s={0.55 + j * 0.15}
-              show={phase === "glint"}
-              delay={j * 0.28}
-              reduced={reduced}
-            />
-          );
-        })}
-      </Sheet>
-      <Sheet n={4} on={on} reduced={reduced} d={d} depth={3.5}>
-        <path d={scallops(504)} fill={p.lip} />
-      </Sheet>
-    </Stage>
-  );
-}
 
 /* ───────────── Fyllingsterapi: the curing light ───────────── */
 
@@ -314,7 +241,7 @@ export function PapirRotfil({ active, reduced, d }: SceneProps) {
   );
 }
 
-/* ───────────── Visdomstennene: the panoramic X-ray ───────────── */
+/* ───────────── Tanntrekking: the panoramic X-ray ───────────── */
 
 const XRAY_STEPS = [
   ["enter", 1100],
@@ -438,7 +365,7 @@ export function PapirRontgen({ active, reduced, d }: SceneProps) {
   );
 }
 
-/* ───────────── Bittskinner: the bite splint ───────────── */
+/* ───────────── Stabiliseringsskinner: the bite splint ───────────── */
 
 const BITE_STEPS = [
   ["open", 1000],
@@ -645,6 +572,374 @@ export function PapirStol({ active, reduced, d }: SceneProps) {
       </Sheet>
       <Sheet n={3} on={on} reduced={reduced} d={d} depth={3}>
         <path d={scallops(506, 12)} fill={p.lip} />
+      </Sheet>
+    </Stage>
+  );
+}
+
+/* ───────────── Tannimplantater: the cut through the jaw ───────────── */
+
+/** A warm sun, the same in every palette. */
+const SUN = "#F2E7B8";
+
+// A row of teeth with a gap, cut open so the bone shows. The screw turns into
+// the gap, the gum closes over it while the sun crosses the sky (it takes a
+// few months), and the crown is lowered on strings.
+const SNITT_STEPS = [
+  ["enter", 900],
+  ["screw", 2400],
+  ["heal", 2800],
+  ["crown", 2000],
+  ["rest", 2200],
+  ["reset", 800],
+] as const;
+
+// The same screw, a little smaller, set into the bone under the gap.
+const SNITT_SCREW = "M138,352 L162,352 L160,378 L158,410 L155,428 Q150,438 145,428 L142,410 L140,378 Z";
+const NEIGHBOUR = (tx: number) => `translate(${tx} 96) scale(0.6)`;
+
+export function PapirImplantatSnitt({ active, reduced, d }: SceneProps) {
+  const id = useId().replace(/:/g, "");
+  const { p } = usePaper();
+  const on = active;
+  const phase = usePhase(active, SNITT_STEPS, 1);
+  const screwing = phase === "screw" && !reduced;
+  const inBone = reduced ? on : ["screw", "heal", "crown", "rest"].includes(phase);
+  const healed = reduced ? on : ["heal", "crown", "rest"].includes(phase);
+  const crown = reduced ? on : phase === "crown" || phase === "rest";
+  const strings = !reduced && phase === "crown";
+  const sun = phase === "heal" && !reduced;
+
+  return (
+    <Stage active={active} reduced={reduced}>
+      <Sheet n={0} on={on} reduced={reduced} d={d} depth={0.6}>
+        {/* The sun crosses while the gum heals */}
+        <Piece
+          initial={{ x: 0, y: 0, opacity: 0 }}
+          animate={sun ? { x: [0, 110, 220], y: [0, -70, 0], opacity: [0, 1, 1, 0] } : { x: 0, y: 0, opacity: 0 }}
+          transition={sun ? { duration: 2.6, ease: "linear" } : { duration: 0.3 }}
+        >
+          <circle cx={40} cy={190} r={20} fill={SUN} />
+        </Piece>
+      </Sheet>
+      <Sheet n={1} on={on} reduced={reduced} d={d} depth={1}>
+        <path d={FAR_HILLS} fill={p.far} />
+      </Sheet>
+      <Sheet n={2} on={on} reduced={reduced} d={d} depth={1.5}>
+        {/* The bone, cut open, and the socket the screw goes into */}
+        <path d="M-420,344 C-200,338 60,344 150,342 C240,344 500,338 720,344 L720,540 L-420,540 Z" fill={p.near} />
+        <path d="M136,346 L164,346 L162,436 Q150,448 138,436 Z" fill={p.deep} />
+        {[[70, 400], [96, 460], [212, 420], [238, 470], [58, 486], [190, 492]].map(([x, y]) => (
+          <circle key={`${x}-${y}`} cx={x} cy={y} r={5} fill={p.far} />
+        ))}
+        <NoShadow>
+          <defs>
+            <clipPath id={`snitt-${id}`}>
+              <path d={SNITT_SCREW} />
+            </clipPath>
+          </defs>
+        </NoShadow>
+        <Piece
+          initial={{ y: -300 }}
+          animate={{ y: inBone ? 0 : -300 }}
+          transition={reduced ? { duration: 0 } : screwing ? { duration: 2.2, ease: [0.3, 0, 0.3, 1] } : { duration: 0.6 }}
+          shadow={<path d={SNITT_SCREW} />}
+        >
+          <path d={SNITT_SCREW} fill={STEEL} />
+          <NoShadow>
+            <g clipPath={`url(#snitt-${id})`}>
+              <motion.g
+                animate={screwing ? { y: [0, -8] } : { y: 0 }}
+                transition={screwing ? { duration: 0.16, repeat: 13, ease: "linear" } : { duration: 0.1 }}
+              >
+                {Array.from({ length: 12 }, (_, k) => (
+                  <path key={k} d={`M134,${356 + k * 8} L166,${349 + k * 8}`} stroke={p.ink} strokeWidth={2} opacity={0.4} />
+                ))}
+              </motion.g>
+            </g>
+          </NoShadow>
+        </Piece>
+      </Sheet>
+      <Sheet n={3} on={on} reduced={reduced} d={d} depth={2}>
+        {/* The neighbours, and the gum with its opening */}
+        <g transform={NEIGHBOUR(-30)}>
+          <path d={MOLAR} fill={p.paper} />
+          <path d={MOLAR_SHADE} fill={p.shade} />
+        </g>
+        <g transform={NEIGHBOUR(150)}>
+          <path d={MOLAR} fill={p.paper} />
+          <path d={MOLAR_SHADE} fill={p.shade} />
+        </g>
+        <path d="M-420,334 C-200,326 40,332 92,324 Q110,318 126,330 L126,360 L-420,360 Z" fill={p.mid} />
+        <path d="M174,330 Q190,318 208,324 C260,332 500,326 720,334 L720,360 L174,360 Z" fill={p.mid} />
+        {/* The gum closes over the screw */}
+        <Piece
+          initial={{ x: -24 }}
+          animate={{ x: healed ? 0 : -24 }}
+          transition={reduced ? { duration: 0 } : healed ? { duration: 2.2, ease: [0.4, 0, 0.2, 1] } : { duration: 0.5 }}
+        >
+          <path d="M124,330 Q137,324 151,327 L151,360 L124,360 Z" fill={p.mid} />
+        </Piece>
+        <Piece
+          initial={{ x: 24 }}
+          animate={{ x: healed ? 0 : 24 }}
+          transition={reduced ? { duration: 0 } : healed ? { duration: 2.2, ease: [0.4, 0, 0.2, 1] } : { duration: 0.5 }}
+        >
+          <path d="M149,327 Q163,324 176,330 L176,360 L149,360 Z" fill={p.mid} />
+        </Piece>
+      </Sheet>
+      <Sheet n={4} on={on} reduced={reduced} d={d} depth={2.6}>
+        <NoShadow>
+          <motion.g
+            initial={{ y: -320 }}
+            animate={{ y: crown ? 0 : -320 }}
+            transition={reduced ? { duration: 0 } : crown ? { type: "spring", stiffness: 38, damping: 7.5, mass: 1.2 } : { duration: 0.8, ease: [0.45, 0, 0.3, 1] }}
+          >
+            <motion.path
+              d="M132,252 L124,-340 M168,252 L176,-340"
+              stroke={p.ink}
+              strokeWidth={1}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: strings ? 0.75 : 0 }}
+              transition={{ duration: 0.6 }}
+            />
+            <Piece>
+              <g transform="translate(59.4 78.4) scale(0.6)">
+                <path d={CROWN} fill={p.paper} />
+                <path d={CROWN_SHADE} fill={p.shade} />
+              </g>
+            </Piece>
+          </motion.g>
+        </NoShadow>
+        <Star x={196} y={236} s={0.85} show={phase === "rest"} delay={0.3} reduced={reduced} />
+      </Sheet>
+      <Sheet n={5} on={on} reduced={reduced} d={d} depth={3.4}>
+        <path d={scallops(514, 12)} fill={p.lip} />
+      </Sheet>
+    </Stage>
+  );
+}
+
+/* ───────────── Proteser: the piece that fits the gap ───────────── */
+
+const PARTIAL_STEPS = [
+  ["enter", 1000],
+  ["down", 1500],
+  ["click", 900],
+  ["rest", 1900],
+  ["out", 1400],
+] as const;
+
+const ROW = [60, 96, 132, 168, 204, 240];
+const MISSING = [132, 168];
+const rowTooth = (x: number) => `M${x - 15},380 L${x + 15},380 L${x + 14},318 Q${x},298 ${x - 14},318 Z`;
+
+export function PapirDelprotese({ active, reduced, d }: SceneProps) {
+  const { p } = usePaper();
+  const on = active;
+  const phase = usePhase(active, PARTIAL_STEPS, 1);
+  const seated = reduced ? on : phase === "down" || phase === "click" || phase === "rest";
+  const y = seated ? 0 : phase === "out" ? -90 : -300;
+  const clicking = phase === "click" && !reduced;
+
+  return (
+    <Stage active={active} reduced={reduced}>
+      <Sheet
+        n={0}
+        on={on}
+        reduced={reduced}
+        d={d}
+        depth={0.6}
+        loose={
+          <Loose loop="drift" on={on && !reduced}>
+            <path d="M40,150 Q40,132 58,134 Q64,118 82,124 Q94,114 106,128 Q122,128 120,144 Q122,156 108,156 L50,156 Q40,156 40,150 Z" fill={p.paper} />
+          </Loose>
+        }
+      />
+      <Sheet n={1} on={on} reduced={reduced} d={d} depth={1}>
+        <path d={FAR_HILLS} fill={p.far} />
+      </Sheet>
+      <Sheet n={2} on={on} reduced={reduced} d={d} depth={1.6}>
+        {/* A row of lower teeth, two missing */}
+        {ROW.filter((x) => !MISSING.includes(x)).map((x) => (
+          <path key={x} d={rowTooth(x)} fill={p.paper} />
+        ))}
+        {ROW.filter((x) => !MISSING.includes(x)).map((x) => (
+          <path key={`s${x}`} d={`M${x + 6},380 L${x + 15},380 L${x + 14},318 Q${x + 10},306 ${x + 6},302 Q${x + 9},320 ${x + 6},380 Z`} fill={p.shade} />
+        ))}
+      </Sheet>
+      <Sheet n={3} on={on} reduced={reduced} d={d} depth={2.2}>
+        {/* The partial denture: a gum-coloured saddle with two teeth, and a clasp round each neighbour */}
+        <Piece
+          initial={{ y: -300 }}
+          animate={{ y }}
+          transition={
+            reduced
+              ? { duration: 0 }
+              : seated
+                ? { type: "spring", stiffness: 70, damping: 11 }
+                : { duration: 1, ease: [0.45, 0, 0.3, 1] }
+          }
+          shadow={
+            <>
+              <path d="M112,362 Q150,352 188,362 L190,388 L110,388 Z" />
+              {MISSING.map((x) => (
+                <path key={x} d={rowTooth(x)} />
+              ))}
+            </>
+          }
+        >
+          {MISSING.map((x) => (
+            <path key={x} d={rowTooth(x)} fill={p.paper} />
+          ))}
+          <path d="M112,362 Q150,352 188,362 L190,388 L110,388 Z" fill={p.mid} />
+          <NoShadow>
+            <path d="M114,364 Q104,340 82,338" fill="none" stroke={STEEL} strokeWidth={3.5} strokeLinecap="round" />
+            <path d="M186,364 Q196,340 218,338" fill="none" stroke={STEEL} strokeWidth={3.5} strokeLinecap="round" />
+          </NoShadow>
+        </Piece>
+        {/* A click at each clasp */}
+        <NoShadow>
+          {["M70,322 L62,314 M74,316 L72,306", "M230,322 L238,314 M226,316 L228,306"].map((z, k) => (
+            <motion.path
+              key={k}
+              d={z}
+              fill="none"
+              stroke={p.ink}
+              strokeWidth={2.5}
+              strokeLinecap="round"
+              initial={{ opacity: 0 }}
+              animate={clicking ? { opacity: [0, 1, 0] } : { opacity: 0 }}
+              transition={clicking ? { duration: 0.6, delay: k * 0.15 } : { duration: 0.1 }}
+            />
+          ))}
+        </NoShadow>
+      </Sheet>
+      <Sheet n={4} on={on} reduced={reduced} d={d} depth={2.8}>
+        {/* The gum in front */}
+        <path d="M-420,384 C-200,372 30,386 44,376 Q60,366 76,376 Q96,384 116,376 Q150,368 184,376 Q204,384 224,376 Q240,366 256,376 C300,386 500,372 720,384 L720,540 L-420,540 Z" fill={p.mid} />
+        <Star x={150} y={274} s={0.9} show={phase === "rest"} delay={0.2} reduced={reduced} />
+      </Sheet>
+      <Sheet n={5} on={on} reduced={reduced} d={d} depth={3.4}>
+        <path d={scallops(514, 12)} fill={p.lip} />
+      </Sheet>
+    </Stage>
+  );
+}
+
+/* ───────────── Tannskader: the football ───────────── */
+
+const BALL_STEPS = [
+  ["enter", 1000],
+  ["kick", 700],
+  ["hit", 1300],
+  ["fix", 1800],
+  ["rest", 1900],
+  ["reset", 400],
+] as const;
+
+// A front tooth, the corner the ball knocks off, and what is left.
+const BROKEN = "M116,440 C112,380 106,300 110,246 Q114,206 150,204 L156,226 L166,234 L172,250 L190,262 C194,300 188,380 184,440 Z";
+const CHIP = "M150,204 Q186,206 190,246 L190,262 L172,250 L166,234 L156,226 Z";
+const BROKEN_SHADE = "M180,262 C186,300 182,380 176,440 L184,440 C188,380 194,300 190,262 Z";
+
+function Ball() {
+  const { p } = usePaper();
+  return (
+    <>
+      <circle cx={214} cy={232} r={21} fill={p.paper} />
+      <NoShadow>
+        <path d="M214,224 L221,229 L218,237 L210,237 L207,229 Z" fill={p.ink} />
+        <path d="M214,224 L214,212 M221,229 L233,226 M218,237 L224,248 M210,237 L204,248 M207,229 L195,226" stroke={p.ink} strokeWidth={1.4} />
+      </NoShadow>
+    </>
+  );
+}
+
+export function PapirFotball({ active, reduced, d }: SceneProps) {
+  const { p } = usePaper();
+  const on = active;
+  const phase = usePhase(active, BALL_STEPS, 1);
+  const knocked = reduced ? false : phase === "hit" || phase === "fix" || phase === "rest";
+  const mended = reduced ? on : phase === "fix" || phase === "rest";
+  const strings = !reduced && phase === "fix";
+
+  const ball =
+    reduced || phase === "off" || phase === "enter" || phase === "reset"
+      ? { animate: { x: 170, y: -160, opacity: 0 }, transition: { duration: 0 } }
+      : phase === "kick"
+        ? { animate: { x: [170, 0], y: [-160, 0], opacity: [0, 1] }, transition: { duration: 0.6, ease: [0.5, 0, 1, 1] as const } }
+        : phase === "hit"
+          ? { animate: { x: [0, 70, 160], y: [0, -60, 150], opacity: [1, 1, 0] }, transition: { duration: 1.1, ease: "easeOut" as const } }
+          : { animate: { x: 170, y: -160, opacity: 0 }, transition: { duration: 0 } };
+
+  return (
+    <Stage active={active} reduced={reduced}>
+      <Sheet n={0} on={on} reduced={reduced} d={d} depth={0.8}>
+        <path d={FAR_HILLS} fill={p.far} />
+      </Sheet>
+      <Sheet n={1} on={on} reduced={reduced} d={d} depth={1.4}>
+        <path d={GUM_BACK(446)} fill={p.deep} />
+      </Sheet>
+      <Sheet n={2} on={on} reduced={reduced} d={d} depth={2}>
+        <path d={BROKEN} fill={p.paper} />
+        <path d={BROKEN_SHADE} fill={p.shade} />
+        {/* The corner, until the ball knocks it off */}
+        <Piece
+          style={centre}
+          initial={{ x: 0, y: 0, rotate: 0, opacity: 1 }}
+          animate={knocked ? { x: -70, y: -190, rotate: -200, opacity: 0 } : { x: 0, y: 0, rotate: 0, opacity: 1 }}
+          transition={knocked && phase === "hit" ? { duration: 0.9, ease: "easeOut" } : { duration: 0 }}
+        >
+          <path d={CHIP} fill={p.paper} />
+        </Piece>
+      </Sheet>
+      <Sheet n={3} on={on} reduced={reduced} d={d} depth={2.6}>
+        <Piece initial={{ x: 170, y: -160, opacity: 0 }} {...ball}>
+          <Ball />
+        </Piece>
+        {/* The knock */}
+        <NoShadow>
+          {["M196,214 L206,196", "M204,250 L222,262", "M186,222 L178,206"].map((z, k) => (
+            <motion.path
+              key={k}
+              d={z}
+              stroke={p.ink}
+              strokeWidth={3}
+              strokeLinecap="round"
+              initial={{ opacity: 0 }}
+              animate={phase === "hit" && !reduced ? { opacity: [0, 1, 0] } : { opacity: 0 }}
+              transition={phase === "hit" && !reduced ? { duration: 0.5 } : { duration: 0.1 }}
+            />
+          ))}
+        </NoShadow>
+        {/* A new corner, lowered on strings into place */}
+        <NoShadow>
+          <motion.g
+            initial={{ y: -320, opacity: 0 }}
+            animate={mended ? { y: 0, opacity: 1 } : { y: -320, opacity: 0 }}
+            transition={reduced ? { duration: 0 } : mended ? { type: "spring", stiffness: 42, damping: 8.5 } : { duration: 0 }}
+          >
+            <motion.path
+              d="M162,210 L152,-340 M184,230 L196,-340"
+              stroke={p.ink}
+              strokeWidth={1}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: strings ? 0.75 : 0 }}
+              transition={{ duration: 0.5 }}
+            />
+            <Piece>
+              <path d={CHIP} fill={p.paper} />
+            </Piece>
+          </motion.g>
+        </NoShadow>
+      </Sheet>
+      <Sheet n={4} on={on} reduced={reduced} d={d} depth={3.2}>
+        <path d={GUM_FRONT(476)} fill={p.mid} />
+        <Star x={214} y={200} show={phase === "rest"} delay={0.2} reduced={reduced} />
+      </Sheet>
+      <Sheet n={5} on={on} reduced={reduced} d={d} depth={3.8}>
+        <path d={scallops(512, 12)} fill={p.lip} />
       </Sheet>
     </Stage>
   );

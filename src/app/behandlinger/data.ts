@@ -11,47 +11,48 @@ export interface Treatment {
   features: readonly string[];
 }
 
+// The first five are the boxes on the front page and the links in the footer.
 export const TREATMENTS: readonly Treatment[] = [
   {
     title: "Forebyggende behandling",
-    subtitle: "Kontroll, rens og fluor",
+    subtitle: "Undersøkelse, rens og fluor",
     category: "Forebyggende",
     refusion: "HELFO",
     description:
-      "Går du jevnlig til kontroll, holder tennene seg friske. Vi undersøker, renser og viser deg hva du bør gjøre hjemme.",
+      "Går du jevnlig til undersøkelse, holder tennene seg friske. Vi ser over tennene, renser dem og viser deg hva du bør gjøre hjemme.",
     features: [
-      "Grundig tannundersøkelse med digitalt røntgen",
-      "Profesjonell tannrens og polering",
+      "Grundig undersøkelse med digitalt røntgen",
+      "Tannrens og polering, også med Airflow",
       "Fluorbehandling for sterkere emalje",
       "Individuelle råd for munnhygiene hjemme",
     ],
   },
   {
-    title: "Bleking",
-    subtitle: "Hvitere tenner",
-    category: "Kosmetisk",
-    refusion: "Egenandel",
-    description:
-      "Få hvitere tenner med profesjonell bleking. Det er trygt, gjør ikke vondt, og resultatet holder lenge.",
-    features: [
-      "Klinikkbleking med raskt resultat",
-      "Hjemmebleking med tilpassede skinner",
-      "Skånsom behandling for emaljen",
-      "Langvarig og naturlig resultat",
-    ],
-  },
-  {
     title: "Fyllingsterapi",
-    subtitle: "Fyllinger du ikke ser",
+    subtitle: "Hull i tennene (karies)",
     category: "Restaurering",
     refusion: "HELFO",
     description:
-      "Vi fyller hullet med en fylling i samme farge som tannen. Du ser ikke forskjellen.",
+      "Hull i tennene kalles karies. Vi fjerner kariesen og fyller hullet med kompositt, som har samme farge som tannen.",
     features: [
-      "Tannfargede komposittfyllinger",
+      "Komposittfyllinger i samme farge som tannen",
+      "Glassionomerfyllinger der det passer bedre",
       "Utskifting av gamle amalgamfyllinger",
-      "Smertefri behandling med lokalbedøvelse",
-      "Holdbare materialer med naturlig utseende",
+      "Lokalbedøvelse når du trenger det",
+    ],
+  },
+  {
+    title: "Rotfylling",
+    subtitle: "Redd tannen din",
+    category: "Restaurering",
+    refusion: "HELFO",
+    description:
+      "Rotfylling redder tenner som er skadet eller infisert. Vi tar vekk nerven i tannen, og du får beholde tannen.",
+    features: [
+      "Moderne endodontisk behandling",
+      "God bedøvelse under behandlingen",
+      "Avansert utstyr for presis behandling",
+      "Bevarer din naturlige tann",
     ],
   },
   {
@@ -65,44 +66,30 @@ export const TREATMENTS: readonly Treatment[] = [
       "Helkeramiske kroner for naturlig utseende",
       "Broer som erstatter manglende tenner",
       "Lang holdbarhet med riktig vedlikehold",
-      "Skreddersydd tilpasning til ditt bitt",
+      "Tilpasset bittet ditt",
     ],
   },
   {
-    title: "Rotfylling",
-    subtitle: "Redd tannen din",
-    category: "Restaurering",
-    refusion: "HELFO",
-    description:
-      "Rotfylling redder tenner som er skadet eller infisert. Det er ikke vondt, og du får beholde tannen.",
-    features: [
-      "Moderne endodontisk behandling",
-      "Smertefri med god bedøvelse",
-      "Avansert utstyr for presis behandling",
-      "Bevarer din naturlige tann",
-    ],
-  },
-  {
-    title: "Visdomstennene",
-    subtitle: "Vurdering og fjerning",
+    title: "Tannimplantater",
+    subtitle: "Ny tann festet i kjeven",
     category: "Kirurgi",
     refusion: "Delvis HELFO",
     description:
-      "Vi sjekker om visdomstennene dine trenger å fjernes, og hvis ja, gjør vi det skånsomt.",
+      "Et implantat er en liten skrue i kjeven som erstatter roten på en tann som mangler. Vi setter inn implantatet og lager tannen som festes på det.",
     features: [
-      "Grundig vurdering med røntgen",
-      "Skånsom kirurgisk fjerning",
-      "God smertelindring under og etter",
-      "Tett oppfølging i etterkant",
+      "Vurdering med røntgen før vi starter",
+      "Kirurgien gjør vi selv, her på klinikken",
+      "Krone, bro eller protese festet på implantatene",
+      "Godkjent av Helfo for implantatprotetikk med trygderefusjon",
     ],
   },
   {
-    title: "Tannkjøtt & tannstein",
-    subtitle: "Behandling av tannkjøttet",
+    title: "Tannkjøttbehandling",
+    subtitle: "Gingivitt og periodontitt",
     category: "Forebyggende",
     refusion: "HELFO",
     description:
-      "Tennene holder ikke uten friskt tannkjøtt. Vi fjerner tannstein og behandler betennelse.",
+      "Tennene holder ikke uten friskt tannkjøtt. Betennelse i tannkjøttet heter gingivitt. Når betennelsen går ned mot festet til tannen, heter det periodontitt. Vi behandler begge.",
     features: [
       "Grundig fjerning av tannstein",
       "Behandling av gingivitt og periodontitt",
@@ -111,14 +98,56 @@ export const TREATMENTS: readonly Treatment[] = [
     ],
   },
   {
-    title: "Bittskinner",
+    title: "Tanntrekking",
+    subtitle: "Enkle trekk og kirurgi",
+    category: "Kirurgi",
+    refusion: "Delvis HELFO",
+    description:
+      "Noen ganger må en tann ut. De fleste trekkes enkelt. Sitter tannen vanskelig til, som visdomstenner ofte gjør, fjerner vi den kirurgisk.",
+    features: [
+      "Vurdering med røntgen før vi trekker",
+      "Ukomplisert tanntrekking",
+      "Kirurgisk fjerning av tenner som sitter vanskelig, også visdomstenner",
+      "God bedøvelse og oppfølging etterpå",
+    ],
+  },
+  {
+    title: "Proteser",
+    subtitle: "Helproteser og delproteser",
+    category: "Restaurering",
+    refusion: "Delvis HELFO",
+    description:
+      "En protese erstatter tenner som mangler, og du kan ta den ut. En helprotese erstatter alle tennene i en kjeve. En delprotese fyller inn der noen tenner mangler.",
+    features: [
+      "Helproteser når alle tennene i en kjeve mangler",
+      "Delproteser som festes til tennene du har",
+      "Tilpasset munnen og bittet ditt",
+      "Justering til protesen sitter godt",
+    ],
+  },
+  {
+    title: "Tannskader",
+    subtitle: "Når en tann knekker eller slås løs",
+    category: "Restaurering",
+    refusion: "HELFO",
+    description:
+      "En tann kan knekke, løsne eller bli slått ut i et fall eller en ulykke. Vi undersøker skaden og reparerer tannen.",
+    features: [
+      "Undersøkelse og røntgen av skaden",
+      "Reparasjon av tenner som har knekt",
+      "Behandling av tenner som har løsnet eller blitt slått ut",
+      "Oppfølging over tid, fordi noen skader viser seg senere",
+    ],
+  },
+  {
+    title: "Stabiliseringsskinner",
     subtitle: "Beskyttelse mot tanngnissing",
     category: "Spesialbehandling",
     refusion: "Egenandel",
     description:
-      "Gnisser du tenner om natten? Det sliter dem ned og gir vondt. En bittskinne beskytter.",
+      "Gnisser du tenner om natten? Det sliter dem ned og gir vondt. En stabiliseringsskinne beskytter.",
     features: [
-      "Individuelt tilpassede bittskinner",
+      "Individuelt tilpassede skinner",
       "Beskyttelse mot slitasje",
       "Lindring av kjevesmerter og hodepine",
       "Veiledning om årsaker og forebygging",
