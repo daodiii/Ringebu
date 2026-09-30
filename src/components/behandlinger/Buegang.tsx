@@ -469,7 +469,11 @@ function WalkArrow({
 
 /** Distance of an arch's centre from the middle of the screen, in half-screens. */
 function useArchDistance(i: number, g: Geo, x: MotionValue<number>) {
-  return useTransform(x, (v) => (g.lefts[i] + g.archW / 2 + v - g.vw / 2) / (g.vw / 2));
+  // A wall with no width (a 0 × 0 window, as in a hidden or zero-size frame)
+  // puts every arch at 0 / 0. NaN never equals itself, so the value would
+  // "change" on every render, and SceneRoom sets state on every change:
+  // React gave up with "Too many re-renders". With no width, no arch is near.
+  return useTransform(x, (v) => (g.vw > 0 ? (g.lefts[i] + g.archW / 2 + v - g.vw / 2) / (g.vw / 2) : Infinity));
 }
 
 // A scene plays while its arch is within this distance of the middle.
