@@ -48,12 +48,22 @@ export default function Navbar() {
         className={cn(
           "fixed inset-x-0 top-0 z-50 text-[var(--color-text-primary)] transition-[background-color,backdrop-filter] duration-500",
           overHero
-            ? "bg-transparent"
+            ? // Over the hero's photograph the letters carry a glow of paper
+              "bg-transparent [text-shadow:0_0_2px_rgba(252,249,242,0.9),0_0_10px_rgba(252,249,242,0.75),0_0_22px_rgba(252,249,242,0.5)] [&_img]:drop-shadow-[0_0_8px_rgba(252,249,242,0.85)]"
             : "bg-[var(--color-paper)]/90 backdrop-blur-md border-b border-[var(--color-rule)]"
         )}
       >
         <div className="mx-auto flex w-full max-w-[var(--container-max,1280px)] items-center justify-between px-[var(--container-px,24px)] py-4 lg:py-2.5">
-          <Link href="/" className="relative z-50 flex items-center gap-2.5 leading-none lg:gap-3">
+          <Link
+            href="/"
+            className={cn(
+              "relative z-50 flex items-center gap-2.5 leading-none lg:gap-3",
+              // Over the hero's photograph the logo stands on a small haze of
+              // paper that fades out inside its own box
+              overHero &&
+                "-mx-5 -my-3 px-5 py-3 bg-[radial-gradient(closest-side,rgba(252,249,242,0.82),rgba(252,249,242,0.62)_60%,rgba(252,249,242,0))]"
+            )}
+          >
             <Image
               src="/images/logo-mark.png"
               alt=""

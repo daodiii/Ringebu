@@ -132,16 +132,35 @@
 }
 
 /* The words are deep ink, which the measurements favour: the name sits on
-   bright sky and cloud, where white text failed on 60-100% of it. Each letter
-   carries a soft glow of paper, and a small haze sits behind the words only
-   where the photo darkens under them (the birch leaves by the name on a
-   desktop, the mountainside under the line beneath it). The menu keeps a thin
-   band of paper at the top. The rest of the photo is at full strength. */
+   bright sky and cloud, where white text failed on 60-100% of it. The photo
+   runs at full strength to every edge. Each letter carries a soft glow of
+   paper, and each line a small haze of paper just behind its own letters,
+   nothing between the lines and nothing anywhere else. The haze is one
+   gradient across and one (as a mask) up and down, so it fades out on all
+   four sides with no edge. */
 .ord {
   text-shadow:
     0 0 2px rgba(var(--paper), 0.85),
     0 0 12px rgba(var(--paper), 0.6),
     0 0 28px rgba(var(--paper), 0.45);
+}
+.dis {
+  position: absolute;
+  inset: -0.18em -0.5em -0.12em -0.5em;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(to right, rgba(var(--paper), 0) 0%, rgba(var(--paper), 0.66) 12%, rgba(var(--paper), 0.66) 88%, rgba(var(--paper), 0) 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 30%, #000 70%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 30%, #000 70%, transparent 100%);
+}
+/* The address line along the foot is small type: a tighter haze, a little
+   stronger, so it reads on the lookout's concrete and the leaves. */
+.liten {
+  isolation: isolate;
+}
+.liten .dis {
+  inset: -0.9em -1.4em;
+  background: linear-gradient(to right, rgba(var(--paper), 0) 0%, rgba(var(--paper), 0.8) 10%, rgba(var(--paper), 0.8) 90%, rgba(var(--paper), 0) 100%);
 }
 /* The mask a line of the name rises through: it clips while the line rises,
    then opens, so the glow round the letters is not cut off in a box. */
@@ -152,43 +171,6 @@
 @keyframes pano-maske {
   from {
     clip-path: inset(0 -1em);
-  }
-}
-.veil {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(
-    to bottom,
-    rgba(var(--paper), 0.82) 0px,
-    rgba(var(--paper), 0.55) 120px,
-    rgba(var(--paper), 0.3) 300px,
-    rgba(var(--paper), 0.42) 380px,
-    rgba(var(--paper), 0.38) 430px,
-    rgba(var(--paper), 0) 520px
-  );
-}
-@media (min-width: 768px) and (max-aspect-ratio: 1/1) {
-  .veil {
-    background: linear-gradient(
-      to bottom,
-      rgba(var(--paper), 0.82) 0px,
-      rgba(var(--paper), 0.55) 120px,
-      rgba(var(--paper), 0.3) 300px,
-      rgba(var(--paper), 0.5) 360px,
-      rgba(var(--paper), 0.45) 420px,
-      rgba(var(--paper), 0) 520px
-    );
-  }
-}
-/* Upright screens (phones, tablets held upright) keep the band above, which
-   follows the words down; wide screens get the small haze by the words. */
-@media (min-width: 768px) and (min-aspect-ratio: 1/1) {
-  .veil {
-    background:
-      linear-gradient(to bottom, rgba(var(--paper), 0.82) 0px, rgba(var(--paper), 0.45) 90px, rgba(var(--paper), 0) 170px),
-      radial-gradient(ellipse 36% 30% at 22% 42%, rgba(var(--paper), 0.62) 0%, rgba(var(--paper), 0.5) 50%, rgba(var(--paper), 0.18) 80%, rgba(var(--paper), 0) 100%),
-      linear-gradient(to top, rgba(var(--paper), 0.86) 0px, rgba(var(--paper), 0.5) 30px, rgba(var(--paper), 0) 70px);
   }
 }
 

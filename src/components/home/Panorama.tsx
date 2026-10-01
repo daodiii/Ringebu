@@ -15,9 +15,9 @@ import s from "./panorama/panorama.module.css";
 /**
  * «Panorama». The hero is the view from the lookout above Ringebu: the river
  * Lågen running down Gudbrandsdalen under a summer sky, edge to edge and at
- * full strength. The words sit in the sky, on a light veil that reaches only
- * as far as they do. The clinic's own sign hangs in that sky by the top right
- * corner, under the menu.
+ * full strength. The words sit in the sky, each line with a little haze of
+ * paper just behind its letters and nowhere else. The clinic's own sign hangs
+ * in that sky by the top right corner, under the menu.
  *
  * The photograph is split in two depths: the far valley, and the near things
  * (the birches, the concrete lookout, the path). Under the near layer the far
@@ -144,7 +144,6 @@ export function Panorama() {
             </div>
           </div>
         </div>
-        <div className={s.veil} />
       </div>
 
       {/* ── The paper the view opens out of, and closes back into ── */}
@@ -173,7 +172,8 @@ export function Panorama() {
             ].map((line, li) => (
               // The mask the line rises through opens once the line is in, so
               // the glow round the letters is never cut off in a box
-              <span key={li} aria-hidden="true" className={`${s.maske} block`} style={{ animationDelay: `${(115 + li * 11) / 100}s` }}>
+              <span key={li} aria-hidden="true" className={`${s.maske} relative block w-fit`} style={{ animationDelay: `${(115 + li * 11) / 100}s` }}>
+                <span className={`${s.dis} hero-fade`} style={{ animationDelay: `${0.3 + li * 0.11}s` }} />
                 {/* The padding gives the g of Ringebu room below the line inside the mask */}
                 <span className="hero-line inline-block pb-[0.08em]" style={{ animationDelay: `${0.3 + li * 0.11}s`, fontWeight: line.weight }}>
                   {line.text}
@@ -183,9 +183,10 @@ export function Panorama() {
           </h1>
 
           <p
-            className={`${s.ord} hero-lift mt-4 max-w-[34ch] text-[24px] font-medium leading-[1.25] tracking-[-0.02em] text-[var(--color-ink)] md:mt-5 md:text-[30px]`}
+            className={`${s.ord} hero-lift relative mt-4 w-fit max-w-[34ch] text-[24px] font-medium leading-[1.25] tracking-[-0.02em] text-[var(--color-ink)] md:mt-5 md:text-[30px]`}
             style={{ animationDelay: "0.6s", "--from-y": "10px" } as CSSProperties}
           >
+            <span className={s.dis} />
             Hos oss er alle velkomne
           </p>
 
@@ -218,8 +219,14 @@ export function Panorama() {
       {/* ── Where and when, along the foot ── */}
       <div className="hero-fade absolute inset-x-0 bottom-0 z-20 hidden md:block" style={{ animationDelay: "2.4s" }}>
         <div className="mx-auto flex w-full max-w-[var(--container-max,1280px)] flex-col items-start gap-1.5 px-[var(--container-px,24px)] py-3 font-mono text-[9.5px] uppercase tracking-[0.2em] text-[var(--color-ink)] lg:h-[38px] lg:flex-row lg:items-center lg:justify-between lg:gap-6 lg:py-0">
-          <span>Jernbanegata 4, 2630 Ringebu</span>
-          <span>Man 08.00–15.30 · Tir 08.30–18.00 · Ons 08.00–15.00 · Tor 09.00–18.00 · Fre 08.00–15.00</span>
+          <span className={`${s.ord} ${s.liten} relative`}>
+            <span className={s.dis} />
+            Jernbanegata 4, 2630 Ringebu
+          </span>
+          <span className={`${s.ord} ${s.liten} relative`}>
+            <span className={s.dis} />
+            Man 08.00–15.30 · Tir 08.30–18.00 · Ons 08.00–15.00 · Tor 09.00–18.00 · Fre 08.00–15.00
+          </span>
         </div>
       </div>
     </section>
