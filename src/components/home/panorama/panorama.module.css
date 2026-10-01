@@ -140,21 +140,23 @@
    an ellipse that holds its strength across all the letters and fades out
    well past them, so it has no edge and no bands. A band per line (until
    2026-10) left lighter sky between the lines and faded out on the first and
-   last letters. The shade is kept light, at the user's request ("much less
-   shadow"): at 0.6 white held 3:1 on 99% of the name, at this strength it
-   falls under 3:1 on 11-50% of it, and the shadow in the letters carries
-   the rest. The photo runs at full strength everywhere else. */
+   last letters. The shade is kept light, at the user's request: at 0.6
+   white held 3:1 on 99% of the name, 0.32 was "much less" but too faint
+   (under 3:1 on up to half of it), so 0.44: under 3:1 on 1-7% of a line,
+   24% of "Ringebu" on a tablet's bright cloud, and the shadow in the
+   letters carries the rest. The photo runs at full strength elsewhere. */
 .ord {
   text-shadow:
-    0 1px 2px rgba(var(--skygge), 0.5),
-    0 0 12px rgba(var(--skygge), 0.3);
+    0 1px 2px rgba(var(--skygge), 0.52),
+    0 0 12px rgba(var(--skygge), 0.36),
+    0 0 26px rgba(var(--skygge), 0.18);
 }
 .skygge {
   position: absolute;
-  inset: -55% -28% -50%;
+  inset: -65% -32% -57%;
   z-index: -1;
   pointer-events: none;
-  background: radial-gradient(closest-side, rgba(var(--skygge), 0.32) 0%, rgba(var(--skygge), 0.28) 50%, rgba(var(--skygge), 0.14) 76%, rgba(var(--skygge), 0.04) 90%, rgba(var(--skygge), 0) 100%);
+  background: radial-gradient(closest-side, rgba(var(--skygge), 0.44) 0%, rgba(var(--skygge), 0.4) 50%, rgba(var(--skygge), 0.22) 75%, rgba(var(--skygge), 0.07) 90%, rgba(var(--skygge), 0) 100%);
 }
 /* The address and hours along the foot are small type: each line its own
    tight haze, faded out on all four sides. */
