@@ -5,8 +5,8 @@ import { motion, useInView, useMotionValue, useReducedMotion, useSpring, useTran
 import { PALETTES, PaperShadow, Piece, type PaletteName } from "@/components/behandlinger/scenes/Papir";
 
 /**
- * "Tre grunner til å velge oss." Under the three reasons the page opens onto
- * a strip of fjell cut from paper, and on it stand three cairns, one under
+ * "Hvorfor burde du velge oss?" Under the four reasons the page opens onto
+ * a strip of fjell cut from paper, and on it stand four cairns, one under
  * each reason, the way cairns mark the path over Rondane. When the strip
  * comes into view they build themselves, stone by stone. Tapping a cairn lays
  * another stone on top, as walkers do; lay one too many and the new stones
@@ -26,8 +26,12 @@ const GRUNNER = [
     sub: "Folketrygden dekker deler av behandlingen ved noen bestemte diagnoser og situasjoner — for eksempel alvorlig tannkjøttsykdom, medfødte tilstander eller skader etter en ulykke. Har du rett på stønad, ordner vi oppgjøret direkte.",
   },
   {
-    name: "Erfarne tannleger.",
-    sub: "Vi har mange år bak oss, og vi holder oss faglig oppdatert. Enten du kommer til en vanlig undersøkelse eller en større behandling, er du i trygge hender.",
+    name: "Utdannet ved Universitetet i Oslo.",
+    sub: "Vi lærte faget under erfarne tannleger, og vi holder oss faglig oppdatert. Enten du kommer til en vanlig undersøkelse eller en større behandling, er du i trygge hender.",
+  },
+  {
+    name: "Panoramarøntgen (OPG) på klinikken.",
+    sub: "Vi har moderne utstyr. Med panoramarøntgen tar vi ett bilde som viser alle tennene og hele kjeven.",
   },
 ] as const;
 
@@ -112,6 +116,18 @@ const VARDER: readonly { palette: PaletteName; seed: number; rows: readonly Row[
       { stones: [46], h: 28 },
       { stones: [38], h: 24 },
       { stones: [26], h: 20 },
+    ],
+  },
+  {
+    palette: "fjord",
+    seed: 113,
+    rows: [
+      { stones: [50, 54, 46], h: 30 },
+      { stones: [52, 48], h: 28 },
+      { stones: [42, 38], h: 26 },
+      { stones: [44], h: 26 },
+      { stones: [32], h: 22 },
+      { stones: [22], h: 20 },
     ],
   },
 ];
@@ -224,7 +240,7 @@ function Varde({ i, built, reduced }: { i: number; built: boolean; reduced: bool
       aria-label="Legg en stein på varden"
       onClick={add}
       whileHover="wobble"
-      className="mx-auto block w-[31vw] max-w-[280px] cursor-pointer rounded-[4px] outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ink)] focus-visible:ring-offset-4 focus-visible:ring-offset-transparent"
+      className="mx-auto block w-[22vw] max-w-[240px] cursor-pointer rounded-[4px] outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ink)] focus-visible:ring-offset-4 focus-visible:ring-offset-transparent"
     >
       <svg viewBox="0 96 220 204" className="block h-auto w-full overflow-visible">
         <defs>
@@ -344,8 +360,8 @@ export function Vardene() {
       onPointerLeave={() => lean.set(0)}
     >
       <div className="mx-auto w-full max-w-[var(--container-max,1280px)] px-[var(--container-px,24px)]">
-        <h2 className="display-section max-w-[720px] text-balance">Tre grunner til å velge oss.</h2>
-        <ul className="mt-12 grid gap-10 md:mt-16 md:grid-cols-3 md:gap-12">
+        <h2 className="display-section max-w-[720px] text-balance">Hvorfor burde du velge oss?</h2>
+        <ul className="mt-12 grid gap-10 md:mt-16 md:grid-cols-2 md:gap-12 lg:grid-cols-4">
           {GRUNNER.map((g) => (
             <li key={g.name}>
               <h3 className="font-sans text-[22px] font-medium leading-[1.15] tracking-[-0.022em] md:text-[24px]">{g.name}</h3>
@@ -382,7 +398,7 @@ export function Vardene() {
 
         {/* The cairns stand on the near ridge, one under each reason */}
         <motion.div className="absolute inset-x-0 bottom-[48px] md:bottom-[68px]" style={{ x: nearX }}>
-          <div className="mx-auto grid w-full max-w-[var(--container-max,1280px)] grid-cols-3 gap-4 px-[var(--container-px,24px)] md:gap-12">
+          <div className="mx-auto grid w-full max-w-[var(--container-max,1280px)] grid-cols-4 gap-3 px-[var(--container-px,24px)] md:gap-12">
             {CAIRNS.map((_, i) => (
               <div key={i} className="flex items-end justify-center">
                 <Varde i={i} built={built} reduced={reduced} />

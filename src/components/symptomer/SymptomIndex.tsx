@@ -23,9 +23,6 @@ export function SymptomIndex() {
         <h2 id="alle-symptomer" className="display-section text-[var(--color-text-primary)]">
           Alle symptomer
         </h2>
-        <p className="mt-5 max-w-[46ch] text-[18px] leading-[1.5] text-[var(--color-text-secondary)] lg:text-[22px]">
-          Alt fra buen over, samlet på ett sted.
-        </p>
 
         <ul className="mt-12 border-t lg:mt-16 border-[var(--color-rule)]">
           {SYMPTOMS.map((s) => (

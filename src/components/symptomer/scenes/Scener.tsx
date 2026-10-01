@@ -7,7 +7,6 @@ import {
   Loose,
   NoShadow,
   Piece,
-  SAND,
   Sheet,
   Stage,
   Star,
@@ -436,7 +435,7 @@ export function SymptomSensitive({ active, reduced, d, puppet = true }: SymptomS
   );
 }
 
-/* ───────────── Hovne tannkjøtt: what the mirror shows ───────────── */
+/* ───────────── Hovent tannkjøtt: what the mirror shows ───────────── */
 
 const SWELL_STEPS = [
   ["calm", 1300],
@@ -583,104 +582,6 @@ export function SymptomAande({ active, reduced, d, puppet = true }: SymptomScene
               <Pastiller p={p} />
             </g>
           </Piece>
-        )}
-      </Sheet>
-      <Sheet n={5} on={on} reduced={reduced} d={d} depth={3.8}>
-        <path d={scallops(512, 12)} fill={p.lip} />
-      </Sheet>
-    </Stage>
-  );
-}
-
-/* ───────────── Tannkjøttbetennelse: floss finds the sore gum ───────────── */
-
-const GUM_STEPS = [
-  ["enter", 1400],
-  ["floss", 2400],
-  ["sore", 2600],
-  ["lift", 1100],
-] as const;
-
-// The gum's edge, running out both ways from the gap the floss goes into.
-const EDGE_RIGHT = "M198,434 C206,437 220,458 246,458 C272,458 286,437 294,434";
-const EDGE_LEFT = "M198,434 C190,437 176,458 150,458 C124,458 110,437 102,434 C94,437 80,458 54,458 C28,458 14,437 6,434";
-const TARTAR = [
-  "M124,446 L128,436 L136,437 L135,448 Z",
-  "M160,448 L163,438 L172,440 L170,450 Z",
-  "M220,446 L224,436 L232,437 L231,448 Z",
-  "M256,448 L259,438 L268,440 L266,450 Z",
-];
-
-export function SymptomBetennelse({ active, reduced, d, puppet = true }: SymptomSceneProps) {
-  const { p } = usePaper();
-  const on = active;
-  const phase = usePhase(active, GUM_STEPS);
-  const red = reduced ? on : phase === "floss" || phase === "sore";
-  const sore = reduced ? on : phase === "sore";
-  const flossDown = !reduced && (phase === "enter" || phase === "floss");
-
-  return (
-    <Stage active={active} reduced={reduced}>
-      <Sheet n={0} on={on} reduced={reduced} d={d} depth={0.8}>
-        <path d={FAR_HILLS} fill={p.far} />
-      </Sheet>
-      <Sheet n={1} on={on} reduced={reduced} d={d} depth={1.4}>
-        <path d={gumBack(442)} fill={p.deep} />
-      </Sheet>
-      <Sheet n={2} on={on} reduced={reduced} d={d} depth={2}>
-        <Tooth dx={-96} fill={p.paper} shade={p.shade} />
-        <Tooth fill={p.paper} shade={p.shade} />
-        <Tooth dx={96} fill={p.paper} shade={p.shade} />
-        {TARTAR.map((t) => (
-          <path key={t} d={t} fill={SAND} />
-        ))}
-      </Sheet>
-      <Sheet n={3} on={on} reduced={reduced} d={d} depth={2.6}>
-        {/* The gum's own shadow would fall behind it, out of sight */}
-        <NoShadow>
-          <motion.path d={gumFront(458)} initial={{ fill: p.mid }} animate={{ fill: sore ? "#D9A79A" : p.mid }} transition={{ duration: 1.2 }} />
-          {[EDGE_LEFT, EDGE_RIGHT].map((e) => (
-            <motion.path
-              key={e}
-              d={e}
-              fill="none"
-              stroke={INFLAMED}
-              strokeWidth={9}
-              strokeLinecap="round"
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={
-                red
-                  ? sore && !reduced
-                    ? { pathLength: 1, opacity: [1, 0.55, 1] }
-                    : { pathLength: 1, opacity: 1 }
-                  : { pathLength: 0, opacity: 0 }
-              }
-              transition={
-                sore && !reduced
-                  ? { opacity: { duration: 1.2, repeat: Infinity }, pathLength: { duration: 0 } }
-                  : { duration: reduced ? 0 : 2, ease: "easeOut", delay: reduced ? 0 : 0.3 }
-              }
-            />
-          ))}
-        </NoShadow>
-      </Sheet>
-      <Sheet n={4} on={on} reduced={reduced} d={d} depth={3.2}>
-        <AcheArcs x={198} y={424} spread={34} show={sore} reduced={reduced} rings={2} width={4} />
-        {puppet && (
-          <NoShadow>
-            <motion.g
-              initial={{ y: -560 }}
-              animate={{ y: flossDown ? 0 : -560 }}
-              transition={reduced ? { duration: 0 } : flossDown ? { type: "spring", stiffness: 50, damping: 12 } : { duration: 0.9, ease: [0.45, 0, 0.3, 1] }}
-            >
-              <motion.g
-                animate={phase === "floss" && !reduced ? { y: [0, -16, 0, -16, 0, -16, 0] } : { y: 0 }}
-                transition={{ duration: 2.2, ease: "easeInOut" }}
-              >
-                <path d="M198,442 L360,-140 M198,442 L40,-140" fill="none" stroke={p.ink} strokeWidth={1.8} strokeLinecap="round" opacity={0.85} />
-              </motion.g>
-            </motion.g>
-          </NoShadow>
         )}
       </Sheet>
       <Sheet n={5} on={on} reduced={reduced} d={d} depth={3.8}>
@@ -950,7 +851,6 @@ const SCENE_OF: Record<SymptomSlug, SymptomScene> = {
   sensitive: SymptomSensitive,
   hovne: SymptomHovne,
   aande: SymptomAande,
-  betennelse: SymptomBetennelse,
   lose: SymptomLose,
   kjeve: SymptomKjeve,
 };

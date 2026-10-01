@@ -117,18 +117,6 @@ export function Pastiller({ p }: ThingProps) {
   );
 }
 
-export function Tanntrad({ p }: ThingProps) {
-  return (
-    <g>
-      <path d="M30,-10 C58,-22 74,6 98,-4" fill="none" stroke={p.ink} strokeWidth={1.6} strokeLinecap="round" />
-      <rect x={-32} y={-24} width={64} height={48} rx={16} fill={p.paper} />
-      <path d="M-32,-8 L-32,-10 Q-32,-24 -16,-24 L16,-24 Q32,-24 32,-10 L32,-8 Z" fill={p.accent} />
-      <rect x={-32} y={-9} width={64} height={3} fill={p.deep} opacity={0.5} />
-      <circle cx={0} cy={9} r={5} fill={p.shade} />
-    </g>
-  );
-}
-
 export function Eple({ bitten = false, reduced = false }: ThingProps & { bitten?: boolean; reduced?: boolean }) {
   return (
     <g>
@@ -166,7 +154,6 @@ export const THING_BOX: Record<SymptomSlug, [number, number, number, number]> = 
   sensitive: [-38, -38, 76, 88],
   hovne: [-48, -48, 96, 170],
   aande: [-44, -36, 88, 72],
-  betennelse: [-40, -32, 146, 64],
   lose: [-52, -58, 116, 108],
   kjeve: [-72, -52, 144, 96],
 };
@@ -183,8 +170,6 @@ export function Thing({ slug, p }: { slug: SymptomSlug; p: Palette }) {
       return <Speil p={p} />;
     case "aande":
       return <Pastiller p={p} />;
-    case "betennelse":
-      return <Tanntrad p={p} />;
     case "lose":
       return <Eple p={p} />;
     case "kjeve":

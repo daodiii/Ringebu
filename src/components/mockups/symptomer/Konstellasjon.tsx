@@ -13,9 +13,8 @@ const URGENCY: Record<string, number> = {
   "Dårlig ånde": 2,
   Kjevesmerter: 2,
   "Blødende tannkjøtt": 2,
-  Tannkjøttbetennelse: 3,
   Tannpine: 4,
-  "Hovne tannkjøtt": 4,
+  "Hovent tannkjøtt": 4,
   "Løse tenner": 5,
 };
 function urgencyColor(u: number) {
@@ -31,18 +30,13 @@ const NODES: Record<string, Node> = {
   Tannpine: { x: 168, y: 172, lx: 150, ly: 128, anchor: "end" },
   "Sensitive tenner": { x: 96, y: 312, lx: 96, ly: 368, anchor: "middle" },
   "Blødende tannkjøtt": { x: 432, y: 138, lx: 470, ly: 104, anchor: "start" },
-  Tannkjøttbetennelse: { x: 470, y: 286, lx: 512, ly: 300, anchor: "start" },
-  "Hovne tannkjøtt": { x: 602, y: 196, lx: 602, ly: 152, anchor: "middle" },
+  "Hovent tannkjøtt": { x: 602, y: 196, lx: 602, ly: 152, anchor: "middle" },
   "Løse tenner": { x: 612, y: 360, lx: 612, ly: 414, anchor: "middle" },
   Kjevesmerter: { x: 300, y: 392, lx: 300, ly: 446, anchor: "middle" },
 };
 const LINKS: [string, string][] = [
-  ["Blødende tannkjøtt", "Tannkjøttbetennelse"],
-  ["Tannkjøttbetennelse", "Hovne tannkjøtt"],
-  ["Hovne tannkjøtt", "Løse tenner"],
-  ["Tannkjøttbetennelse", "Løse tenner"],
+  ["Hovent tannkjøtt", "Løse tenner"],
   ["Tannpine", "Sensitive tenner"],
-  ["Tannpine", "Tannkjøttbetennelse"],
   ["Dårlig ånde", "Blødende tannkjøtt"],
   ["Kjevesmerter", "Løse tenner"],
 ];

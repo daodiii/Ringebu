@@ -298,7 +298,7 @@ function Bok({ vw, vh }: { vw: number; vh: number }) {
             Har du noen av disse plagene?
           </h2>
           <p className="mt-6 max-w-[30ch] text-[19px] leading-[1.5] text-[var(--color-text-secondary)]">
-            Åtte vanlige plager. Hva de betyr.
+            Sju vanlige plager. Hva de betyr.
           </p>
           <div className="mt-8">
             <Link href="/kontakt" className="inline-flex items-center gap-2 rounded-full bg-[var(--color-ink)] px-6 py-3.5 text-[14px] font-semibold text-white">

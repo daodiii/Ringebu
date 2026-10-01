@@ -50,13 +50,10 @@ const PLACE: Record<SymptomSlug, Place> = {
   sensitive: { at: [150, 402], rot: 0, rest: 7, act: { x: [0, -2, 2, -2, 2, -1, 1, 0], duration: 1.1 } },
   hovne: { at: [62, 336], rot: -16, rest: -20, size: 0.56, act: { rotate: [-16, -6, -16], duration: 1.8 } },
   aande: { at: [150, 480], rot: 0, rest: 4, act: { y: [-110, 0, -22, 0, -6, 0], duration: 1.1 } },
-  betennelse: { at: [248, 128], rot: 10, rest: -6 },
   lose: { at: [52, 306], rot: 0, rest: 12, act: { x: [0, 24, 0, 24, 0], duration: 1.1 } },
   kjeve: { at: [150, 488], rot: 0, rest: -5, act: { y: [-60, 0, -10, 0], duration: 0.9 } },
 };
 
-// The floss stays the scene's own: the dispenser only parks beside it.
-const KEEP_PUPPET: Partial<Record<SymptomSlug, true>> = { betennelse: true };
 // The healthy teeth shown before anything is picked.
 const IDLE: PaletteName = "eukalyptus";
 // Things that hop now and then until someone picks one up.
@@ -155,7 +152,7 @@ export function Hverdagen() {
                 exit={{ opacity: 0 }}
                 transition={{ duration: reduced ? 0 : 0.5 }}
               >
-                <Scene active={inView} d={still} reduced={reduced} mode="door" puppet={!!(current && KEEP_PUPPET[current.slug])} />
+                <Scene active={inView} d={still} reduced={reduced} mode="door" puppet={false} />
               </motion.div>
             </AnimatePresence>
             {/* The jamb: the wall has a thickness */}
@@ -178,13 +175,13 @@ export function Hverdagen() {
 
           {/* The table edge the things lie on */}
           <div aria-hidden="true" className="h-px w-full" style={{ maxWidth: floorW + 60, background: "rgba(14,42,48,0.14)" }} />
-          <div className={sm ? "mt-4 grid w-full grid-cols-4 gap-y-2" : "mt-5 grid w-full grid-cols-8"} style={{ maxWidth: floorW }}>
+          <div className={sm ? "mt-4 grid w-full grid-cols-4 gap-y-2" : "mt-5 grid w-full grid-cols-7"} style={{ maxWidth: floorW }}>
             {SYMPTOMS.map((s, i) => (
               <Ting
                 key={s.slug}
                 s={s}
                 i={i}
-                slotW={sm ? floorW / 4 : floorW / 8}
+                slotW={sm ? floorW / 4 : floorW / 7}
                 placed={placed === s.slug}
                 nudge={nudge === s.slug}
                 reduced={reduced}
@@ -234,7 +231,7 @@ export function Hverdagen() {
                   <Detail s={current} sm={sm} short={short} />
                 ) : (
                   <p className="max-w-[32ch] leading-[1.5] text-[var(--color-text-secondary)]" style={{ fontSize: sm ? 19 : 26 }}>
-                    Åtte vanlige plager. Hva de betyr.
+                    Sju vanlige plager. Hva de betyr.
                   </p>
                 )}
                 <KontaktOss short={short} />
@@ -255,7 +252,7 @@ function KontaktOss({ short }: { short: boolean }) {
   );
 }
 
-/** One long word, like Tannkjøttbetennelse, is set smaller so it fits the column. */
+/** A long name is set smaller so it fits the column. */
 const titleSize = (t: string) => (!t.includes(" ") && t.length > 12 ? "clamp(38px, 3.9vw, 58px)" : "clamp(48px, 5.4vw, 84px)");
 
 function Detail({ s, sm, short }: { s: Symptom; sm: boolean; short: boolean }) {

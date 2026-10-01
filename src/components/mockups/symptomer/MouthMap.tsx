@@ -19,8 +19,7 @@ const TOOTH_SYMPTOM: Record<number, string> = {
   1: "Tannpine",
   3: "Dårlig ånde",
   4: "Blødende tannkjøtt",
-  6: "Tannkjøttbetennelse",
-  7: "Hovne tannkjøtt",
+  7: "Hovent tannkjøtt",
   9: "Løse tenner",
   10: "Kjevesmerter",
 };
@@ -30,9 +29,8 @@ const URGENCY: Record<string, number> = {
   "Dårlig ånde": 2,
   Kjevesmerter: 2,
   "Blødende tannkjøtt": 2,
-  Tannkjøttbetennelse: 3,
   Tannpine: 4,
-  "Hovne tannkjøtt": 4,
+  "Hovent tannkjøtt": 4,
   "Løse tenner": 5,
 };
 

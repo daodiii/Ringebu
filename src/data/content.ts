@@ -26,7 +26,7 @@ export const symptoms = [
   },
   {
 
-    title: "Hovne tannkjøtt",
+    title: "Hovent tannkjøtt",
     description: "Hovent tannkjøtt betyr som regel betennelse eller en infeksjon.",
     severity: "Oppsøk tannlege",
     causes: ["Infeksjon", "Periodontitt", "Abscess", "Fastsittende mat"],
@@ -39,14 +39,6 @@ export const symptoms = [
     severity: "Bør undersøkes",
     causes: ["Dårlig munnhygiene", "Tannkjøttsykdom", "Tørr munn", "Matinntak"],
     whatToDo: "Puss tennene og tungen. Bruk tanntråd. Går det ikke over, bestill time.",
-  },
-  {
-
-    title: "Tannkjøttbetennelse",
-    description: "Rødt, hovent og ømt tannkjøtt er ofte starten på noe mer alvorlig.",
-    severity: "Bør behandles",
-    causes: ["Plakk og tannstein", "Røyking", "Diabetes", "Svakt immunforsvar"],
-    whatToDo: "Du trenger tannrens hos oss. Resten er daglig pussing og tanntråd.",
   },
   {
 

@@ -25,8 +25,7 @@ const TOOTH_SYMPTOM: Record<number, string> = {
   1: "Tannpine",
   3: "Dårlig ånde",
   4: "Blødende tannkjøtt",
-  6: "Tannkjøttbetennelse",
-  7: "Hovne tannkjøtt",
+  7: "Hovent tannkjøtt",
   9: "Løse tenner",
   10: "Kjevesmerter",
 };

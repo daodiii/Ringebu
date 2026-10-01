@@ -14,9 +14,6 @@ export function TreatmentIndex() {
         <h2 id="alle-behandlinger" className="display-section text-[var(--color-text-primary)]">
           Alle behandlinger
         </h2>
-        <p className="mt-5 max-w-[46ch] text-[18px] leading-[1.5] text-[var(--color-text-secondary)]">
-          Alt fra buene over, samlet på ett sted.
-        </p>
 
         <ul className="mt-12 border-t border-[var(--color-rule)]">
           {T.map((t) => (

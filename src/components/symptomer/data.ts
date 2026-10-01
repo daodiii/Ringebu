@@ -2,7 +2,7 @@ import { symptoms } from "@/data/content";
 import type { PaletteName } from "@/components/behandlinger/scenes/Papir";
 
 /**
- * The eight symptoms as the book on the front page and the arch on
+ * The seven symptoms as the book on the front page and the arch on
  * /symptomer use them: the live text from data/content, plus what each needs
  * to stage it. Each symptom gets its own paper palette, as each arch does on
  * /behandlinger, and no two neighbours share one.
@@ -17,7 +17,6 @@ export type SymptomSlug =
   | "sensitive"
   | "hovne"
   | "aande"
-  | "betennelse"
   | "lose"
   | "kjeve";
 
@@ -40,9 +39,8 @@ const STAGING: Record<string, Staging> = {
   Tannpine: { slug: "tannpine", kicker: "Smerten som ikke gir seg", palette: "molte", thing: "Sjokolade", moment: "Du tar en bit sjokolade, og det gjør vondt i tennene." },
   "Blødende tannkjøtt": { slug: "blodende", kicker: "De første tegnene", palette: "lyng", thing: "Tannbørste", moment: "Du pusser tennene, og det kommer blod." },
   "Sensitive tenner": { slug: "sensitive", kicker: "Når noe kaldt blir for kaldt", palette: "frost", thing: "Isbit", moment: "Du drikker noe kaldt, og det isner." },
-  "Hovne tannkjøtt": { slug: "hovne", kicker: "Når noe har bygd seg opp", palette: "bjork", thing: "Speil", moment: "Du ser i speilet, og tannkjøttet er hovent." },
+  "Hovent tannkjøtt": { slug: "hovne", kicker: "Når noe har bygd seg opp", palette: "bjork", thing: "Speil", moment: "Du ser i speilet, og tannkjøttet er hovent." },
   "Dårlig ånde": { slug: "aande", kicker: "Når pusten ikke vil gi seg", palette: "mose", thing: "Pastiller", moment: "Du tar enda en pastill, men det hjelper ikke." },
-  Tannkjøttbetennelse: { slug: "betennelse", kicker: "Begynnelsen på noe", palette: "eukalyptus", thing: "Tanntråd", moment: "Du bruker tanntråd, og tannkjøttet er rødt og ømt." },
   "Løse tenner": { slug: "lose", kicker: "Tenner som har gitt etter", palette: "fjord", thing: "Eple", moment: "Du biter i et eple, og en tann gir etter." },
   Kjevesmerter: { slug: "kjeve", kicker: "Kjeven som jobber for mye", palette: "skumring", thing: "Pute", moment: "Du våkner, og kjeven er stiv og øm." },
 };

@@ -9,12 +9,12 @@ import { useHeroPointer } from "./useHeroPointer";
 
 /**
  * Gudbrandsdalen lies under the whole page, and the headline is cut through
- * the paper into it. At first so are the windows on the right: they open onto
- * the very same landscape, registered with the letters, so the screen is one
- * view seen through several holes. Then the clinic arrives — one window at a
- * time the valley dissolves and a photograph takes its place, so the rooms
- * appear to come out of the landscape rather than being pasted over it.
- * Hovering a window steps the photograph aside to show the valley still there.
+ * the paper into it. At first so is the arched window on the right: it opens
+ * onto the very same landscape, registered with the letters, so the screen is
+ * one view seen through two holes. Then the valley in the window dissolves and
+ * the clinic's sign takes its place, as if it came out of the landscape rather
+ * than being pasted over it. Hovering the window steps the photograph aside to
+ * show the valley still there.
  *
  * Both the ghost and the carved letters use `background-attachment: fixed`,
  * which is what keeps them registered with each other without measuring.
@@ -51,46 +51,21 @@ type Win = {
   objectPosition: string;
 };
 
+// One window: the sign over the door, close enough to read the name on it.
+// The photograph is cropped to the sign (clinic-sign-skilt.jpg) so the arch
+// shows the board and its bracket rather than mostly sky.
 const WINDOWS: Win[] = [
   {
-    key: "room",
-    src: "/images/ringebutannMain.jpg",
-    alt: "Behandlingsrom ved Ringebu Tannlegesenter",
-    box: { x: "56.5%", y: "11%", w: "21%", h: "40%" },
-    boxSm: { x: "5%", y: "0%", w: "42%", h: "42%" },
-    radius: "4px",
-    step: 0,
-    objectPosition: "50% 55%",
-  },
-  {
     key: "sign",
-    src: "/images/clinic-sign.jpg",
-    alt: "Skiltet utenfor klinikken",
-    box: { x: "79.5%", y: "17%", w: "15%", h: "28%" },
-    boxSm: { x: "53%", y: "8%", w: "42%", h: "36%" },
+    src: "/images/clinic-sign-skilt.jpg",
+    alt: "Skiltet utenfor klinikken: Ringebu Tannlegesenter",
+    // No taller than 1.4 times its width, or a portrait tablet cuts the name
+    // off both ends; centred on the section either way.
+    box: { x: "58%", y: "calc(50% - min(35%, 23vw))", w: "33%", h: "min(70%, 46vw)" },
+    boxSm: { x: "14%", y: "0%", w: "72%", h: "92%" },
     radius: "999px 999px 4px 4px",
-    step: 1,
-    objectPosition: "50% 38%",
-  },
-  {
-    key: "instruments",
-    src: "/images/clinic-instruments.jpg",
-    alt: "Tannlegeinstrumenter",
-    box: { x: "56.5%", y: "55%", w: "21%", h: "29%" },
-    boxSm: { x: "5%", y: "46%", w: "42%", h: "32%" },
-    radius: "4px",
-    step: 3,
-    objectPosition: "50% 50%",
-  },
-  {
-    key: "valley",
-    src: "/images/clinic-valley.jpg",
-    alt: "Klinikken i Gudbrandsdalen",
-    box: { x: "79.5%", y: "49%", w: "15%", h: "32%" },
-    boxSm: { x: "53%", y: "50%", w: "42%", h: "36%" },
-    radius: "4px",
-    step: 2,
-    objectPosition: "50% 50%",
+    step: 0,
+    objectPosition: "50% 45%",
   },
 ];
 
@@ -200,7 +175,7 @@ export function Hero() {
                 alt={w.alt}
                 fill
                 quality={90}
-                sizes="(max-width: 767px) 44vw, 22vw"
+                sizes="(max-width: 767px) 72vw, 34vw"
                 className="object-cover"
                 style={{ objectPosition: w.objectPosition }}
               />
@@ -243,10 +218,13 @@ export function Hero() {
               <span
                 key={li}
                 aria-hidden="true"
-                className="block overflow-hidden pb-[0.07em]"
+                className="block overflow-hidden"
               >
+                {/* The padding is on the letters, not the line: background-clip:text
+                    paints only inside the span's own box, and the g of Ringebu
+                    reaches 0.04em below a box of line-height 0.96. */}
                 <motion.span
-                  className="hero-carved hero-line inline-block bg-clip-text text-transparent [-webkit-background-clip:text]"
+                  className="hero-carved hero-line inline-block pb-[0.07em] bg-clip-text text-transparent [-webkit-background-clip:text]"
                   style={{
                     animationDelay: `${0.2 + li * 0.11}s`,
                     backgroundPosition: position,

@@ -19,7 +19,7 @@ export const TREATMENTS: readonly Treatment[] = [
     category: "Forebyggende",
     refusion: "HELFO",
     description:
-      "Går du jevnlig til undersøkelse, holder tennene seg friske. Vi ser over tennene, renser dem og viser deg hva du bør gjøre hjemme.",
+      "Går du jevnlig til undersøkelse, holder tennene seg friske. Vi ser over tennene, renser dem og veileder deg i hvordan du tar vare på dem hjemme.",
     features: [
       "Grundig undersøkelse med digitalt røntgen",
       "Tannrens og polering, også med Airflow",
@@ -33,7 +33,7 @@ export const TREATMENTS: readonly Treatment[] = [
     category: "Restaurering",
     refusion: "HELFO",
     description:
-      "Hull i tennene kalles karies. Vi fjerner kariesen og fyller hullet med kompositt, som har samme farge som tannen.",
+      "Hull i tennene kalles karies. Vi reparerer kariesangrepet med kompositt, som har samme farge som tannen.",
     features: [
       "Komposittfyllinger i samme farge som tannen",
       "Glassionomerfyllinger der det passer bedre",
@@ -99,11 +99,11 @@ export const TREATMENTS: readonly Treatment[] = [
   },
   {
     title: "Tanntrekking",
-    subtitle: "Enkle trekk og kirurgi",
+    subtitle: "Ukomplisert trekking eller kirurgisk fjerning av tann",
     category: "Kirurgi",
     refusion: "Delvis HELFO",
     description:
-      "Noen ganger må en tann ut. De fleste trekkes enkelt. Sitter tannen vanskelig til, som visdomstenner ofte gjør, fjerner vi den kirurgisk.",
+      "Noen ganger må en tann ut. Som regel er trekkingen ukomplisert. Sitter tannen vanskelig til, som visdomstenner ofte gjør, fjerner vi den kirurgisk.",
     features: [
       "Vurdering med røntgen før vi trekker",
       "Ukomplisert tanntrekking",
