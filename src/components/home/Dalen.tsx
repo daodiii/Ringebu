@@ -7,7 +7,7 @@ import { ArrowRight } from "lucide-react";
 import { PaperShadow } from "@/components/behandlinger/scenes/Papir";
 import { r2, useLean, useShift } from "@/components/home/landskap";
 import {
-  BANE, CLOUD, DAL, FJELL1, FJELL2, FRONT, H, LIA, LIP, NAER, SNOW_BANK, SUN_X, TRAIN, TRAIN_BOX, W, vei,
+  BANE, CLOUD, DAL, FJELL1, FJELL2, FRONT, H, LIA, LIP, NAER, SNOW_BANK, SUN_X, TRAIN, TRAIN_BOX, W,
 } from "./dalen/art";
 import { Skilt } from "./dalen/Skilt";
 import { BALER, animalsOn, type Season } from "./dalen/dyr";
@@ -17,8 +17,8 @@ import s from "./dalen/dalen.module.css";
  * «Dalen». The hero is Gudbrandsdalen at Ringebu cut from paper, seen across
  * the valley: fjell, the forested far side with its farms, the Dovrebanen
  * line, the river Lågen winding through the fields, and this side's meadow
- * with the clinic's sign hanging from a post by the road, big enough to read
- * the name on it. The words sit in the sky above.
+ * The words sit in the sky above, and from «Bestill time» hangs the clinic's
+ * own sign, big enough to read the name on it, where it hides none of the view.
  *
  * On load the sheets stand up one by one, back to front, and the sun comes
  * up behind the fjell. Then the year turns by itself, a season every few
@@ -125,14 +125,6 @@ const SNOW_ART = (
     </svg>
   </div>
 );
-
-/**
- * Where the sign stands, in strip units: its post on the road, the board
- * hanging left of it. A phone shows only about x 785 to 1615 of the strip, so
- * the post stands left of that edge.
- */
-const SIGN = { x: 1080, w: 470, top: 560 };
-const SIGN_FOOT = r2(vei(SIGN.x + SIGN.w * 0.927) + 4);
 
 const ANIMALS_DAL = animalsOn("dal");
 const ANIMALS_NAER = animalsOn("naer");
@@ -307,20 +299,7 @@ export function Dalen() {
               {BANE}
             </Ark>
             <Ark n={4} x={x4} over={<>{BALER}{ANIMALS_DAL}</>}>{DAL}</Ark>
-            <Ark
-              n={5}
-              x={x5}
-              over={
-                <>
-                  {ANIMALS_NAER}
-                  <div className="absolute" style={box(SIGN.x, SIGN.top, SIGN.w, SIGN_FOOT - SIGN.top)}>
-                    <Skilt reduced={reduced} />
-                  </div>
-                </>
-              }
-            >
-              {NAER}
-            </Ark>
+            <Ark n={5} x={x5} over={ANIMALS_NAER}>{NAER}</Ark>
             <Ark n={6} x={x6} over={SNOW_ART}>{FRONT}</Ark>
             <Ark n={7} x={x6} shadow={false}>{LIP}</Ark>
           </div>
@@ -356,13 +335,19 @@ export function Dalen() {
             className="hero-lift pointer-events-auto mt-8 flex flex-wrap items-center gap-2.5"
             style={{ animationDelay: "0.65s", "--from-y": "12px" } as CSSProperties}
           >
-            <Link
-              href="/kontakt"
-              className="group inline-flex items-center gap-2 rounded-full bg-[var(--color-ink)] px-6 py-3.5 text-[13px] font-semibold text-white shadow-[0_10px_30px_-12px_rgba(14,42,48,0.5)] transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-14px_rgba(14,42,48,0.55)]"
-            >
-              Bestill time
-              <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
-            </Link>
+            {/* The sign hangs from a ring under the button; --heng is how far it
+                reaches past the button either side: up to 64px, but never closer
+                than 4px to the edge of the screen, which is near on a phone. */}
+            <span className="relative inline-flex [--heng:min(64px,calc(max(var(--container-px,24px),(100vw-var(--container-max,1280px))/2+var(--container-px,24px))-4px))]">
+              <Link
+                href="/kontakt"
+                className="group inline-flex items-center gap-2 rounded-full bg-[var(--color-ink)] px-6 py-3.5 text-[13px] font-semibold text-white shadow-[0_10px_30px_-12px_rgba(14,42,48,0.5)] transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-14px_rgba(14,42,48,0.55)]"
+              >
+                Bestill time
+                <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
+              </Link>
+              <Skilt reduced={reduced} />
+            </span>
             <a
               href="tel:61280412"
               className="inline-flex items-center gap-2 rounded-full border border-[rgba(14,42,48,0.18)] bg-white/70 px-5 py-3.5 text-[13px] font-medium text-[var(--color-ink)] backdrop-blur-sm transition-colors duration-300 hover:border-[rgba(14,42,48,0.38)] hover:bg-white"

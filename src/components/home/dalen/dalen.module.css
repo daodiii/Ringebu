@@ -389,71 +389,44 @@
   transform: scaleX(-1);
 }
 
-/* ── The clinic's sign on its post by the road (Skilt.tsx) ──
-   Sizes in cqw of the sign's own box, so it scales with the valley. */
+/* ── The clinic's sign, hanging from «Bestill time» (Skilt.tsx) ──
+   The sign's box is the button's width and --heng either side (set on the
+   wrapper in Dalen.tsx); sizes inside are in cqw of that box. */
 .skilt {
   position: absolute;
-  inset: 0;
+  top: 100%;
+  left: calc(-1 * var(--heng, 40px));
+  right: calc(-1 * var(--heng, 40px));
+  aspect-ratio: 100 / 55;
   container-type: inline-size;
   pointer-events: none;
 }
-.stolpe {
+/* The ring the chains hang from, just under the button */
+.ring {
   position: absolute;
-  right: 6cqw;
-  top: 0.6cqw;
-  bottom: 0;
-  width: 2.6cqw;
-  border-radius: 0.5cqw 0.5cqw 0 0;
-  background: linear-gradient(to right, #48525a 0%, #2a3138 50%, #1b2126 100%);
-  box-shadow: 0.8cqw 0 0 rgba(14, 42, 48, 0.13);
-}
-.stolpe::before {
-  content: "";
-  position: absolute;
-  left: -0.7cqw;
-  right: -0.7cqw;
-  top: -1cqw;
-  height: 1.6cqw;
-  border-radius: 0.6cqw;
-  background: #2a3138;
-}
-/* The brace between post and arm */
-.stag {
-  position: absolute;
-  right: 8.6cqw;
-  top: 19cqw;
-  width: 21.2cqw;
-  height: 1.3cqw;
-  border-radius: 0.65cqw;
-  background: #2a3138;
-  transform-origin: 100% 50%;
-  transform: rotate(45deg);
-}
-.bom {
-  position: absolute;
-  left: 2cqw;
-  right: 5cqw;
-  top: 3cqw;
-  height: 2.4cqw;
-  border-radius: 1.2cqw;
-  background: linear-gradient(to bottom, #48525a 0%, #2a3138 45%, #1b2126 100%);
-  box-shadow: 0 0.8cqw 0 rgba(14, 42, 48, 0.13);
+  left: 50%;
+  top: -1.4cqw;
+  width: 4.4cqw;
+  height: 4.4cqw;
+  border: 0.9cqw solid #2a3138;
+  border-radius: 50%;
+  transform: translateX(-50%);
 }
 .sving {
   position: absolute;
-  left: 4cqw;
-  width: 78cqw;
-  top: 4.4cqw;
-  height: 32cqw;
+  left: 0;
+  right: 0;
+  top: 2.2cqw;
+  height: 52cqw;
   transform-origin: 50% 0;
   pointer-events: auto;
 }
-/* It lies folded up along the arm and swings down into place once the meadow stands */
+/* It lies folded up under the button and swings down once the buttons are in */
 .utfold {
   position: absolute;
   inset: 0;
   transform-origin: 50% 0;
-  animation: utfold 2.4s ease-in-out 2.1s backwards;
+  animation: utfold 2.4s ease-in-out 1.4s backwards;
 }
 @keyframes utfold {
   0% {
@@ -499,50 +472,60 @@
     transform: perspective(700px) rotateX(0deg) rotate(0deg);
   }
   35% {
-    transform: perspective(700px) rotateX(6deg) rotate(0.35deg);
+    transform: perspective(700px) rotateX(6deg) rotate(0.8deg);
   }
   70% {
-    transform: perspective(700px) rotateX(-3deg) rotate(-0.2deg);
+    transform: perspective(700px) rotateX(-3deg) rotate(-0.5deg);
   }
 }
+/* Two chains from the ring to the board's top corners, at 7% and 93% of
+   the box and 22cqw down: 49.3cqw long, 63.5deg off the plumb. */
 .lenke {
   position: absolute;
   top: 0;
+  left: calc(50% - 1.3cqw);
   width: 2.6cqw;
-  height: 7.4cqw;
+  height: 49.3cqw;
+  transform-origin: 50% 0;
+}
+.lenkeV {
+  transform: rotate(63.5deg);
+}
+.lenkeH {
+  transform: rotate(-63.5deg);
 }
 .tavle {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 6.6cqw;
-  height: 25cqw;
+  left: 2cqw;
+  right: 2cqw;
+  top: 22cqw;
+  height: 30cqw;
   display: flex;
   align-items: center;
-  gap: 3.2cqw;
+  gap: 3.4cqw;
   padding: 0 3.6cqw;
-  border-radius: 0.7cqw;
+  border-radius: 0.9cqw;
   background: linear-gradient(to bottom, #2d3a44, #222d35);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.1),
     0 0 0 1px rgba(8, 20, 26, 0.35),
-    0 1.2cqw 0 rgba(14, 42, 48, 0.13);
+    0 1.4cqw 0 rgba(14, 42, 48, 0.13);
 }
 .merke {
   flex: none;
-  width: 17cqw;
+  width: 18cqw;
   aspect-ratio: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2.6cqw;
-  border-radius: 0.4cqw;
+  padding: 3cqw;
+  border-radius: 0.5cqw;
   background: #d5dbdc;
 }
 .navn {
   display: flex;
   flex-direction: column;
-  font-size: 5.3cqw;
+  font-size: 6.7cqw;
   font-weight: 600;
   line-height: 1.12;
   letter-spacing: 0.015em;
@@ -550,14 +533,14 @@
   color: #e8edee;
   white-space: nowrap;
 }
-/* Snow along the arm and the top of the board in winter */
+/* Snow on top of the board in winter */
 .sno {
   position: absolute;
-  left: -0.4cqw;
-  right: -0.4cqw;
-  top: -1.1cqw;
-  height: 1.8cqw;
-  border-radius: 1cqw 1cqw 0.3cqw 0.3cqw;
+  left: -0.5cqw;
+  right: -0.5cqw;
+  top: -1.4cqw;
+  height: 2.2cqw;
+  border-radius: 1.2cqw 1.2cqw 0.3cqw 0.3cqw;
   background: #ffffff;
   opacity: 0;
   transition: opacity 1.6s ease 1s;
