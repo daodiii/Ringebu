@@ -54,12 +54,13 @@
   top: 0;
   left: 0;
   width: 100%;
-  /* Taller than the frame, hung from its top: the foot of the photo, most of
-     it the lookout's concrete, falls below the hero and the river gets the
-     room instead. */
-  height: 120%;
+  /* Taller than the frame, hung from its top: the foot of the photo, the
+     lookout's concrete, falls below the hero, and the fields and the far side
+     of the valley get the room. The crop (far-tall, near-tall) lies right of
+     the middle, so the river shows only at the left edge. */
+  height: 132%;
   object-fit: cover;
-  object-position: 56% 0%;
+  object-position: 42% 0%;
 }
 @media (min-aspect-ratio: 1/1) {
   .frame img {
@@ -130,29 +131,64 @@
   }
 }
 
-/* A light veil only where the words and the menu sit: the top of the sky,
-   and on a phone the band the words cover. The river and the lookout stay
-   at full strength. */
+/* The words are deep ink, which the measurements favour: the name sits on
+   bright sky and cloud, where white text failed on 60-100% of it. Each letter
+   carries a soft glow of paper, and a small haze sits behind the words only
+   where the photo darkens under them (the birch leaves by the name on a
+   desktop, the mountainside under the line beneath it). The menu keeps a thin
+   band of paper at the top. The rest of the photo is at full strength. */
+.ord {
+  text-shadow:
+    0 0 2px rgba(var(--paper), 0.85),
+    0 0 12px rgba(var(--paper), 0.6),
+    0 0 28px rgba(var(--paper), 0.45);
+}
+/* The mask a line of the name rises through: it clips while the line rises,
+   then opens, so the glow round the letters is not cut off in a box. */
+.maske {
+  clip-path: inset(-1em);
+  animation: pano-maske 1ms linear backwards;
+}
+@keyframes pano-maske {
+  from {
+    clip-path: inset(0 -1em);
+  }
+}
 .veil {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background:
-    linear-gradient(
-      to bottom,
-      rgba(var(--paper), 0.9) 0px,
-      rgba(var(--paper), 0.8) 150px,
-      rgba(var(--paper), 0.7) 330px,
-      rgba(var(--paper), 0.3) 400px,
-      rgba(var(--paper), 0) 470px
-    );
+  background: linear-gradient(
+    to bottom,
+    rgba(var(--paper), 0.82) 0px,
+    rgba(var(--paper), 0.55) 120px,
+    rgba(var(--paper), 0.3) 300px,
+    rgba(var(--paper), 0.42) 380px,
+    rgba(var(--paper), 0.38) 430px,
+    rgba(var(--paper), 0) 520px
+  );
 }
-@media (min-width: 768px) {
+@media (min-width: 768px) and (max-aspect-ratio: 1/1) {
+  .veil {
+    background: linear-gradient(
+      to bottom,
+      rgba(var(--paper), 0.82) 0px,
+      rgba(var(--paper), 0.55) 120px,
+      rgba(var(--paper), 0.3) 300px,
+      rgba(var(--paper), 0.5) 360px,
+      rgba(var(--paper), 0.45) 420px,
+      rgba(var(--paper), 0) 520px
+    );
+  }
+}
+/* Upright screens (phones, tablets held upright) keep the band above, which
+   follows the words down; wide screens get the small haze by the words. */
+@media (min-width: 768px) and (min-aspect-ratio: 1/1) {
   .veil {
     background:
-      linear-gradient(to bottom, rgba(var(--paper), 0.86) 0px, rgba(var(--paper), 0.5) 96px, rgba(var(--paper), 0) 200px),
-      radial-gradient(ellipse 56% 46% at 18% 34%, rgba(var(--paper), 0.86) 0%, rgba(var(--paper), 0.76) 46%, rgba(var(--paper), 0.32) 76%, rgba(var(--paper), 0) 100%),
-      linear-gradient(to top, rgba(var(--paper), 0.92) 0px, rgba(var(--paper), 0.6) 40px, rgba(var(--paper), 0) 110px);
+      linear-gradient(to bottom, rgba(var(--paper), 0.82) 0px, rgba(var(--paper), 0.45) 90px, rgba(var(--paper), 0) 170px),
+      radial-gradient(ellipse 36% 30% at 22% 42%, rgba(var(--paper), 0.62) 0%, rgba(var(--paper), 0.5) 50%, rgba(var(--paper), 0.18) 80%, rgba(var(--paper), 0) 100%),
+      linear-gradient(to top, rgba(var(--paper), 0.86) 0px, rgba(var(--paper), 0.5) 30px, rgba(var(--paper), 0) 70px);
   }
 }
 

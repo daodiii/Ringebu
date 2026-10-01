@@ -180,9 +180,10 @@ rgba = np.dstack([src, alpha])
 rgba[alpha == 0, :3] = 0
 Image.fromarray(rgba, "RGBA").save(OUT + "/near.webp", quality=86, alpha_quality=90, method=6)
 
-# Portrait screens get a crop of the middle, the river and the lookout, so a
+# Portrait screens get a crop right of the middle, the fields and the far
+# side of the valley with only an edge of the river, so a
 # phone is sent pixels it shows rather than a panorama it mostly cuts off
-TX0, TX1 = 1100, 2900
+TX0, TX1 = 1900, 3700
 Image.fromarray(np.ascontiguousarray(far[:, TX0:TX1])).save(OUT + "/far-tall.webp", quality=84, method=6)
 Image.fromarray(np.ascontiguousarray(rgba[:, TX0:TX1]), "RGBA").save(OUT + "/near-tall.webp", quality=86, alpha_quality=90, method=6)
 

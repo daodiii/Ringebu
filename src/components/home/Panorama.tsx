@@ -165,13 +165,15 @@ export function Panorama() {
           On a phone they start below the sign (72 + 117px), with some air. */}
       <div className={`${s.words} mx-auto w-full max-w-[var(--container-max,1280px)] px-[var(--container-px,24px)] pt-[clamp(212px,28svh,232px)] md:pt-[clamp(150px,22svh,230px)]`}>
         <div className="max-w-full lg:max-w-[50%]">
-          <h1 style={{ fontSize: "clamp(40px, 6vw, 92px)", lineHeight: 0.96, letterSpacing: "-0.05em" }} className="text-[var(--color-ink)]">
+          <h1 style={{ fontSize: "clamp(40px, 6vw, 92px)", lineHeight: 0.96, letterSpacing: "-0.05em" }} className={`${s.ord} text-[var(--color-ink)]`}>
             <span className="sr-only">Ringebu Tannlegesenter</span>
             {[
               { text: "Ringebu", weight: 700 },
               { text: "Tannlegesenter", weight: 400 },
             ].map((line, li) => (
-              <span key={li} aria-hidden="true" className="block overflow-hidden">
+              // The mask the line rises through opens once the line is in, so
+              // the glow round the letters is never cut off in a box
+              <span key={li} aria-hidden="true" className={`${s.maske} block`} style={{ animationDelay: `${(115 + li * 11) / 100}s` }}>
                 {/* The padding gives the g of Ringebu room below the line inside the mask */}
                 <span className="hero-line inline-block pb-[0.08em]" style={{ animationDelay: `${0.3 + li * 0.11}s`, fontWeight: line.weight }}>
                   {line.text}
@@ -181,7 +183,7 @@ export function Panorama() {
           </h1>
 
           <p
-            className="hero-lift mt-4 max-w-[34ch] text-[24px] font-light leading-[1.25] tracking-[-0.02em] text-[var(--color-ink)] md:mt-5 md:text-[30px]"
+            className={`${s.ord} hero-lift mt-4 max-w-[34ch] text-[24px] font-medium leading-[1.25] tracking-[-0.02em] text-[var(--color-ink)] md:mt-5 md:text-[30px]`}
             style={{ animationDelay: "0.6s", "--from-y": "10px" } as CSSProperties}
           >
             Hos oss er alle velkomne
