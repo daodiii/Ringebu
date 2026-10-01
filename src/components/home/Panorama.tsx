@@ -15,8 +15,8 @@ import s from "./panorama/panorama.module.css";
 /**
  * «Panorama». The hero is the view from the lookout above Ringebu: the river
  * Lågen running down Gudbrandsdalen under a summer sky, edge to edge and at
- * full strength. The words sit in the sky, each line with a little haze of
- * paper just behind its letters and nowhere else. The clinic's own sign hangs
+ * full strength. The words are white, each line with a little dark haze
+ * just behind its letters and nowhere else. The clinic's own sign hangs
  * in that sky by the top right corner, under the menu.
  *
  * The photograph is split in two depths: the far valley, and the near things
@@ -164,7 +164,7 @@ export function Panorama() {
           On a phone they start below the sign (72 + 117px), with some air. */}
       <div className={`${s.words} mx-auto w-full max-w-[var(--container-max,1280px)] px-[var(--container-px,24px)] pt-[clamp(212px,28svh,232px)] md:pt-[clamp(150px,22svh,230px)]`}>
         <div className="max-w-full lg:max-w-[50%]">
-          <h1 style={{ fontSize: "clamp(40px, 6vw, 92px)", lineHeight: 0.96, letterSpacing: "-0.05em" }} className={`${s.ord} text-[var(--color-ink)]`}>
+          <h1 style={{ fontSize: "clamp(40px, 6vw, 92px)", lineHeight: 0.96, letterSpacing: "-0.05em" }} className={`${s.ord} text-white`}>
             <span className="sr-only">Ringebu Tannlegesenter</span>
             {[
               { text: "Ringebu", weight: 700 },
@@ -183,7 +183,7 @@ export function Panorama() {
           </h1>
 
           <p
-            className={`${s.ord} hero-lift relative mt-4 w-fit max-w-[34ch] text-[24px] font-medium leading-[1.25] tracking-[-0.02em] text-[var(--color-ink)] md:mt-5 md:text-[30px]`}
+            className={`${s.ord} hero-lift relative mt-4 w-fit max-w-[34ch] text-[24px] font-medium leading-[1.25] tracking-[-0.02em] text-white md:mt-5 md:text-[30px]`}
             style={{ animationDelay: "0.6s", "--from-y": "10px" } as CSSProperties}
           >
             <span className={s.dis} />
@@ -218,7 +218,7 @@ export function Panorama() {
 
       {/* ── Where and when, along the foot ── */}
       <div className="hero-fade absolute inset-x-0 bottom-0 z-20 hidden md:block" style={{ animationDelay: "2.4s" }}>
-        <div className="mx-auto flex w-full max-w-[var(--container-max,1280px)] flex-col items-start gap-1.5 px-[var(--container-px,24px)] py-3 font-mono text-[9.5px] uppercase tracking-[0.2em] text-[var(--color-ink)] lg:h-[38px] lg:flex-row lg:items-center lg:justify-between lg:gap-6 lg:py-0">
+        <div className="mx-auto flex w-full max-w-[var(--container-max,1280px)] flex-col items-start gap-1.5 px-[var(--container-px,24px)] py-3 font-mono text-[9.5px] uppercase tracking-[0.2em] text-white lg:h-[38px] lg:flex-row lg:items-center lg:justify-between lg:gap-6 lg:py-0">
           <span className={`${s.ord} ${s.liten} relative`}>
             <span className={s.dis} />
             Jernbanegata 4, 2630 Ringebu

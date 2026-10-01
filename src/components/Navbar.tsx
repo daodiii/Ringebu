@@ -58,10 +58,11 @@ export default function Navbar() {
             href="/"
             className={cn(
               "relative z-50 flex items-center gap-2.5 leading-none lg:gap-3",
-              // Over the hero's photograph the logo stands on a small haze of
-              // paper that fades out inside its own box
+              // On a desktop the hero puts birch leaves behind the logo, so
+              // there it stands on a small haze of paper that fades out inside
+              // its own box; a phone shows plain sky there
               overHero &&
-                "-mx-5 -my-3 px-5 py-3 bg-[radial-gradient(closest-side,rgba(252,249,242,0.82),rgba(252,249,242,0.62)_60%,rgba(252,249,242,0))]"
+                "lg:-mx-5 lg:-my-3 lg:px-5 lg:py-3 lg:bg-[radial-gradient(closest-side,rgba(252,249,242,0.82),rgba(252,249,242,0.62)_60%,rgba(252,249,242,0))]"
             )}
           >
             <Image
