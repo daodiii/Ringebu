@@ -7,8 +7,9 @@ import { ArrowRight } from "lucide-react";
 import { PaperShadow } from "@/components/behandlinger/scenes/Papir";
 import { r2, useLean, useShift } from "@/components/home/landskap";
 import {
-  BANE, CLOUD, DAL, FJELL1, FJELL2, FRONT, H, LIA, LIP, NAER, SNOW_BANK, SUN_X, TRAIN, TRAIN_BOX, W,
+  BANE, CLOUD, DAL, FJELL1, FJELL2, FRONT, H, LIA, LIP, NAER, SNOW_BANK, SUN_X, TRAIN, TRAIN_BOX, W, vei,
 } from "./dalen/art";
+import { Skilt } from "./dalen/Skilt";
 import { BALER, animalsOn, type Season } from "./dalen/dyr";
 import s from "./dalen/dalen.module.css";
 
@@ -16,8 +17,8 @@ import s from "./dalen/dalen.module.css";
  * «Dalen». The hero is Gudbrandsdalen at Ringebu cut from paper, seen across
  * the valley: fjell, the forested far side with its farms, the Dovrebanen
  * line, the river Lågen winding through the fields, and this side's meadow
- * with the clinic's little sign on a post by the road. The words sit in the
- * sky above.
+ * with the clinic's sign hanging from a post by the road, big enough to read
+ * the name on it. The words sit in the sky above.
  *
  * On load the sheets stand up one by one, back to front, and the sun comes
  * up behind the fjell. Then the year turns by itself, a season every few
@@ -124,6 +125,14 @@ const SNOW_ART = (
     </svg>
   </div>
 );
+
+/**
+ * Where the sign stands, in strip units: its post on the road, the board
+ * hanging left of it. A phone shows only about x 785 to 1615 of the strip, so
+ * the post stands left of that edge.
+ */
+const SIGN = { x: 1080, w: 470, top: 560 };
+const SIGN_FOOT = r2(vei(SIGN.x + SIGN.w * 0.927) + 4);
 
 const ANIMALS_DAL = animalsOn("dal");
 const ANIMALS_NAER = animalsOn("naer");
@@ -298,7 +307,20 @@ export function Dalen() {
               {BANE}
             </Ark>
             <Ark n={4} x={x4} over={<>{BALER}{ANIMALS_DAL}</>}>{DAL}</Ark>
-            <Ark n={5} x={x5} over={ANIMALS_NAER}>{NAER}</Ark>
+            <Ark
+              n={5}
+              x={x5}
+              over={
+                <>
+                  {ANIMALS_NAER}
+                  <div className="absolute" style={box(SIGN.x, SIGN.top, SIGN.w, SIGN_FOOT - SIGN.top)}>
+                    <Skilt reduced={reduced} />
+                  </div>
+                </>
+              }
+            >
+              {NAER}
+            </Ark>
             <Ark n={6} x={x6} over={SNOW_ART}>{FRONT}</Ark>
             <Ark n={7} x={x6} shadow={false}>{LIP}</Ark>
           </div>

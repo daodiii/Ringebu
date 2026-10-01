@@ -2,17 +2,18 @@
 
 import Image from "next/image";
 import { useRef } from "react";
-import { animate, motion, useMotionValue, type MotionValue } from "framer-motion";
-import s from "./buen.module.css";
+import { animate, motion, useMotionValue } from "framer-motion";
+import s from "./dalen.module.css";
 
 /**
- * The clinic's sign, as it hangs outside: a dark board on two chains from a
- * round iron bar, the tooth on a pale square and the name beside it. Here it
- * hangs from the crown of the arch, in front of the view. Brush past it and
- * it swings on its chains, and settles again.
+ * The clinic's sign, as it hangs outside the door in Jernbanegata: a dark
+ * board on two chains from a round iron bar, the tooth on a pale square and
+ * the name beside it. Here the bar is the arm of a post by the road, so the
+ * valley shows where the clinic is. Brush past it or tap it and it swings on
+ * its chains, then settles; in winter snow lies along the arm and the board.
  *
- * The swing is two springs (framer) on the board alone; the unfolding and the
- * slight sway in the air are CSS, so they play without the page's script.
+ * Sizes are in cqw of the sign's own box, which is placed on the strip in
+ * strip units (Dalen.tsx), so the sign grows and shrinks with the valley.
  */
 
 /** One chain, a column of links seen face on and edge on in turn. */
@@ -31,7 +32,7 @@ function Lenke() {
   );
 }
 
-export function Skilt({ x, reduced }: { x: MotionValue<string>; reduced: boolean }) {
+export function Skilt({ reduced }: { reduced: boolean }) {
   const rotX = useMotionValue(0);
   const rotZ = useMotionValue(0);
   const lastPush = useRef(0);
@@ -45,7 +46,7 @@ export function Skilt({ x, reduced }: { x: MotionValue<string>; reduced: boolean
     const speed = Math.min(40, Math.hypot(dx, dy));
     if (speed < 1.5) return;
     // The board swings about its bar, mostly towards you and away; a sideways
-    // brush rocks it a little too.
+    // brush rocks it a little too, as far as the two chains let it.
     const dir = dy < 0 || (dy === 0 && dx > 0) ? 1 : -1;
     animate(rotX, 0, {
       type: "spring",
@@ -53,7 +54,6 @@ export function Skilt({ x, reduced }: { x: MotionValue<string>; reduced: boolean
       damping: 1.5,
       velocity: Math.max(-260, Math.min(260, rotX.getVelocity() + dir * (60 + speed * 5))),
     });
-    // Two chains keep it from turning much in its own plane: a rock of a degree or two.
     animate(rotZ, 0, {
       type: "spring",
       stiffness: 34,
@@ -63,10 +63,13 @@ export function Skilt({ x, reduced }: { x: MotionValue<string>; reduced: boolean
   };
 
   return (
-    <motion.div aria-hidden="true" className={s.skilt} style={{ x }}>
-      {/* The hanger from the crown, and the round bar */}
-      <span className={s.stang} />
-      <span className={s.bom} />
+    <div aria-hidden="true" className={s.skilt}>
+      {/* The post by the road, its arm and the brace under it */}
+      <span className={s.stolpe} />
+      <span className={s.stag} />
+      <span className={s.bom}>
+        <span className={s.sno} />
+      </span>
       <motion.div
         className={s.sving}
         style={{ rotateX: rotX, rotate: rotZ, transformPerspective: 700 }}
@@ -78,15 +81,16 @@ export function Skilt({ x, reduced }: { x: MotionValue<string>; reduced: boolean
       >
         <div className={s.utfold}>
           <div className={s.vugge}>
-            <span className={`${s.lenke} left-[14%]`}>
+            <span className={`${s.lenke} left-[13%]`}>
               <Lenke />
             </span>
-            <span className={`${s.lenke} right-[14%]`}>
+            <span className={`${s.lenke} right-[13%]`}>
               <Lenke />
             </span>
             <div className={s.tavle}>
+              <span className={s.sno} />
               <span className={s.merke}>
-                <Image src="/images/logo-mark.png" alt="" width={217} height={200} sizes="64px" className="h-auto w-full" />
+                <Image src="/images/logo-mark.png" alt="" width={217} height={200} sizes="80px" className="h-auto w-full" />
               </span>
               <span className={s.navn}>
                 <span>Ringebu</span>
@@ -96,6 +100,6 @@ export function Skilt({ x, reduced }: { x: MotionValue<string>; reduced: boolean
           </div>
         </div>
       </motion.div>
-    </motion.div>
+    </div>
   );
 }

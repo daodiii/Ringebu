@@ -1,4 +1,4 @@
-import { Hero } from "@/components/home/Hero";
+import { Dalen } from "@/components/home/Dalen";
 import { TreatmentsSlipcase } from "@/components/home/TreatmentsSlipcase";
 import { Vardene } from "@/components/home/Vardene";
 import { Bildeboka } from "@/components/symptomer/Bildeboka";
@@ -10,7 +10,7 @@ export const metadata = { title: "Forsiden · papirteater i boksene", robots: { 
 export default function Page() {
   return (
     <main>
-      <Hero />
+      <Dalen />
       <TreatmentsSlipcase />
       <Vardene />
       <Bildeboka />

@@ -1,6 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import { NoShadow } from "@/components/behandlinger/scenes/Papir";
-import { Tannskilt, bumpy, lip, r2, rng } from "@/components/home/landskap";
+import { bumpy, lip, r2, rng } from "@/components/home/landskap";
 
 /**
  * Gudbrandsdalen at Ringebu, seen across the valley from the hillside on this
@@ -133,7 +133,7 @@ const dal: Fn = (x) => 714 + 3 * Math.sin(x / 210);
 const elv: Fn = (x) => 762 + 13 * Math.sin(x / 250 + 0.6) + 5 * Math.sin(x / 90);
 const elvW: Fn = (x) => 10 + 4 * Math.sin(x / 330 + 2);
 const naer: Fn = (x) => 798 + 7 * Math.sin(x / 280) - 16 * g(x, 1760, 200);
-const vei: Fn = (x) => 902 - x * 0.022 + 5 * Math.sin(x / 200);
+export const vei: Fn = (x) => 902 - x * 0.022 + 5 * Math.sin(x / 200);
 const front: Fn = (x) => 920 - 116 * g(x, 40, 250) - 92 * g(x, 2390, 240) - 22 * g(x, 780, 170) - 18 * g(x, 1700, 160) + 4 * Math.sin(x / 53);
 const LIP_Y = 944;
 
@@ -476,10 +476,9 @@ export const DAL = (
   </>
 );
 
-/* ── 5 · This side: the meadow, the road and the clinic's sign, a stand of spruce ── */
+/* ── 5 · This side: the meadow, the road and a stand of spruce (the clinic's sign is Skilt.tsx) ── */
 
 const ROAD = between((x) => vei(x) - 6.5, (x) => vei(x) + 6.5, X0, X1, 12);
-const SIGN = { x: 1452, y: r2(vei(1452) - 8) };
 const ENG: Bag = new Map();
 [
   { a: 380, b: 640, v: "ak3" }, { a: 652, b: 820, v: "ak1" }, { a: 1960, b: 2200, v: "ak4" }, { a: 2212, b: 2470, v: "ak1" },
@@ -498,7 +497,6 @@ export const NAER = (
     {drawn(KLYNGE, 5)}
     {drawn(RAKKE, 5)}
     <path d={ROAD} style={c("vei", td(1300, 5))} />
-    <Tannskilt x={SIGN.x} y={SIGN.y} scale={1.55} />
     <Edge fn={naer} o={0.45} />
   </>
 );
