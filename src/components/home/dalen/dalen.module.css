@@ -533,6 +533,56 @@
   color: #e8edee;
   white-space: nowrap;
 }
+/* On a desktop: hung by the top right corner from two hooks just under the
+   menu (the menu is see-through over the hero, so chains from the very top
+   ran across its links), chains straight down to the board. The box is
+   placed by Dalen.tsx; it swings about the hooks. */
+.skilt.tak {
+  top: 0;
+  left: auto;
+  right: 0;
+  width: clamp(260px, 21vw, 340px);
+  aspect-ratio: 100 / 58;
+}
+.feste {
+  position: absolute;
+  top: -0.6cqw;
+  width: 6cqw;
+  height: 1.8cqw;
+  border-radius: 0.5cqw;
+  background: #2a3138;
+  box-shadow: 0 0.6cqw 0 rgba(14, 42, 48, 0.13);
+}
+.festeL {
+  left: 6.7cqw;
+}
+.festeR {
+  right: 6.7cqw;
+}
+.tak .sving {
+  top: 0;
+  height: 58cqw;
+}
+.tak .utfold {
+  animation-delay: 1s;
+}
+.tak .lenke {
+  left: auto;
+  height: 27.5cqw;
+  transform: none;
+}
+.tak .lenkeL {
+  left: 8.4cqw;
+}
+.tak .lenkeR {
+  right: 8.4cqw;
+}
+.tak .tavle {
+  left: 0;
+  right: 0;
+  top: 27cqw;
+  height: 31cqw;
+}
 /* Snow on top of the board in winter */
 .sno {
   position: absolute;

@@ -7,13 +7,14 @@ import s from "./dalen.module.css";
 
 /**
  * The clinic's sign, as it hangs outside the door in Jernbanegata: a dark
- * board with the tooth on a pale square and the name beside it. Here it hangs
- * from a ring under «Bestill time», on two chains spread to its corners, in
- * the sky under the words, so the valley keeps its view. Brush past it or tap
- * it and it swings about the ring, then settles; in winter snow lies on top.
+ * board with the tooth on a pale square and the name beside it, hung where it
+ * hides none of the valley. On a phone or a tablet (`knapp`) it hangs from a
+ * ring under «Bestill time», on two chains spread to its corners. On a desktop
+ * (`tak`) it hangs from two hooks under the menu, in the empty sky by the
+ * top right corner. Brush past it or tap it and it swings, then
+ * settles; in winter snow lies on top.
  *
- * Sizes are in cqw of the sign's own box (the button's width and a little
- * either side), so it scales with the button.
+ * Sizes are in cqw of the sign's own box, so it scales with that box.
  */
 
 /** One chain, a column of links seen face on and edge on in turn. */
@@ -32,7 +33,7 @@ function Lenke() {
   );
 }
 
-export function Skilt({ reduced }: { reduced: boolean }) {
+export function Skilt({ reduced, heng }: { reduced: boolean; heng: "knapp" | "tak" }) {
   const rotX = useMotionValue(0);
   const rotZ = useMotionValue(0);
   const lastPush = useRef(0);
@@ -63,8 +64,15 @@ export function Skilt({ reduced }: { reduced: boolean }) {
   };
 
   return (
-    <span aria-hidden="true" className={s.skilt}>
-      <span className={s.ring} />
+    <span aria-hidden="true" className={`${s.skilt} ${heng === "tak" ? s.tak : ""}`}>
+      {heng === "knapp" ? (
+        <span className={s.ring} />
+      ) : (
+        <>
+          <span className={`${s.feste} ${s.festeL}`} />
+          <span className={`${s.feste} ${s.festeR}`} />
+        </>
+      )}
       <motion.span
         className={s.sving}
         style={{ rotateX: rotX, rotate: rotZ, transformPerspective: 700 }}
@@ -76,10 +84,10 @@ export function Skilt({ reduced }: { reduced: boolean }) {
       >
         <span className={s.utfold}>
           <span className={s.vugge}>
-            <span className={`${s.lenke} ${s.lenkeV}`}>
+            <span className={`${s.lenke} ${heng === "tak" ? s.lenkeL : s.lenkeV}`}>
               <Lenke />
             </span>
-            <span className={`${s.lenke} ${s.lenkeH}`}>
+            <span className={`${s.lenke} ${heng === "tak" ? s.lenkeR : s.lenkeH}`}>
               <Lenke />
             </span>
             <span className={s.tavle}>

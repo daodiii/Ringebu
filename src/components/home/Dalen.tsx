@@ -17,8 +17,10 @@ import s from "./dalen/dalen.module.css";
  * «Dalen». The hero is Gudbrandsdalen at Ringebu cut from paper, seen across
  * the valley: fjell, the forested far side with its farms, the Dovrebanen
  * line, the river Lågen winding through the fields, and this side's meadow
- * The words sit in the sky above, and from «Bestill time» hangs the clinic's
- * own sign, big enough to read the name on it, where it hides none of the view.
+ * The words sit in the sky above. The clinic's own sign, big enough to read
+ * the name on it, hangs where it hides none of the view: from «Bestill time» on
+ * a phone or a tablet, from the top of the hero by the top right corner on a
+ * desktop.
  *
  * On load the sheets stand up one by one, back to front, and the sun comes
  * up behind the fjell. Then the year turns by itself, a season every few
@@ -335,9 +337,10 @@ export function Dalen() {
             className="hero-lift pointer-events-auto mt-8 flex flex-wrap items-center gap-2.5"
             style={{ animationDelay: "0.65s", "--from-y": "12px" } as CSSProperties}
           >
-            {/* The sign hangs from a ring under the button; --heng is how far it
-                reaches past the button either side: up to 64px, but never closer
-                than 4px to the edge of the screen, which is near on a phone. */}
+            {/* Below lg the sign hangs from a ring under the button; --heng is
+                how far it reaches past the button either side: up to 64px, but
+                never closer than 4px to the edge of the screen, which is near on
+                a phone. */}
             <span className="relative inline-flex [--heng:min(64px,calc(max(var(--container-px,24px),(100vw-var(--container-max,1280px))/2+var(--container-px,24px))-4px))]">
               <Link
                 href="/kontakt"
@@ -346,7 +349,9 @@ export function Dalen() {
                 Bestill time
                 <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
               </Link>
-              <Skilt reduced={reduced} />
+              <span className="lg:hidden">
+                <Skilt reduced={reduced} heng="knapp" />
+              </span>
             </span>
             <a
               href="tel:61280412"
@@ -354,6 +359,16 @@ export function Dalen() {
             >
               61 28 04 12
             </a>
+          </div>
+        </div>
+      </div>
+
+      {/* On a desktop the sign hangs just under the menu (72px), by the top
+          right corner, in front of the sky and clear of the valley */}
+      <div className="pointer-events-none absolute inset-x-0 top-[72px] z-30 hidden lg:block">
+        <div className="relative mx-auto w-full max-w-[var(--container-max,1280px)]">
+          <div className="absolute right-[var(--container-px,24px)] top-0">
+            <Skilt reduced={reduced} heng="tak" />
           </div>
         </div>
       </div>
