@@ -48,22 +48,17 @@ export default function Navbar() {
         className={cn(
           "fixed inset-x-0 top-0 z-50 text-[var(--color-text-primary)] transition-[background-color,backdrop-filter] duration-500",
           overHero
-            ? // Over the hero's photograph the letters carry a glow of paper
-              "bg-transparent [text-shadow:0_0_2px_rgba(252,249,242,0.9),0_0_10px_rgba(252,249,242,0.75),0_0_22px_rgba(252,249,242,0.5)] [&_img]:drop-shadow-[0_0_8px_rgba(252,249,242,0.85)]"
+            ? // Over the hero's photograph a phone shows plain sky behind the
+              // menu, so there it is see-through, its letters with a glow of
+              // paper; a desktop puts birch leaves there, so it keeps its bar
+              "bg-transparent [text-shadow:0_0_2px_rgba(252,249,242,0.9),0_0_10px_rgba(252,249,242,0.75),0_0_22px_rgba(252,249,242,0.5)] [&_img]:drop-shadow-[0_0_8px_rgba(252,249,242,0.85)] lg:bg-[var(--color-paper)] lg:border-b lg:border-[var(--color-rule)] lg:[text-shadow:none] lg:[&_img]:drop-shadow-none"
             : "bg-[var(--color-paper)]/90 backdrop-blur-md border-b border-[var(--color-rule)]"
         )}
       >
         <div className="mx-auto flex w-full max-w-[var(--container-max,1280px)] items-center justify-between px-[var(--container-px,24px)] py-4 lg:py-2.5">
           <Link
             href="/"
-            className={cn(
-              "relative z-50 flex items-center gap-2.5 leading-none lg:gap-3",
-              // On a desktop the hero puts birch leaves behind the logo, so
-              // there it stands on a small haze of paper that fades out inside
-              // its own box; a phone shows plain sky there
-              overHero &&
-                "lg:-mx-5 lg:-my-3 lg:px-5 lg:py-3 lg:bg-[radial-gradient(closest-side,rgba(252,249,242,0.82),rgba(252,249,242,0.62)_60%,rgba(252,249,242,0))]"
-            )}
+            className="relative z-50 flex items-center gap-2.5 leading-none lg:gap-3"
           >
             <Image
               src="/images/logo-mark.png"
