@@ -2,6 +2,8 @@
 
 .root {
   --paper: 252, 249, 242;
+  /* The shade behind the white words */
+  --skygge: 10, 30, 34;
   /* Where the camera looks: the river, just above the lookout */
   --ox: 50%;
   --oy: 60%;
@@ -133,35 +135,39 @@
 
 /* The words are white, at the owner's request. White alone vanished on the
    bright sky and cloud behind the name (measured: under 3:1 on 60-100% of
-   it), so each letter carries a soft dark shadow and each line a small dark
-   haze just behind its own letters, nothing between the lines and nothing
-   anywhere else. The photo runs at full strength to every edge. The haze is
-   one gradient across and one (as a mask) up and down, so it fades out on
-   all four sides with no edge. */
+   it), so each letter carries a soft dark shadow, and the name and the line
+   under it share one patch of shade, like a cloud's shadow on the sky. It is
+   an ellipse that holds its strength across all the letters and fades out
+   well past them, so it has no edge and no bands. A band per line (until
+   2026-10) left lighter sky between the lines and faded out on the first and
+   last letters: white fell under 3:1 on up to 11% of a line; this way 0-1%.
+   The photo runs at full strength everywhere else. */
 .ord {
-  --skygge: 10, 30, 34;
   text-shadow:
     0 1px 2px rgba(var(--skygge), 0.55),
     0 0 14px rgba(var(--skygge), 0.45),
     0 0 32px rgba(var(--skygge), 0.35);
 }
-.dis {
+.skygge {
   position: absolute;
-  inset: -0.18em -0.5em -0.12em -0.5em;
+  inset: -75% -37% -65%;
   z-index: -1;
   pointer-events: none;
-  background: linear-gradient(to right, rgba(var(--skygge), 0) 0%, rgba(var(--skygge), 0.58) 12%, rgba(var(--skygge), 0.58) 88%, rgba(var(--skygge), 0) 100%);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 30%, #000 70%, transparent 100%);
-  mask-image: linear-gradient(to bottom, transparent 0%, #000 30%, #000 70%, transparent 100%);
+  background: radial-gradient(closest-side, rgba(var(--skygge), 0.6) 0%, rgba(var(--skygge), 0.56) 50%, rgba(var(--skygge), 0.32) 74%, rgba(var(--skygge), 0.1) 90%, rgba(var(--skygge), 0) 100%);
 }
-/* The address line along the foot is small type: a tighter haze, a little
-   stronger. */
+/* The address and hours along the foot are small type: each line its own
+   tight haze, faded out on all four sides. */
 .liten {
   isolation: isolate;
 }
-.liten .dis {
+.dis {
+  position: absolute;
   inset: -0.9em -1.4em;
+  z-index: -1;
+  pointer-events: none;
   background: linear-gradient(to right, rgba(var(--skygge), 0) 0%, rgba(var(--skygge), 0.55) 10%, rgba(var(--skygge), 0.55) 90%, rgba(var(--skygge), 0) 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 30%, #000 70%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 30%, #000 70%, transparent 100%);
 }
 /* The mask a line of the name rises through: it clips while the line rises,
    then opens, so the glow round the letters is not cut off in a box. */

@@ -15,8 +15,8 @@ import s from "./panorama/panorama.module.css";
 /**
  * «Panorama». The hero is the view from the lookout above Ringebu: the river
  * Lågen running down Gudbrandsdalen under a summer sky, edge to edge and at
- * full strength. The words are white, each line with a little dark haze
- * just behind its letters and nowhere else. The clinic's own sign hangs
+ * full strength. The words are white, on one soft patch of shade in the sky
+ * just behind them, like the shadow of a cloud. The clinic's own sign hangs
  * in that sky by the top right corner, under the menu.
  *
  * The photograph is split in two depths: the far valley, and the near things
@@ -164,31 +164,32 @@ export function Panorama() {
           On a phone they start below the sign (72 + 117px), with some air. */}
       <div className={`${s.words} mx-auto w-full max-w-[var(--container-max,1280px)] px-[var(--container-px,24px)] pt-[clamp(212px,28svh,232px)] md:pt-[clamp(150px,22svh,230px)]`}>
         <div className="max-w-full lg:max-w-[50%]">
-          <h1 style={{ fontSize: "clamp(40px, 6vw, 92px)", lineHeight: 0.96, letterSpacing: "-0.05em" }} className={`${s.ord} text-white`}>
-            <span className="sr-only">Ringebu Tannlegesenter</span>
-            {[
-              { text: "Ringebu", weight: 700 },
-              { text: "Tannlegesenter", weight: 400 },
-            ].map((line, li) => (
-              // The mask the line rises through opens once the line is in, so
-              // the glow round the letters is never cut off in a box
-              <span key={li} aria-hidden="true" className={`${s.maske} relative block w-fit`} style={{ animationDelay: `${(115 + li * 11) / 100}s` }}>
-                <span className={`${s.dis} hero-fade`} style={{ animationDelay: `${0.3 + li * 0.11}s` }} />
-                {/* The padding gives the g of Ringebu room below the line inside the mask */}
-                <span className="hero-line inline-block pb-[0.08em]" style={{ animationDelay: `${0.3 + li * 0.11}s`, fontWeight: line.weight }}>
-                  {line.text}
+          <div className="relative w-fit">
+            <span aria-hidden="true" className={`${s.skygge} hero-fade`} style={{ animationDelay: "0.3s" }} />
+            <h1 style={{ fontSize: "clamp(40px, 6vw, 92px)", lineHeight: 0.96, letterSpacing: "-0.05em" }} className={`${s.ord} text-white`}>
+              <span className="sr-only">Ringebu Tannlegesenter</span>
+              {[
+                { text: "Ringebu", weight: 700 },
+                { text: "Tannlegesenter", weight: 400 },
+              ].map((line, li) => (
+                // The mask the line rises through opens once the line is in, so
+                // the glow round the letters is never cut off in a box
+                <span key={li} aria-hidden="true" className={`${s.maske} relative block w-fit`} style={{ animationDelay: `${(115 + li * 11) / 100}s` }}>
+                  {/* The padding gives the g of Ringebu room below the line inside the mask */}
+                  <span className="hero-line inline-block pb-[0.08em]" style={{ animationDelay: `${0.3 + li * 0.11}s`, fontWeight: line.weight }}>
+                    {line.text}
+                  </span>
                 </span>
-              </span>
-            ))}
-          </h1>
+              ))}
+            </h1>
 
-          <p
-            className={`${s.ord} hero-lift relative mt-4 w-fit max-w-[34ch] text-[24px] font-medium leading-[1.25] tracking-[-0.02em] text-white md:mt-5 md:text-[30px]`}
-            style={{ animationDelay: "0.6s", "--from-y": "10px" } as CSSProperties}
-          >
-            <span className={s.dis} />
-            Hos oss er alle velkomne
-          </p>
+            <p
+              className={`${s.ord} hero-lift mt-4 w-fit max-w-[34ch] text-[24px] font-medium leading-[1.25] tracking-[-0.02em] text-white md:mt-5 md:text-[30px]`}
+              style={{ animationDelay: "0.6s", "--from-y": "10px" } as CSSProperties}
+            >
+              Hos oss er alle velkomne
+            </p>
+          </div>
 
           <div
             className="hero-lift pointer-events-auto mt-7 flex flex-wrap items-center gap-2.5 md:mt-8"
