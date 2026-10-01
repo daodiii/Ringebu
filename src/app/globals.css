@@ -465,7 +465,7 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-text-primary);
 }
 
-/* ── Hero: the words' entrance (home/Dalen.tsx) ──
+/* ── Hero: the words' entrance (home/Panorama.tsx) ──
    The entrance is CSS so it starts at the first paint, not after the page's
    JavaScript has loaded. Each element brings its own animation-delay inline.
    The keyframes give only where it starts from; it ends on the element's

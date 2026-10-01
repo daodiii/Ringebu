@@ -1,0 +1,225 @@
+"use client";
+
+import { getImageProps, type StaticImageData } from "next/image";
+import Link from "next/link";
+import { useEffect, useRef, useSyncExternalStore, type CSSProperties, type PointerEvent } from "react";
+import { motion, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import far from "./panorama/far.webp";
+import farTall from "./panorama/far-tall.webp";
+import near from "./panorama/near.webp";
+import nearTall from "./panorama/near-tall.webp";
+import { Skilt } from "./panorama/Skilt";
+import s from "./panorama/panorama.module.css";
+
+/**
+ * «Panorama». The hero is the view from the lookout above Ringebu: the river
+ * Lågen running down Gudbrandsdalen under a summer sky, edge to edge and at
+ * full strength. The words sit in the sky, on a light veil that reaches only
+ * as far as they do. The clinic's own sign hangs in that sky by the top right
+ * corner, under the menu.
+ *
+ * The photograph is split in two depths: the far valley, and the near things
+ * (the birches, the concrete lookout, the path). Under the near layer the far
+ * one has them painted out, so the two can slide against each other.
+ *
+ * On the first paint the hero is paper with an arched window in it, close on
+ * the river. The window widens past the edges of the screen while the camera
+ * pulls back, the lookout shrinking faster than the valley, and the view
+ * settles. Then the two depths breathe against each other in one long round,
+ * and the pointer leans them. Scrolling away, the valley lags behind the
+ * lookout and the paper closes in around the view.
+ *
+ * Everything that moves moves by transform. The entrance is CSS, so it plays
+ * from the first paint; the breathing pauses while the hero is off screen.
+ */
+
+const REDUCE = "(prefers-reduced-motion: reduce)";
+function subscribeReduce(cb: () => void) {
+  const m = window.matchMedia(REDUCE);
+  m.addEventListener("change", cb);
+  return () => m.removeEventListener("change", cb);
+}
+
+/** Wide screens get the whole panorama; tall ones a crop of its middle. */
+function art(wide: StaticImageData, tall: StaticImageData) {
+  const common = { alt: "", loading: "eager", fetchPriority: "high" } as const;
+  const { props: { srcSet: wideSet } } = getImageProps({ ...common, sizes: "100vw", src: wide });
+  // The tall crop is shown about 1.5 screens wide: a phone at 3x gets the
+  // whole 1800px crop (about 320 kB for both depths), at 2x about 1200px.
+  const { props: { srcSet: tallSet, ...img } } = getImageProps({ ...common, sizes: "150vw", src: tall });
+  return { wideSet, tallSet, img };
+}
+const FAR = art(far, farTall);
+const NEAR = art(near, nearTall);
+
+function Photo({ a }: { a: ReturnType<typeof art> }) {
+  return (
+    <picture>
+      <source media="(min-aspect-ratio: 1/1)" srcSet={a.wideSet} sizes="100vw" />
+      <img {...a.img} srcSet={a.tallSet} alt="" />
+    </picture>
+  );
+}
+
+export function Panorama() {
+  const ref = useRef<HTMLElement | null>(null);
+  const reduced = useSyncExternalStore(subscribeReduce, () => window.matchMedia(REDUCE).matches, () => false);
+
+  // The pointer, -1..1 across the hero, eased
+  const px = useMotionValue(0);
+  const py = useMotionValue(0);
+  const sx = useSpring(px, { stiffness: 50, damping: 18, mass: 1 });
+  const sy = useSpring(py, { stiffness: 50, damping: 18, mass: 1 });
+  const farX = useTransform(sx, (v) => v * -7);
+  const farY = useTransform(sy, (v) => v * -4);
+  const nearX = useTransform(sx, (v) => v * -22);
+  const nearY = useTransform(sy, (v) => v * -10);
+
+  // Scrolling away: the valley lags, the paper closes in. The hero opens the
+  // page, so how far it has gone is the page's scroll over its height.
+  const heroH = useRef(900);
+  const { scrollY } = useScroll();
+  const scrollYProgress = useTransform(scrollY, (v) => Math.min(1, Math.max(0, v / heroH.current)));
+  const lag = useTransform(scrollYProgress, [0, 1], reduced ? ["0%", "0%"] : ["0%", "14%"]);
+  const closing = useTransform(scrollYProgress, [0, 0.18, 1], reduced ? [1, 1, 1] : [1, 1, 0.56]);
+
+  const onMove = (e: PointerEvent<HTMLElement>) => {
+    if (reduced || e.pointerType !== "mouse") return;
+    const r = e.currentTarget.getBoundingClientRect();
+    px.set(((e.clientX - r.left) / r.width) * 2 - 1);
+    py.set(((e.clientY - r.top) / r.height) * 2 - 1);
+  };
+  const onLeave = () => {
+    px.set(0);
+    py.set(0);
+  };
+
+  // Tell the floating nav when it is over the hero, and pause the loops
+  // while the hero is off screen.
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) window.dispatchEvent(new CustomEvent(e.isIntersecting ? "ringebu:hero-enter" : "ringebu:hero-exit"));
+      },
+      { threshold: 0.15 }
+    );
+    const on = new IntersectionObserver((entries) => {
+      el.dataset.on = String(entries[entries.length - 1].isIntersecting);
+    });
+    const size = new ResizeObserver(() => {
+      heroH.current = el.offsetHeight || 900;
+    });
+    io.observe(el);
+    on.observe(el);
+    size.observe(el);
+    return () => {
+      io.disconnect();
+      on.disconnect();
+      size.disconnect();
+    };
+  }, []);
+
+  return (
+    <section ref={ref} data-on="false" aria-label="Velkommen" className={s.root} onPointerMove={onMove} onPointerLeave={onLeave}>
+      {/* ── The view ── */}
+      <div aria-hidden="true" className={s.stage}>
+        <motion.div className={s.depth} style={{ y: lag }}>
+          <div className={`${s.dolly} ${s.dollyFar}`}>
+            <div className={`${s.idle} ${s.idleFar}`}>
+              <motion.div className={s.frame} style={{ x: farX, y: farY }}>
+                <Photo a={FAR} />
+              </motion.div>
+            </div>
+          </div>
+        </motion.div>
+        <div className={s.depth}>
+          <div className={`${s.dolly} ${s.dollyNear}`}>
+            <div className={`${s.idle} ${s.idleNear}`}>
+              <motion.div className={s.frame} style={{ x: nearX, y: nearY }}>
+                <Photo a={NEAR} />
+              </motion.div>
+            </div>
+          </div>
+        </div>
+        <div className={s.veil} />
+      </div>
+
+      {/* ── The paper the view opens out of, and closes back into ── */}
+      <motion.div aria-hidden="true" className={s.close} style={{ scale: closing }}>
+        <div className={s.arch}>
+          <div className={s.hole}>
+            <div className={s.cap}>
+              <span />
+            </div>
+            <div className={s.sideL} />
+            <div className={s.sideR} />
+            <div className={s.foot} />
+          </div>
+        </div>
+      </motion.div>
+
+      {/* ── The words, in the sky ──
+          On a phone they start below the sign (72 + 117px), with some air. */}
+      <div className={`${s.words} mx-auto w-full max-w-[var(--container-max,1280px)] px-[var(--container-px,24px)] pt-[clamp(212px,28svh,232px)] md:pt-[clamp(150px,22svh,230px)]`}>
+        <div className="max-w-full lg:max-w-[50%]">
+          <h1 style={{ fontSize: "clamp(40px, 6vw, 92px)", lineHeight: 0.96, letterSpacing: "-0.05em" }} className="text-[var(--color-ink)]">
+            <span className="sr-only">Ringebu Tannlegesenter</span>
+            {[
+              { text: "Ringebu", weight: 700 },
+              { text: "Tannlegesenter", weight: 400 },
+            ].map((line, li) => (
+              <span key={li} aria-hidden="true" className="block overflow-hidden">
+                {/* The padding gives the g of Ringebu room below the line inside the mask */}
+                <span className="hero-line inline-block pb-[0.08em]" style={{ animationDelay: `${0.3 + li * 0.11}s`, fontWeight: line.weight }}>
+                  {line.text}
+                </span>
+              </span>
+            ))}
+          </h1>
+
+          <p
+            className="hero-lift mt-4 max-w-[34ch] text-[24px] font-light leading-[1.25] tracking-[-0.02em] text-[var(--color-ink)] md:mt-5 md:text-[30px]"
+            style={{ animationDelay: "0.6s", "--from-y": "10px" } as CSSProperties}
+          >
+            Hos oss er alle velkomne
+          </p>
+
+          <div
+            className="hero-lift pointer-events-auto mt-7 flex flex-wrap items-center gap-2.5 md:mt-8"
+            style={{ animationDelay: "0.8s", "--from-y": "12px" } as CSSProperties}
+          >
+            <Link
+              href="/kontakt"
+              className="group inline-flex items-center gap-2 rounded-full bg-[var(--color-ink)] px-6 py-3.5 text-[13px] font-semibold text-white shadow-[0_10px_30px_-12px_rgba(14,42,48,0.5)] transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-14px_rgba(14,42,48,0.55)]"
+            >
+              Bestill time
+              <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
+            </Link>
+            <a
+              href="tel:61280412"
+              className="inline-flex items-center gap-2 rounded-full border border-[rgba(14,42,48,0.18)] bg-white/70 px-5 py-3.5 text-[13px] font-medium text-[var(--color-ink)] backdrop-blur-sm transition-colors duration-300 hover:border-[rgba(14,42,48,0.38)] hover:bg-white"
+            >
+              61 28 04 12
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* ── The clinic's sign, under the menu by the top right corner ── */}
+      <div className={s.skiltPlass}>
+        <Skilt reduced={reduced} />
+      </div>
+
+      {/* ── Where and when, along the foot ── */}
+      <div className="hero-fade absolute inset-x-0 bottom-0 z-20 hidden md:block" style={{ animationDelay: "2.4s" }}>
+        <div className="mx-auto flex w-full max-w-[var(--container-max,1280px)] flex-col items-start gap-1.5 px-[var(--container-px,24px)] py-3 font-mono text-[9.5px] uppercase tracking-[0.2em] text-[var(--color-ink)] lg:h-[38px] lg:flex-row lg:items-center lg:justify-between lg:gap-6 lg:py-0">
+          <span>Jernbanegata 4, 2630 Ringebu</span>
+          <span>Man 08.00–15.30 · Tir 08.30–18.00 · Ons 08.00–15.00 · Tor 09.00–18.00 · Fre 08.00–15.00</span>
+        </div>
+      </div>
+    </section>
+  );
+}

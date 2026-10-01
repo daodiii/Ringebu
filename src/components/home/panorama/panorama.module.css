@@ -1,0 +1,382 @@
+/* ── Panorama: the valley from the lookout over Lågen (Panorama.tsx) ── */
+
+.root {
+  --paper: 252, 249, 242;
+  /* Where the camera looks: the river, just above the lookout */
+  --ox: 50%;
+  --oy: 60%;
+  /* How small the arched window in the paper starts */
+  --s0: 0.44;
+  position: relative;
+  isolation: isolate;
+  height: 100svh;
+  min-height: 600px;
+  max-height: 1240px;
+  overflow: hidden;
+  background: rgb(var(--paper));
+}
+@media (min-width: 768px) {
+  .root {
+    --oy: 58%;
+    --s0: 0.3;
+    min-height: 640px;
+  }
+}
+@media (min-width: 1024px) {
+  .root {
+    --s0: 0.24;
+  }
+}
+
+/* ── The photograph, in two depths ── */
+.stage {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.depth,
+.dolly,
+.idle {
+  position: absolute;
+  inset: 0;
+}
+.dolly {
+  transform-origin: var(--ox) var(--oy);
+}
+/* The frame reaches past the hero on every side, so a layer can lean or
+   drift without showing its edge. */
+.frame {
+  position: absolute;
+  inset: -44px;
+}
+.frame img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  /* Taller than the frame, hung from its top: the foot of the photo, most of
+     it the lookout's concrete, falls below the hero and the river gets the
+     room instead. */
+  height: 120%;
+  object-fit: cover;
+  object-position: 56% 0%;
+}
+@media (min-aspect-ratio: 1/1) {
+  .frame img {
+    height: 110%;
+    object-position: 46% 0%;
+  }
+}
+
+/* The pull-back: the camera starts close on the river and backs away to the
+   whole view. The near things (the birches, the lookout) shrink further than
+   the valley, as they do when you step back. */
+.dollyFar {
+  animation: pano-dolly-far 3.8s cubic-bezier(0.3, 0, 0.12, 1) backwards;
+}
+.dollyNear {
+  animation: pano-dolly-near 3.8s cubic-bezier(0.3, 0, 0.12, 1) backwards;
+}
+@keyframes pano-dolly-far {
+  from {
+    transform: scale(1.2);
+  }
+}
+@keyframes pano-dolly-near {
+  from {
+    transform: scale(1.36);
+  }
+}
+
+/* Breathing: the near and far drift against each other, one long round,
+   so the depth shows even on a phone with no pointer. */
+.idleFar {
+  animation: pano-idle-far 26s ease-in-out 4s infinite;
+}
+.idleNear {
+  animation: pano-idle-near 26s ease-in-out 4s infinite;
+}
+.root:not([data-on="true"]) .idle {
+  animation-play-state: paused;
+}
+@keyframes pano-idle-far {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  25% {
+    transform: translate3d(3px, -1px, 0);
+  }
+  50% {
+    transform: translate3d(0, -2px, 0);
+  }
+  75% {
+    transform: translate3d(-3px, -1px, 0);
+  }
+}
+@keyframes pano-idle-near {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  25% {
+    transform: translate3d(-11px, 3px, 0);
+  }
+  50% {
+    transform: translate3d(0, 5px, 0);
+  }
+  75% {
+    transform: translate3d(11px, 3px, 0);
+  }
+}
+
+/* A light veil only where the words and the menu sit: the top of the sky,
+   and on a phone the band the words cover. The river and the lookout stay
+   at full strength. */
+.veil {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(var(--paper), 0.9) 0px,
+      rgba(var(--paper), 0.8) 150px,
+      rgba(var(--paper), 0.7) 330px,
+      rgba(var(--paper), 0.3) 400px,
+      rgba(var(--paper), 0) 470px
+    );
+}
+@media (min-width: 768px) {
+  .veil {
+    background:
+      linear-gradient(to bottom, rgba(var(--paper), 0.86) 0px, rgba(var(--paper), 0.5) 96px, rgba(var(--paper), 0) 200px),
+      radial-gradient(ellipse 56% 46% at 18% 34%, rgba(var(--paper), 0.86) 0%, rgba(var(--paper), 0.76) 46%, rgba(var(--paper), 0.32) 76%, rgba(var(--paper), 0) 100%),
+      linear-gradient(to top, rgba(var(--paper), 0.92) 0px, rgba(var(--paper), 0.6) 40px, rgba(var(--paper), 0) 110px);
+  }
+}
+
+/* ── The opening ──
+   On the first paint the hero is paper with an arched window in it, onto
+   the river. The window widens until its edges leave the screen. The paper
+   is four flat panels and a cap with the arch's curve; only their transform
+   moves. At rest the hole is wider and taller than the hero, so nothing of
+   the paper shows; scrolling away scales it back down, and the view closes
+   into a window as the next section comes up. */
+.close {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  transform-origin: 50% 36%;
+}
+.arch {
+  position: absolute;
+  inset: 0;
+  transform-origin: var(--ox) var(--oy);
+  animation: pano-open 2.5s cubic-bezier(0.76, 0, 0.18, 1) 0.35s backwards;
+}
+@keyframes pano-open {
+  from {
+    transform: scale(var(--s0));
+  }
+}
+/* The hole: 8% wider than the hero each side, from the top to past the foot.
+   The arch's curve sits on top of it, above the hero. */
+.hole {
+  position: absolute;
+  left: -8%;
+  right: -8%;
+  top: 0;
+  bottom: -6%;
+}
+.hole > * {
+  position: absolute;
+  background: rgb(var(--paper));
+}
+.cap {
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  aspect-ratio: 2 / 1;
+  background: radial-gradient(circle farthest-side at 50% 100%, rgba(var(--paper), 0) calc(100% - 1.5px), rgb(var(--paper)) 100%) !important;
+}
+.cap > span {
+  position: absolute;
+  left: -900vw;
+  right: -900vw;
+  /* The panels overlap a little, or their shared edges show as hairlines */
+  bottom: calc(100% - 3px);
+  height: 1800vh;
+  background: rgb(var(--paper));
+}
+.sideL,
+.sideR {
+  top: -1800vh;
+  bottom: -1800vh;
+  width: 900vw;
+}
+.sideL {
+  right: calc(100% - 1px);
+}
+.sideR {
+  left: calc(100% - 1px);
+}
+.foot {
+  left: -900vw;
+  right: -900vw;
+  top: calc(100% - 1px);
+  height: 1800vh;
+}
+
+/* ── The words ── */
+.words {
+  position: relative;
+  z-index: 20;
+  pointer-events: none;
+}
+
+/* ── The clinic's sign, hanging under the menu ── */
+.skiltPlass {
+  position: absolute;
+  z-index: 25;
+  top: 72px;
+  right: var(--container-px, 24px);
+  width: 150px;
+  pointer-events: none;
+}
+@media (min-width: 768px) {
+  .skiltPlass {
+    width: clamp(236px, 19vw, 320px);
+  }
+}
+@media (min-width: 1360px) {
+  .skiltPlass {
+    right: calc((100vw - var(--container-max, 1280px)) / 2 + var(--container-px, 24px));
+  }
+}
+.skilt {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 100 / 78;
+  container-type: inline-size;
+}
+.feste {
+  position: absolute;
+  top: -0.5cqw;
+  width: 7cqw;
+  height: 2cqw;
+  border-radius: 0.6cqw;
+  background: #2a3138;
+}
+.festeL {
+  left: 3.6cqw;
+}
+.festeR {
+  right: 2.8cqw;
+}
+.sving {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 0;
+  pointer-events: auto;
+}
+.utfold {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 0;
+  animation: pano-utfold 2.4s ease-in-out 3.1s backwards;
+}
+@keyframes pano-utfold {
+  0% {
+    transform: perspective(700px) rotateX(-96deg);
+    opacity: 0;
+    animation-timing-function: cubic-bezier(0.5, 0, 0.9, 0.5);
+  }
+  6% {
+    opacity: 1;
+  }
+  26% {
+    transform: perspective(700px) rotateX(26deg);
+  }
+  44% {
+    transform: perspective(700px) rotateX(-13deg);
+  }
+  61% {
+    transform: perspective(700px) rotateX(6.5deg);
+  }
+  77% {
+    transform: perspective(700px) rotateX(-3deg);
+  }
+  90% {
+    transform: perspective(700px) rotateX(1deg);
+  }
+  100% {
+    transform: perspective(700px) rotateX(0deg);
+  }
+}
+.vugge {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 0;
+  animation: pano-vugge 11s ease-in-out 7s infinite;
+}
+.root:not([data-on="true"]) .vugge {
+  animation-play-state: paused;
+}
+@keyframes pano-vugge {
+  0%,
+  100% {
+    transform: perspective(700px) rotateX(0deg) rotate(0deg);
+  }
+  35% {
+    transform: perspective(700px) rotateX(6deg) rotate(0.8deg);
+  }
+  70% {
+    transform: perspective(700px) rotateX(-3deg) rotate(-0.5deg);
+  }
+}
+/* Chains straight down to the board's own rings, at 7% and 94% of its width */
+.lenke {
+  position: absolute;
+  top: 0;
+  width: 2.6cqw;
+  height: 27.4cqw;
+}
+.lenkeL {
+  left: calc(7.5cqw - 1.3cqw);
+}
+.lenkeR {
+  left: calc(93.9cqw - 1.3cqw);
+}
+.tavle {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 26cqw;
+  aspect-ratio: 934 / 482;
+  border-radius: 0.6cqw;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(8, 20, 26, 0.3),
+    0 1.6cqw 2.4cqw -1cqw rgba(14, 42, 48, 0.35);
+}
+.tavle img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dolly,
+  .idle,
+  .arch,
+  .utfold,
+  .vugge {
+    animation: none !important;
+  }
+  .close {
+    display: none;
+  }
+}
