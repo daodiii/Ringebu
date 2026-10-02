@@ -9,15 +9,13 @@ import far from "./panorama/far.webp";
 import farTall from "./panorama/far-tall.webp";
 import near from "./panorama/near.webp";
 import nearTall from "./panorama/near-tall.webp";
-import { Skilt } from "./panorama/Skilt";
 import s from "./panorama/panorama.module.css";
 
 /**
  * «Panorama». The hero is the view from the lookout above Ringebu: the river
  * Lågen running down Gudbrandsdalen under a summer sky, edge to edge and at
  * full strength. The words are white, on one soft patch of shade in the sky
- * just behind them, like the shadow of a cloud. The clinic's own sign hangs
- * in that sky by the top right corner, under the menu.
+ * just behind them, like the shadow of a cloud.
  *
  * The photograph is split in two depths: the far valley, and the near things
  * (the birches, the concrete lookout, the path). Under the near layer the far
@@ -45,9 +43,10 @@ function subscribeReduce(cb: () => void) {
 function art(wide: StaticImageData, tall: StaticImageData) {
   const common = { alt: "", loading: "eager", fetchPriority: "high" } as const;
   const { props: { srcSet: wideSet } } = getImageProps({ ...common, sizes: "100vw", src: wide });
-  // The tall crop is shown about 1.5 screens wide: a phone at 3x gets the
-  // whole 1800px crop (about 320 kB for both depths), at 2x about 1200px.
-  const { props: { srcSet: tallSet, ...img } } = getImageProps({ ...common, sizes: "150vw", src: tall });
+  // The tall crop is hung 132% of the frame's height (the hero plus 88px),
+  // which makes it 1.18 times that wide: about 1100px on a phone, three
+  // screens wide. A 2x phone gets 2048px of the 2880px crop, a 3x one all of it.
+  const { props: { srcSet: tallSet, ...img } } = getImageProps({ ...common, sizes: "calc(118vh + 104px)", src: tall });
   return { wideSet, tallSet, img };
 }
 const FAR = art(far, farTall);
@@ -190,8 +189,7 @@ export function Panorama() {
         </div>
       </motion.div>
 
-      {/* ── The words, in the sky ──
-          On a phone they start below the sign (72 + 117px), with some air. */}
+      {/* ── The words, in the sky ── */}
       <div className={`${s.words} ${WORDS_BOX}`}>
         <div className="max-w-full lg:max-w-[50%]">
           <div className="w-fit">
@@ -236,11 +234,6 @@ export function Panorama() {
             </a>
           </div>
         </div>
-      </div>
-
-      {/* ── The clinic's sign, under the menu by the top right corner ── */}
-      <div className={s.skiltPlass}>
-        <Skilt reduced={reduced} />
       </div>
     </section>
   );

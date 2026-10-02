@@ -2,14 +2,17 @@
 
 far.webp  : the photo with the near foreground painted out (opaque)
 near.webp : the near foreground alone (birches, lookout, path, rock), alpha
-skilt.webp: the clinic's real sign, cut from clinic-sign.jpg and squared up
+far-tall.webp, near-tall.webp: the same two for upright screens, a crop of
+            the right half cut from the 4x master at 1.6 times the scale
 """
 import os, sys
 import numpy as np
 import cv2
 from PIL import Image
 
-ROOT = "C:/Users/daodi/code/Ringebu-foto-panorama"
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../.."))
+# The 14400x7560 Upscayl master hero-valley-bg.webp was downsampled from (not in git)
+MASTER = "C:/Users/daodi/Desktop/hero-valley-bg_upscayl_4x_upscayl-standard-4x.png"
 OUT = ROOT + "/src/components/home/panorama"
 DBG = sys.argv[1] if len(sys.argv) > 1 else None
 os.makedirs(OUT, exist_ok=True)
@@ -182,10 +185,29 @@ Image.fromarray(rgba, "RGBA").save(OUT + "/near.webp", quality=86, alpha_quality
 
 # Portrait screens get a crop right of the middle, the fields and the far
 # side of the valley with only an edge of the river, so a
-# phone is sent pixels it shows rather than a panorama it mostly cuts off
+# phone is sent pixels it shows rather than a panorama it mostly cuts off.
+# A phone shows the crop about 1100px wide (it is hung 132% of the hero's
+# height), so at 1800px it had only 1.6 pixels for each of a 3x screen's 3.
+# It is cut from the master at 1.6x instead: the photo's own detail from the
+# master, and the painted-out fill and the cut-out's edge scaled up from here.
 TX0, TX1 = 1900, 3700
-Image.fromarray(np.ascontiguousarray(far[:, TX0:TX1])).save(OUT + "/far-tall.webp", quality=84, method=6)
-Image.fromarray(np.ascontiguousarray(rgba[:, TX0:TX1]), "RGBA").save(OUT + "/near-tall.webp", quality=86, alpha_quality=90, method=6)
+K = 1.6
+HW, HH = round(W * K), round(H * K)
+hx0, hx1 = round(TX0 * K), round(TX1 * K)
+Image.MAX_IMAGE_PIXELS = None
+big = Image.open(MASTER).convert("RGB").resize((HW, HH), Image.LANCZOS)
+hi = np.asarray(big)[:, hx0:hx1].astype(np.float32)
+del big
+size = (hx1 - hx0, HH)
+up = lambda a, interp=cv2.INTER_CUBIC: cv2.resize(np.ascontiguousarray(a[:, TX0:TX1]), size, interpolation=interp)
+w_hi = up(w[:, :, 0])[:, :, None].clip(0, 1)
+far_hi = (hi * (1 - w_hi) + up(far).astype(np.float32) * w_hi).clip(0, 255).astype(np.uint8)
+alpha_hi = up(alpha).clip(0, 255).astype(np.uint8)
+rgba_hi = np.dstack([hi.clip(0, 255).astype(np.uint8), alpha_hi])
+rgba_hi[alpha_hi == 0, :3] = 0
+Image.fromarray(far_hi).save(OUT + "/far-tall.webp", quality=84, method=6)
+Image.fromarray(rgba_hi, "RGBA").save(OUT + "/near-tall.webp", quality=86, alpha_quality=90, method=6)
+print("tall", size)
 
 if DBG:
     Image.fromarray(far).resize((1280, 672)).save(DBG + "/dbg_far.jpg", quality=85)
@@ -194,30 +216,4 @@ if DBG:
     comp = (src * a + chk * (1 - a)).astype(np.uint8)
     Image.fromarray(comp).resize((1280, 672)).save(DBG + "/dbg_near.jpg", quality=85)
 
-# ---- 5. The sign ----
-sign = np.asarray(Image.open(ROOT + "/public/images/clinic-sign.jpg").convert("RGB"))
-quad = np.float32([(1003, 765), (1603, 747), (1606, 1063), (973, 1069)])
-SW, SH = 960, 492
-M = cv2.getPerspectiveTransform(quad, np.float32([(0, 0), (SW, 0), (SW, SH), (0, SH)]))
-board = cv2.warpPerspective(sign[:, :, ::-1], M, (SW, SH), flags=cv2.INTER_CUBIC)
-board = board[6:SH - 4, 4:SW - 22]
-# The last link of the photo's own chain hangs over the board's top left: paint it out
-stub = np.zeros(board.shape[:2], np.uint8)
-cv2.rectangle(stub, (60, 22), (106, 76), 255, -1)
-board = cv2.inpaint(np.ascontiguousarray(board), stub, 6, cv2.INPAINT_TELEA)
-b = board.astype(np.float32)
-# More contrast than a grey winter day gave it: the lettering up, the board as it was
-b = (b - 34) * 1.3 + 34
-# The lettering and the logo near white, as the user asked: only what is
-# lighter than the board is lifted (a smooth step from lum 55 to 120, so the
-# board is untouched and the edges stay soft), taken towards neutral grey
-# first so it whitens instead of turning pale blue.
-lum = b @ np.float32([0.114, 0.587, 0.299])  # BGR here
-m = np.clip((lum - 55) / (120 - 55), 0, 1)
-m = (m * m * (3 - 2 * m))[..., None]
-neutral = b * 0.2 + lum[..., None] * 0.8
-b = b * (1 - m) + np.clip(neutral * 1.85, 0, 255) * m
-board = b.clip(0, 255).astype(np.uint8)
-Image.fromarray(board[:, :, ::-1]).save(OUT + "/skilt.webp", quality=88, method=6)
-print("sign", board.shape)
 print("done")
