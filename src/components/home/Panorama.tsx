@@ -165,7 +165,9 @@ export function Panorama() {
       <div className={`${s.words} mx-auto w-full max-w-[var(--container-max,1280px)] px-[var(--container-px,24px)] pt-[clamp(212px,28svh,232px)] md:pt-[clamp(150px,22svh,230px)]`}>
         <div className="max-w-full lg:max-w-[50%]">
           <div className="relative w-fit">
-            <span aria-hidden="true" className={`${s.skygge} hero-fade`} style={{ animationDelay: "0.3s" }} />
+            {/* The shade comes once the window has opened past the edges (by 2s),
+                so it never lies on the paper */}
+            <span aria-hidden="true" className={`${s.skygge} hero-fade`} style={{ animationDelay: "2s" }} />
             <h1 style={{ fontSize: "clamp(40px, 6vw, 92px)", lineHeight: 0.96, letterSpacing: "-0.05em" }} className={`${s.ord} text-white`}>
               <span className="sr-only">Ringebu Tannlegesenter</span>
               {[
