@@ -170,7 +170,7 @@ export function Panorama() {
                 </span>
               ))}
             </div>
-            <p className={SUB}>Hos oss er alle velkomne</p>
+            <p className={SUB}>Hos oss er du i trygge hender</p>
           </div>
         </div>
       </div>
@@ -211,7 +211,7 @@ export function Panorama() {
               className={`${s.ord} ${SUB} hero-lift text-white`}
               style={{ animationDelay: "0.6s", "--from-y": "10px" } as CSSProperties}
             >
-              Hos oss er alle velkomne
+              Hos oss er du i trygge hender
             </p>
           </div>
 
