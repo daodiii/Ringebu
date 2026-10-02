@@ -151,6 +151,13 @@
     0 0 12px rgba(var(--skygge), 0.36),
     0 0 26px rgba(var(--skygge), 0.18);
 }
+/* The layer the shade lies in: above the photo, under the paper */
+.skyggeLag {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 5;
+  pointer-events: none;
+}
 .skygge {
   position: absolute;
   inset: -65% -32% -57%;

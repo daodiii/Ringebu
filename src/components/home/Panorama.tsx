@@ -62,6 +62,16 @@ function Photo({ a }: { a: ReturnType<typeof art> }) {
   );
 }
 
+/* The words' box and type, shared by the words and by the shade under the
+   paper, which lays out an invisible copy of them to take their shape. */
+const WORDS_BOX = "mx-auto w-full max-w-[var(--container-max,1280px)] px-[var(--container-px,24px)] pt-[clamp(212px,28svh,232px)] md:pt-[clamp(150px,22svh,230px)]";
+const NAME_STYLE: CSSProperties = { fontSize: "clamp(40px, 6vw, 92px)", lineHeight: 0.96, letterSpacing: "-0.05em" };
+const NAME_LINES = [
+  { text: "Ringebu", weight: 700 },
+  { text: "Tannlegesenter", weight: 400 },
+];
+const SUB = "mt-4 w-fit max-w-[34ch] text-[24px] font-medium leading-[1.25] tracking-[-0.02em] md:mt-5 md:text-[30px]";
+
 export function Panorama() {
   const ref = useRef<HTMLElement | null>(null);
   const reduced = useSyncExternalStore(subscribeReduce, () => window.matchMedia(REDUCE).matches, () => false);
@@ -146,6 +156,26 @@ export function Panorama() {
         </div>
       </div>
 
+      {/* ── The shade behind the words ──
+          Under the paper, so while the window opens it darkens only the view
+          seen through it, never the paper; it comes in with the words. It
+          takes the words' shape from an invisible copy of them. */}
+      <div aria-hidden="true" className={`${s.skyggeLag} ${WORDS_BOX}`}>
+        <div className="max-w-full lg:max-w-[50%]">
+          <div className="invisible relative w-fit">
+            <span className={`${s.skygge} hero-fade visible`} style={{ animationDelay: "0.3s" }} />
+            <div style={NAME_STYLE}>
+              {NAME_LINES.map((line) => (
+                <span key={line.text} className="block w-fit pb-[0.08em]" style={{ fontWeight: line.weight }}>
+                  {line.text}
+                </span>
+              ))}
+            </div>
+            <p className={SUB}>Hos oss er alle velkomne</p>
+          </div>
+        </div>
+      </div>
+
       {/* ── The paper the view opens out of, and closes back into ── */}
       <motion.div aria-hidden="true" className={s.close} style={{ scale: closing }}>
         <div className={s.arch}>
@@ -162,18 +192,12 @@ export function Panorama() {
 
       {/* ── The words, in the sky ──
           On a phone they start below the sign (72 + 117px), with some air. */}
-      <div className={`${s.words} mx-auto w-full max-w-[var(--container-max,1280px)] px-[var(--container-px,24px)] pt-[clamp(212px,28svh,232px)] md:pt-[clamp(150px,22svh,230px)]`}>
+      <div className={`${s.words} ${WORDS_BOX}`}>
         <div className="max-w-full lg:max-w-[50%]">
-          <div className="relative w-fit">
-            {/* The shade comes once the window has opened past the edges (by 2s),
-                so it never lies on the paper */}
-            <span aria-hidden="true" className={`${s.skygge} hero-fade`} style={{ animationDelay: "2s" }} />
-            <h1 style={{ fontSize: "clamp(40px, 6vw, 92px)", lineHeight: 0.96, letterSpacing: "-0.05em" }} className={`${s.ord} text-white`}>
+          <div className="w-fit">
+            <h1 style={NAME_STYLE} className={`${s.ord} text-white`}>
               <span className="sr-only">Ringebu Tannlegesenter</span>
-              {[
-                { text: "Ringebu", weight: 700 },
-                { text: "Tannlegesenter", weight: 400 },
-              ].map((line, li) => (
+              {NAME_LINES.map((line, li) => (
                 // The mask the line rises through opens once the line is in, so
                 // the glow round the letters is never cut off in a box
                 <span key={li} aria-hidden="true" className={`${s.maske} relative block w-fit`} style={{ animationDelay: `${(115 + li * 11) / 100}s` }}>
@@ -186,7 +210,7 @@ export function Panorama() {
             </h1>
 
             <p
-              className={`${s.ord} hero-lift mt-4 w-fit max-w-[34ch] text-[24px] font-medium leading-[1.25] tracking-[-0.02em] text-white md:mt-5 md:text-[30px]`}
+              className={`${s.ord} ${SUB} hero-lift text-white`}
               style={{ animationDelay: "0.6s", "--from-y": "10px" } as CSSProperties}
             >
               Hos oss er alle velkomne
