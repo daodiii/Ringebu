@@ -242,20 +242,6 @@ export function Panorama() {
       <div className={s.skiltPlass}>
         <Skilt reduced={reduced} />
       </div>
-
-      {/* ── Where and when, along the foot ── */}
-      <div className="hero-fade absolute inset-x-0 bottom-0 z-20 hidden md:block" style={{ animationDelay: "2.4s" }}>
-        <div className="mx-auto flex w-full max-w-[var(--container-max,1280px)] flex-col items-start gap-1.5 px-[var(--container-px,24px)] py-3 font-mono text-[9.5px] uppercase tracking-[0.2em] text-white lg:h-[38px] lg:flex-row lg:items-center lg:justify-between lg:gap-6 lg:py-0">
-          <span className={`${s.ord} ${s.liten} relative`}>
-            <span className={s.dis} />
-            Jernbanegata 4, 2630 Ringebu
-          </span>
-          <span className={`${s.ord} ${s.liten} relative`}>
-            <span className={s.dis} />
-            Man 08.00–15.30 · Tir 08.30–18.00 · Ons 08.00–15.00 · Tor 09.00–18.00 · Fre 08.00–15.00
-          </span>
-        </div>
-      </div>
     </section>
   );
 }

@@ -165,20 +165,6 @@
   pointer-events: none;
   background: radial-gradient(closest-side, rgba(var(--skygge), 0.38) 0%, rgba(var(--skygge), 0.345) 50%, rgba(var(--skygge), 0.19) 75%, rgba(var(--skygge), 0.06) 90%, rgba(var(--skygge), 0) 100%);
 }
-/* The address and hours along the foot are small type: each line its own
-   tight haze, faded out on all four sides. */
-.liten {
-  isolation: isolate;
-}
-.dis {
-  position: absolute;
-  inset: -0.9em -1.4em;
-  z-index: -1;
-  pointer-events: none;
-  background: linear-gradient(to right, rgba(var(--skygge), 0) 0%, rgba(var(--skygge), 0.55) 10%, rgba(var(--skygge), 0.55) 90%, rgba(var(--skygge), 0) 100%);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 30%, #000 70%, transparent 100%);
-  mask-image: linear-gradient(to bottom, transparent 0%, #000 30%, #000 70%, transparent 100%);
-}
 /* The mask a line of the name rises through: it clips while the line rises,
    then opens, so the glow round the letters is not cut off in a box. */
 .maske {
