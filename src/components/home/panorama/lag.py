@@ -208,6 +208,15 @@ board = cv2.inpaint(np.ascontiguousarray(board), stub, 6, cv2.INPAINT_TELEA)
 b = board.astype(np.float32)
 # More contrast than a grey winter day gave it: the lettering up, the board as it was
 b = (b - 34) * 1.3 + 34
+# The lettering and the logo near white, as the user asked: only what is
+# lighter than the board is lifted (a smooth step from lum 55 to 120, so the
+# board is untouched and the edges stay soft), taken towards neutral grey
+# first so it whitens instead of turning pale blue.
+lum = b @ np.float32([0.114, 0.587, 0.299])  # BGR here
+m = np.clip((lum - 55) / (120 - 55), 0, 1)
+m = (m * m * (3 - 2 * m))[..., None]
+neutral = b * 0.2 + lum[..., None] * 0.8
+b = b * (1 - m) + np.clip(neutral * 1.85, 0, 255) * m
 board = b.clip(0, 255).astype(np.uint8)
 Image.fromarray(board[:, :, ::-1]).save(OUT + "/skilt.webp", quality=88, method=6)
 print("sign", board.shape)
