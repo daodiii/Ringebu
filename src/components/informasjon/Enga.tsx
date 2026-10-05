@@ -504,7 +504,6 @@ function Humle({ on }: { on: boolean }) {
               <path d="M-4,-8 C-6,-3 -6,3 -4,8 L1,8.2 C-1,3 -1,-3 1,-8.2 Z" fill="#2B2A28" />
               <path d="M-11,-2 C-11.6,0 -11.6,2 -10.6,3.4 C-9,2 -9,-1 -9.6,-3.4 Z" fill="#FFFFFF" />
               <circle cx={10} cy={-1} r={5.4} fill="#2B2A28" />
-              <circle cx={12} cy={-2.4} r={1.1} fill="#FFFFFF" />
             </svg>
           </div>
         </div>

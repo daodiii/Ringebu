@@ -188,18 +188,18 @@ const LIP_ART = <path d={lip(572, 13, H)} fill="#082025" />;
 type Sted = "hill" | "far" | "near";
 
 type Dyr = { x: number; y: number; k: number; face: 1 | -1; at: Sted; t: number; delay: number } & (
-  | { kind: "sau"; wool: string; top: string; head: string; eye: string; bell?: boolean }
+  | { kind: "sau"; wool: string; top: string; head: string; bell?: boolean }
   | { kind: "ku" }
   | { kind: "elg"; bull?: boolean }
 );
 
-const WHITE = { kind: "sau", wool: "#F4F1E8", top: "#FFFFFF", head: "#DDD4C5", eye: "#2B2725" } as const;
+const WHITE = { kind: "sau", wool: "#F4F1E8", top: "#FFFFFF", head: "#DDD4C5" } as const;
 const ANIMALS: Dyr[] = [
   { kind: "ku", x: 1190, y: 476, k: 1, face: 1, at: "far", t: 10, delay: 1.4 },
   { kind: "ku", x: 1596, y: 454, k: 0.92, face: -1, at: "far", t: 11, delay: 3.4 },
-  { kind: "sau", x: 1690, y: 447, k: 0.95, face: 1, at: "far", wool: "#3F3A38", top: "#4E4845", head: "#35302D", eye: "#E9E4D8", t: 9, delay: 0.5 },
+  { kind: "sau", x: 1690, y: 447, k: 0.95, face: 1, at: "far", wool: "#3F3A38", top: "#4E4845", head: "#35302D", t: 9, delay: 0.5 },
   { kind: "ku", x: 1806, y: 440, k: 0.84, face: 1, at: "far", t: 9.5, delay: 5.2 },
-  { kind: "sau", x: 1916, y: 426, k: 0.86, face: -1, at: "far", wool: "#9A7B62", top: "#A98B72", head: "#8A6E58", eye: "#2B2725", t: 8.5, delay: 4.2 },
+  { kind: "sau", x: 1916, y: 426, k: 0.86, face: -1, at: "far", wool: "#9A7B62", top: "#A98B72", head: "#8A6E58", t: 8.5, delay: 4.2 },
   { ...WHITE, x: 1236, y: 546, k: 1.5, face: 1, at: "near", bell: true, t: 8.5, delay: 1.8 },
   { ...WHITE, x: 1660, y: 550, k: 1.66, face: -1, at: "near", bell: true, t: 7.5, delay: 2.6 },
   { ...WHITE, x: 1790, y: 556, k: 0.96, face: -1, at: "near", t: 6.5, delay: 4 },
@@ -210,7 +210,7 @@ const ANIMALS: Dyr[] = [
 // Red and white, as most cows in Norway are
 const COW = { hide: "#B0644C", back: "#BF765C", ear: "#9A543F", leg: "#955340", hoof: "#4A3B34", white: "#F4F1E8", pink: "#E6B3A8", nose: "#C98E84", horn: "#EFE6D2" };
 // Dark brown, with pale legs and pale antlers
-const MOOSE = { hide: "#4E3E32", back: "#5E4B3D", leg: "#3E3129", sock: "#CBBBA3", snout: "#685444", antler: "#DDCCA8", far: "#BDAA88", eye: "#E9E4D8" };
+const MOOSE = { hide: "#4E3E32", back: "#5E4B3D", leg: "#3E3129", sock: "#CBBBA3", snout: "#685444", antler: "#DDCCA8", far: "#BDAA88" };
 
 const COW_BODY = "M-40,-47 Q-41,-55 -33,-55 Q-10,-52 12,-54 Q24,-55 28,-47 Q31,-38 27,-29 Q23,-23 14,-24 Q-4,-19 -22,-23 Q-36,-25 -40,-34 Z";
 // Short and deep, with the hump high over the shoulders and the back falling away behind it
@@ -256,7 +256,6 @@ function form(dyr: Dyr, i: number) {
             <ellipse cx={16.4} cy={-29.2} rx={3.2} ry={1.1} fill="#E7B8B0" transform="rotate(-24 16 -29)" />
             <path d="M15,-29 Q28,-27 32,-15 Q34,-7 28,-5 Q22,-5 18,-13 Z" fill={dyr.head} />
             <path d={bumpy(20, -30, 5, 3.6, 6, 70 + i, 0.6)} fill={dyr.top} />
-            <circle cx={25.5} cy={-19} r={1.2} fill={dyr.eye} />
             <ellipse cx={30} cy={-8} rx={2.6} ry={1.8} fill="#8F8278" opacity={0.7} />
           </>
         ),
@@ -303,8 +302,6 @@ function form(dyr: Dyr, i: number) {
             <ellipse cx={33} cy={-36.5} rx={7.6} ry={5} fill={COW.pink} />
             <ellipse cx={30.3} cy={-36.2} rx={1} ry={1.4} fill={COW.nose} />
             <ellipse cx={35.7} cy={-36.2} rx={1} ry={1.4} fill={COW.nose} />
-            <circle cx={28.8} cy={-46} r={1.2} fill="#2B2725" />
-            <circle cx={37.2} cy={-46} r={1.2} fill="#2B2725" />
           </>
         ),
       };
@@ -339,7 +336,6 @@ function form(dyr: Dyr, i: number) {
             <path d="M29,-45.5 Q32,-36 28.5,-31 Q26,-36.5 26.8,-45.5 Z" fill={MOOSE.hide} />
             <ellipse cx={28.5} cy={-65} rx={5.6} ry={2.1} fill={MOOSE.hide} transform="rotate(-38 28.5 -65)" />
             {dyr.bull && <path d={ANTLER} fill={MOOSE.antler} />}
-            <circle cx={39} cy={-56} r={1.1} fill={MOOSE.eye} />
           </>
         ),
       };

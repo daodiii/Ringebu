@@ -313,8 +313,6 @@ const EKORN_BODY = (
     <ellipse cx={38.6} cy={29.4} rx={2.4} ry={3.2} fill="#8C6A45" />
     <ellipse cx={36.4} cy={30.6} rx={2.2} ry={1.5} fill="#B8643A" />
     <ellipse cx={27.4} cy={44.6} rx={5} ry={1.6} fill="#B8643A" />
-    <circle cx={35.3} cy={18.4} r={1.35} fill="#2A211C" />
-    <circle cx={35.7} cy={17.9} r={0.45} fill="#FFFFFF" />
     <circle cx={43.4} cy={21.2} r={0.9} fill="#3A2A22" />
   </svg>
 );
