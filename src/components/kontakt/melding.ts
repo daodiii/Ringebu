@@ -3,6 +3,7 @@
 import { headers } from "next/headers";
 import nodemailer from "nodemailer";
 import { KONTAKT } from "@/components/kontakt/data";
+import { FELT, feilI, type Felt } from "@/components/kontakt/sjekk";
 
 /**
  * Sends a message from the contact form to the clinic's inbox, by SMTP
@@ -14,15 +15,11 @@ import { KONTAKT } from "@/components/kontakt/data";
  * than as messages that quietly go nowhere.
  */
 
-export type Felt = "navn" | "kontakt" | "melding";
-
 export type MeldingState =
   | { status: "idle" }
   | { status: "sent" }
   | { status: "invalid"; errors: Partial<Record<Felt, string>> }
   | { status: "error"; reason: "busy" | "failed" };
-
-const MAX = { navn: 100, kontakt: 200, melding: 4000 };
 
 // A few messages per visitor in ten minutes. This lives in the memory of
 // one server instance, so it slows a flood down; it is no hard limit.
@@ -40,8 +37,6 @@ function tooMany(ip: string) {
   return false;
 }
 
-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
 function read(form: FormData, key: string) {
   const v = form.get(key);
   return typeof v === "string" ? v.trim() : "";
@@ -51,30 +46,19 @@ export async function sendMelding(_prev: MeldingState, form: FormData): Promise<
   // The hidden field only a bot fills in. It is told it worked, and nothing is sent.
   if (read(form, "nettsted")) return { status: "sent" };
 
-  const navn = read(form, "navn");
-  const kontakt = read(form, "kontakt");
-  const melding = read(form, "melding");
-
+  const v = Object.fromEntries(FELT.map((f) => [f, read(form, f)])) as Record<Felt, string>;
   const errors: Partial<Record<Felt, string>> = {};
-  if (!navn) errors.navn = "Skriv navnet ditt.";
-  else if (navn.length > MAX.navn) errors.navn = "Navnet er for langt.";
-
-  const erEpost = kontakt.includes("@");
-  if (!kontakt) errors.kontakt = "Skriv telefon eller e-post, så vi kan svare deg.";
-  else if (kontakt.length > MAX.kontakt) errors.kontakt = "Dette feltet er for langt.";
-  else if (erEpost ? !EMAIL.test(kontakt) : kontakt.replace(/\D/g, "").length < 8)
-    errors.kontakt = "Sjekk telefonnummeret eller e-posten.";
-
-  if (!melding) errors.melding = "Skriv en melding.";
-  else if (melding.length > MAX.melding) errors.melding = "Meldingen er for lang.";
-
+  for (const f of FELT) {
+    const feil = feilI(f, v[f]);
+    if (feil) errors[f] = feil;
+  }
   if (Object.keys(errors).length) return { status: "invalid", errors };
 
   const ip = (await headers()).get("x-forwarded-for")?.split(",")[0]?.trim() || "ukjent";
   if (tooMany(ip)) return { status: "error", reason: "busy" };
 
-  const subject = `Melding fra nettsiden: ${navn.replace(/[\r\n]+/g, " ")}`;
-  const text = `Navn: ${navn}\n${erEpost ? "E-post" : "Telefon"}: ${kontakt}\n\n${melding}\n`;
+  const subject = `Melding fra nettsiden: ${v.navn.replace(/[\r\n]+/g, " ")}`;
+  const text = `Navn: ${v.navn}\nTelefon: ${v.telefon}\nE-post: ${v.epost}\n\n${v.melding}\n`;
 
   const user = process.env.SMTP_USER;
   const pass = process.env.SMTP_PASS;
@@ -99,7 +83,8 @@ export async function sendMelding(_prev: MeldingState, form: FormData): Promise<
       .sendMail({
         from: { name: "Nettsiden", address: user },
         to: process.env.SMTP_TO ?? KONTAKT.email.display,
-        replyTo: erEpost ? { name: navn, address: kontakt } : undefined,
+        // The clinic answers by pressing Svar
+        replyTo: { name: v.navn, address: v.epost },
         subject,
         text,
       });
