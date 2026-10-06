@@ -413,12 +413,11 @@ const Animal = memo(function Animal({ i, up, on }: { i: number; up: boolean; on:
 
 function Kontakt() {
   const link = "transition-colors hover:text-[var(--color-brass)]";
-  const row = "border-t border-[rgba(14,42,48,0.14)] py-3.5";
+  const row = "border-t border-[rgba(14,42,48,0.14)] py-3";
   return (
     <div className="max-w-[440px]">
       <h2 className="display-section text-balance text-[var(--color-ink)]">Velkommen til oss.</h2>
-      <p className="mt-4 text-[17px] leading-[1.55] text-[rgba(14,42,48,0.74)]">Du finner oss midt i Ringebu, rett ved E6.</p>
-      <ul className="mt-8 text-[17px] font-medium leading-[1.4] tracking-[-0.01em] text-[var(--color-ink)]">
+      <ul className="mt-6 text-[17px] font-medium leading-[1.4] tracking-[-0.01em] text-[var(--color-ink)]">
         <li className={row}>
           <a href={KONTAKT.phone.href} className={`text-[22px] ${link}`}>{KONTAKT.phone.display}</a>
         </li>
@@ -439,7 +438,7 @@ function Kontakt() {
       </ul>
       <Link
         href="/kontakt"
-        className="group mt-8 inline-flex items-center gap-2.5 rounded-full bg-[var(--color-ink)] px-6 py-3.5 text-[14px] font-semibold text-white transition-colors hover:bg-[#16414A] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-ink)]"
+        className="group mt-6 inline-flex items-center gap-2.5 rounded-full bg-[var(--color-ink)] px-6 py-3.5 text-[14px] font-semibold text-white transition-colors hover:bg-[#16414A] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-ink)]"
       >
         Finn en ledig time
         <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
@@ -459,11 +458,12 @@ export function Sauene() {
 
   return (
     <section ref={ref} {...handlers} className="relative overflow-hidden" style={{ background: SKY }}>
-      {/* The contact lines on the left and the form in the sky to their right;
-          on a phone the form comes under the lines, above the pasture */}
-      <div className="relative z-10 mx-auto grid w-full max-w-[var(--container-max,1280px)] grid-cols-1 gap-y-14 px-[var(--container-px,24px)] pb-6 pt-[var(--space-section)] lg:min-h-[900px] lg:grid-cols-[440px_minmax(0,520px)] lg:justify-between lg:gap-x-16 lg:pb-0">
+      {/* The form on the left and the contact lines in the sky to its right.
+          On a phone the lines come first, as they do for a screen reader, and
+          the form under them, above the pasture. */}
+      <div className="relative z-10 mx-auto grid w-full max-w-[var(--container-max,1280px)] grid-cols-1 gap-y-14 px-[var(--container-px,24px)] pb-6 pt-[var(--space-section)] lg:min-h-[900px] lg:grid-cols-[minmax(0,520px)_440px] lg:justify-between lg:gap-x-16 lg:pb-0">
         <Kontakt />
-        <SkjemaKonvolutt as="h3" className="max-w-[520px] self-start" />
+        <SkjemaKonvolutt as="h3" className="w-full max-w-[520px] self-start lg:order-first" />
       </div>
 
       <div aria-hidden="true" className="relative h-[330px] sm:h-[430px] lg:absolute lg:inset-x-0 lg:bottom-0 lg:h-[580px]">

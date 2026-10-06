@@ -168,25 +168,26 @@ export function SkjemaKonvolutt({
     <div ref={box} className={`relative [&_[role=status]]:opacity-0 ${className}`}>
       <Skjema as={as} takk={takk} onSent={sent} />
 
-      {/* The open envelope, beside the Send button. Its parts stack in this order:
+      {/* The open envelope, beside the Send button, low enough that its flap stays
+          under the note above Send however that note wraps. Its parts stack in this order:
           the back, the letter, the front, then the flap and the seal once shut. */}
       <div
         ref={env}
         aria-hidden="true"
-        className="pointer-events-none absolute bottom-0 right-1 h-[54px] w-[86px] origin-center sm:right-2"
+        className="pointer-events-none absolute -bottom-1.5 right-1 h-[44px] w-[70px] origin-center sm:right-2"
       >
-        <div ref={apen} className="absolute inset-x-0 bottom-full h-[30px] origin-bottom">
+        <div ref={apen} className="absolute inset-x-0 bottom-full h-[24px] origin-bottom">
           {KLAFF_APEN}
         </div>
         <div className="absolute inset-0">{BAK}</div>
         <div ref={brev} className="absolute left-0 top-0 h-0 w-0 origin-top-left opacity-0 shadow-[0_3px_0_rgba(14,42,48,0.12)]" style={BREV} />
         <div className="absolute inset-0">{FRAM}</div>
-        <div ref={lukket} className="absolute inset-x-0 top-0 h-[34px] origin-top" style={{ transform: "scaleY(0)" }}>
+        <div ref={lukket} className="absolute inset-x-0 top-0 h-[28px] origin-top" style={{ transform: "scaleY(0)" }}>
           {KLAFF_LUKKET}
         </div>
         <div
           ref={segl}
-          className="absolute left-1/2 top-[22px] -ml-[13px] h-[26px] w-[26px]"
+          className="absolute left-1/2 top-[18px] -ml-[11px] h-[22px] w-[22px]"
           style={{ transform: "scale(0)" }}
         >
           {SEGL}
