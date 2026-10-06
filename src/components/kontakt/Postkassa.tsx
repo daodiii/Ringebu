@@ -7,7 +7,7 @@ import {
   Bjork, Blomst, Cloud, Gran, Strip, lip, r2, ridge, ridgeY, rng, useLean, usePopUp, useShift, type Pts,
 } from "@/components/home/landskap";
 import { at, useLoop } from "./bevegelse";
-import { Akutt, Kart, Linjer, Omtale, RingKnapp, Timer, Tittel } from "./Felles";
+import { Akutt, Kart, Linjer, Omtale, RingKnapp, Skrivetil, Timer, Tittel } from "./Felles";
 import s from "./kontakt.module.css";
 
 /**
@@ -572,6 +572,7 @@ export function Postkassa() {
           </div>
         </div>
       </section>
+      <Skrivetil />
       <Omtale />
     </>
   );

@@ -1,10 +1,12 @@
 import { ArrowUpRight, Phone } from "lucide-react";
 import { HOURS, KONTAKT, MAPS_EMBED, MAPS_SEARCH, SEO_TEXT } from "@/components/kontakt/data";
+import { Skjema } from "@/components/kontakt/Skjema";
 
 /**
  * The words on /kontakt and the map, apart from the picture around them:
  * the heading, phone, e-mail and address, the hours, the Ring button, the
- * number for out of hours, and the paragraph under the picture. Postkassa
+ * number for out of hours, the contact form and the paragraph under the
+ * picture. Postkassa
  * lays them out. The clinic's details all come from data.ts.
  */
 
@@ -137,6 +139,34 @@ export function Kart({ className = "" }: { className?: string }) {
         <ArrowUpRight className="size-3.5" aria-hidden="true" />
       </a>
     </div>
+  );
+}
+
+/**
+ * The contact form, on the cream band straight under the picture of the
+ * mailboxes, in the same two columns as the picture: the heading on the left
+ * and the form on the right.
+ */
+export function Skrivetil() {
+  return (
+    <section className="bg-[var(--color-paper)]">
+      <div className="mx-auto w-full max-w-[var(--container-max,1280px)] px-[var(--container-px,24px)] pt-16 md:pt-20">
+        <div className={`grid grid-cols-1 gap-y-8 border-b pb-16 md:pb-20 lg:grid-cols-[minmax(0,400px)_minmax(0,1fr)] lg:gap-x-14 xl:grid-cols-[minmax(0,450px)_minmax(0,1fr)] xl:gap-x-20 ${RULE}`}>
+          <div>
+            <h2
+              className="font-medium text-balance text-[var(--color-ink)]"
+              style={{ fontSize: "clamp(28px, 3vw, 38px)", letterSpacing: "-0.03em", lineHeight: 1.1 }}
+            >
+              Send oss en melding
+            </h2>
+            <p className={`mt-4 max-w-[36ch] text-pretty text-[17px] leading-[1.55] ${SOFT}`}>
+              Skriv kort hva det gjelder. Vi svarer deg på telefon eller e-post.
+            </p>
+          </div>
+          <Skjema tittel={false} as="h3" takk="Takk! Brevet ligger i postkassa." className="max-w-[640px]" />
+        </div>
+      </div>
+    </section>
   );
 }
 
