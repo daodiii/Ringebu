@@ -6,8 +6,8 @@ import { KONTAKT } from "@/components/kontakt/data";
 import { sendMelding, type Felt, type MeldingState } from "@/components/kontakt/melding";
 
 /**
- * The contact form, on the front page under «Velkommen til oss.» and on
- * /kontakt under the picture. It posts to sendMelding (melding.ts), which
+ * The contact form, on the front page beside «Velkommen til oss.» and on
+ * /kontakt pinned to the notice board. It posts to sendMelding (melding.ts), which
  * mails it to the clinic. The fields are controlled so what the visitor wrote
  * stays put when sending fails; React empties uncontrolled fields after every
  * form action.
@@ -24,6 +24,7 @@ export function Skjema({
   as: Heading = "h2",
   tittel = true,
   takk = "Takk for meldingen.",
+  onSent,
   className = "",
 }: {
   as?: "h2" | "h3";
@@ -31,12 +32,17 @@ export function Skjema({
   tittel?: boolean;
   /** The first line once the message is sent */
   takk?: string;
+  /** Called once the message is on its way */
+  onSent?: () => void;
   className?: string;
 }) {
   const [state, action, pending] = useActionState<MeldingState, FormData>(sendMelding, { status: "idle" });
   const [values, setValues] = useState(TOM);
   const form = useRef<HTMLFormElement>(null);
   const done = useRef<HTMLDivElement>(null);
+  const box = useRef<HTMLDivElement>(null);
+  // The form's height when it was sent, so the thanks keeps the room it had
+  const [height, setHeight] = useState<number>();
   const id = useId();
 
   const errors = state.status === "invalid" ? state.errors : {};
@@ -48,12 +54,13 @@ export function Skjema({
       if (first) form.current?.querySelector<HTMLElement>(`[name="${first}"]`)?.focus();
     } else if (state.status === "sent") {
       done.current?.focus();
+      onSent?.();
     }
-  }, [state]);
+  }, [state, onSent]);
 
   if (state.status === "sent") {
     return (
-      <div ref={done} tabIndex={-1} role="status" className={`outline-none ${className}`}>
+      <div ref={done} tabIndex={-1} role="status" className={`flex flex-col justify-center outline-none ${className}`} style={{ minHeight: height }}>
         <Heading className="text-[24px] font-medium tracking-[-0.02em] text-[var(--color-ink)]">{takk}</Heading>
         <p className={`mt-3 text-[17px] leading-[1.55] ${SOFT}`}>Vi svarer deg så snart vi kan.</p>
       </div>
@@ -76,12 +83,12 @@ export function Skjema({
   });
 
   return (
-    <div className={className}>
+    <div ref={box} className={className}>
       {tittel && (
         <Heading className="mb-6 text-[24px] font-medium tracking-[-0.02em] text-[var(--color-ink)]">Send oss en melding</Heading>
       )}
 
-      <form ref={form} action={action} noValidate>
+      <form ref={form} action={action} noValidate onSubmit={() => setHeight(box.current?.offsetHeight)}>
         <div className="grid gap-x-4 gap-y-5 sm:grid-cols-2">
           <label className="block text-[14px] font-medium text-[var(--color-ink)]">
             Navn

@@ -1,12 +1,10 @@
-import { ArrowUpRight, Phone } from "lucide-react";
-import { HOURS, KONTAKT, MAPS_EMBED, MAPS_SEARCH, SEO_TEXT } from "@/components/kontakt/data";
-import { Skjema } from "@/components/kontakt/Skjema";
+import { Phone } from "lucide-react";
+import { HOURS, KONTAKT, SEO_TEXT } from "@/components/kontakt/data";
 
 /**
- * The words on /kontakt and the map, apart from the picture around them:
+ * The words on /kontakt, apart from the picture around them and the form:
  * the heading, phone, e-mail and address, the hours, the Ring button, the
- * number for out of hours, the contact form and the paragraph under the
- * picture. Postkassa
+ * number for out of hours, and the paragraph under the picture. Postkassa
  * lays them out. The clinic's details all come from data.ts.
  */
 
@@ -109,64 +107,6 @@ export function RingKnapp() {
       <Phone className="size-4" aria-hidden="true" />
       Ring {KONTAKT.phone.display}
     </a>
-  );
-}
-
-/**
- * The Google map, as big as the box it is given. From 640px wide our own way
- * out to Google Maps sits in its top right corner. Narrower, it ran into
- * Google's own «Åpne i Maps» button or place card at the top left, so phones
- * keep Google's alone.
- */
-export function Kart({ className = "" }: { className?: string }) {
-  return (
-    <div className={`relative overflow-hidden bg-[#E6ECE8] ${className}`}>
-      <iframe
-        src={MAPS_EMBED}
-        title={`Ringebu Tannlegesenter i ${KONTAKT.address.short} på kartet`}
-        loading="lazy"
-        referrerPolicy="no-referrer-when-downgrade"
-        className="absolute inset-0 h-full w-full"
-        style={{ border: 0, filter: "grayscale(0.3) contrast(1.03)" }}
-      />
-      <a
-        href={MAPS_SEARCH}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full max-sm:hidden bg-white px-3.5 py-2 text-[13px] font-medium text-[var(--color-ink)] shadow-[0_3px_0_rgba(14,42,48,0.13)] transition-colors hover:bg-[#F2F5F3] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-ink)]"
-      >
-        Åpne i Google Maps
-        <ArrowUpRight className="size-3.5" aria-hidden="true" />
-      </a>
-    </div>
-  );
-}
-
-/**
- * The contact form, on the cream band straight under the picture of the
- * mailboxes, in the same two columns as the picture: the heading on the left
- * and the form on the right.
- */
-export function Skrivetil() {
-  return (
-    <section className="bg-[var(--color-paper)]">
-      <div className="mx-auto w-full max-w-[var(--container-max,1280px)] px-[var(--container-px,24px)] pt-16 md:pt-20">
-        <div className={`grid grid-cols-1 gap-y-8 border-b pb-16 md:pb-20 lg:grid-cols-[minmax(0,400px)_minmax(0,1fr)] lg:gap-x-14 xl:grid-cols-[minmax(0,450px)_minmax(0,1fr)] xl:gap-x-20 ${RULE}`}>
-          <div>
-            <h2
-              className="font-medium text-balance text-[var(--color-ink)]"
-              style={{ fontSize: "clamp(28px, 3vw, 38px)", letterSpacing: "-0.03em", lineHeight: 1.1 }}
-            >
-              Send oss en melding
-            </h2>
-            <p className={`mt-4 max-w-[36ch] text-pretty text-[17px] leading-[1.55] ${SOFT}`}>
-              Skriv kort hva det gjelder. Vi svarer deg på telefon eller e-post.
-            </p>
-          </div>
-          <Skjema tittel={false} as="h3" takk="Takk! Brevet ligger i postkassa." className="max-w-[640px]" />
-        </div>
-      </div>
-    </section>
   );
 }
 

@@ -7,17 +7,18 @@ import {
   Bjork, Blomst, Cloud, Gran, Strip, lip, r2, ridge, ridgeY, rng, useLean, usePopUp, useShift, type Pts,
 } from "@/components/home/landskap";
 import { at, useLoop } from "./bevegelse";
-import { Akutt, Kart, Linjer, Omtale, RingKnapp, Skrivetil, Timer, Tittel } from "./Felles";
+import { Akutt, Linjer, Omtale, RingKnapp, Timer, Tittel } from "./Felles";
+import { Skjema } from "./Skjema";
 import s from "./kontakt.module.css";
 
 /**
  * /kontakt, «Postkassa». A gravel road through the bygd on a summer day. By
- * the road stands a notice board with a little roof, and the map is pinned
- * to it; in front of the board, the mailboxes on their rack, one of them the
+ * the road stands a notice board with a little roof, and the contact form
+ * is pinned to it as a sheet of paper; in front of the board, the mailboxes on their rack, one of them the
  * clinic's, with the tooth on it. A red squirrel runs along the roof of the
  * board. When the paper has stood up the post comes: a letter flies in from
  * the left and drops into the clinic's box. It comes again when you point at
- * the e-mail address or tap the box.
+ * the e-mail address, tap the box or send the form.
  *
  * The drawing never changes, so it is made once, here at module scope, and
  * everything that moves is a layer of its own, moved by CSS or by a Web
@@ -409,7 +410,7 @@ const PINS = [
   { c: "#D9654F", pos: "right-[9px] bottom-[9px] md:right-[10px] md:bottom-[10px]" },
 ];
 
-function Tavle({ up, on }: { up: boolean; on: boolean }) {
+function Tavle({ up, on, onSent }: { up: boolean; on: boolean; onSent: () => void }) {
   return (
     <div className={s.reis} data-up={up} style={{ ["--delay" as string]: "0.5s" }}>
       {/* The roof, a little wider than the board, with the squirrel on its ridge */}
@@ -418,8 +419,9 @@ function Tavle({ up, on }: { up: boolean; on: boolean }) {
         <Ekorn on={on} />
       </div>
       <div className="relative bg-[#A89276] p-[12px] shadow-[0_5px_0_rgba(14,42,48,0.13)] md:p-[14px]">
-        <div className="bg-white p-[5px] shadow-[0_3px_0_rgba(14,42,48,0.14)] md:p-[6px]">
-          <Kart className="h-[330px] sm:h-[400px] lg:h-[430px]" />
+        {/* The form, as a sheet of paper pinned up on the board */}
+        <div className="bg-[var(--color-paper)] px-5 pb-7 pt-6 shadow-[0_3px_0_rgba(14,42,48,0.14)] sm:px-8 sm:pb-9 sm:pt-8">
+          <Skjema takk="Takk! Brevet ligger i postkassa." onSent={onSent} />
         </div>
         {PINS.map((p, i) => (
           <span
@@ -534,7 +536,7 @@ export function Postkassa() {
               among the strips of land (board behind the road, mailboxes in front) */}
           <div className="relative self-end">
             <div className="relative z-10">
-              <Tavle up={up} on={on} />
+              <Tavle up={up} on={on} onSent={post} />
             </div>
 
             {/* The mailboxes on their rack, in front of the board by the road */}
@@ -572,7 +574,6 @@ export function Postkassa() {
           </div>
         </div>
       </section>
-      <Skrivetil />
       <Omtale />
     </>
   );

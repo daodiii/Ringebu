@@ -1,7 +1,5 @@
 export const MAPS_SEARCH =
   "https://www.google.com/maps/search/?api=1&query=Jernbanegata+4,+2630+Ringebu";
-export const MAPS_EMBED =
-  "https://www.google.com/maps?q=Jernbanegata+4,+2630+Ringebu&output=embed";
 
 export const KONTAKT = {
   lead: "Midt i Gudbrandsdalen, rett ved E6. Vi tar imot fastboende og besøkende.",
