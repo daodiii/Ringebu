@@ -8,7 +8,7 @@ import {
 } from "@/components/home/landskap";
 import { at, useLoop } from "./bevegelse";
 import { Akutt, Linjer, Omtale, RingKnapp, Timer, Tittel } from "./Felles";
-import { Skjema } from "./Skjema";
+import { SkjemaKonvolutt } from "./Konvolutt";
 import s from "./kontakt.module.css";
 
 /**
@@ -421,7 +421,7 @@ function Tavle({ up, on, onSent }: { up: boolean; on: boolean; onSent: () => voi
       <div className="relative bg-[#A89276] p-[12px] shadow-[0_5px_0_rgba(14,42,48,0.13)] md:p-[14px]">
         {/* The form, as a sheet of paper pinned up on the board */}
         <div className="bg-[var(--color-paper)] px-5 pb-7 pt-6 shadow-[0_3px_0_rgba(14,42,48,0.14)] sm:px-8 sm:pb-9 sm:pt-8">
-          <Skjema takk="Takk! Brevet ligger i postkassa." onSent={onSent} />
+          <SkjemaKonvolutt takk="Takk! Brevet ligger i postkassa." onSent={onSent} />
         </div>
         {PINS.map((p, i) => (
           <span

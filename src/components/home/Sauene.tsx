@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { NoShadow, PaperShadow } from "@/components/behandlinger/scenes/Papir";
 import { HOURS, KONTAKT } from "@/components/kontakt/data";
-import { Skjema } from "@/components/kontakt/Skjema";
+import { SkjemaKonvolutt } from "@/components/kontakt/Konvolutt";
 import {
   Bjork, Blomst, Cloud, Gran, Strip, Tannskilt,
   bumpy, lip, r2, ridge, ridgeY, rng, snowcap, useLean, usePopUp, useShift, type Pts,
@@ -463,7 +463,7 @@ export function Sauene() {
           on a phone the form comes under the lines, above the pasture */}
       <div className="relative z-10 mx-auto grid w-full max-w-[var(--container-max,1280px)] grid-cols-1 gap-y-14 px-[var(--container-px,24px)] pb-6 pt-[var(--space-section)] lg:min-h-[900px] lg:grid-cols-[440px_minmax(0,520px)] lg:justify-between lg:gap-x-16 lg:pb-0">
         <Kontakt />
-        <Skjema as="h3" className="max-w-[520px]" />
+        <SkjemaKonvolutt as="h3" className="max-w-[520px] self-start" />
       </div>
 
       <div aria-hidden="true" className="relative h-[330px] sm:h-[430px] lg:absolute lg:inset-x-0 lg:bottom-0 lg:h-[580px]">
