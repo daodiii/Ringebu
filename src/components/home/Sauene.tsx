@@ -411,13 +411,12 @@ const Animal = memo(function Animal({ i, up, on }: { i: number; up: boolean; on:
 
 /* ── The words ── */
 
-function Kontakt() {
+function Kontakt({ className = "" }: { className?: string }) {
   const link = "transition-colors hover:text-[var(--color-brass)]";
   const row = "border-t border-[rgba(14,42,48,0.14)] py-3";
   return (
-    <div className="max-w-[440px]">
-      <h2 className="display-section text-balance text-[var(--color-ink)]">Velkommen til oss.</h2>
-      <ul className="mt-6 text-[17px] font-medium leading-[1.4] tracking-[-0.01em] text-[var(--color-ink)]">
+    <div className={`max-w-[440px] ${className}`}>
+      <ul className="text-[17px] font-medium leading-[1.4] tracking-[-0.01em] text-[var(--color-ink)]">
         <li className={row}>
           <a href={KONTAKT.phone.href} className={`text-[22px] ${link}`}>{KONTAKT.phone.display}</a>
         </li>
@@ -458,12 +457,14 @@ export function Sauene() {
 
   return (
     <section ref={ref} {...handlers} className="relative overflow-hidden" style={{ background: SKY }}>
-      {/* The form on the left and the contact lines in the sky to its right.
-          On a phone the lines come first, as they do for a screen reader, and
-          the form under them, above the pasture. */}
-      <div className="relative z-10 mx-auto grid w-full max-w-[var(--container-max,1280px)] grid-cols-1 gap-y-14 px-[var(--container-px,24px)] pb-6 pt-[var(--space-section)] lg:min-h-[900px] lg:grid-cols-[minmax(0,520px)_440px] lg:justify-between lg:gap-x-16 lg:pb-0">
-        <Kontakt />
-        <SkjemaKonvolutt as="h3" className="w-full max-w-[520px] self-start lg:order-first" />
+      {/* «Velkommen til oss.» and the form under it on the left, the contact
+          lines in the sky to the right, all set high so the pasture shows. On a
+          phone it reads as the page does for a screen reader: the heading, the
+          lines, then the form above the pasture. */}
+      <div className="relative z-10 mx-auto grid w-full max-w-[var(--container-max,1280px)] grid-cols-1 px-[var(--container-px,24px)] pb-6 pt-[var(--space-section)] lg:min-h-[900px] lg:grid-cols-[minmax(0,520px)_440px] lg:grid-rows-[auto_1fr] lg:justify-between lg:gap-x-16 lg:pb-0 lg:pt-14">
+        <h2 className="display-section text-balance text-[var(--color-ink)] lg:col-start-1 lg:row-start-1">Velkommen til oss.</h2>
+        <Kontakt className="mt-6 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mt-0 lg:self-start" />
+        <SkjemaKonvolutt as="h3" className="mt-14 w-full max-w-[520px] self-start lg:col-start-1 lg:row-start-2 lg:mt-8" />
       </div>
 
       <div aria-hidden="true" className="relative h-[330px] sm:h-[430px] lg:absolute lg:inset-x-0 lg:bottom-0 lg:h-[580px]">
