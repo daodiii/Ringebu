@@ -7,7 +7,7 @@ import { FELT, feilI, type Felt } from "@/components/kontakt/sjekk";
 
 /**
  * Sends a message from the contact form to the clinic's inbox, by SMTP
- * through one.com with a mailbox of its own (nettside@…), so the clinic's
+ * through one.com with a mailbox of its own (send@…), so the clinic's
  * own password never reaches the site. Vercel holds the mailbox and its
  * password as SMTP_USER and SMTP_PASS. Without them `next dev` prints the
  * message instead of sending it, and a production build refuses, so a
