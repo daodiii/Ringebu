@@ -420,7 +420,7 @@ function Tavle({ up, on, onSent }: { up: boolean; on: boolean; onSent: () => voi
       </div>
       <div className="relative bg-[#A89276] p-[12px] shadow-[0_5px_0_rgba(14,42,48,0.13)] md:p-[14px]">
         {/* The form, as a sheet of paper pinned up on the board */}
-        <div className="bg-[var(--color-paper)] px-5 pb-7 pt-6 shadow-[0_3px_0_rgba(14,42,48,0.14)] sm:px-8 sm:pb-9 sm:pt-8">
+        <div className="bg-[var(--color-paper)] px-5 pb-6 pt-5 shadow-[0_3px_0_rgba(14,42,48,0.14)] sm:px-8 sm:pb-7 sm:pt-6">
           <SkjemaKonvolutt takk="Takk! Brevet ligger i postkassa." onSent={onSent} />
         </div>
         {PINS.map((p, i) => (

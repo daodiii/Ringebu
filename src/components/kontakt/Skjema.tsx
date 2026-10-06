@@ -17,7 +17,7 @@ import { FELT, MAX, utfylt, type Felt, type Verdier } from "@/components/kontakt
 const SOFT = "text-[rgba(14,42,48,0.74)]";
 const LABEL = "block text-[14px] font-medium text-[var(--color-ink)]";
 const FIELD =
-  "mt-2 block w-full rounded-[12px] border border-[rgba(14,42,48,0.2)] bg-white px-4 py-3 text-[16px] leading-[1.4] text-[var(--color-ink)] transition-colors outline-none hover:border-[rgba(14,42,48,0.36)] focus:border-[var(--color-ink)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-ink)] aria-[invalid=true]:border-[var(--color-urgent)]";
+  "mt-1.5 block w-full rounded-[12px] border border-[rgba(14,42,48,0.2)] bg-white px-4 py-2.5 text-[16px] leading-[1.4] text-[var(--color-ink)] transition-colors outline-none hover:border-[rgba(14,42,48,0.36)] focus:border-[var(--color-ink)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-ink)] aria-[invalid=true]:border-[var(--color-urgent)]";
 const LINK = "font-medium text-[var(--color-ink)] underline underline-offset-2 hover:text-[var(--color-brass)]";
 
 const TOM: Verdier = { navn: "", telefon: "", epost: "", melding: "" };
@@ -99,7 +99,7 @@ export function Skjema({
   return (
     <div ref={box} className={className}>
       {tittel && (
-        <Heading className="mb-6 text-[24px] font-medium tracking-[-0.02em] text-[var(--color-ink)]">Send oss en melding</Heading>
+        <Heading className="mb-3 text-[24px] font-medium tracking-[-0.02em] text-[var(--color-ink)]">Send oss en melding</Heading>
       )}
 
       <form ref={form} action={action} noValidate onSubmit={() => setHeight(box.current?.offsetHeight)} className="@container">
@@ -110,7 +110,7 @@ export function Skjema({
         </label>
 
         {/* Side by side once the form itself is wide enough, wherever it sits */}
-        <div className="mt-5 grid gap-x-4 gap-y-5 @md:grid-cols-2">
+        <div className="mt-3.5 grid gap-x-4 gap-y-3.5 @md:grid-cols-2">
           <label className={LABEL}>
             Telefon
             <input type="tel" autoComplete="tel" className={FIELD} {...felt("telefon")} />
@@ -123,12 +123,12 @@ export function Skjema({
           </label>
         </div>
 
-        <label className={`mt-5 ${LABEL}`}>
+        <label className={`mt-3.5 ${LABEL}`}>
           Melding
-          <textarea rows={5} className={`${FIELD} resize-y`} {...felt("melding", `${id}merk`)} />
+          <textarea rows={3} className={`${FIELD} resize-y`} {...felt("melding", `${id}merk`)} />
           {feil("melding")}
         </label>
-        <p id={`${id}merk`} className={`mt-2 text-[14px] leading-[1.5] ${SOFT}`}>
+        <p id={`${id}merk`} className={`mt-1.5 text-[14px] leading-[1.5] ${SOFT}`}>
           Ikke skriv personnummer eller helseopplysninger her.
         </p>
 
@@ -158,7 +158,7 @@ export function Skjema({
         <button
           type="submit"
           disabled={pending}
-          className="group mt-6 inline-flex items-center gap-2.5 rounded-full bg-[var(--color-ink)] px-6 py-3.5 text-[14px] font-semibold text-white transition-colors hover:bg-[#16414A] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-ink)] disabled:cursor-wait disabled:opacity-70"
+          className="group mt-4 inline-flex items-center gap-2.5 rounded-full bg-[var(--color-ink)] px-6 py-3.5 text-[14px] font-semibold text-white transition-colors hover:bg-[#16414A] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-ink)] disabled:cursor-wait disabled:opacity-70"
         >
           {pending ? "Sender …" : "Send"}
           <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
