@@ -9,13 +9,6 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
-  experimental: {
-    // The CSS goes in each page's <head> instead of three stylesheets the
-    // first paint waits a round trip for (PageSpeed, 2026-10-07: "render-
-    // blocking requests", est. 510 ms on a phone). Every page's HTML is
-    // ~25 KB heavier for it.
-    inlineCss: true,
-  },
   images: {
     // AVIF first, WebP for browsers without it. Measured on the hero photos
     // (2026-10-07): 24% smaller on a phone, 19% on desktop.
