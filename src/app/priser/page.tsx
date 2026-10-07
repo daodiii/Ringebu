@@ -1,12 +1,23 @@
-import { permanentRedirect } from "next/navigation";
+import type { Metadata } from "next";
+import { Gardsutsalget } from "@/components/priser/Gardsutsalget";
 
-// /priser is a permanent alias for /behandlinger. The site no longer lists
-// prices, but links to them should still land on the treatments.
-// permanentRedirect issues 308 rather than the 307
-// that redirect() sends: a temporary redirect tells search engines to keep
-// /priser indexed separately instead of consolidating it onto the target.
-// The route is kept rather than deleted so existing links and bookmarks
-// still resolve.
+const description =
+  "Priser hos Ringebu Tannlegesenter. Undersøkelse 1 490 kr, fylling fra 1 390 kr, rotfylling, krone og tanntrekking.";
+
+export const metadata: Metadata = {
+  title: "Priser",
+  description,
+  alternates: { canonical: "/priser" },
+  openGraph: {
+    title: "Priser | Ringebu Tannlegesenter",
+    description,
+  },
+};
+
 export default function Priser() {
-  permanentRedirect("/behandlinger");
+  return (
+    <main>
+      <Gardsutsalget />
+    </main>
+  );
 }

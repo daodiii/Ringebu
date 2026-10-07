@@ -304,8 +304,8 @@ export const Cloud = memo(function Cloud({ x, y, w, drift, time, on }: { x: numb
 });
 
 // The tooth from the logo, outlined, with the little heart where the roots meet.
-const TOOTH = "M-9,-11 C-14,-11 -15,-4 -13,2 C-11,8 -9,12 -6,12 C-3,12 -3,5 0,5 C3,5 3,12 6,12 C9,12 11,8 13,2 C15,-4 14,-11 9,-11 C5,-11 4,-9 0,-9 C-4,-9 -5,-11 -9,-11 Z";
-const HEART = "M0,4.5 C-2.2,2.6 -3.4,1.2 -3.4,-0.3 C-3.4,-1.6 -2.4,-2.4 -1.4,-2.4 C-0.7,-2.4 -0.2,-2 0,-1.5 C0.2,-2 0.7,-2.4 1.4,-2.4 C2.4,-2.4 3.4,-1.6 3.4,-0.3 C3.4,1.2 2.2,2.6 0,4.5 Z";
+export const TOOTH = "M-9,-11 C-14,-11 -15,-4 -13,2 C-11,8 -9,12 -6,12 C-3,12 -3,5 0,5 C3,5 3,12 6,12 C9,12 11,8 13,2 C15,-4 14,-11 9,-11 C5,-11 4,-9 0,-9 C-4,-9 -5,-11 -9,-11 Z";
+export const HEART = "M0,4.5 C-2.2,2.6 -3.4,1.2 -3.4,-0.3 C-3.4,-1.6 -2.4,-2.4 -1.4,-2.4 C-0.7,-2.4 -0.2,-2 0,-1.5 C0.2,-2 0.7,-2.4 1.4,-2.4 C2.4,-2.4 3.4,-1.6 3.4,-0.3 C3.4,1.2 2.2,2.6 0,4.5 Z";
 
 /** A small sign on a wooden post with the tooth from the logo, standing at (x, y); `scale` 1 is a post 64 tall. */
 export function Tannskilt({ x, y, scale = 1 }: { x: number; y: number; scale?: number }) {

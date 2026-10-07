@@ -10,9 +10,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/kontakt`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.9 },
     { url: `${baseUrl}/symptomer`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: `${baseUrl}/informasjon`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
+    { url: `${baseUrl}/priser`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: `${baseUrl}/dekning`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
-    // /priser is deliberately absent: it 308s to /behandlinger, and a sitemap
-    // should list canonical URLs that return 200.
   ];
 
   // supportPages render at /dekning/<slug>, not /informasjon/<slug>. The old

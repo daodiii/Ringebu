@@ -9,6 +9,7 @@ const TREATMENTS = ["forebyggende-behandling", "fyllingsterapi", "rotfylling", "
 });
 
 const PRACTICAL = [
+  { label: "Priser", href: "/priser" },
   { label: "Støtteordninger", href: "/dekning" },
   { label: "Symptomer", href: "/symptomer" },
   { label: "Slik finner du oss", href: "/kontakt" },
