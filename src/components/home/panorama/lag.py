@@ -4,6 +4,7 @@ far.webp  : the photo with the near foreground painted out (opaque)
 near.webp : the near foreground alone (birches, lookout, path, rock), alpha
 far-tall.webp, near-tall.webp: the same two for upright screens, a crop of
             the right half cut from the 4x master at 1.6 times the scale
+far-phone.webp, near-phone.webp: the middle 62% of the tall ones, for phones
 """
 import os, sys
 import numpy as np
@@ -208,6 +209,15 @@ rgba_hi[alpha_hi == 0, :3] = 0
 Image.fromarray(far_hi).save(OUT + "/far-tall.webp", quality=84, method=6)
 Image.fromarray(rgba_hi, "RGBA").save(OUT + "/near-tall.webp", quality=86, alpha_quality=90, method=6)
 print("tall", size)
+
+# Phones: the middle 62% of the tall crop, starting 42% of the way into the
+# other 38%, to match the object-position of 42% (see art() in Panorama.tsx)
+PC = 0.62
+px0 = round(0.42 * (1 - PC) * size[0])
+px1 = px0 + round(PC * size[0])
+Image.fromarray(far_hi[:, px0:px1]).save(OUT + "/far-phone.webp", quality=84, method=6)
+Image.fromarray(rgba_hi[:, px0:px1], "RGBA").save(OUT + "/near-phone.webp", quality=86, alpha_quality=90, method=6)
+print("phone", (px1 - px0, HH))
 
 if DBG:
     Image.fromarray(far).resize((1280, 672)).save(DBG + "/dbg_far.jpg", quality=85)

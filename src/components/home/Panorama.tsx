@@ -6,8 +6,10 @@ import { useEffect, useRef, useSyncExternalStore, type CSSProperties, type Point
 import { motion, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import far from "./panorama/far.webp";
+import farPhone from "./panorama/far-phone.webp";
 import farTall from "./panorama/far-tall.webp";
 import near from "./panorama/near.webp";
+import nearPhone from "./panorama/near-phone.webp";
 import nearTall from "./panorama/near-tall.webp";
 import s from "./panorama/panorama.module.css";
 
@@ -40,22 +42,29 @@ function subscribeReduce(cb: () => void) {
 }
 
 /** Wide screens get the whole panorama; tall ones a crop of its middle. */
-function art(wide: StaticImageData, tall: StaticImageData) {
+function art(wide: StaticImageData, tall: StaticImageData, phone: StaticImageData) {
   const common = { alt: "", loading: "eager", fetchPriority: "high" } as const;
   const { props: { srcSet: wideSet } } = getImageProps({ ...common, sizes: "100vw", src: wide });
   // The tall crop is hung 132% of the frame's height (the hero plus 88px),
   // which makes it 1.18 times that wide: about 1100px on a phone, three
   // screens wide. A 2x phone gets 2048px of the 2880px crop, a 3x one all of it.
   const { props: { srcSet: tallSet, ...img } } = getImageProps({ ...common, sizes: "calc(118vh + 104px)", src: tall });
-  return { wideSet, tallSet, img };
+  // A phone's frame shows under half of that width, so phones get the
+  // middle 62% of the tall crop (*-phone.webp, cut by lag.py), from 42% of
+  // the leftover: with the same object-position (42%) it shows exactly what
+  // the tall crop would, on any screen whose frame is under 62% of it wide.
+  // Up to 9:16 that holds even for a 600px-tall hero.
+  const { props: { srcSet: phoneSet } } = getImageProps({ ...common, sizes: "calc(73.2vh + 65px)", src: phone });
+  return { wideSet, tallSet, phoneSet, img };
 }
-const FAR = art(far, farTall);
-const NEAR = art(near, nearTall);
+const FAR = art(far, farTall, farPhone);
+const NEAR = art(near, nearTall, nearPhone);
 
 function Photo({ a }: { a: ReturnType<typeof art> }) {
   return (
     <picture>
       <source media="(min-aspect-ratio: 1/1)" srcSet={a.wideSet} sizes="100vw" />
+      <source media="(max-aspect-ratio: 9/16)" srcSet={a.phoneSet} sizes="calc(73.2vh + 65px)" />
       <img {...a.img} srcSet={a.tallSet} alt="" />
     </picture>
   );
