@@ -10,6 +10,9 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   images: {
+    // AVIF first, WebP for browsers without it. Measured on the hero photos
+    // (2026-10-07): 24% smaller on a phone, 19% on desktop.
+    formats: ["image/avif", "image/webp"],
     // next/image qualities used across the site (Next 16 requires them listed).
     qualities: [75, 90],
     remotePatterns: [
