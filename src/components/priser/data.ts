@@ -23,8 +23,8 @@ export const PRISER: readonly Gruppe[] = [
     tittel: "Rotfylling",
     priser: [
       { navn: "Fortann", kr: 4900 },
-      { navn: "Premolar/Liten jeksel", kr: 5900 },
-      { navn: "Molar/jeksel", kr: 6900 },
+      { navn: "Liten jeksel – premolar", kr: 5900 },
+      { navn: "Jeksel – molar", kr: 6900 },
     ],
   },
   {
