@@ -469,9 +469,14 @@ h1, h2, h3, h4, h5, h6 {
    The entrance is CSS so it starts at the first paint, not after the page's
    JavaScript has loaded. Each element brings its own animation-delay inline.
    The keyframes give only where it starts from; it ends on the element's
-   own style. */
+   own style.
+   hero-lift starts at 0.01, not 0: Chrome leaves a paint at opacity 0 out
+   of LCP, so the line under the name, the page's largest text, counted only
+   once its fade had ended, 1.4 s after the first paint (Lighthouse LCP
+   4.6 s on a phone, 2026-10-07). From 0.01 it counts from the first paint,
+   and it looks the same. */
 @keyframes hero-rise { from { transform: translateY(112%); } }
-@keyframes hero-lift { from { opacity: 0; transform: translateY(var(--from-y, 10px)); } }
+@keyframes hero-lift { from { opacity: 0.01; transform: translateY(var(--from-y, 10px)); } }
 @keyframes hero-fade { from { opacity: 0; } }
 
 .hero-line {

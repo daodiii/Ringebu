@@ -193,7 +193,7 @@ function Card({
   const p = PALETTES[s.palette];
   const S = SCENES[s.slug];
   return (
-    <article
+    <div
       id={`kartotek-kort-${s.slug}`}
       role="tabpanel"
       aria-labelledby={`kartotek-fane-${s.slug}`}
@@ -243,6 +243,6 @@ function Card({
           <ArrowUpRight className="size-4" aria-hidden="true" />
         </Link>
       </div>
-    </article>
+    </div>
   );
 }
