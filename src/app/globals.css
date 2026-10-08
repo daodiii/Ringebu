@@ -494,6 +494,19 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+/* ── The front page: what is below the screen waits (app/page.tsx) ──
+   Before its first paint the browser lays out the whole page, and the
+   scenes under the hero (the pasture alone is over half the page's
+   elements) took 1.2-1.5 s of it on a throttled phone, with the screen
+   white all the while (2026-10-08). content-visibility: auto lays a
+   section out only as it comes near the screen. Until then it stands in
+   at 1000px, near the measured 770-1440px; once seen it keeps its real
+   height. */
+.forside > section:not(:first-child) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1000px;
+}
+
 /* ── Kartoteket: the symptoms on a phone (Kartotek.tsx) ──
    A picked card sinks out of its slot behind the front of the box; the card
    on the table goes back up under the front and returns to its slot; only
