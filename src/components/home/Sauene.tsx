@@ -428,7 +428,7 @@ function Kontakt({ className = "" }: { className?: string }) {
         <li className={`${row} grid grid-cols-[auto_1fr] gap-x-5 font-normal text-[var(--color-text-secondary)]`}>
           {OPEN_DAYS.map((h) => (
             <Fragment key={h.code}>
-              <span>{h.code}</span>
+              <span>{h.day}</span>
               <span>{h.hours}</span>
             </Fragment>
           ))}
