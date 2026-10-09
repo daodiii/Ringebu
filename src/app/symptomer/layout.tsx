@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { DELEBILDE } from "@/app/delebilde";
 
 export const metadata: Metadata = {
   title: "Symptomer",
@@ -6,6 +7,7 @@ export const metadata: Metadata = {
     "Har du tannpine, blødende tannkjøtt eller andre symptomer? Se hva som kan være årsaken.",
   alternates: { canonical: "/symptomer" },
   openGraph: {
+    images: [DELEBILDE],
     title: "Symptomer | Ringebu Tannlegesenter",
     description:
       "Se hva tannsmertene dine kan bety.",

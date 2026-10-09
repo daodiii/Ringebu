@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
 import { useInView, useMotionValue, useReducedMotion, type MotionValue } from "framer-motion";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { PALETTES } from "@/components/behandlinger/scenes/Papir";
 import type { Scene } from "@/components/behandlinger/scenes/types";
 import { SYMPTOMS, type Symptom, type SymptomSlug } from "./data";
 import { paperScene } from "./scenes/Scener";
+import { Handlinger } from "@/components/kontakt/Handlinger";
 
 /**
  * Kartoteket, the symptoms on a phone: a box of index cards like the patient
@@ -82,19 +83,13 @@ export function Kartotek() {
       className="kartotek bg-[var(--color-paper)] px-[var(--container-px,24px)] py-[var(--space-section)]"
     >
       <div className="mx-auto max-w-[560px]">
-        <h2
-          id="symptomer-tittel"
-          className="font-sans font-extralight text-[var(--color-ink)]"
-          style={{ fontSize: 44, letterSpacing: "-0.045em", lineHeight: 0.95 }}
-        >
+        <h2 id="symptomer-tittel" className="display-section text-balance text-[var(--color-ink)]">
           Har du noen av disse plagene?
         </h2>
         <p className="mt-5 text-[18px] leading-[1.5] text-[var(--color-text-secondary)]">
           Sju vanlige plager. Hva de betyr.
         </p>
-        <Link href="/kontakt" className="mt-6 inline-flex items-center gap-2 rounded-full bg-[var(--color-ink)] px-6 py-3.5 text-[14px] font-semibold text-white">
-          Kontakt oss <ArrowRight className="size-4" aria-hidden="true" />
-        </Link>
+        <Handlinger iSiden className="mt-6" />
 
         {/* The box: every card but the one on the table, standing in its slot */}
         <div
@@ -240,7 +235,7 @@ function Card({
           style={{ color: p.ink }}
         >
           Les mer
-          <ArrowUpRight className="size-4" aria-hidden="true" />
+          <ArrowRight className="size-4" aria-hidden="true" />
         </Link>
       </div>
     </div>

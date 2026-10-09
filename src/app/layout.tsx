@@ -1,21 +1,15 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Schibsted_Grotesk } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import "./globals.css";
 
-const geist = Geist({
+// The one typeface, drawn for the Norwegian media house Schibsted: a
+// variable font, so every weight from 400 to 900 is one file.
+const schibsted = Schibsted_Grotesk({
   subsets: ["latin"],
-  variable: "--font-geist-sans",
+  variable: "--font-schibsted",
   display: "swap",
-  weight: ["200", "300", "400", "500", "600", "700", "800"],
-});
-
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-geist-mono",
-  display: "swap",
-  weight: ["400", "500", "600"],
 });
 
 export const viewport: Viewport = {
@@ -31,7 +25,7 @@ export const metadata: Metadata = {
     template: "%s | Ringebu Tannlegesenter",
   },
   description:
-    "Tannlege i Ringebu sentrum. Vi tar én pasient om gangen og har god tid til deg. Ring 61 28 04 12 for time.",
+    "Tannlege i Ringebu sentrum. Ring 61 28 04 12, eller be om time på nettsiden.",
   keywords: [
     "tannlege Ringebu",
     "tannlegesenter",
@@ -51,7 +45,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Ringebu Tannlegesenter | Din Tannlege i Ringebu",
     description:
-      "Tannlege i Ringebu sentrum, med god tid til hver pasient.",
+      "Tannlege i Ringebu sentrum.",
     type: "website",
     locale: "nb_NO",
     siteName: "Ringebu Tannlegesenter",
@@ -61,7 +55,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Ringebu Tannlegesenter | Din Tannlege i Ringebu",
     description:
-      "Tannlege i Ringebu sentrum, med god tid til hver pasient.",
+      "Tannlege i Ringebu sentrum.",
   },
   robots: {
     index: true,
@@ -82,7 +76,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="nb" className={`${geist.variable} ${geistMono.variable}`}>
+    <html lang="nb" className={schibsted.variable}>
       <head>
         <script
           type="application/ld+json"
@@ -93,8 +87,11 @@ export default function RootLayout({
               "@type": "Dentist",
               name: "Ringebu Tannlegesenter",
               description:
-                "Tannlege i Ringebu sentrum, med god tid til hver pasient.",
+                "Tannlege i Ringebu sentrum.",
               url: "https://ringebutannlegesenter.no",
+              logo: "https://ringebutannlegesenter.no/images/logo-mark.svg",
+              image: "https://ringebutannlegesenter.no/opengraph-image.jpg",
+              hasMap: "https://www.google.com/maps/search/?api=1&query=Jernbanegata+4,+2630+Ringebu",
               telephone: "+4761280412",
               email: "post@ringebutannlegesenter.no",
               address: {

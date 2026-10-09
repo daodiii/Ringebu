@@ -37,16 +37,15 @@
   z-index: 0;
 }
 .depth,
-.dolly,
-.idle {
+.dolly {
   position: absolute;
   inset: 0;
 }
 .dolly {
   transform-origin: var(--ox) var(--oy);
 }
-/* The frame reaches past the hero on every side, so a layer can lean or
-   drift without showing its edge. */
+/* The frame reaches past the hero on every side, so the near layer's
+   pull-back never shows its edge. */
 .frame {
   position: absolute;
   inset: -44px;
@@ -88,48 +87,6 @@
 @keyframes pano-dolly-near {
   from {
     transform: scale(1.36);
-  }
-}
-
-/* Breathing: the near and far drift against each other, one long round,
-   so the depth shows even on a phone with no pointer. */
-.idleFar {
-  animation: pano-idle-far 26s ease-in-out 4s infinite;
-}
-.idleNear {
-  animation: pano-idle-near 26s ease-in-out 4s infinite;
-}
-.root:not([data-on="true"]) .idle {
-  animation-play-state: paused;
-}
-@keyframes pano-idle-far {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-  25% {
-    transform: translate3d(3px, -1px, 0);
-  }
-  50% {
-    transform: translate3d(0, -2px, 0);
-  }
-  75% {
-    transform: translate3d(-3px, -1px, 0);
-  }
-}
-@keyframes pano-idle-near {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-  25% {
-    transform: translate3d(-11px, 3px, 0);
-  }
-  50% {
-    transform: translate3d(0, 5px, 0);
-  }
-  75% {
-    transform: translate3d(11px, 3px, 0);
   }
 }
 
@@ -182,8 +139,7 @@
    the river. The window widens until its edges leave the screen. The paper
    is four flat panels and a cap with the arch's curve; only their transform
    moves. At rest the hole is wider and taller than the hero, so nothing of
-   the paper shows; scrolling away scales it back down, and the view closes
-   into a window as the next section comes up. */
+   the paper shows. */
 .close {
   position: absolute;
   inset: 0;
@@ -259,7 +215,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .dolly,
-  .idle,
   .arch {
     animation: none !important;
   }

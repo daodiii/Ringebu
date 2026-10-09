@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { memo, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import {
   AnimatePresence,
@@ -17,6 +16,8 @@ import { ARCADE_TREATMENTS as T, EASE_OUT, type ArcadeTreatment } from "./data";
 import { TreatmentBody } from "./TreatmentBody";
 import { useElementSize, useLayerKeys, useScrollLock } from "./hooks";
 import type { SceneSet } from "./scenes/types";
+import { Handlinger } from "@/components/kontakt/Handlinger";
+import Image from "next/image";
 
 /**
  * Buegangen. A wall one screen tall with a row of arches cut into it. Two
@@ -295,11 +296,13 @@ export function Buegang({ scenes }: { scenes: SceneSet }) {
               <SceneRoom
                 key={t.slug}
                 Scene={scenes[t.slug]}
+                slug={t.slug}
                 i={i}
                 g={g}
                 x={x}
                 reduced={reduced}
                 hovered={hovered === i && layer === null}
+                lead={i === 0 && edge === "start"}
               />
             ))}
 
@@ -329,8 +332,7 @@ export function Buegang({ scenes }: { scenes: SceneSet }) {
               style={{ left: g.padL, top: g.top, width: g.introW, height: g.archH }}
             >
               <motion.h1
-                className="font-sans font-extralight text-[var(--color-ink)]"
-                style={{ fontSize: g.sm ? 56 : "clamp(64px, 7.4vw, 112px)", letterSpacing: "-0.05em", lineHeight: 0.9 }}
+                className="display-page text-[var(--color-ink)]"
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={reduced ? { duration: 0 } : { duration: 1.1, ease: EASE_OUT, delay: 0.1 }}
@@ -383,20 +385,7 @@ export function Buegang({ scenes }: { scenes: SceneSet }) {
               <p className="mt-5 max-w-[34ch] text-[18px] leading-[1.5] text-[var(--color-text-secondary)]">
                 Ring oss, så finner vi ut av det sammen.
               </p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Link
-                  href="/kontakt"
-                  className="inline-flex items-center gap-2 rounded-full bg-[var(--color-ink)] px-6 py-3.5 text-[14px] font-semibold text-white"
-                >
-                  Bestill time <ArrowRight className="size-4" aria-hidden="true" />
-                </Link>
-                <a
-                  href="tel:61280412"
-                  className="inline-flex items-center rounded-full border border-[rgba(14,42,48,0.2)] bg-white/60 px-5 py-3.5 text-[14px] font-medium text-[var(--color-ink)]"
-                >
-                  61 28 04 12
-                </a>
-              </div>
+              <Handlinger className="mt-8" />
             </div>
           </div>
         </div>
@@ -478,6 +467,8 @@ function useArchDistance(i: number, g: Geo, x: MotionValue<number>) {
 
 // A scene plays while its arch is within this distance of the middle.
 const SCENE_ZONE = 0.2;
+// A lead arch plays while it is this near the middle: on screen, on a wide one.
+const SEEN = 0.75;
 // A scene is built while its arch is within this distance: the next one or
 // two along on a phone, a few more on a wide screen.
 const NEAR = 2;
@@ -486,7 +477,13 @@ const FOLDING = 800;
 
 /**
  * The scene behind one arch. It is told when it is on stage, and only then
- * does it perform; the rest of the time the arch shows its plain colour.
+ * does it perform; the rest of the time the arch shows a still of it
+ * (public/images/buegang/<slug>.webp, the scene at rest, shot from the page
+ * with scripts/buegang-stills.cjs). Without the stills every arch but the
+ * middle one was an empty door, and so was the whole first screen. On stage
+ * the still fades out first, and the live scene stands up on its own. The first
+ * arch is on stage from the start, while the wall is at its beginning and
+ * the arch is on screen, so a scene plays on arrival.
  *
  * Only the scenes near the middle exist at all. Nine kept mounted cost the
  * page most of its start-up work, and their sheets were moved at every step
@@ -498,24 +495,31 @@ const FOLDING = 800;
  * step.
  */
 const SceneRoom = memo(function SceneRoom({
-  Scene, i, g, x, reduced, hovered,
+  Scene, slug, i, g, x, reduced, hovered, lead,
 }: {
   Scene?: SceneSet[string];
+  slug: string;
   i: number;
   g: Geo;
   x: MotionValue<number>;
   reduced: boolean;
   hovered: boolean;
+  /** The first arch, while the wall is at its start */
+  lead: boolean;
 }) {
   const d = useArchDistance(i, g, x);
   const [centred, setCentred] = useState(() => Math.abs(d.get()) < SCENE_ZONE);
   const [near, setNear] = useState(() => Math.abs(d.get()) < NEAR);
+  // Wholly on screen: a lead arch plays only where it can be seen (on a phone
+  // the first screen is the title alone).
+  const [seen, setSeen] = useState(() => Math.abs(d.get()) < SEEN);
   useMotionValueEvent(d, "change", (v) => {
     const a = Math.abs(v);
     setCentred((c) => (c === a < SCENE_ZONE ? c : a < SCENE_ZONE));
     setNear((n) => (n === a < NEAR ? n : a < NEAR));
+    setSeen((n) => (n === a < SEEN ? n : a < SEEN));
   });
-  const on = centred || hovered;
+  const on = centred || hovered || (lead && seen);
   // Shown while on stage, and for as long as it takes to fold away after.
   const [shown, setShown] = useState(on);
   useEffect(() => {
@@ -529,6 +533,7 @@ const SceneRoom = memo(function SceneRoom({
   return (
     <div
       aria-hidden="true"
+      data-rom={slug}
       className="absolute overflow-hidden"
       style={{
         left: g.lefts[i],
@@ -544,6 +549,19 @@ const SceneRoom = memo(function SceneRoom({
           <Scene active={on} d={d} reduced={reduced} mode="arch" />
         </div>
       )}
+      {/* The still, over the live scene: gone before its sheets stand up, back as they fold away.
+          Fading out while they stood up showed both at once, a tall tooth over a rising one. */}
+      {/* Contained, as the live scene sits: on a phone the arch is wider than the scene */}
+      <Image
+        src={`/images/buegang/${slug}.webp`}
+        alt=""
+        fill
+        sizes={`${Math.round(g.archW)}px`}
+        loading={i < 3 ? "eager" : "lazy"}
+        draggable={false}
+        className="pointer-events-none select-none object-contain"
+        style={{ opacity: on ? 0 : 1, transition: reduced ? undefined : on ? "opacity 0.2s ease-out" : "opacity 0.3s ease 0.5s" }}
+      />
     </div>
   );
 });
@@ -587,7 +605,6 @@ function Arch({
       // scene playing after you had walked away from it.
       onPointerEnter={(e) => e.pointerType !== "touch" && onHover(true)}
       onPointerLeave={(e) => e.pointerType !== "touch" && onHover(false)}
-      aria-label={`${t.title}. ${t.subtitle}`}
       className="group absolute cursor-pointer text-left outline-none"
       style={{ left: g.lefts[i], top: g.top, width: g.archW, height: g.archH + g.labelH }}
     >

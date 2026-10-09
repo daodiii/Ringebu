@@ -1,9 +1,11 @@
 "use client";
 
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useReducedMotion } from "framer-motion";
 import { PaperShadow } from "@/components/behandlinger/scenes/Papir";
 import { Skjema } from "./Skjema";
+import { BE_OM_TIME } from "./data";
+import { tilSkjema } from "./tilSkjema";
 
 /**
  * The contact form with a small open envelope beside its Send button. When
@@ -92,6 +94,35 @@ export function SkjemaKonvolutt({
 }) {
   const reduced = useReducedMotion() ?? false;
   const box = useRef<HTMLDivElement>(null);
+
+  // Arriving at #be-om-time from another page: the browser jumps to the
+  // anchor while the board on /kontakt is still lying flat. It stands up
+  // after half a second (.reis in kontakt.module.css), and the form rose
+  // ~490px past where the jump had put it on a desktop. So wait until no
+  // animation is running on the form or anything around it and it has held
+  // still for a dozen frames, then go to it.
+  useEffect(() => {
+    if (location.hash !== `#${BE_OM_TIME.id}`) return;
+    const el = box.current;
+    if (!el) return;
+    const start = performance.now();
+    const moving = () =>
+      document.getAnimations().some((a) => {
+        const t = (a.effect as KeyframeEffect | null)?.target;
+        return a.playState === "running" && t instanceof Element && t.contains(el);
+      });
+    let last = NaN;
+    let still = 0;
+    let raf = requestAnimationFrame(function tick() {
+      const y = el.getBoundingClientRect().top + window.scrollY;
+      still = Math.abs(y - last) < 0.5 ? still + 1 : 0;
+      last = y;
+      const waited = performance.now() - start;
+      if ((still >= 12 && waited > 400 && !moving()) || waited > 4000) tilSkjema("auto");
+      else raf = requestAnimationFrame(tick);
+    });
+    return () => cancelAnimationFrame(raf);
+  }, []);
   const env = useRef<HTMLDivElement>(null);
   const brev = useRef<HTMLDivElement>(null);
   const apen = useRef<HTMLDivElement>(null);
@@ -165,7 +196,8 @@ export function SkjemaKonvolutt({
 
   return (
     // The form's own thanks stays for screen readers; on screen the envelope says it
-    <div ref={box} className={`relative [&_[role=status]]:opacity-0 ${className}`}>
+    // #be-om-time: every «Be om time» button on the site comes here, clear of the menu bar
+    <div ref={box} id={BE_OM_TIME.id} className={`relative scroll-mt-28 [&_[role=status]]:opacity-0 ${className}`}>
       <Skjema as={as} takk={takk} onSent={sent} />
 
       {/* The open envelope, beside the Send button, low enough that its flap stays

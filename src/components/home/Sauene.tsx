@@ -1,8 +1,6 @@
 "use client";
 
-import Link from "next/link";
 import { Fragment, memo } from "react";
-import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { NoShadow, PaperShadow } from "@/components/behandlinger/scenes/Papir";
 import { HOURS, KONTAKT } from "@/components/kontakt/data";
@@ -138,8 +136,9 @@ const DAISIES = (() => {
 
 const FAR_ART = (
   <>
-    <circle cx={1500} cy={112} r={70} fill="#F7F4DE" />
-    <circle cx={1500} cy={112} r={47} fill="#FFF0C4" />
+    {/* Setting behind the far ridge, clear of the contact lines above it */}
+    <circle cx={1500} cy={196} r={70} fill="#F7F4DE" />
+    <circle cx={1500} cy={196} r={47} fill="#FFF0C4" />
     <path d={ridge(FAR, H)} fill="#D5E0E6" />
     {[snowcap(FAR, 1640, 1960, 18, 3), snowcap(FAR, 2060, 2240, 9, 4)].map((d, i) => <path key={i} d={d} fill="#FFFFFF" />)}
   </>
@@ -413,12 +412,12 @@ const Animal = memo(function Animal({ i, up, on }: { i: number; up: boolean; on:
 
 function Kontakt({ className = "" }: { className?: string }) {
   const link = "transition-colors hover:text-[var(--color-brass)]";
-  const row = "border-t border-[rgba(14,42,48,0.14)] py-3";
+  const row = "border-t border-[rgba(14,42,48,0.14)] py-3.5";
   return (
     <div className={`max-w-[440px] ${className}`}>
-      <ul className="text-[17px] font-medium leading-[1.4] tracking-[-0.01em] text-[var(--color-ink)]">
+      <ul className="text-[18px] font-medium leading-[1.4] tracking-[-0.01em] text-[var(--color-ink)]">
         <li className={row}>
-          <a href={KONTAKT.phone.href} className={`text-[22px] ${link}`}>{KONTAKT.phone.display}</a>
+          <a href={KONTAKT.phone.href} className={`text-[26px] font-semibold tracking-[-0.02em] ${link}`}>{KONTAKT.phone.display}</a>
         </li>
         <li className={row}>
           <a href={KONTAKT.email.href} className={link}>{KONTAKT.email.display}</a>
@@ -426,7 +425,7 @@ function Kontakt({ className = "" }: { className?: string }) {
         <li className={row}>
           <a href={KONTAKT.address.href} target="_blank" rel="noopener noreferrer" className={link}>{KONTAKT.address.display}</a>
         </li>
-        <li className={`${row} grid grid-cols-[auto_1fr] gap-x-5 border-b font-normal tabular-nums text-[rgba(14,42,48,0.8)]`}>
+        <li className={`${row} grid grid-cols-[auto_1fr] gap-x-5 font-normal text-[var(--color-text-secondary)]`}>
           {OPEN_DAYS.map((h) => (
             <Fragment key={h.code}>
               <span>{h.code}</span>
@@ -434,14 +433,15 @@ function Kontakt({ className = "" }: { className?: string }) {
             </Fragment>
           ))}
         </li>
+        {/* After hours, the same words as on /kontakt */}
+        <li className={`${row} border-b font-normal text-[var(--color-text-secondary)]`}>
+          <span className="font-medium text-[var(--color-ink)]">Akutt hjelp</span>{" "}
+          <a href={KONTAKT.akutt.after.href} className={`font-medium text-[var(--color-ink)] ${link}`}>
+            {KONTAKT.akutt.after.display}
+          </a>{" "}
+          utenom åpningstid
+        </li>
       </ul>
-      <Link
-        href="/kontakt"
-        className="group mt-6 inline-flex items-center gap-2.5 rounded-full bg-[var(--color-ink)] px-6 py-3.5 text-[14px] font-semibold text-white transition-colors hover:bg-[#16414A] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-ink)]"
-      >
-        Finn en ledig time
-        <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
-      </Link>
     </div>
   );
 }

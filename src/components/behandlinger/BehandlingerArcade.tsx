@@ -16,7 +16,7 @@ import type { SceneSet } from "./scenes/types";
 
 // Every arch its own scene and its own paper. The hues step along the walk,
 // so no two neighbours share a colour. Keys are the treatment slugs from ./data.
-const SCENES: SceneSet = {
+export const SCENES: SceneSet = {
   "forebyggende-behandling": withPalette(PapirSpeil, "fjord"),
   fyllingsterapi: withPalette(PapirHerdelampe, "lav"),
   rotfylling: withPalette(PapirRotfil, "bjork"),

@@ -615,7 +615,7 @@ export function Enga() {
       }}
     >
       <div className="relative z-10 mx-auto max-w-[720px] px-[var(--container-px,24px)] pt-28 text-center md:pt-36">
-        <h1 className="display-section mx-auto max-w-[19ch] text-balance text-[var(--color-ink)]">{TITTEL}</h1>
+        <h1 className="display-page mx-auto max-w-[19ch] text-balance text-[var(--color-ink)]">{TITTEL}</h1>
         <div className="mx-auto mt-6 max-w-[40ch] md:mt-8">
           {AVSNITT.map((a, k) => (
             <p

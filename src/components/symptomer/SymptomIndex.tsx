@@ -3,6 +3,7 @@
 import { useState, useSyncExternalStore } from "react";
 import { X } from "lucide-react";
 import { SYMPTOMS, type Symptom } from "./data";
+import { Hjelp } from "./Hjelp";
 
 /**
  * Every symptom in full, as plain text under the arch. The arch only shows
@@ -93,6 +94,7 @@ function Entry({ s }: { s: Symptom }) {
             ))}
           </ul>
         </Block>
+        <Hjelp s={s} className="mt-9 lg:mt-12" size={18} />
       </div>
     </li>
   );

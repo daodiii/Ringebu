@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   AnimatePresence,
@@ -13,12 +12,14 @@ import {
   useTransform,
   useVelocity,
 } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+
 import { PALETTES, PaperShadow, type PaletteName } from "@/components/behandlinger/scenes/Papir";
 import { useViewport } from "@/components/behandlinger/hooks";
 import { EASE_OUT, SYMPTOMS, type Symptom, type SymptomSlug } from "./data";
 import { paperScene } from "./scenes/Scener";
 import { THING_BOX, Thing } from "./scenes/Ting";
+import { Handlinger } from "@/components/kontakt/Handlinger";
+import { Hjelp } from "./Hjelp";
 
 /**
  * Hverdagen. Eight ordinary things lie on the table in front of an arch: a
@@ -200,12 +201,13 @@ export function Hverdagen() {
 
         {/* The words */}
         <div className={`relative flex flex-col justify-center ${short ? "py-6" : "py-10"} pr-[max(32px,calc((100vw-1280px)/2+36px))]`} style={sm ? { padding: "8px 20px 64px" } : { paddingLeft: 8 }}>
+          {/* The page title (.display-page sizes), smaller while a symptom is on show */}
           <motion.h1
-            className="font-sans font-extralight text-[var(--color-ink)]"
+            className="font-sans font-medium text-[var(--color-ink)]"
             initial={false}
-            animate={{ fontSize: current ? (sm ? 26 : 34) : sm ? 44 : 76, letterSpacing: current ? "-0.03em" : "-0.05em" }}
+            animate={{ fontSize: current ? (sm ? 26 : 34) : sm ? 40 : 64, letterSpacing: current ? "-0.03em" : "-0.035em" }}
             transition={{ duration: reduced ? 0 : 0.7, ease: EASE_DOOR }}
-            style={{ lineHeight: 0.95 }}
+            style={{ lineHeight: 1 }}
           >
             Har du noen av disse plagene?
           </motion.h1>
@@ -214,7 +216,7 @@ export function Hverdagen() {
           <div
             className="relative mt-6"
             style={{
-              minHeight: sm ? undefined : current ? (short ? 510 : 560) : 140,
+              minHeight: sm ? undefined : current ? (short ? 560 : 620) : 140,
               // A CSS transition: framer left this min-height where it started.
               transition: reduced ? undefined : "min-height 0.7s cubic-bezier(0.76, 0, 0.24, 1)",
             }}
@@ -246,9 +248,7 @@ export function Hverdagen() {
 
 function KontaktOss({ short }: { short: boolean }) {
   return (
-    <Link href="/kontakt" className={`${short ? "mt-6" : "mt-8"} inline-flex items-center gap-2 rounded-full bg-[var(--color-ink)] px-6 py-3.5 text-[14px] font-semibold text-white`}>
-      Kontakt oss <ArrowRight className="size-4" aria-hidden="true" />
-    </Link>
+    <Handlinger className={short ? "mt-6" : "mt-8"} />
   );
 }
 
@@ -274,6 +274,7 @@ function Detail({ s, sm, short }: { s: Symptom; sm: boolean; short: boolean }) {
           </li>
         ))}
       </ul>
+      <Hjelp s={s} size={sm ? 16 : 18} className={short ? "mt-5" : "mt-7"} />
     </div>
   );
 }

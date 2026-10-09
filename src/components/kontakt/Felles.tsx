@@ -1,5 +1,6 @@
-import { Phone } from "lucide-react";
-import { HOURS, KONTAKT, SEO_TEXT } from "@/components/kontakt/data";
+import { Fragment } from "react";
+import { ArrowUpRight, Phone } from "lucide-react";
+import { HOURS, KART, KONTAKT, SEO_TEXT } from "@/components/kontakt/data";
 
 /**
  * The words on /kontakt, apart from the picture around them and the form:
@@ -16,12 +17,7 @@ const FOCUS =
 export function Tittel() {
   return (
     <>
-      <h1
-        className="font-sans font-medium text-balance text-[var(--color-ink)]"
-        style={{ fontSize: "clamp(40px, 4.8vw, 62px)", letterSpacing: "-0.035em", lineHeight: 1 }}
-      >
-        Kontakt oss.
-      </h1>
+      <h1 className="display-page text-balance text-[var(--color-ink)]">Kontakt oss</h1>
       <p className={`mt-4 max-w-[40ch] text-pretty text-[17px] leading-[1.55] ${SOFT}`}>
         {KONTAKT.lead}
       </p>
@@ -36,7 +32,7 @@ export function Linjer({ onEpost }: { onEpost?: () => void }) {
   return (
     <ul className="text-[var(--color-ink)]">
       <li className={row}>
-        <a href={KONTAKT.phone.href} className={`${link} text-[30px] font-medium leading-[1.15] tracking-[-0.02em] tabular-nums`}>
+        <a href={KONTAKT.phone.href} className={`${link} text-[30px] font-medium leading-[1.15] tracking-[-0.02em]`}>
           {KONTAKT.phone.display}
         </a>
       </li>
@@ -65,19 +61,19 @@ export function Linjer({ onEpost }: { onEpost?: () => void }) {
 }
 
 /**
- * The opening hours, two days to a row. A day needs 137px, so below 350px
- * wide there is room for one day to a row, or the hours break in two.
+ * The opening hours, one day to a line, read straight down. Two days to a
+ * row read across (Man, Tir, then Ons, Tor), and the eye had to zigzag.
  */
 export function Timer({ className = "" }: { className?: string }) {
   return (
-    <dl className={`grid grid-cols-1 gap-x-8 gap-y-1.5 text-[14.5px] min-[350px]:grid-cols-2 ${className}`}>
+    <dl className={`grid max-w-[320px] grid-cols-[auto_1fr] gap-x-8 gap-y-1.5 text-[16px] ${className}`}>
       {HOURS.map((h) => (
-        <div key={h.code} className="flex items-baseline justify-between gap-3">
-          <dt className="text-[rgba(14,42,48,0.62)]">{h.code}</dt>
-          <dd className={h.closed ? "italic text-[rgba(14,42,48,0.5)]" : "font-medium tabular-nums text-[var(--color-ink)]"}>
+        <Fragment key={h.code}>
+          <dt className="text-[rgba(14,42,48,0.72)]">{h.day}</dt>
+          <dd className={h.closed ? "italic text-[rgba(14,42,48,0.72)]" : "font-medium text-[var(--color-ink)]"}>
             {h.hours}
           </dd>
-        </div>
+        </Fragment>
       ))}
     </dl>
   );
@@ -89,7 +85,7 @@ export function Akutt() {
       <span className="font-medium text-[var(--color-ink)]">Akutt hjelp</span>{" "}
       <a
         href={KONTAKT.akutt.after.href}
-        className={`font-medium tabular-nums text-[var(--color-ink)] underline-offset-2 hover:underline ${FOCUS}`}
+        className={`font-medium text-[var(--color-ink)] underline-offset-2 hover:underline ${FOCUS}`}
       >
         116 117
       </a>{" "}
@@ -102,21 +98,43 @@ export function RingKnapp() {
   return (
     <a
       href={KONTAKT.phone.href}
-      className="inline-flex items-center gap-2.5 rounded-full bg-[var(--color-ink)] px-6 py-3.5 text-[14px] font-semibold text-white transition-colors hover:bg-[#16414A] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-ink)]"
+      className="knapp knapp-blekk"
     >
-      <Phone className="size-4" aria-hidden="true" />
+      <Phone aria-hidden="true" />
       Ring {KONTAKT.phone.display}
     </a>
   );
 }
 
-/** The paragraph for visitors and search engines, on a cream band under the picture. */
+/**
+ * On a cream band under the picture: how to find the clinic (the footer's
+ * «Slik finner du oss» comes here), and the paragraph for visitors and search
+ * engines. The way from the E6, parking and the entrance wait for the
+ * owner's own words; until then the address and the two map apps.
+ */
 export function Omtale() {
+  const knapp = "knapp knapp-papir knapp-liten";
   return (
     <section className="bg-[var(--color-paper)]">
-      <div className="mx-auto w-full max-w-[var(--container-max,1280px)] px-[var(--container-px,24px)] pb-20 pt-10 md:pb-24 md:pt-12">
-        <h2 className="text-[20px] font-medium tracking-[-0.015em] text-[var(--color-ink)]">Tannlegen i Gudbrandsdalen</h2>
-        <p className={`mt-3 max-w-[64ch] text-pretty text-[15.5px] leading-[1.65] ${SOFT}`}>{SEO_TEXT}</p>
+      <div className="mx-auto grid w-full max-w-[var(--container-max,1280px)] gap-x-20 gap-y-12 px-[var(--container-px,24px)] pb-20 pt-12 md:grid-cols-2 md:pb-24 md:pt-16">
+        <div id="slik-finner-du-oss" className="scroll-mt-28">
+          <h2 className="text-[24px] font-semibold tracking-[-0.02em] text-[var(--color-ink)]">Slik finner du oss</h2>
+          <p className="mt-3 text-[18px] text-[var(--color-ink)]">{KONTAKT.address.display}</p>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <a href={KART.google} target="_blank" rel="noopener noreferrer" className={knapp}>
+              Åpne i Google Maps
+              <ArrowUpRight aria-hidden="true" />
+            </a>
+            <a href={KART.apple} target="_blank" rel="noopener noreferrer" className={knapp}>
+              Åpne i Apple Kart
+              <ArrowUpRight aria-hidden="true" />
+            </a>
+          </div>
+        </div>
+        <div>
+          <h2 className="text-[24px] font-semibold tracking-[-0.02em] text-[var(--color-ink)]">Tannlegen i Gudbrandsdalen</h2>
+          <p className={`mt-3 max-w-[64ch] text-pretty text-[16.5px] leading-[1.65] ${SOFT}`}>{SEO_TEXT}</p>
+        </div>
       </div>
     </section>
   );

@@ -1,14 +1,13 @@
 "use client";
 
 import { useRef } from "react";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { NoShadow, PaperShadow } from "@/components/behandlinger/scenes/Papir";
 import {
   Bjork, Blomst, Cloud, Gran, HEART, Strip, TOOTH, lip, r2, ridge, ridgeY, rng, snowcap, useLean, usePopUp, useShift, type Pts,
 } from "@/components/home/landskap";
 import { at, useLoop } from "@/components/kontakt/bevegelse";
-import { RingKnapp } from "@/components/kontakt/Felles";
+import { Handlinger } from "@/components/kontakt/Handlinger";
 import s from "@/components/kontakt/kontakt.module.css";
 import { PRISER, TEKST, kroner } from "./data";
 
@@ -479,8 +478,8 @@ function Prisliste() {
               <div key={p.navn} className="flex items-end gap-2 py-[5px] text-[15px] leading-[1.4] md:text-[15.5px]">
                 <dt className="min-w-0 text-pretty text-[rgba(14,42,48,0.78)]">{p.navn}</dt>
                 <span aria-hidden="true" className="mb-[0.42em] min-w-[14px] flex-1 border-b-2 border-dotted border-[rgba(14,42,48,0.2)]" />
-                <dd className="shrink-0 whitespace-nowrap font-medium tabular-nums text-[var(--color-ink)]">
-                  {p.fra && <span className="font-normal text-[rgba(14,42,48,0.6)]">fra </span>}
+                <dd className="shrink-0 whitespace-nowrap font-medium text-[var(--color-ink)]">
+                  {p.fra && <span className="font-normal text-[rgba(14,42,48,0.72)]">fra </span>}
                   {kroner(p.kr)} kr
                 </dd>
               </div>
@@ -570,25 +569,12 @@ export function Gardsutsalget() {
 
       <div className="mx-auto grid w-full max-w-[var(--container-max,1280px)] grid-cols-1 gap-y-14 px-[var(--container-px,24px)] pb-[64px] pt-[112px] md:pt-[128px] lg:grid-cols-[minmax(0,400px)_minmax(0,1fr)] lg:gap-x-14 xl:grid-cols-[minmax(0,430px)_minmax(0,1fr)] xl:gap-x-20">
         <div className="relative z-[60] max-w-[460px] lg:pb-[150px]">
-          <h1
-            className="font-sans font-medium text-balance text-[var(--color-ink)]"
-            style={{ fontSize: "clamp(40px, 4.8vw, 62px)", letterSpacing: "-0.035em", lineHeight: 1 }}
-          >
-            {TEKST.tittel}
-          </h1>
+          <h1 className="display-page text-balance text-[var(--color-ink)]">{TEKST.tittel}</h1>
           <p className="mt-5 max-w-[40ch] text-pretty text-[17px] leading-[1.55] font-medium text-[var(--color-ink)]">{TEKST.overslag}</p>
           <p className="mt-4 max-w-[40ch] border-t border-[rgba(14,42,48,0.14)] pt-4 text-pretty text-[15.5px] leading-[1.6] text-[rgba(14,42,48,0.74)]">
             {TEKST.helfo}
           </p>
-          <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-4">
-            <Link
-              href="/kontakt"
-              className="inline-flex items-center rounded-full bg-[var(--color-ink)] px-6 py-3.5 text-[14px] font-semibold text-white transition-colors hover:bg-[#16414A] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-ink)]"
-            >
-              Bestill undersøkelse
-            </Link>
-            <RingKnapp />
-          </div>
+          <Handlinger className="mt-8" />
         </div>
 
         {/* No z-index here: the stand takes its place among the strips of land, the grass in front of it */}

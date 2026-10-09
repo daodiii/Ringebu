@@ -44,7 +44,7 @@ export const PRISER: readonly Gruppe[] = [
 export const kroner = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 
 export const TEKST = {
-  tittel: "Priser.",
+  tittel: "Priser",
   overslag:
     "Vil du vite mer nøyaktig hva det blir? Bestill en undersøkelse. Da får du en plan og et prisoverslag før vi begynner.",
   helfo: "Vi har direkte oppgjør med HELFO.",

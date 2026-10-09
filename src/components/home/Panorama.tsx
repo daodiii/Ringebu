@@ -1,10 +1,10 @@
 "use client";
 
 import { getImageProps, type StaticImageData } from "next/image";
-import Link from "next/link";
-import { useEffect, useRef, useSyncExternalStore, type CSSProperties, type PointerEvent } from "react";
-import { motion, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { useEffect, useRef, type CSSProperties } from "react";
+import { Phone } from "lucide-react";
+import { BE_OM_TIME, RING } from "@/components/kontakt/data";
+import { tilSkjema } from "@/components/kontakt/tilSkjema";
 import far from "./panorama/far.webp";
 import farPhone from "./panorama/far-phone.webp";
 import farTall from "./panorama/far-tall.webp";
@@ -26,20 +26,14 @@ import s from "./panorama/panorama.module.css";
  * On the first paint the hero is paper with an arched window in it, close on
  * the river. The window widens past the edges of the screen while the camera
  * pulls back, the lookout shrinking faster than the valley, and the view
- * settles. Then the two depths breathe against each other in one long round,
- * and the pointer leans them. Scrolling away, the valley lags behind the
- * lookout and the paper closes in around the view.
+ * settles. Then it holds still. It used to breathe, lean with the pointer and
+ * close back into paper as you scrolled away; the closing left a band of
+ * empty paper under the hero, and only the book and the pasture move on the
+ * front page now.
  *
- * Everything that moves moves by transform. The entrance is CSS, so it plays
- * from the first paint; the breathing pauses while the hero is off screen.
+ * The entrance is CSS and moves only transforms, so it plays from the first
+ * paint.
  */
-
-const REDUCE = "(prefers-reduced-motion: reduce)";
-function subscribeReduce(cb: () => void) {
-  const m = window.matchMedia(REDUCE);
-  m.addEventListener("change", cb);
-  return () => m.removeEventListener("change", cb);
-}
 
 /** Wide screens get the whole panorama; tall ones a crop of its middle. */
 function art(wide: StaticImageData, tall: StaticImageData, phone: StaticImageData) {
@@ -82,39 +76,8 @@ const SUB = "mt-4 w-fit max-w-[34ch] text-[24px] font-medium leading-[1.25] trac
 
 export function Panorama() {
   const ref = useRef<HTMLElement | null>(null);
-  const reduced = useSyncExternalStore(subscribeReduce, () => window.matchMedia(REDUCE).matches, () => false);
 
-  // The pointer, -1..1 across the hero, eased
-  const px = useMotionValue(0);
-  const py = useMotionValue(0);
-  const sx = useSpring(px, { stiffness: 50, damping: 18, mass: 1 });
-  const sy = useSpring(py, { stiffness: 50, damping: 18, mass: 1 });
-  const farX = useTransform(sx, (v) => v * -7);
-  const farY = useTransform(sy, (v) => v * -4);
-  const nearX = useTransform(sx, (v) => v * -22);
-  const nearY = useTransform(sy, (v) => v * -10);
-
-  // Scrolling away: the valley lags, the paper closes in. The hero opens the
-  // page, so how far it has gone is the page's scroll over its height.
-  const heroH = useRef(900);
-  const { scrollY } = useScroll();
-  const scrollYProgress = useTransform(scrollY, (v) => Math.min(1, Math.max(0, v / heroH.current)));
-  const lag = useTransform(scrollYProgress, [0, 1], reduced ? ["0%", "0%"] : ["0%", "14%"]);
-  const closing = useTransform(scrollYProgress, [0, 0.18, 1], reduced ? [1, 1, 1] : [1, 1, 0.56]);
-
-  const onMove = (e: PointerEvent<HTMLElement>) => {
-    if (reduced || e.pointerType !== "mouse") return;
-    const r = e.currentTarget.getBoundingClientRect();
-    px.set(((e.clientX - r.left) / r.width) * 2 - 1);
-    py.set(((e.clientY - r.top) / r.height) * 2 - 1);
-  };
-  const onLeave = () => {
-    px.set(0);
-    py.set(0);
-  };
-
-  // Tell the floating nav when it is over the hero, and pause the loops
-  // while the hero is off screen.
+  // Tell the floating nav when it is over the hero.
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -124,41 +87,25 @@ export function Panorama() {
       },
       { threshold: 0.15 }
     );
-    const on = new IntersectionObserver((entries) => {
-      el.dataset.on = String(entries[entries.length - 1].isIntersecting);
-    });
-    const size = new ResizeObserver(() => {
-      heroH.current = el.offsetHeight || 900;
-    });
     io.observe(el);
-    on.observe(el);
-    size.observe(el);
-    return () => {
-      io.disconnect();
-      on.disconnect();
-      size.disconnect();
-    };
+    return () => io.disconnect();
   }, []);
 
   return (
-    <section ref={ref} data-on="false" aria-label="Velkommen" className={s.root} onPointerMove={onMove} onPointerLeave={onLeave}>
+    <section ref={ref} aria-label="Velkommen" className={s.root}>
       {/* ── The view ── */}
       <div aria-hidden="true" className={s.stage}>
-        <motion.div className={s.depth} style={{ y: lag }}>
+        <div className={s.depth}>
           <div className={`${s.dolly} ${s.dollyFar}`}>
-            <div className={`${s.idle} ${s.idleFar}`}>
-              <motion.div className={s.frame} style={{ x: farX, y: farY }}>
-                <Photo a={FAR} />
-              </motion.div>
+            <div className={s.frame}>
+              <Photo a={FAR} />
             </div>
           </div>
-        </motion.div>
+        </div>
         <div className={s.depth}>
           <div className={`${s.dolly} ${s.dollyNear}`}>
-            <div className={`${s.idle} ${s.idleNear}`}>
-              <motion.div className={s.frame} style={{ x: nearX, y: nearY }}>
-                <Photo a={NEAR} />
-              </motion.div>
+            <div className={s.frame}>
+              <Photo a={NEAR} />
             </div>
           </div>
         </div>
@@ -184,8 +131,8 @@ export function Panorama() {
         </div>
       </div>
 
-      {/* ── The paper the view opens out of, and closes back into ── */}
-      <motion.div aria-hidden="true" className={s.close} style={{ scale: closing }}>
+      {/* ── The paper the view opens out of ── */}
+      <div aria-hidden="true" className={s.close}>
         <div className={s.arch}>
           <div className={s.hole}>
             <div className={s.cap}>
@@ -196,7 +143,7 @@ export function Panorama() {
             <div className={s.foot} />
           </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* ── The words, in the sky ── */}
       <div className={`${s.words} ${WORDS_BOX}`}>
@@ -228,18 +175,16 @@ export function Panorama() {
             className="hero-lift pointer-events-auto mt-7 flex flex-wrap items-center gap-2.5 md:mt-8"
             style={{ animationDelay: "0.8s", "--from-y": "12px" } as CSSProperties}
           >
-            <Link
-              href="/kontakt"
-              className="group inline-flex items-center gap-2 rounded-full bg-[var(--color-ink)] px-6 py-3.5 text-[13px] font-semibold text-white shadow-[0_10px_30px_-12px_rgba(14,42,48,0.5)] transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-14px_rgba(14,42,48,0.55)]"
-            >
-              Bestill time
-              <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
-            </Link>
+            <a href={RING.href} className="knapp knapp-blekk shadow-[0_12px_32px_-14px_rgba(10,30,34,0.6)]">
+              <Phone aria-hidden="true" />
+              {RING.label}
+            </a>
             <a
-              href="tel:61280412"
-              className="inline-flex items-center gap-2 rounded-full border border-[rgba(14,42,48,0.18)] bg-white/70 px-5 py-3.5 text-[13px] font-medium text-[var(--color-ink)] backdrop-blur-sm transition-colors duration-300 hover:border-[rgba(14,42,48,0.38)] hover:bg-white"
+              href={`#${BE_OM_TIME.id}`}
+              onClick={(e) => { if (tilSkjema()) e.preventDefault(); }}
+              className="knapp knapp-papir shadow-[0_12px_32px_-14px_rgba(10,30,34,0.45)]"
             >
-              61 28 04 12
+              {BE_OM_TIME.label}
             </a>
           </div>
         </div>

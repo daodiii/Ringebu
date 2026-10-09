@@ -1,0 +1,118 @@
+/* /dekning, «Veiviseren» (Veiviseren.tsx).
+
+   The signpost stands up from its foot once, as the paper sheets do, and its
+   arms swing out one after another; then everything holds still. A hovered
+   or focused arm lifts off the post a little, its shadow staying behind, the
+   way a sheet of paper lifts. Transform and opacity only, by CSS. */
+
+.post {
+  position: relative;
+  container-type: inline-size;
+  aspect-ratio: 560 / 520;
+  width: 100%;
+  transform-origin: 50% 100%;
+  transform: rotateX(80deg);
+  opacity: 0;
+  transition:
+    transform 0.9s cubic-bezier(0.3, 1.25, 0.55, 1) 0.15s,
+    opacity 0.25s ease 0.15s;
+}
+.post[data-up="true"] {
+  transform: none;
+  opacity: 1;
+}
+
+/* One arm: a plank nailed to the post, pointing out over the path. */
+.arm {
+  position: absolute;
+  height: 9.4cqw;
+  width: 46%;
+  display: block;
+  outline: none;
+  transform: rotate(var(--tilt)) scaleX(0.15);
+  opacity: 0;
+  transition:
+    transform 0.6s cubic-bezier(0.3, 1.25, 0.55, 1) var(--delay),
+    opacity 0.2s ease var(--delay);
+}
+.right { left: calc(50% - 1.6cqw); transform-origin: 0% 50%; }
+.left { right: calc(50% - 1.6cqw); transform-origin: 100% 50%; }
+.post[data-up="true"] .arm {
+  transform: rotate(var(--tilt));
+  opacity: 1;
+}
+
+.shade,
+.plank {
+  position: absolute;
+  inset: 0;
+}
+.right .shade,
+.right .plank { clip-path: polygon(0 0, 89% 0, 100% 50%, 89% 100%, 0 100%); }
+.left .shade,
+.left .plank { clip-path: polygon(11% 0, 100% 0, 100% 100%, 11% 100%, 0 50%); }
+
+/* The plank's shadow on the post and the air: a crisp copy, one ink, as
+   every sheet's shadow on the site is (.paper-shadow). */
+.shade {
+  background: rgba(14, 42, 48, 0.13);
+  transform: translateY(0.9cqw);
+}
+.plank {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.15cqw;
+  background: var(--paper);
+  color: var(--color-ink);
+  transition: transform 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.right .plank { padding: 0 9cqw 0 5cqw; }
+.left .plank { padding: 0 5cqw 0 9cqw; text-align: right; }
+.arm:hover .plank,
+.arm:focus-visible .plank {
+  transform: translateY(-0.5cqw);
+}
+.arm:focus-visible .shade {
+  outline: none;
+  background: var(--color-ink);
+}
+
+.name {
+  font-size: clamp(12px, 3.15cqw, 19px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  white-space: nowrap;
+}
+.sub {
+  font-size: clamp(10px, 2.2cqw, 13.5px);
+  line-height: 1.2;
+  color: rgba(14, 42, 48, 0.78);
+  white-space: nowrap;
+}
+/* Too small to read on a narrow phone; the list under the sign says it anyway. */
+@container (max-width: 400px) {
+  .sub { display: none; }
+}
+
+/* A nail at the post */
+.nail {
+  position: absolute;
+  top: 50%;
+  width: 1.1cqw;
+  height: 1.1cqw;
+  margin-top: -0.55cqw;
+  border-radius: 50%;
+  background: #5d493a;
+}
+.right .nail { left: 1.2cqw; }
+.left .nail { right: 1.2cqw; }
+
+@media (prefers-reduced-motion: reduce) {
+  .post,
+  .arm,
+  .plank {
+    transition: none;
+  }
+}

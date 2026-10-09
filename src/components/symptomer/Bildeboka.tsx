@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   animate,
@@ -25,6 +24,7 @@ import type { Scene } from "@/components/behandlinger/scenes/types";
 import { SYMPTOMS, type Symptom, type SymptomSlug } from "./data";
 import { Kartotek } from "./Kartotek";
 import { TOOTH, TOOTH_SHADE, paperScene } from "./scenes/Scener";
+import { Handlinger } from "@/components/kontakt/Handlinger";
 
 /**
  * Bildeboka. The symptoms are a pop-up book lying on the page. It opens by
@@ -106,6 +106,9 @@ export function Bildeboka() {
 
 function Bok({ vw, vh }: { vw: number; vh: number }) {
   const g = useMemo(() => geometry(vw, vh), [vw, vh]);
+  // The intro starts on the page's own left edge, where every other heading
+  // on the front page starts (the container's gutter, as in globals.css).
+  const gutter = Math.max(0, (vw - 1280) / 2) + Math.min(36, Math.max(20, vw * 0.04));
   const reduced = useReducedMotion() ?? false;
   const sectionRef = useRef<HTMLElement | null>(null);
   // Off screen, the dog-ear and the scene on the left page stop.
@@ -288,23 +291,15 @@ function Bok({ vw, vh }: { vw: number; vh: number }) {
         {/* Intro, beside the closed book */}
         <motion.div
           className="absolute flex flex-col justify-center"
-          style={{ left: Math.max(24, g.spine - g.W + 8), width: g.W - 80, top: g.top, height: g.H, opacity: introOpacity, x: introX, visibility: introVisibility }}
+          style={{ left: gutter, width: Math.min(560, g.spine - gutter - 64), top: g.top, height: g.H, opacity: introOpacity, x: introX, visibility: introVisibility }}
         >
-          <h2
-            id="symptomer-tittel"
-            className="font-sans font-extralight text-[var(--color-ink)]"
-            style={{ fontSize: "clamp(44px, 4.6vw, 72px)", letterSpacing: "-0.045em", lineHeight: 0.95 }}
-          >
+          <h2 id="symptomer-tittel" className="display-section text-balance text-[var(--color-ink)]">
             Har du noen av disse plagene?
           </h2>
-          <p className="mt-6 max-w-[30ch] text-[19px] leading-[1.5] text-[var(--color-text-secondary)]">
+          <p className="mt-6 max-w-[30ch] text-[20px] leading-[1.5] text-[var(--color-text-secondary)]">
             Sju vanlige plager. Hva de betyr.
           </p>
-          <div className="mt-8">
-            <Link href="/kontakt" className="inline-flex items-center gap-2 rounded-full bg-[var(--color-ink)] px-6 py-3.5 text-[14px] font-semibold text-white">
-              Kontakt oss <ArrowRight className="size-4" aria-hidden="true" />
-            </Link>
-          </div>
+          <Handlinger iSiden className="mt-8" />
         </motion.div>
 
         {/* A soft shadow on the table */}
@@ -727,6 +722,14 @@ function CoverFace({ W, H }: { W: number; H: number }) {
   );
 }
 
+/**
+ * A palette's deep colour as text. It is a fill colour, and as small text it
+ * fell under 4.5:1 on the page on four palettes (molte 3.4, frost 3.5,
+ * fjord 4.0, bjork 4.1); mixed a third of the way to the ink it keeps its
+ * hue and clears 4.5:1 on all of them.
+ */
+const inkOf = (deep: string) => `color-mix(in oklab, ${deep} 64%, #0E2A30)`;
+
 function TextFace({ s, W }: { s: Symptom; W: number }) {
   const p = PALETTES[s.palette];
   const f = (r: number) => Math.round(W * r * 10) / 10;
@@ -737,19 +740,19 @@ function TextFace({ s, W }: { s: Symptom; W: number }) {
         <h3 className="font-sans font-light text-[var(--color-ink)]" style={{ fontSize: f(0.084), letterSpacing: "-0.045em", lineHeight: 0.98 }}>
           {s.title}
         </h3>
-        <p className="mt-2" style={{ fontSize: f(0.034), color: p.deep }}>
+        <p className="mt-2 font-medium" style={{ fontSize: f(0.034), color: inkOf(p.deep) }}>
           {s.kicker}
         </p>
-        <p className="mt-6 text-[var(--color-text-secondary)]" style={{ fontSize: f(0.033), lineHeight: 1.55 }}>
+        <p className="mt-6 text-[var(--color-text-secondary)]" style={{ fontSize: f(0.035), lineHeight: 1.55 }}>
           {s.description}
         </p>
         <div className="mt-7">
-          <div className="font-medium" style={{ fontSize: f(0.026), color: p.deep }}>
+          <div className="font-semibold" style={{ fontSize: f(0.028), color: inkOf(p.deep) }}>
             Mulige årsaker
           </div>
           <ul className="mt-3 grid grid-cols-2 gap-x-6 gap-y-2">
             {s.causes.map((c) => (
-              <li key={c} className="flex items-baseline gap-2.5 text-[var(--color-text-primary)]" style={{ fontSize: f(0.029) }}>
+              <li key={c} className="flex items-baseline gap-2.5 text-[var(--color-text-primary)]" style={{ fontSize: f(0.031) }}>
                 <span aria-hidden="true" className="inline-block size-1.5 shrink-0 translate-y-[-2px] rounded-full" style={{ background: p.accent }} />
                 {c}
               </li>
@@ -757,7 +760,6 @@ function TextFace({ s, W }: { s: Symptom; W: number }) {
           </ul>
         </div>
       </div>
-      <GrainOverlay opacity={0.05} />
     </div>
   );
 }
@@ -773,16 +775,10 @@ function CtaFace({ W }: { W: number }) {
         <p className="mt-5 max-w-[30ch] text-[var(--color-text-secondary)]" style={{ fontSize: Math.round(W * 0.035), lineHeight: 1.5 }}>
           Ring oss, så finner vi ut av det sammen.
         </p>
-        <div className="mt-8 flex flex-wrap gap-3" onClick={(e) => e.stopPropagation()}>
-          <Link href="/kontakt" className="inline-flex items-center gap-2 rounded-full bg-[var(--color-ink)] px-6 py-3.5 text-[14px] font-semibold text-white">
-            Bestill time <ArrowRight className="size-4" aria-hidden="true" />
-          </Link>
-          <a href="tel:61280412" className="inline-flex items-center rounded-full border border-[rgba(14,42,48,0.2)] bg-white/60 px-5 py-3.5 text-[14px] font-medium text-[var(--color-ink)]">
-            61 28 04 12
-          </a>
+        <div className="mt-8" onClick={(e) => e.stopPropagation()}>
+          <Handlinger iSiden />
         </div>
       </div>
-      <GrainOverlay opacity={0.05} />
     </div>
   );
 }

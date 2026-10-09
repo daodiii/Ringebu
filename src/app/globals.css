@@ -14,28 +14,34 @@
   --color-amber:        #D6E7E1;   /* pale cool teal — text and accents on dark surfaces */
   --color-amber-deep:   #7CB1A7;   /* eucalyptus teal — highlights on dark */
   --color-brass:        #6F938B;   /* muted teal — thin lines, eyebrow rules, labels */
-  --color-stone:        #6B8278;   /* sage-eucalyptus accent on light surfaces */
+  --color-stone:        #587066;   /* sage-eucalyptus accent on light surfaces; 5.1:1 on the paper, so it can be text (was #6B8278, 3.9:1) */
 
-  /* ── Text ── */
-  --color-text-primary:        #1A1410;
-  --color-text-secondary:      #4A3F33;
-  --color-text-muted:          #8B7C6A;
+  /* ── Text ──
+     One ink for every word: the petrol of the buttons and the footer. Body
+     text used to be a warm brown-black beside petrol headings, two inks on
+     one page. Secondary and muted are that petrol greyed, both at 4.5:1 or
+     more on the paper. */
+  --color-text-primary:        #0E2A30;
+  --color-text-secondary:      #45595D;
+  --color-text-muted:          #5E7276;
   --color-text-on-dark:        #D6E7E1;
   --color-text-on-dark-muted:  rgba(214, 231, 225, 0.62);
 
   /* ── Rules ── */
-  --color-rule:       rgba(26, 20, 16, 0.12);
+  --color-rule:       rgba(14, 42, 48, 0.13);
   --color-rule-dark:  rgba(214, 231, 225, 0.20);
 
   /* ── Urgency (severity pill) ── */
   --color-urgent: #B8624A;
 
   /* ── Typography ──
-     Geist and Geist Mono everywhere, loaded by next/font in layout.tsx into
-     --font-geist-*. Keep those names distinct: --font-sans: var(--font-sans)
-     references itself, and only cascade-layer order kept that working. */
-  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+     Schibsted Grotesk everywhere (drawn for the Norwegian media house
+     Schibsted), loaded by next/font in layout.tsx into --font-schibsted.
+     Keep the variable names distinct: --font-sans: var(--font-sans)
+     references itself, and only cascade-layer order kept that working.
+     Nothing on the site is set in mono any more, so none is loaded. */
+  --font-sans: var(--font-schibsted), system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, monospace;
   --font-heading: var(--font-sans);  /* alias so any legacy class still resolves */
 
   /* ── Radius ── */
@@ -50,6 +56,8 @@
   /* ── Spacing ── */
   --space-section:        clamp(72px, 8vw, 100px);
   --space-section-tight:  clamp(60px, 6vw, 80px);
+  /* Between the front page's chapters: more air than inside one */
+  --space-chapter:        clamp(88px, 9vw, 128px);
   /* --container-px and --container-max are deliberately NOT declared here.
      Tailwind v4 feeds the --container-* namespace into w-* and max-w-*, so
      keys named `px` and `max` silently override the built-in w-px / w-max /
@@ -122,18 +130,24 @@ body {
   background-color: var(--color-paper);
   color: var(--color-text-primary);
   font-family: var(--font-sans);
-  font-feature-settings: "ss01", "cv11";  /* Geist stylistic set: tabular figures + cleaner 'a' */
+  font-size: 1.0625rem;
+  font-kerning: normal;
   overflow-x: hidden;
-  line-height: 1.55;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-sans);
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  line-height: 1.05;
+/* In the base layer, so a heading's own weight, leading and tracking
+   classes win. Outside any layer this rule beat every utility, and a
+   heading's font-semibold or tracking-[…] was silently ignored. */
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+  }
 }
 
 /* ── Section Layouts ── */
@@ -417,12 +431,56 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.035em;
 }
 
+/* Every page's own title (its h1), one style on every page: 40px on a phone,
+   64px wide, no full stop after a name. The pages had five sizes between 56
+   and 107px, and two asked for a weight the typeface does not have. */
+.display-page {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: clamp(2.5rem, 1.75rem + 3vw, 4rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+/* Every section heading on the site, one size: 36px on a phone, 56px wide. */
 .display-section {
   font-family: var(--font-sans);
   font-weight: 500;
-  font-size: clamp(32px, 4.2vw, 52px);
-  line-height: 1.0;
-  letter-spacing: -0.03em;
+  font-size: clamp(2.25rem, 1.65rem + 2.2vw, 3.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+}
+
+/* ── The site's buttons ──
+   The site has two actions, named the same everywhere: «Ring 61 28 04 12»
+   in ink, «Be om time» in paper. Same height, type and corners on every
+   page, so a button always looks like one. In the components layer, so a
+   utility such as `hidden md:inline-flex` still wins over the display here. */
+@layer components {
+  .knapp {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    min-height: 3.25rem;
+    padding: 0 1.5rem;
+    border-radius: 9999px;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    transition: background-color 0.25s ease, box-shadow 0.25s ease, color 0.25s ease, transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .knapp:active { transform: translateY(1px); }
+  .knapp:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 3px; }
+  .knapp > svg { width: 1.05em; height: 1.05em; flex: none; }
+  .knapp-blekk { background-color: var(--color-ink); color: var(--color-paper); }
+  .knapp-blekk:hover { background-color: #16414A; }
+  .knapp-papir { background-color: var(--color-paper); color: var(--color-ink); box-shadow: inset 0 0 0 1px rgba(14, 42, 48, 0.2); }
+  .knapp-papir:hover { box-shadow: inset 0 0 0 1px rgba(14, 42, 48, 0.5); }
+  .knapp-liten { min-height: 2.75rem; padding: 0 1.25rem; font-size: 0.9375rem; }
 }
 
 .display-quote {
@@ -505,6 +563,11 @@ h1, h2, h3, h4, h5, h6 {
 .forside > section:not(:first-child) {
   content-visibility: auto;
   contain-intrinsic-size: auto 1000px;
+}
+/* The same wait for the pasture at the end of other pages */
+.senere {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
 }
 
 /* ── Kartoteket: the symptoms on a phone (Kartotek.tsx) ──
@@ -594,6 +657,11 @@ h1, h2, h3, h4, h5, h6 {
   height: min(180cqw, 100cqh);
   will-change: transform;
 }
+/* Scenes that hold still once they have stood up: the front page's boxes.
+   Only the book and the pasture move on the front page; everything else
+   stands where it lands. */
+[data-still] .paper-loose { animation: none !important; }
+
 /* Clouds drift out and back. --drift is the distance as a share of the
    box's width (10 units of 300 is 3.3333%), --drift-time the round trip. */
 .paper-drift[data-on="true"] {

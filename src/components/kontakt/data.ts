@@ -12,6 +12,23 @@ export const KONTAKT = {
   },
 };
 
+/**
+ * The two things a visitor can do, named the same on every page: call, or
+ * ask for an appointment in the form. The form is #be-om-time on the front
+ * page and on /kontakt, so the front page links to it in place.
+ */
+export const RING = { label: `Ring ${KONTAKT.phone.display}`, href: KONTAKT.phone.href } as const;
+export const BE_OM_TIME = { label: "Be om time", id: "be-om-time", href: "/kontakt#be-om-time" } as const;
+
+/** The clinic in the two map apps people have on their phones, found by name as well as address. */
+export const KART = {
+  google: "https://www.google.com/maps/search/?api=1&query=Ringebu+Tannlegesenter,+Jernbanegata+4,+2630+Ringebu",
+  apple: "https://maps.apple.com/?q=Ringebu+Tannlegesenter&address=Jernbanegata+4,+2630+Ringebu,+Norge",
+} as const;
+
+/** The company behind the clinic, as in Brønnøysundregistrene. */
+export const FIRMA = { name: "Ringebu Tannlegesenter AS", orgnr: "917 540 489" } as const;
+
 export const SEO_TEXT =
   "Ringebu Tannlegesenter ligger i Jernbanegata 4, midt i Ringebu sentrum og like ved E6. Er du på ferie i Kvitfjell, på hytta i Venabygdsfjellet eller bare på gjennomreise, er vi nærmeste tannklinikk. Akutte tilfeller går alltid først.";
 

@@ -1,19 +1,20 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import { motion, useInView, useMotionValue, useReducedMotion, useSpring, useTransform, type MotionValue } from "framer-motion";
+import { motion, useMotionValue, useReducedMotion, type MotionValue } from "framer-motion";
 import { PALETTES, PaperShadow, Piece, type PaletteName } from "@/components/behandlinger/scenes/Papir";
 
 /**
  * "Hvorfor burde du velge oss?" Under the four reasons the page opens onto
  * a strip of fjell cut from paper, and on it stand four cairns, one under
- * each reason, the way cairns mark the path over Rondane. When the strip
- * comes into view they build themselves, stone by stone. Tapping a cairn lays
- * another stone on top, as walkers do; lay one too many and the new stones
- * tumble off.
+ * each reason, the way cairns mark the path over Rondane. They stand built
+ * from the start. Tapping a cairn lays another stone on top, as walkers do;
+ * lay one too many and the new stones tumble off.
  *
  * It is the pause between the treatment boxes and the book, so nothing here
- * moves for long: the stones settle once, and only two small clouds drift.
+ * moves unless you touch it: on the front page only the book and the pasture
+ * move on their own. The cairns used to build themselves as they came into
+ * view, with drifting clouds and paper that leaned with the pointer.
  */
 
 const GRUNNER = [
@@ -172,8 +173,10 @@ function cutCairn(palette: PaletteName, seed: number, rows: readonly Row[]) {
 
 const CAIRNS = VARDER.map((v) => cutCairn(v.palette, v.seed, v.rows));
 
+const REST = { x: 0, y: 0, rotate: 0, opacity: 1 };
+
 function Stone({
-  c, clip, show, delay, reduced, tumble = 0, k = 0,
+  c, clip, show, delay, reduced, tumble = 0, k = 0, laid = false,
 }: {
   c: Cut;
   clip: string;
@@ -182,15 +185,17 @@ function Stone({
   reduced: boolean;
   tumble?: number;
   k?: number;
+  /** A stone of the cairn itself, in place from the first paint. */
+  laid?: boolean;
 }) {
   const up = { x: 0, y: -300, rotate: c.tilt * 3, opacity: 0 };
   return (
     <Piece
       style={{ transformBox: "fill-box", originX: 0.5, originY: 0.5 }}
       // The same starting point on the server and in the browser, reduced
-      // motion or not, so the page hydrates cleanly; reduced motion just
-      // gets no flight.
-      initial={up}
+      // motion or not, so the page hydrates cleanly. The cairn's own stones
+      // start where they lie; only a stone a visitor lays flies in.
+      initial={laid ? REST : up}
       animate={
         tumble
           ? { x: tumble * (150 + k * 40), y: 230 + k * 30, rotate: tumble * (240 + k * 70), opacity: 0 }
@@ -255,7 +260,7 @@ function Varde({ i, built, reduced }: { i: number; built: boolean; reduced: bool
           style={{ transformBox: "fill-box", originX: 0.5, originY: 1 }}
         >
           {cairn.base.map((c, k) => (
-            <Stone key={k} c={c} clip={`${id}-${k}`} show={built} delay={i * 0.45 + k * 0.09} reduced={reduced} />
+            <Stone key={k} c={c} clip={`${id}-${k}`} show={built} delay={0} reduced={reduced} laid />
           ))}
           {cairn.extra.slice(0, extra).map((c, k) => (
             <Stone
@@ -335,50 +340,34 @@ function Cloud({ left, top, drift, time, on }: { left: string; top: number; drif
 }
 
 export function Vardene() {
-  const ref = useRef<HTMLElement | null>(null);
-  const band = useRef<HTMLDivElement | null>(null);
   const reduced = useReducedMotion() ?? false;
-  const seen = useInView(band, { once: true, margin: "0px 0px -18% 0px" });
-  const inView = useInView(ref);
-  const built = reduced || seen;
-
-  // The pointer leans the sheets against each other, nearer ones further.
-  const lean = useMotionValue(0);
-  const s = useSpring(lean, { stiffness: 50, damping: 16 });
-  const farX = useTransform(s, (v) => v * -8);
-  const midX = useTransform(s, (v) => v * -14);
-  const nearX = useTransform(s, (v) => v * -20);
-  const lipX = useTransform(s, (v) => v * -26);
+  const built = true;
+  // The paper holds still; the layers keep their own x so nothing else changes.
+  const still = useMotionValue(0);
+  const [farX, midX, nearX, lipX] = [still, still, still, still];
 
   return (
-    <section
-      ref={ref}
-      className="relative overflow-hidden bg-[var(--color-paper)] pt-[var(--space-section)] text-[var(--color-text-primary)]"
-      onPointerMove={(e) => {
-        if (e.pointerType === "mouse" && !reduced) lean.set((e.clientX / window.innerWidth) * 2 - 1);
-      }}
-      onPointerLeave={() => lean.set(0)}
-    >
+    <section className="relative overflow-hidden bg-[var(--color-paper)] pt-[var(--space-chapter)] text-[var(--color-text-primary)]">
       <div className="mx-auto w-full max-w-[var(--container-max,1280px)] px-[var(--container-px,24px)]">
-        <h2 className="display-section max-w-[720px] text-balance">Hvorfor burde du velge oss?</h2>
-        <ul className="mt-12 grid gap-10 md:mt-16 md:grid-cols-2 md:gap-12 lg:grid-cols-4">
+        <h2 className="display-section max-w-[30ch] text-balance">Hvorfor burde du velge oss?</h2>
+        <ul className="mt-10 grid gap-10 md:mt-14 md:grid-cols-2 md:gap-12 lg:grid-cols-4">
           {GRUNNER.map((g) => (
             <li key={g.name}>
-              <h3 className="font-sans text-[22px] font-medium leading-[1.15] tracking-[-0.022em] md:text-[24px]">{g.name}</h3>
-              <p className="mt-2.5 text-[15px] leading-[1.6] text-[var(--color-text-secondary)]">{g.sub}</p>
+              <h3 className="font-sans text-[22px] font-semibold leading-[1.18] tracking-[-0.025em] md:text-[24px]">{g.name}</h3>
+              <p className="mt-3 text-[17px] leading-[1.6] text-[var(--color-text-secondary)]">{g.sub}</p>
             </li>
           ))}
         </ul>
       </div>
 
-      <div ref={band} className="relative mt-4 h-[232px] md:mt-6 md:h-[300px]">
+      <div className="relative mt-4 h-[232px] md:mt-6 md:h-[300px]">
         {/* The paper, scaled down as a whole on a phone */}
         <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[330px] origin-bottom scale-[0.72] md:scale-100">
           <Layer x={farX} h={330}>
             <path d={FAR} fill={PALETTES.frost.far} />
           </Layer>
-          <Cloud left="calc(50% + 250px)" top={40} drift={46} time={26} on={inView && !reduced} />
-          <Cloud left="calc(50% - 600px)" top={74} drift={-32} time={34} on={inView && !reduced} />
+          <Cloud left="calc(50% + 250px)" top={40} drift={46} time={26} on={false} />
+          <Cloud left="calc(50% - 600px)" top={74} drift={-32} time={34} on={false} />
           {/* Hills run off the bottom, so they hide their own shadow: none is drawn */}
           <Layer x={midX} h={240}>
             <path d={MID} fill={PALETTES.lav.far} />

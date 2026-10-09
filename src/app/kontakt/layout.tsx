@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { DELEBILDE } from "@/app/delebilde";
 
 export const metadata: Metadata = {
   title: "Kontakt oss",
@@ -6,6 +7,7 @@ export const metadata: Metadata = {
     "Ring 61 28 04 12 eller send e-post til post@ringebutannlegesenter.no. Du finner oss i Jernbanegata 4 i Ringebu sentrum.",
   alternates: { canonical: "/kontakt" },
   openGraph: {
+    images: [DELEBILDE],
     title: "Kontakt oss | Ringebu Tannlegesenter",
     description:
       "Ring, send e-post eller besøk oss i Ringebu sentrum. Åpent mandag–fredag.",

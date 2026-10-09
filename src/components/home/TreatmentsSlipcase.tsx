@@ -2,20 +2,22 @@
 
 import Link from "next/link";
 import { useRef, useState } from "react";
-import { AnimatePresence, motion, useInView, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { AnimatePresence, motion, useInView, useMotionValue, useReducedMotion, type MotionValue } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 import { ARCADE_TREATMENTS } from "@/components/behandlinger/data";
 import { PapirKrone, PapirSpeil, withPalette } from "@/components/behandlinger/scenes/Papir";
 import { PapirHerdelampe, PapirImplantatSnitt, PapirRotfil } from "@/components/behandlinger/scenes/PapirMer";
 import type { Scene } from "@/components/behandlinger/scenes/types";
+import { PlayOnce } from "@/components/behandlinger/scenes/usePhase";
 
 /**
  * "Dette kan vi hjelpe deg med." The first five treatments from /behandlinger,
  * as boxes side by side: the closed ones run white to cream, the open one
  * turns petrol (darkest on the left, a step lighter to the right) and gains
  * an arched window where that treatment's paper theatre pops up, in the same
- * scene and paper as its arch on /behandlinger. Moving the pointer over the
- * open box tilts the scene's layers against each other.
+ * scene and paper as its arch on /behandlinger. The scene plays its routine
+ * once and then holds still: on the front page only the book and the pasture
+ * keep moving.
  */
 
 type Spine = {
@@ -51,17 +53,20 @@ const EASE = [0.25, 0.1, 0.25, 1] as const;
  * is on screen: its loops repaint shadowed paper every frame, and they used
  * to run on however far down the page you had scrolled.
  */
-function Window({ spine, active, tilt, reduced }: { spine: Spine; active: boolean; tilt: ReturnType<typeof useSpring>; reduced: boolean }) {
+function Window({ spine, active, tilt, reduced }: { spine: Spine; active: boolean; tilt: MotionValue<number>; reduced: boolean }) {
   const { Scene } = spine;
   const ref = useRef<HTMLDivElement | null>(null);
   const inView = useInView(ref);
   return (
     <div
       ref={ref}
+      data-still
       className="relative h-full overflow-hidden rounded-t-full shadow-[0_24px_50px_-28px_rgba(0,0,0,0.55)] ring-1 ring-white/15"
       style={{ aspectRatio: "300 / 540" }}
     >
-      <Scene active={active && inView} d={tilt} reduced={reduced} mode="arch" />
+      <PlayOnce.Provider value>
+        <Scene active={active && inView} d={tilt} reduced={reduced} mode="arch" />
+      </PlayOnce.Provider>
     </div>
   );
 }
@@ -69,53 +74,40 @@ function Window({ spine, active, tilt, reduced }: { spine: Spine; active: boolea
 export function TreatmentsSlipcase() {
   const [openId, setOpenId] = useState<string>(SPINES[0].id);
   const reduced = useReducedMotion() ?? false;
-  // The pointer's position across the open box, as a distance the paper layers can lean by.
-  const lean = useMotionValue(0);
-  const tilt = useSpring(lean, { stiffness: 80, damping: 18 });
+  // The scenes stand still in their boxes: no lean with the pointer.
+  const tilt = useMotionValue(0);
+  // A box opened from the keyboard: its heading takes the focus once it is in.
+  const focusOpened = useRef("");
 
   const open = (id: string) => {
     if (id === openId) return;
-    lean.set(0);
     setOpenId(id);
   };
 
   return (
-    <section id="behandlinger" className="bg-[var(--color-paper)] py-[var(--space-section)]">
+    <section id="behandlinger" className="bg-[var(--color-paper)] pb-[var(--space-section-tight)] pt-[var(--space-chapter)]">
       <div className="mx-auto w-full max-w-[var(--container-max,1280px)] px-[var(--container-px,24px)]">
-        <div className="mb-12 md:mb-16">
-          <h2 className="display-section max-w-[720px] text-balance text-[var(--color-text-primary)]">
+        <div className="mb-10 md:mb-14">
+          <h2 className="display-section max-w-[30ch] text-balance text-[var(--color-text-primary)]">
             Dette kan vi hjelpe deg med.
           </h2>
         </div>
 
-        {/* Desktop */}
-        <div className="hidden h-[520px] gap-2 md:flex" role="tablist" aria-label="Behandlinger">
+        {/* Desktop. A closed box is a button; the open one is content, with its
+            «Les mer» link, so no control sits inside another (the whole box was
+            once a focusable tab with the link inside it). A box opened from the
+            keyboard hands focus to its heading, since its button goes inert. */}
+        <div className="hidden h-[520px] gap-2 md:flex">
           {SPINES.map((spine, i) => {
             const isOpen = openId === spine.id;
             return (
               <motion.div
                 key={spine.id}
-                role="tab"
-                tabIndex={0}
-                aria-selected={isOpen}
-                onClick={() => open(spine.id)}
                 onMouseEnter={() => open(spine.id)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    open(spine.id);
-                  }
-                }}
-                onMouseMove={(e) => {
-                  if (!isOpen || reduced) return;
-                  const r = e.currentTarget.getBoundingClientRect();
-                  lean.set(((e.clientX - r.left) / r.width - 0.5) * 1.4);
-                }}
-                onMouseLeave={() => lean.set(0)}
                 animate={{ flex: isOpen ? 7 : 1 }}
                 transition={reduced ? { duration: 0 } : { duration: 0.7, ease: EASE }}
                 style={{ backgroundColor: isOpen ? spine.openTone : spine.closedTone }}
-                className={`relative cursor-pointer overflow-hidden border-l border-[var(--color-rule)] text-left outline-none transition-colors focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--color-amber)] ${
+                className={`relative overflow-hidden border-l border-[var(--color-rule)] text-left transition-colors ${
                   isOpen ? "text-white" : "text-[var(--color-text-primary)]"
                 } ${i === SPINES.length - 1 ? "border-r border-[var(--color-rule)]" : ""}`}
               >
@@ -126,19 +118,26 @@ export function TreatmentsSlipcase() {
                   }`}
                 />
 
-                <div
-                  className={`absolute inset-0 flex flex-col items-center justify-center px-2 transition-opacity duration-500 ${
+                <button
+                  type="button"
+                  aria-expanded={isOpen}
+                  inert={isOpen}
+                  onClick={(e) => {
+                    // detail is 0 when Enter or Space pressed the button
+                    if (e.detail === 0) focusOpened.current = spine.id;
+                    open(spine.id);
+                  }}
+                  className={`absolute inset-0 flex cursor-pointer flex-col items-center justify-center px-2 outline-none transition-opacity duration-500 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--color-ink)] ${
                     isOpen ? "pointer-events-none opacity-0" : "opacity-100"
                   }`}
-                  aria-hidden={isOpen}
                 >
                   <span
-                    className="font-sans text-[15px] font-medium tracking-[-0.01em]"
+                    className="font-sans text-[16px] font-medium tracking-[-0.01em]"
                     style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
                   >
                     {spine.name}
                   </span>
-                </div>
+                </button>
 
                 <AnimatePresence mode="wait">
                   {isOpen && (
@@ -155,20 +154,27 @@ export function TreatmentsSlipcase() {
                     >
                       <div className="flex min-w-0 flex-1 flex-col justify-between">
                         <h3
-                          className="text-balance font-sans text-white"
-                          style={{ fontWeight: 300, fontSize: "clamp(30px, 2.7vw, 42px)", lineHeight: 1.04, letterSpacing: "-0.03em" }}
+                          tabIndex={-1}
+                          ref={(el) => {
+                            if (el && focusOpened.current === spine.id) {
+                              focusOpened.current = "";
+                              el.focus();
+                            }
+                          }}
+                          className="text-balance font-sans text-white outline-none"
+                          style={{ fontWeight: 400, fontSize: "clamp(32px, 2.8vw, 44px)", lineHeight: 1.04, letterSpacing: "-0.035em" }}
                         >
                           {spine.name}
                         </h3>
                         <div className="max-w-[420px]">
-                          <p className="text-[20px] leading-[1.4] text-[var(--color-amber)]">{spine.body}</p>
-                          <p className="mt-4 text-[14px] leading-[1.6] text-[var(--color-amber)]">{spine.detail}</p>
+                          <p className="text-[21px] font-medium leading-[1.35] tracking-[-0.01em] text-white">{spine.body}</p>
+                          <p className="mt-4 text-[16px] leading-[1.6] text-[var(--color-amber)]">{spine.detail}</p>
                           <Link
                             href={`/behandlinger#${spine.id}`}
-                            className="mt-8 inline-flex items-center gap-1.5 text-[15px] font-medium text-[var(--color-amber)] transition-colors hover:text-white"
+                            className="group mt-8 inline-flex items-center gap-2 text-[16px] font-semibold text-white"
                           >
                             Les mer
-                            <ArrowUpRight className="size-4" aria-hidden="true" />
+                            <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
                           </Link>
                         </div>
                       </div>
@@ -204,7 +210,7 @@ export function TreatmentsSlipcase() {
                 >
                   <span
                     className="font-sans tracking-[-0.025em]"
-                    style={{ fontWeight: isOpen ? 300 : 500, fontSize: isOpen ? "clamp(28px, 7vw, 34px)" : "21px", lineHeight: 1.05 }}
+                    style={{ fontWeight: isOpen ? 400 : 500, fontSize: isOpen ? "clamp(28px, 7vw, 34px)" : "21px", lineHeight: 1.05 }}
                   >
                     {spine.name}
                   </span>
@@ -229,14 +235,14 @@ export function TreatmentsSlipcase() {
                         <div className="mx-auto mb-7 h-[300px]" style={{ aspectRatio: "300 / 540" }}>
                           <Window spine={spine} active tilt={tilt} reduced={reduced} />
                         </div>
-                        <p className="text-[18px] leading-[1.4] text-[var(--color-amber)]">{spine.body}</p>
-                        <p className="mt-3 text-[14.5px] leading-[1.6] text-[var(--color-amber)]">{spine.detail}</p>
+                        <p className="text-[19px] font-medium leading-[1.35] text-white">{spine.body}</p>
+                        <p className="mt-3 text-[16px] leading-[1.6] text-[var(--color-amber)]">{spine.detail}</p>
                         <Link
                           href={`/behandlinger#${spine.id}`}
-                          className="mt-6 inline-flex items-center gap-1.5 text-[15px] font-medium text-[var(--color-amber)] transition-colors hover:text-white"
+                          className="mt-6 inline-flex items-center gap-2 text-[16px] font-semibold text-white"
                         >
                           Les mer
-                          <ArrowUpRight className="size-4" aria-hidden="true" />
+                          <ArrowRight className="size-4" aria-hidden="true" />
                         </Link>
                       </div>
                     </motion.div>
@@ -247,16 +253,13 @@ export function TreatmentsSlipcase() {
           })}
         </div>
 
-        <div className="mt-12">
+        <div className="mt-10">
           <Link
             href="/behandlinger"
-            className="group inline-flex items-center gap-2 text-[13px] font-medium text-[var(--color-text-primary)] transition-colors hover:text-[var(--color-stone)]"
+            className="group inline-flex items-center gap-2 text-[17px] font-semibold text-[var(--color-text-primary)] underline decoration-[rgba(14,42,48,0.25)] underline-offset-[6px] transition-colors hover:decoration-[var(--color-ink)]"
           >
             Se alle behandlinger
-            <ArrowUpRight
-              className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-              aria-hidden="true"
-            />
+            <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
           </Link>
         </div>
       </div>

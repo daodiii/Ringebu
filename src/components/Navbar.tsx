@@ -5,8 +5,10 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Menu, X, Phone } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
+import { Merke } from "@/components/Merke";
 import { cn } from "@/lib/utils";
+import { BE_OM_TIME, KONTAKT, RING } from "@/components/kontakt/data";
+import { tilSkjema } from "@/components/kontakt/tilSkjema";
 
 const LINKS = [
   { href: "/behandlinger", label: "Behandlinger" },
@@ -42,6 +44,8 @@ export default function Navbar() {
   }, [mobileOpen]);
 
   const overHero = isHome && heroInView;
+  // The form is on the front page itself; anywhere else it is on /kontakt.
+  const timeHref = isHome ? `#${BE_OM_TIME.id}` : BE_OM_TIME.href;
 
   return (
     <>
@@ -52,7 +56,7 @@ export default function Navbar() {
             ? // Over the hero's photograph a phone shows plain sky behind the
               // menu, so there it is see-through, its letters with a glow of
               // paper; a desktop puts birch leaves there, so it keeps its bar
-              "bg-transparent [text-shadow:0_0_2px_rgba(252,249,242,0.9),0_0_10px_rgba(252,249,242,0.75),0_0_22px_rgba(252,249,242,0.5)] [&_img]:drop-shadow-[0_0_8px_rgba(252,249,242,0.85)] lg:bg-[var(--color-paper)] lg:border-b lg:border-[var(--color-rule)] lg:[text-shadow:none] lg:[&_img]:drop-shadow-none"
+              "bg-transparent [text-shadow:0_0_2px_rgba(252,249,242,0.9),0_0_10px_rgba(252,249,242,0.75),0_0_22px_rgba(252,249,242,0.5)] [&_svg]:drop-shadow-[0_0_8px_rgba(252,249,242,0.85)] lg:bg-[var(--color-paper)] lg:border-b lg:border-[var(--color-rule)] lg:[text-shadow:none] lg:[&_svg]:drop-shadow-none"
             : "bg-[var(--color-paper)]/90 backdrop-blur-md border-b border-[var(--color-rule)]"
         )}
       >
@@ -61,20 +65,14 @@ export default function Navbar() {
             href="/"
             className="relative z-50 flex items-center gap-2.5 leading-none lg:gap-3"
           >
-            <Image
-              src="/images/logo-mark.png"
-              alt=""
-              width={217}
-              height={200}
-              className="h-10 w-auto lg:h-[52px]"
-              priority
-            />
+            {/* The PNG this replaces had air round the mark; the vector is cut tight, so it is set smaller for the same size */}
+            <Merke className="h-[34px] w-auto text-[var(--color-ink)] lg:h-[44px]" />
             <span className="font-sans text-[15px] font-semibold tracking-[-0.01em] lg:text-[18px]">
               Ringebu Tannlegesenter
             </span>
           </Link>
 
-          <ul className="hidden lg:flex items-center gap-6">
+          <ul className="hidden lg:flex items-center gap-7">
             {LINKS.map((link) => {
               const active =
                 pathname === link.href || pathname.startsWith(link.href + "/");
@@ -83,7 +81,7 @@ export default function Navbar() {
                   <Link
                     href={link.href}
                     className={cn(
-                      "text-[12.5px] font-medium tracking-[0.005em] transition-colors",
+                      "text-[15px] font-medium tracking-[-0.005em] transition-colors",
                       active
                         ? "text-[var(--color-text-primary)]"
                         : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
@@ -96,12 +94,20 @@ export default function Navbar() {
             })}
           </ul>
 
-          <div className="flex items-center gap-3">
-            <Link
-              href="/kontakt"
-              className="hidden md:inline-flex items-center rounded-full bg-[var(--color-copper)] px-5 py-2 text-[13px] font-semibold text-[var(--color-paper)] transition-colors hover:bg-[var(--color-copper)]/90"
+          <div className="flex items-center gap-5">
+            <a
+              href={KONTAKT.phone.href}
+              className="hidden xl:inline-flex items-center gap-2 text-[15px] font-medium text-[var(--color-text-primary)] transition-colors hover:text-[var(--color-brass)]"
             >
-              Bestill time
+              <Phone className="size-4" aria-hidden="true" />
+              {KONTAKT.phone.display}
+            </a>
+            <Link
+              href={timeHref}
+              onClick={(e) => { if (tilSkjema()) e.preventDefault(); }}
+              className="knapp knapp-blekk knapp-liten hidden md:inline-flex"
+            >
+              {BE_OM_TIME.label}
             </Link>
             <button
               onClick={() => setMobileOpen((v) => !v)}
@@ -150,20 +156,25 @@ export default function Navbar() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.45, duration: 0.4 }}
-                className="flex flex-col items-center gap-4"
+                className="flex w-full max-w-[320px] flex-col items-stretch gap-3"
               >
-                <a
-                  href="tel:61280412"
-                  className="flex items-center gap-2 text-[var(--color-text-secondary)]"
-                >
-                  <Phone className="size-5" aria-hidden="true" /> 61 28 04 12
+                <a href={RING.href} className="knapp knapp-blekk">
+                  <Phone aria-hidden="true" />
+                  {RING.label}
                 </a>
                 <Link
-                  href="/kontakt"
-                  onClick={() => setMobileOpen(false)}
-                  className="rounded-full bg-[var(--color-copper)] px-7 py-3 font-semibold text-[var(--color-paper)]"
+                  href={timeHref}
+                  onClick={(e) => {
+                    setMobileOpen(false);
+                    // The open menu holds the page still; scroll once it has closed
+                    if (document.getElementById(BE_OM_TIME.id)) {
+                      e.preventDefault();
+                      window.setTimeout(() => tilSkjema(), 80);
+                    }
+                  }}
+                  className="knapp knapp-papir"
                 >
-                  Bestill time
+                  {BE_OM_TIME.label}
                 </Link>
               </motion.div>
             </div>
