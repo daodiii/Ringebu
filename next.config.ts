@@ -6,9 +6,14 @@ const securityHeaders = [
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+  // Browsers that have been here once go straight to https from then on, even
+  // when someone types the address without it. Two years, as Vercel's own;
+  // without includeSubDomains, since the domain's mail lives elsewhere.
+  { key: "Strict-Transport-Security", value: "max-age=63072000" },
 ];
 
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
   images: {
     // AVIF first, WebP for browsers without it. Measured on the hero photos
     // (2026-10-07): 24% smaller on a phone, 19% on desktop.
