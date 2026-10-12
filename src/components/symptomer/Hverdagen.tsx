@@ -123,7 +123,9 @@ export function Hverdagen() {
     <section
       ref={sectionRef}
       aria-label="Symptomer"
-      className="relative overflow-hidden bg-[var(--color-paper)]"
+      // Until the window is measured the sizes are a desktop guess; shown on
+      // a phone, the stage would be laid out once wrong and then jump.
+      className={`relative overflow-hidden bg-[var(--color-paper)] ${vp.ready ? "" : "*:invisible"}`}
       style={{ minHeight: sm ? undefined : Math.max(760, vp.h), paddingTop: NAV }}
     >
       <div className={sm ? "flex flex-col" : "grid"} style={sm ? undefined : { gridTemplateColumns: `${stageW}px 1fr`, height: Math.max(760, vp.h) - NAV }}>
