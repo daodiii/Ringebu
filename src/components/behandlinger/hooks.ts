@@ -5,7 +5,10 @@ import { useEffect, useLayoutEffect, useState, type RefObject } from "react";
 // useLayoutEffect warns during SSR; this runs it only in the browser.
 export const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
-/** Window size, kept in sync on resize. Uses innerWidth so a scroll lock does not change it. */
+/**
+ * Window size, kept in sync on resize. Uses innerWidth so a scroll lock does
+ * not change it. Until `ready`, it is a desktop guess: the server cannot know.
+ */
 export function useViewport() {
   const [vp, setVp] = useState({ w: 1440, h: 900, ready: false });
   useIsoLayoutEffect(() => {
@@ -21,15 +24,18 @@ export function useViewport() {
  * An element's inner size, kept in sync as it changes. Measure a box sized in
  * `svh` with this rather than reading the window: a phone's address bar
  * changes innerHeight as it comes and goes, and every change would lay the
- * whole box out again.
+ * whole box out again. `ready` is false until the first measurement, while
+ * the size is still the fallback.
  */
 export function useElementSize(ref: RefObject<HTMLElement | null>, fallback = { w: 1440, h: 900 }) {
-  const [size, setSize] = useState(fallback);
+  const [size, setSize] = useState({ ...fallback, ready: false });
   useIsoLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
     const sync = () =>
-      setSize((s) => (s.w === el.clientWidth && s.h === el.clientHeight ? s : { w: el.clientWidth, h: el.clientHeight }));
+      setSize((s) =>
+        s.ready && s.w === el.clientWidth && s.h === el.clientHeight ? s : { w: el.clientWidth, h: el.clientHeight, ready: true }
+      );
     sync();
     const ro = new ResizeObserver(sync);
     ro.observe(el);
