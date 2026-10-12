@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Schibsted_Grotesk } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import "./globals.css";
@@ -142,6 +143,9 @@ export default function RootLayout({
         <Navbar />
         {children}
         <Footer />
+        {/* Cookieless visit counts (see /personvern). Needs Web Analytics
+            switched on for the project in Vercel; until then nothing is counted. */}
+        <Analytics />
       </body>
     </html>
   );
