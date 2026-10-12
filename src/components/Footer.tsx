@@ -71,6 +71,9 @@ export default function Footer() {
           <Link href="/personvern" className="underline-offset-4 transition-colors hover:text-white hover:underline">
             Personvern
           </Link>
+          <Link href="/vilkar" className="underline-offset-4 transition-colors hover:text-white hover:underline">
+            Vilkår
+          </Link>
         </div>
       </div>
     </footer>
