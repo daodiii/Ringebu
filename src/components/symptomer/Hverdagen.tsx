@@ -7,6 +7,7 @@ import {
   motion,
   useInView,
   useMotionValue,
+  useDragControls,
   useReducedMotion,
   useSpring,
   useTransform,
@@ -32,8 +33,8 @@ import { ArrowLeft, ArrowRight, X } from "lucide-react";
  * scene on show.
  *
  * On a phone the words would land under the table, a scroll past the other
- * things away; there they rise in a sheet over the table instead, under the
- * arch, and the sheet steps on through the others.
+ * things away; there they rise in a sheet over the page instead, and the
+ * sheet steps on through the others.
  */
 
 const NAV = 72;
@@ -117,7 +118,7 @@ export function Hverdagen() {
   const sheet = sm && current !== null;
   useScrollLock(sheet);
 
-  // The arch up under the menu, so the sheet leaves it in view.
+  // The arch up under the menu, so the thing is seen landing before the sheet rises.
   const place = useCallback(
     (slug: SymptomSlug) => {
       setPlaced(slug);
@@ -279,8 +280,6 @@ export function Hverdagen() {
             key="ark"
             s={current}
             reduced={reduced}
-            top={NAV + 24 + archH + 12}
-            vh={vp.h}
             onClose={() => setPlaced(null)}
             onStep={step}
           />
@@ -291,41 +290,24 @@ export function Hverdagen() {
 }
 
 /**
- * Arket: a phone's sheet with the symptom in the arch. It rises once the
- * thing has landed, up to the arch's foot so the teeth stay in view, and is
- * pulled up by its top (or a scroll in it) to read the rest. It goes with
- * the close button, a pull down past its first height, or a tap anywhere
- * above it; the thing goes home.
+ * Arket: a phone's sheet with the symptom in the arch. It rises in one go,
+ * once the thing has landed, as tall as the words need (up to most of the
+ * window). It goes with the close button, a pull down on its top, or a tap
+ * anywhere above it; the thing goes home.
  */
 function Ark({
-  s, reduced, top, vh, onClose, onStep,
+  s, reduced, onClose, onStep,
 }: {
   s: Symptom;
   reduced: boolean;
-  /** Where the arch ends with the page scrolled to it, in pixels from the top of the window. */
-  top: number;
-  vh: number;
   onClose: () => void;
   onStep: (by: number) => void;
 }) {
-  // Two heights: down to the arch's foot (on a short phone a little over it), and most of the window.
-  const full = Math.round(vh * 0.88);
-  const low = Math.min(full, Math.max(200, vh - top));
-  const h = useMotionValue(low);
-  const [open, setOpen] = useState(false);
-  const from = useRef(low);
+  const drag = useDragControls();
   const closeBtn = useRef<HTMLButtonElement | null>(null);
   useEffect(() => {
     closeBtn.current?.focus({ preventScroll: true });
   }, []);
-
-  const snap = useCallback(
-    (up: boolean) => {
-      setOpen(up);
-      animate(h, up ? full : low, reduced ? { duration: 0 } : { type: "spring", stiffness: 380, damping: 38 });
-    },
-    [h, full, low, reduced]
-  );
 
   return (
     <>
@@ -340,33 +322,23 @@ function Ark({
         role="dialog"
         aria-modal="true"
         aria-label={s.title}
-        className="fixed inset-x-0 bottom-0 z-[60] flex flex-col rounded-t-[22px] bg-[var(--color-paper)] shadow-[0_-24px_60px_-28px_rgba(8,30,35,0.5)]"
-        style={{ height: h }}
+        className="fixed inset-x-0 bottom-0 z-[60] flex max-h-[88svh] flex-col rounded-t-[22px] bg-[var(--color-paper)] shadow-[0_-24px_60px_-28px_rgba(8,30,35,0.5)]"
         initial={{ y: "100%" }}
         animate={{ y: 0, transition: reduced ? { duration: 0 } : { duration: 0.55, ease: EASE_DOOR, delay: 0.55 } }}
         exit={{ y: "100%", transition: { duration: reduced ? 0 : 0.35, ease: EASE_DOOR } }}
+        drag="y"
+        dragControls={drag}
+        dragListener={false}
+        dragConstraints={{ top: 0, bottom: 0 }}
+        dragElastic={{ top: 0, bottom: 1 }}
+        onDragEnd={(_, info) => {
+          if (info.offset.y > 90 || info.velocity.y > 500) onClose();
+        }}
       >
-        {/* The top: pull it up to read on, down to close */}
-        <motion.div
-          className="shrink-0 touch-none px-4 pb-1 pt-1.5"
-          onPanStart={() => (from.current = h.get())}
-          onPan={(_, info) => h.set(Math.min(full, Math.max(0, from.current - info.offset.y)))}
-          onPanEnd={(_, info) => {
-            const now = h.get();
-            if (now < low - 70 || (!open && info.velocity.y > 500)) onClose();
-            else snap(info.velocity.y < -300 || (info.velocity.y <= 300 && now > (low + full) / 2));
-          }}
-        >
-          <button
-            type="button"
-            aria-label={open ? "Vis mindre" : "Vis mer"}
-            aria-expanded={open}
-            onClick={() => snap(!open)}
-            className="mx-auto flex h-5 w-16 items-center justify-center outline-none"
-          >
-            <span aria-hidden="true" className="block h-1 w-10 rounded-full bg-[rgba(14,42,48,0.2)]" />
-          </button>
-          <div className="flex items-center justify-between">
+        {/* The top: pull it down to close */}
+        <div className="shrink-0 touch-none px-4 pb-1 pt-2" onPointerDown={(e) => drag.start(e)}>
+          <span aria-hidden="true" className="mx-auto block h-1 w-10 rounded-full bg-[rgba(14,42,48,0.2)]" />
+          <div className="mt-1 flex items-center justify-between">
             <button
               ref={closeBtn}
               type="button"
@@ -385,13 +357,9 @@ function Ark({
               </IconBtn>
             </div>
           </div>
-        </motion.div>
+        </div>
         <div
           className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 pb-[max(32px,env(safe-area-inset-bottom))] pt-2"
-          // Reading on lifts the sheet the rest of the way
-          onScroll={(e) => {
-            if (!open && e.currentTarget.scrollTop > 16) snap(true);
-          }}
         >
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
