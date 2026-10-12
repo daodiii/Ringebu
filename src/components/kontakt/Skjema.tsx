@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useEffect, useId, useRef, useState } from "react";
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { BE_OM_TIME, KONTAKT } from "@/components/kontakt/data";
 import { sendMelding, type MeldingState } from "@/components/kontakt/melding";
@@ -49,6 +50,11 @@ export function Skjema({
   // The form's height when it was sent, so the thanks keeps the room it had
   const [height, setHeight] = useState<number>();
   const id = useId();
+  // Set in the browser only: the server's render is the build's, hours old.
+  const vist = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (vist.current) vist.current.value = String(Date.now());
+  }, []);
 
   const errors = state.status === "invalid" ? state.errors : {};
 
@@ -129,7 +135,11 @@ export function Skjema({
           {feil("melding")}
         </label>
         <p id={`${id}merk`} className={`mt-1.5 text-[14px] leading-[1.5] ${SOFT}`}>
-          Ikke skriv personnummer eller helseopplysninger her.
+          Ikke skriv personnummer eller helseopplysninger her.{" "}
+          <Link href="/personvern" className="underline underline-offset-2 hover:text-[var(--color-ink)]">
+            Slik bruker vi opplysningene
+          </Link>
+          .
         </p>
 
         {/* Hidden from people; a bot that fills it in is quietly turned away */}
@@ -139,6 +149,8 @@ export function Skjema({
             <input name="nettsted" tabIndex={-1} autoComplete="off" defaultValue="" />
           </label>
         </div>
+        {/* When the form came up, so sendMelding can turn away one filled in faster than a person could */}
+        <input ref={vist} type="hidden" name="vist" />
 
         {state.status === "error" && (
           <p role="alert" className="mt-5 text-[15px] leading-[1.55] text-[var(--color-ink)]">
