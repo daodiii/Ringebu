@@ -14,12 +14,13 @@ import {
 } from "framer-motion";
 
 import { PALETTES, PaperShadow, type PaletteName } from "@/components/behandlinger/scenes/Papir";
-import { useViewport } from "@/components/behandlinger/hooks";
+import { useScrollLock, useViewport } from "@/components/behandlinger/hooks";
 import { EASE_OUT, SYMPTOMS, type Symptom, type SymptomSlug } from "./data";
 import { paperScene } from "./scenes/Scener";
 import { THING_BOX, Thing } from "./scenes/Ting";
 import { Handlinger } from "@/components/kontakt/Handlinger";
 import { Hjelp } from "./Hjelp";
+import { ArrowLeft, ArrowRight, X } from "lucide-react";
 
 /**
  * Hverdagen. Eight ordinary things lie on the table in front of an arch: a
@@ -29,6 +30,10 @@ import { Hjelp } from "./Hjelp";
  * the size of the paper theatre behind the opening and does its thing, and
  * the teeth answer with the symptom. The arch takes the solid colour of the
  * scene on show.
+ *
+ * On a phone the words would land under the table, a scroll past the other
+ * things away; there they rise in a sheet over the table instead, under the
+ * arch, and the sheet steps on through the others.
  */
 
 const NAV = 72;
@@ -107,6 +112,29 @@ export function Hverdagen() {
   }, []);
 
   const current = placed ? SYMPTOMS.find((s) => s.slug === placed)! : null;
+  // On a phone the symptom shows in the sheet; the words under the table keep the intro.
+  const shown = sm ? null : current;
+  const sheet = sm && current !== null;
+  useScrollLock(sheet);
+
+  // The arch up under the menu, so the sheet leaves it in view.
+  const place = useCallback(
+    (slug: SymptomSlug) => {
+      setPlaced(slug);
+      if (!sm || !sectionRef.current) return;
+      const top = sectionRef.current.getBoundingClientRect().top;
+      if (Math.abs(top) > 2) window.scrollBy({ top, behavior: reduced ? "auto" : "smooth" });
+    },
+    [sm, reduced]
+  );
+  const step = useCallback(
+    (by: number) =>
+      setPlaced((p) => {
+        const i = SYMPTOMS.findIndex((s) => s.slug === p);
+        return SYMPTOMS[(i + by + SYMPTOMS.length) % SYMPTOMS.length].slug;
+      }),
+    []
+  );
   const Scene = useMemo(
     () => (current ? paperScene(current.slug, current.palette, false) : paperScene("frisk", IDLE, false)),
     [current]
@@ -194,7 +222,7 @@ export function Hverdagen() {
                 isOverArch={isOverArch}
                 onOver={setOver}
                 onTouch={() => setTouched(true)}
-                onPlace={() => setPlaced(s.slug)}
+                onPlace={() => place(s.slug)}
                 onHome={() => setPlaced((p) => (p === s.slug ? null : p))}
               />
             ))}
@@ -207,7 +235,7 @@ export function Hverdagen() {
           <motion.h1
             className="font-sans font-medium text-[var(--color-ink)]"
             initial={false}
-            animate={{ fontSize: current ? (sm ? 26 : 34) : sm ? 40 : 64, letterSpacing: current ? "-0.03em" : "-0.035em" }}
+            animate={{ fontSize: shown ? 34 : sm ? 40 : 64, letterSpacing: shown ? "-0.03em" : "-0.035em" }}
             transition={{ duration: reduced ? 0 : 0.7, ease: EASE_DOOR }}
             style={{ lineHeight: 1 }}
           >
@@ -218,21 +246,21 @@ export function Hverdagen() {
           <div
             className="relative mt-6"
             style={{
-              minHeight: sm ? undefined : current ? (short ? 560 : 620) : 140,
+              minHeight: sm ? undefined : shown ? (short ? 560 : 620) : 140,
               // A CSS transition: framer left this min-height where it started.
               transition: reduced ? undefined : "min-height 0.7s cubic-bezier(0.76, 0, 0.24, 1)",
             }}
           >
             <AnimatePresence initial={false}>
               <motion.div
-                key={current?.slug ?? "intro"}
+                key={shown?.slug ?? "intro"}
                 className={sm ? "" : "absolute inset-x-0 top-0"}
                 initial={reduced ? false : { opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE_OUT, delay: 0.15 } }}
                 exit={reduced ? undefined : { opacity: 0, y: -10, transition: { duration: 0.22, ease: "easeIn" } }}
               >
-                {current ? (
-                  <Detail s={current} sm={sm} short={short} />
+                {shown ? (
+                  <Detail s={shown} sm={sm} short={short} />
                 ) : (
                   <p className="max-w-[32ch] leading-[1.5] text-[var(--color-text-secondary)]" style={{ fontSize: sm ? 19 : 26 }}>
                     Sju vanlige plager. Hva de betyr.
@@ -244,7 +272,157 @@ export function Hverdagen() {
           </div>
         </div>
       </div>
+
+      <AnimatePresence>
+        {sheet && current && (
+          <Ark
+            key="ark"
+            s={current}
+            reduced={reduced}
+            top={NAV + 24 + archH + 12}
+            vh={vp.h}
+            onClose={() => setPlaced(null)}
+            onStep={step}
+          />
+        )}
+      </AnimatePresence>
     </section>
+  );
+}
+
+/**
+ * Arket: a phone's sheet with the symptom in the arch. It rises once the
+ * thing has landed, up to the arch's foot so the teeth stay in view, and is
+ * pulled up by its top (or a scroll in it) to read the rest. It goes with
+ * the close button, a pull down past its first height, or a tap anywhere
+ * above it; the thing goes home.
+ */
+function Ark({
+  s, reduced, top, vh, onClose, onStep,
+}: {
+  s: Symptom;
+  reduced: boolean;
+  /** Where the arch ends with the page scrolled to it, in pixels from the top of the window. */
+  top: number;
+  vh: number;
+  onClose: () => void;
+  onStep: (by: number) => void;
+}) {
+  // Two heights: down to the arch's foot (on a short phone a little over it), and most of the window.
+  const full = Math.round(vh * 0.88);
+  const low = Math.min(full, Math.max(200, vh - top));
+  const h = useMotionValue(low);
+  const [open, setOpen] = useState(false);
+  const from = useRef(low);
+  const closeBtn = useRef<HTMLButtonElement | null>(null);
+  useEffect(() => {
+    closeBtn.current?.focus({ preventScroll: true });
+  }, []);
+
+  const snap = useCallback(
+    (up: boolean) => {
+      setOpen(up);
+      animate(h, up ? full : low, reduced ? { duration: 0 } : { type: "spring", stiffness: 380, damping: 38 });
+    },
+    [h, full, low, reduced]
+  );
+
+  return (
+    <>
+      {/* Above the sheet: a tap here puts the thing back */}
+      <motion.div
+        aria-hidden="true"
+        className="fixed inset-0 z-[55] touch-none"
+        onClick={onClose}
+        exit={{ opacity: 0 }}
+      />
+      <motion.aside
+        role="dialog"
+        aria-modal="true"
+        aria-label={s.title}
+        className="fixed inset-x-0 bottom-0 z-[60] flex flex-col rounded-t-[22px] bg-[var(--color-paper)] shadow-[0_-24px_60px_-28px_rgba(8,30,35,0.5)]"
+        style={{ height: h }}
+        initial={{ y: "100%" }}
+        animate={{ y: 0, transition: reduced ? { duration: 0 } : { duration: 0.55, ease: EASE_DOOR, delay: 0.55 } }}
+        exit={{ y: "100%", transition: { duration: reduced ? 0 : 0.35, ease: EASE_DOOR } }}
+      >
+        {/* The top: pull it up to read on, down to close */}
+        <motion.div
+          className="shrink-0 touch-none px-4 pb-1 pt-1.5"
+          onPanStart={() => (from.current = h.get())}
+          onPan={(_, info) => h.set(Math.min(full, Math.max(0, from.current - info.offset.y)))}
+          onPanEnd={(_, info) => {
+            const now = h.get();
+            if (now < low - 70 || (!open && info.velocity.y > 500)) onClose();
+            else snap(info.velocity.y < -300 || (info.velocity.y <= 300 && now > (low + full) / 2));
+          }}
+        >
+          <button
+            type="button"
+            aria-label={open ? "Vis mindre" : "Vis mer"}
+            aria-expanded={open}
+            onClick={() => snap(!open)}
+            className="mx-auto flex h-5 w-16 items-center justify-center outline-none"
+          >
+            <span aria-hidden="true" className="block h-1 w-10 rounded-full bg-[rgba(14,42,48,0.2)]" />
+          </button>
+          <div className="flex items-center justify-between">
+            <button
+              ref={closeBtn}
+              type="button"
+              onClick={onClose}
+              className="inline-flex h-10 items-center gap-2 px-1 text-[14px] font-medium text-[var(--color-ink)] outline-none focus-visible:underline"
+            >
+              <X className="size-4" aria-hidden="true" />
+              Legg tilbake
+            </button>
+            <div className="flex gap-1">
+              <IconBtn label="Forrige" onClick={() => onStep(-1)}>
+                <ArrowLeft className="size-4" aria-hidden="true" />
+              </IconBtn>
+              <IconBtn label="Neste" onClick={() => onStep(1)}>
+                <ArrowRight className="size-4" aria-hidden="true" />
+              </IconBtn>
+            </div>
+          </div>
+        </motion.div>
+        <div
+          className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 pb-[max(32px,env(safe-area-inset-bottom))] pt-2"
+          // Reading on lifts the sheet the rest of the way
+          onScroll={(e) => {
+            if (!open && e.currentTarget.scrollTop > 16) snap(true);
+          }}
+        >
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={s.slug}
+              initial={reduced ? false : { opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0, transition: { duration: 0.4, ease: EASE_OUT } }}
+              exit={reduced ? undefined : { opacity: 0, y: -8, transition: { duration: 0.18, ease: "easeIn" } }}
+            >
+              <Detail s={s} sm short={false} />
+            </motion.div>
+          </AnimatePresence>
+          {/* Either way out of the sheet: a call, or down the page to the form */}
+          <div onClickCapture={onClose}>
+            <KontaktOss short={false} />
+          </div>
+        </div>
+      </motion.aside>
+    </>
+  );
+}
+
+function IconBtn({ label, onClick, children }: { label: string; onClick: () => void; children: React.ReactNode }) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      onClick={onClick}
+      className="grid size-10 place-items-center rounded-full text-[var(--color-ink)] transition-colors hover:bg-[rgba(14,42,48,0.06)] focus-visible:bg-[rgba(14,42,48,0.08)] focus-visible:outline-none"
+    >
+      {children}
+    </button>
   );
 }
 
