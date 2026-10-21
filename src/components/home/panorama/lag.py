@@ -3,7 +3,7 @@
 far.webp  : the photo with the near foreground painted out (opaque)
 near.webp : the near foreground alone (birches, lookout, path, rock), alpha
 far-tall.webp, near-tall.webp: the same two for upright screens, a crop of
-            the right half cut from the 4x master at 1.6 times the scale
+            the right half of the same photograph at its native resolution
 far-phone.webp, near-phone.webp: the middle 62% of the tall ones, for phones
 """
 import os, sys
@@ -12,13 +12,15 @@ import cv2
 from PIL import Image
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../.."))
-# The 14400x7560 Upscayl master hero-valley-bg.webp was downsampled from (not in git)
-MASTER = "C:/Users/daodi/Desktop/hero-valley-bg_upscayl_4x_upscayl-standard-4x.png"
 OUT = ROOT + "/src/components/home/panorama"
 DBG = sys.argv[1] if len(sys.argv) > 1 else None
 os.makedirs(OUT, exist_ok=True)
 
-src = np.asarray(Image.open(ROOT + "/public/images/hero-valley-bg.webp").convert("RGB"))
+# Keep the hand-drawn mask coordinates stable, but export at the photo's
+# native resolution; enlarging it would add bytes without adding detail.
+photo = Image.open(ROOT + "/public/images/hero-valley-bg.webp").convert("RGB")
+native_size = photo.size
+src = np.asarray(photo.resize((3840, 2016), Image.Resampling.LANCZOS))
 H, W = src.shape[:2]
 print("photo", W, H)
 
@@ -178,37 +180,25 @@ for y in range(LY0, H):
 cur = np.where(hole[:, :, None] > 0, cv2.GaussianBlur(cur, (0, 0), 1.0), cur)
 far = cur.clip(0, 255).astype(np.uint8)
 
-Image.fromarray(far).save(OUT + "/far.webp", quality=84, method=6)
+# Export the wide layers at native resolution, with straight alpha preserved.
+wide_far = Image.fromarray(far).resize(native_size, Image.Resampling.LANCZOS)
 rgba = np.dstack([src, alpha])
-# Colour under fully transparent pixels does not matter: flatten it so it compresses
 rgba[alpha == 0, :3] = 0
-Image.fromarray(rgba, "RGBA").save(OUT + "/near.webp", quality=86, alpha_quality=90, method=6)
+wide_near = Image.fromarray(rgba).resize(native_size, Image.Resampling.LANCZOS)
+wide_far.save(OUT + "/far.webp", quality=84, method=6)
+wide_near.save(OUT + "/near.webp", quality=86, alpha_quality=90, method=6)
 
-# Portrait screens get a crop right of the middle, the fields and the far
-# side of the valley with only an edge of the river, so a
-# phone is sent pixels it shows rather than a panorama it mostly cuts off.
-# A phone shows the crop about 1100px wide (it is hung 132% of the hero's
-# height), so at 1800px it had only 1.6 pixels for each of a 3x screen's 3.
-# It is cut from the master at 1.6x instead: the photo's own detail from the
-# master, and the painted-out fill and the cut-out's edge scaled up from here.
+# Portrait and phone crops share the exact geometry of the wide layers.
+# All source pixels come from the committed edited photo, with no external
+# upscaled master required to reproduce the assets.
 TX0, TX1 = 1900, 3700
-K = 1.6
-HW, HH = round(W * K), round(H * K)
-hx0, hx1 = round(TX0 * K), round(TX1 * K)
-Image.MAX_IMAGE_PIXELS = None
-big = Image.open(MASTER).convert("RGB").resize((HW, HH), Image.LANCZOS)
-hi = np.asarray(big)[:, hx0:hx1].astype(np.float32)
-del big
-size = (hx1 - hx0, HH)
-up = lambda a, interp=cv2.INTER_CUBIC: cv2.resize(np.ascontiguousarray(a[:, TX0:TX1]), size, interpolation=interp)
-w_hi = up(w[:, :, 0])[:, :, None].clip(0, 1)
-far_hi = (hi * (1 - w_hi) + up(far).astype(np.float32) * w_hi).clip(0, 255).astype(np.uint8)
-alpha_hi = up(alpha).clip(0, 255).astype(np.uint8)
-rgba_hi = np.dstack([hi.clip(0, 255).astype(np.uint8), alpha_hi])
-rgba_hi[alpha_hi == 0, :3] = 0
+x0, x1 = (round(x * native_size[0] / W) for x in (TX0, TX1))
+far_hi = np.asarray(wide_far)[:, x0:x1]
+rgba_hi = np.asarray(wide_near)[:, x0:x1]
+size = (x1 - x0, native_size[1])
 Image.fromarray(far_hi).save(OUT + "/far-tall.webp", quality=84, method=6)
-Image.fromarray(rgba_hi, "RGBA").save(OUT + "/near-tall.webp", quality=86, alpha_quality=90, method=6)
-print("tall", size)
+Image.fromarray(rgba_hi).save(OUT + "/near-tall.webp", quality=86, alpha_quality=90, method=6)
+print("wide", native_size, "tall", size)
 
 # Phones: the middle 62% of the tall crop, starting 42% of the way into the
 # other 38%, to match the object-position of 42% (see art() in Panorama.tsx)
@@ -217,7 +207,7 @@ px0 = round(0.42 * (1 - PC) * size[0])
 px1 = px0 + round(PC * size[0])
 Image.fromarray(far_hi[:, px0:px1]).save(OUT + "/far-phone.webp", quality=84, method=6)
 Image.fromarray(rgba_hi[:, px0:px1], "RGBA").save(OUT + "/near-phone.webp", quality=86, alpha_quality=90, method=6)
-print("phone", (px1 - px0, HH))
+print("phone", (px1 - px0, native_size[1]))
 
 if DBG:
     Image.fromarray(far).resize((1280, 672)).save(DBG + "/dbg_far.jpg", quality=85)

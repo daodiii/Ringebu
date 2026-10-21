@@ -39,15 +39,11 @@ import s from "./panorama/panorama.module.css";
 function art(wide: StaticImageData, tall: StaticImageData, phone: StaticImageData) {
   const common = { alt: "", loading: "eager", fetchPriority: "high" } as const;
   const { props: { srcSet: wideSet } } = getImageProps({ ...common, sizes: "100vw", src: wide });
-  // The tall crop is hung 132% of the frame's height (the hero plus 88px),
-  // which makes it 1.18 times that wide: about 1100px on a phone, three
-  // screens wide. A 2x phone gets 2048px of the 2880px crop, a 3x one all of it.
+  // The portrait crop is hung at 132% of the frame height. Its pixel
+  // width follows the source photo rather than an artificial upscale.
   const { props: { srcSet: tallSet, ...img } } = getImageProps({ ...common, sizes: "calc(118vh + 104px)", src: tall });
-  // A phone's frame shows under half of that width, so phones get the
-  // middle 62% of the tall crop (*-phone.webp, cut by lag.py), from 42% of
-  // the leftover: with the same object-position (42%) it shows exactly what
-  // the tall crop would, on any screen whose frame is under 62% of it wide.
-  // Up to 9:16 that holds even for a 600px-tall hero.
+  // Phones use the middle 62% of that crop, cut at the same 42% position
+  // as the CSS object-position, so they download only the visible region.
   const { props: { srcSet: phoneSet } } = getImageProps({ ...common, sizes: "calc(73.2vh + 65px)", src: phone });
   return { wideSet, tallSet, phoneSet, img };
 }
