@@ -18,6 +18,8 @@ const nextConfig: NextConfig = {
     // AVIF first, WebP for browsers without it. Measured on the hero photos
     // (2026-10-07): 24% smaller on a phone, 19% on desktop.
     formats: ["image/avif", "image/webp"],
+    // Retain the standard responsive widths and add a 3x full-HD hero size.
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840, 5760],
     // next/image qualities used across the site (Next 16 requires them listed).
     qualities: [75, 90],
     remotePatterns: [

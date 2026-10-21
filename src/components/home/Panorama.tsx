@@ -36,11 +36,15 @@ import s from "./panorama/panorama.module.css";
  */
 
 /** Wide screens get the whole panorama; tall ones a crop of its middle. */
+// object-fit: cover can make the photo wider than the viewport on a tall
+// desktop window. Match the 110% frame height and its 44px overscan.
+const WIDE_SIZES = "max(calc(100vw + 88px), calc(clamp(640px, 100svh, 1240px) * 2.094 + 185px))";
+
 function art(wide: StaticImageData, tall: StaticImageData, phone: StaticImageData) {
   const common = { alt: "", loading: "eager", fetchPriority: "high" } as const;
-  const { props: { srcSet: wideSet } } = getImageProps({ ...common, sizes: "100vw", src: wide });
-  // The portrait crop is hung at 132% of the frame height. Its pixel
-  // width follows the source photo rather than an artificial upscale.
+  const { props: { srcSet: wideSet } } = getImageProps({ ...common, sizes: WIDE_SIZES, src: wide });
+  // The portrait crop is hung at 132% of the frame height and retains
+  // detail from the high-resolution source photo.
   const { props: { srcSet: tallSet, ...img } } = getImageProps({ ...common, sizes: "calc(118vh + 104px)", src: tall });
   // Phones use the middle 62% of that crop, cut at the same 42% position
   // as the CSS object-position, so they download only the visible region.
@@ -53,7 +57,7 @@ const NEAR = art(near, nearTall, nearPhone);
 function Photo({ a }: { a: ReturnType<typeof art> }) {
   return (
     <picture>
-      <source media="(min-aspect-ratio: 1/1)" srcSet={a.wideSet} sizes="100vw" />
+      <source media="(min-aspect-ratio: 1/1)" srcSet={a.wideSet} sizes={WIDE_SIZES} />
       <source media="(max-aspect-ratio: 9/16)" srcSet={a.phoneSet} sizes="calc(73.2vh + 65px)" />
       <img {...a.img} srcSet={a.tallSet} alt="" />
     </picture>
