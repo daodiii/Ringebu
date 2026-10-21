@@ -1,16 +1,21 @@
 import type { Metadata } from "next";
 import { FIRMA, KONTAKT } from "@/components/kontakt/data";
+import { DELEBILDE } from "@/app/delebilde";
+
+const DESCRIPTION = "Hva vi gjør med opplysningene du sender oss på nettsiden.";
 
 export const metadata: Metadata = {
   title: "Personvern",
-  description: "Hva vi gjør med opplysningene du sender oss på nettsiden.",
+  description: DESCRIPTION,
   alternates: { canonical: "/personvern" },
+  openGraph: { images: [DELEBILDE], title: "Personvern | Ringebu Tannlegesenter", description: DESCRIPTION },
 };
 
 /**
  * Only what the law asks for: who is responsible, what the form collects
  * and why, who handles it for us, and what the visitor can ask for. The
- * site sets no cookies and counts no visits, and says so.
+ * site sets no cookies, and counts visits only with Vercel's cookieless
+ * analytics, so it needs no cookie banner, and says so.
  */
 
 const H2 = "text-[22px] font-semibold tracking-[-0.02em] text-[var(--color-ink)]";
@@ -35,8 +40,11 @@ export default function PersonvernPage() {
         </section>
 
         <section className="mt-12">
-          <h2 className={H2}>Informasjonskapsler</h2>
-          <p className={P}>Nettsiden bruker ikke informasjonskapsler, og den måler ikke besøk.</p>
+          <h2 className={H2}>Informasjonskapsler og besøkstall</h2>
+          <p className={P}>Nettsiden bruker ikke informasjonskapsler, og derfor spør vi deg heller ikke om lov til det.</p>
+          <p className={P}>
+            Vi teller besøk med Vercel Web Analytics, så vi ser hvor mange som leser hvilke sider. Den lagrer ingenting på enheten din, og den kjenner deg ikke igjen fra en dag til den neste. Vi ser tall, ikke hvem du er.
+          </p>
         </section>
 
         <section className="mt-12">

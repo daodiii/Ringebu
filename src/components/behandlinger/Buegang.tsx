@@ -272,9 +272,11 @@ export function Buegang({ scenes }: { scenes: SceneSet }) {
 
   return (
     <>
+      {/* Until the wall is measured its geometry is a desktop guess; shown
+          on a phone, it would be laid out once wrong and then jump. */}
       <section
         aria-label="Behandlinger"
-        className="relative h-[100svh] overflow-hidden bg-[var(--color-paper)]"
+        className={`relative h-[100svh] overflow-hidden bg-[var(--color-paper)] ${size.ready ? "" : "*:invisible"}`}
         onKeyDown={onKeyDown}
       >
         <WalkArrow dir={-1} g={g} off={edge === "start"} btnRef={prevRef} onClick={() => step(-1)} />

@@ -24,6 +24,8 @@ export type MeldingState =
 // A few messages per visitor in ten minutes. This lives in the memory of
 // one server instance, so it slows a flood down; it is no hard limit.
 const WINDOW = 10 * 60 * 1000;
+// Faster than anyone writes their name, number, address and a message.
+const MIN_TID = 3000;
 const PER_WINDOW = 5;
 const seen = new Map<string, number[]>();
 
@@ -45,6 +47,10 @@ function read(form: FormData, key: string) {
 export async function sendMelding(_prev: MeldingState, form: FormData): Promise<MeldingState> {
   // The hidden field only a bot fills in. It is told it worked, and nothing is sent.
   if (read(form, "nettsted")) return { status: "sent" };
+  // Nor is a form filled in and sent within seconds of coming up. Without
+  // JavaScript the time is missing, and the message goes as before.
+  const vist = Number(read(form, "vist"));
+  if (vist > 0 && Date.now() - vist < MIN_TID) return { status: "sent" };
 
   const v = Object.fromEntries(FELT.map((f) => [f, read(form, f)])) as Record<Felt, string>;
   const errors: Partial<Record<Felt, string>> = {};
