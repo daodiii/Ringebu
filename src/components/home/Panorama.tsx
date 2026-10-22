@@ -1,193 +1,86 @@
-"use client";
-
-import { getImageProps, type StaticImageData } from "next/image";
-import { useEffect, useRef, type CSSProperties } from "react";
 import { Phone } from "lucide-react";
-import { BE_OM_TIME, RING } from "@/components/kontakt/data";
-import { tilSkjema } from "@/components/kontakt/tilSkjema";
-import far from "./panorama/far.webp";
-import farPhone from "./panorama/far-phone.webp";
-import farTall from "./panorama/far-tall.webp";
-import near from "./panorama/near.webp";
-import nearPhone from "./panorama/near-phone.webp";
-import nearTall from "./panorama/near-tall.webp";
+import { Merke } from "@/components/Merke";
+import { RING } from "@/components/kontakt/data";
+import { AskButton } from "./panorama/AskButton";
+import { Flis } from "./panorama/KlinikkBilde";
+import { KLINIKK as K } from "./panorama/klinikk";
+import { NavSignal } from "./panorama/NavSignal";
+import { Slides } from "./panorama/Slides";
+import { ValleyPicture } from "./panorama/ValleyPicture";
 import s from "./panorama/panorama.module.css";
+import type { CSSProperties } from "react";
 
 /**
- * «Panorama». The hero is the view from the lookout above Ringebu: the river
- * Lågen running down Gudbrandsdalen under a summer sky, edge to edge and at
- * full strength. The words are white, on one soft patch of shade in the sky
- * just behind them, like the shadow of a cloud.
+ * «Panorama». The front page opens on the whole valley, the view from the lookout
+ * above Ringebu, edge to edge. After a moment the warm-white column (the clinic's
+ * mark and name, the line under it, the two actions) slides in from the left and the
+ * first three photographs of the clinic from the right, and they meet over it. A few
+ * seconds on, a second round of photographs takes their place and stays. It happens
+ * by itself, once; nobody has to scroll through it. How it moves, and why the second
+ * round loads late, is in panorama.module.css and Slides.tsx.
  *
- * The photograph is split in two depths: the far valley, and the near things
- * (the birches, the concrete lookout, the path). Under the near layer the far
- * one has them painted out, so the two can slide against each other.
- *
- * On the first paint the hero is paper with an arched window in it, close on
- * the river. The window widens past the edges of the screen while the camera
- * pulls back, the lookout shrinking faster than the valley, and the view
- * settles. Then it holds still. It used to breathe, lean with the pointer and
- * close back into paper as you scrolled away; the closing left a band of
- * empty paper under the hero, and only the book and the pasture move on the
- * front page now.
- *
- * The entrance is CSS and moves only transforms, so it plays from the first
- * paint.
+ * On a phone the column is a panel at the bottom, in thumb reach, and the
+ * photographs are above it.
  */
 
-/** Wide screens get the whole panorama; tall ones a crop of its middle. */
-// object-fit: cover can make the photo wider than the viewport on a tall
-// desktop window. Match the 110% frame height and its 44px overscan.
-const WIDE_SIZES = "max(calc(100vw + 88px), calc(clamp(640px, 100svh, 1240px) * 2.094 + 185px))";
-
-function art(wide: StaticImageData, tall: StaticImageData, phone: StaticImageData) {
-  const common = { alt: "", loading: "eager", fetchPriority: "high" } as const;
-  const { props: { srcSet: wideSet } } = getImageProps({ ...common, sizes: WIDE_SIZES, src: wide });
-  // The portrait crop is hung at 132% of the frame height and retains
-  // detail from the high-resolution source photo.
-  const { props: { srcSet: tallSet, ...img } } = getImageProps({ ...common, sizes: "calc(118vh + 104px)", src: tall });
-  // Phones use the middle 62% of that crop, cut at the same 42% position
-  // as the CSS object-position, so they download only the visible region.
-  const { props: { srcSet: phoneSet } } = getImageProps({ ...common, sizes: "calc(73.2vh + 65px)", src: phone });
-  return { wideSet, tallSet, phoneSet, img };
-}
-const FAR = art(far, farTall, farPhone);
-const NEAR = art(near, nearTall, nearPhone);
-
-function Photo({ a }: { a: ReturnType<typeof art> }) {
-  return (
-    <picture>
-      <source media="(min-aspect-ratio: 1/1)" srcSet={a.wideSet} sizes={WIDE_SIZES} />
-      <source media="(max-aspect-ratio: 9/16)" srcSet={a.phoneSet} sizes="calc(73.2vh + 65px)" />
-      <img {...a.img} srcSet={a.tallSet} alt="" />
-    </picture>
-  );
-}
-
-/* The words' box and type, shared by the words and by the shade under the
-   paper, which lays out an invisible copy of them to take their shape. */
-const WORDS_BOX = "mx-auto w-full max-w-[var(--container-max,1280px)] px-[var(--container-px,24px)] pt-[clamp(212px,28svh,232px)] md:pt-[clamp(150px,22svh,230px)]";
-const NAME_STYLE: CSSProperties = { fontSize: "clamp(40px, 6vw, 92px)", lineHeight: 0.96, letterSpacing: "-0.05em" };
-const NAME_LINES = [
-  { text: "Ringebu", weight: 700 },
-  { text: "Tannlegesenter", weight: 400 },
-];
-const SUB = "mt-4 w-fit max-w-[34ch] text-[24px] font-medium leading-[1.25] tracking-[-0.02em] md:mt-5 md:text-[30px]";
+/** The words come in one after another once the column has landed. */
+const after = (d: string) => ({ "--d": d }) as CSSProperties;
 
 export function Panorama() {
-  const ref = useRef<HTMLElement | null>(null);
-
-  // Tell the floating nav when it is over the hero.
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) window.dispatchEvent(new CustomEvent(e.isIntersecting ? "ringebu:hero-enter" : "ringebu:hero-exit"));
-      },
-      { threshold: 0.15 }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
   return (
-    <section ref={ref} aria-label="Velkommen" className={s.root}>
-      {/* ── The view ── */}
-      <div aria-hidden="true" className={s.stage}>
-        <div className={s.depth}>
-          <div className={`${s.dolly} ${s.dollyFar}`}>
-            <div className={s.frame}>
-              <Photo a={FAR} />
-            </div>
-          </div>
-        </div>
-        <div className={s.depth}>
-          <div className={`${s.dolly} ${s.dollyNear}`}>
-            <div className={s.frame}>
-              <Photo a={NEAR} />
-            </div>
-          </div>
+    <section aria-label="Velkommen" data-panorama="" className={s.root}>
+      <NavSignal />
+
+      {/* ── The valley ── */}
+      <div className={s.valley}>
+        <ValleyPicture />
+      </div>
+
+      {/* ── The column ── */}
+      <div className={s.col}>
+        <h1 className={`${s.lock} ${s.in}`} style={after("0.8s")}>
+          <Merke className={s.mark} />
+          <span className={s.name}>
+            <span>Ringebu</span>
+            <span>Tannlegesenter</span>
+          </span>
+        </h1>
+        <p className={`${s.sub} ${s.in}`} style={after("0.92s")}>
+          Hos oss er du i trygge hender
+        </p>
+        <div className={`${s.actions} ${s.in}`} style={after("1.04s")}>
+          <a href={RING.href} className="knapp knapp-blekk">
+            <Phone aria-hidden="true" />
+            {RING.label}
+          </a>
+          <AskButton />
         </div>
       </div>
 
-      {/* ── The shade behind the words ──
-          Under the paper, so while the window opens it darkens only the view
-          seen through it, never the paper; it comes in with the words. It
-          takes the words' shape from an invisible copy of them. */}
-      <div aria-hidden="true" className={`${s.skyggeLag} ${WORDS_BOX}`}>
-        <div className="max-w-full lg:max-w-[50%]">
-          <div className="invisible relative w-fit">
-            <span className={`${s.skygge} hero-fade visible`} style={{ animationDelay: "0.3s" }} />
-            <div style={NAME_STYLE}>
-              {NAME_LINES.map((line) => (
-                <span key={line.text} className="block w-fit pb-[0.08em]" style={{ fontWeight: line.weight }}>
-                  {line.text}
-                </span>
-              ))}
-            </div>
-            <p className={SUB}>Hos oss er du i trygge hender</p>
-          </div>
-        </div>
-      </div>
-
-      {/* ── The paper the view opens out of ── */}
-      <div aria-hidden="true" className={s.close}>
-        <div className={s.arch}>
-          <div className={s.hole}>
-            <div className={s.cap}>
-              <span />
-            </div>
-            <div className={s.sideL} />
-            <div className={s.sideR} />
-            <div className={s.foot} />
-          </div>
-        </div>
-      </div>
-
-      {/* ── The words, in the sky ── */}
-      <div className={`${s.words} ${WORDS_BOX}`}>
-        <div className="max-w-full lg:max-w-[50%]">
-          <div className="w-fit">
-            <h1 style={NAME_STYLE} className={`${s.ord} text-white`}>
-              <span className="sr-only">Ringebu Tannlegesenter</span>
-              {NAME_LINES.map((line, li) => (
-                // The mask the line rises through opens once the line is in, so
-                // the glow round the letters is never cut off in a box
-                <span key={li} aria-hidden="true" className={`${s.maske} relative block w-fit`} style={{ animationDelay: `${(115 + li * 11) / 100}s` }}>
-                  {/* The padding gives the g of Ringebu room below the line inside the mask */}
-                  <span className="hero-line inline-block pb-[0.08em]" style={{ animationDelay: `${0.3 + li * 0.11}s`, fontWeight: line.weight }}>
-                    {line.text}
-                  </span>
-                </span>
-              ))}
-            </h1>
-
-            <p
-              className={`${s.ord} ${SUB} hero-lift text-white`}
-              style={{ animationDelay: "0.6s", "--from-y": "10px" } as CSSProperties}
-            >
-              Hos oss er du i trygge hender
-            </p>
-          </div>
-
-          <div
-            className="hero-lift pointer-events-auto mt-7 flex flex-wrap items-center gap-2.5 md:mt-8"
-            style={{ animationDelay: "0.8s", "--from-y": "12px" } as CSSProperties}
-          >
-            <a href={RING.href} className="knapp knapp-blekk shadow-[0_12px_32px_-14px_rgba(10,30,34,0.6)]">
-              <Phone aria-hidden="true" />
-              {RING.label}
-            </a>
-            <a
-              href={`#${BE_OM_TIME.id}`}
-              onClick={(e) => { if (tilSkjema()) e.preventDefault(); }}
-              className="knapp knapp-papir shadow-[0_12px_32px_-14px_rgba(10,30,34,0.45)]"
-            >
-              {BE_OM_TIME.label}
-            </a>
-          </div>
-        </div>
+      {/* ── The clinic: two rounds of photographs ── */}
+      <div className={s.field}>
+        <Slides
+          holdDesk={5400}
+          holdPhone={3800}
+          a={
+            <>
+              <Flis b={K.rom} sizes="(min-width: 900px) 40vw, 60vw" />
+              <div className={s.stack}>
+                <Flis b={K.skilt} sizes="(min-width: 900px) 30vw, 40vw" />
+                <Flis b={K.utstyr} sizes="(min-width: 900px) 30vw, 40vw" />
+              </div>
+            </>
+          }
+          b={
+            <>
+              <div className={s.stack}>
+                <Flis b={K.gang} sizes="(min-width: 900px) 30vw, 40vw" />
+                <Flis b={K.rontgen} sizes="(min-width: 900px) 30vw, 40vw" />
+              </div>
+              <Flis b={K.stol} sizes="(min-width: 900px) 40vw, 60vw" />
+            </>
+          }
+        />
       </div>
     </section>
   );
