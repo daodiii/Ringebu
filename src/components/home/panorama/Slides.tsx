@@ -6,20 +6,35 @@ import s from "./panorama.module.css";
 type Conn = { saveData?: boolean; effectiveType?: string };
 
 /**
- * The two rounds of clinic photographs.
+ * The two sets of clinic photographs.
  *
- * Round one is rendered with the page: it arrives over the valley on the first
- * screen. Round two is not put in the page until the page has loaded and the browser
- * is idle, so its three photographs never compete with the valley (the LCP). It
+ * The first set (a) is rendered with the page: it arrives over the valley on the first
+ * screen. The second set (b), which stays, is not put in the page until the page has
+ * loaded and the browser is idle, so its three photographs never compete with the valley (the LCP). It
  * fades in once its photographs are decoded and the hold time has passed, never
- * before they are ready, and then round one is hidden.
+ * before they are ready, and then the first set is hidden.
  *
- * On Save-Data or a 2g connection round two is skipped and the entrance is cut: the
- * first round stays.
+ * On Save-Data or a 2g connection the second set is skipped and the entrance is cut: the
+ * first set stays.
  *
  * holdDesk and holdPhone are milliseconds from the start of the page load.
  */
-export function Slides({ a, b, holdDesk, holdPhone }: { a: ReactNode; b: ReactNode; holdDesk: number; holdPhone: number }) {
+export function Slides({
+  a,
+  b,
+  aClass,
+  bClass,
+  holdDesk,
+  holdPhone,
+}: {
+  a: ReactNode;
+  b: ReactNode;
+  /** the grid layout of each set (panorama.module.css: bigLeft, bigRight) */
+  aClass: string;
+  bClass: string;
+  holdDesk: number;
+  holdPhone: number;
+}) {
   const bRef = useRef<HTMLDivElement | null>(null);
   const [mount, setMount] = useState(false);
   const [show, setShow] = useState(false);
@@ -65,8 +80,8 @@ export function Slides({ a, b, holdDesk, holdPhone }: { a: ReactNode; b: ReactNo
 
   return (
     <>
-      <div className={`${s.slide} ${s.slide1} ${goneA ? s.goneA : ""}`}>{a}</div>
-      <div ref={bRef} className={`${s.slide} ${s.slide2} ${show ? s.showB : s.pendB}`}>
+      <div className={`${s.slide} ${s.slide1} ${aClass} ${goneA ? s.goneA : ""}`}>{a}</div>
+      <div ref={bRef} className={`${s.slide} ${s.slide2} ${bClass} ${show ? s.showB : s.pendB}`}>
         {mount && b}
       </div>
     </>

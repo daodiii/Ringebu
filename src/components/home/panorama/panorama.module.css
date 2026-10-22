@@ -1,8 +1,9 @@
 /* ── Panorama: the valley, then the clinic (Panorama.tsx) ──
    The front page opens on the whole valley, edge to edge. After a moment the page's
-   warm-white column slides in from the left and the first three clinic photographs
-   from the right, and they meet over it. A few seconds later a second round of
-   photographs replaces the first and stays. It plays once, by itself, with no
+   warm-white column slides in from the left and the first set of clinic photographs
+   (the dental chair big on the right, two equal ones beside it) from the right, and they
+   meet over it. A few seconds later a second set (the treatment room big on the left,
+   the sign and the instruments beside it) replaces the first and stays. It plays once, by itself, with no
    scrolling, so nobody is held on the hero.
 
    On a phone the same thing is turned upright: the photographs fill the screen above,
@@ -160,8 +161,14 @@
   padding: var(--gap);
   background: var(--color-paper);
 }
+/* The layout belongs to the set of photographs, not to its place in the order: */
+.bigLeft {
+  grid-template-columns: 58fr 42fr; /* the big one on the left, two equal on the right */
+}
+.bigRight {
+  grid-template-columns: 42fr 58fr; /* mirrored: two equal on the left, the big one on the right */
+}
 .slide1 {
-  grid-template-columns: 58fr 42fr;
   z-index: 1;
   animation: field-in var(--arr) var(--io) var(--t1) both;
 }
@@ -169,9 +176,7 @@
   animation: settle-x 1.9s var(--io) both;
   animation-delay: var(--t1);
 }
-/* mirrored: two equal ones on the left, the big one on the right */
 .slide2 {
-  grid-template-columns: 42fr 58fr;
   z-index: 2;
 }
 .pendB {
@@ -276,13 +281,13 @@
   .slide {
     padding-top: calc(var(--nav) + var(--gap)); /* the photographs start under the nav */
   }
-  /* round two, turned a quarter: the two equal photographs side by side on top, the big one
-     under them at the full width, so a phone shows all the width of the chair */
-  .slide2 {
+  /* the mirrored set, turned a quarter: the two equal photographs side by side on top, the
+     big one under them at the full width, so a phone shows all the width of the chair */
+  .bigRight {
     grid-template-columns: 1fr;
     grid-template-rows: 2fr 3fr;
   }
-  .slide2 .stack {
+  .bigRight .stack {
     grid-template-rows: none;
     grid-template-columns: 1fr 1fr;
   }

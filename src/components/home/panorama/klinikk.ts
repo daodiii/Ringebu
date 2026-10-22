@@ -5,9 +5,10 @@
  * than the 960 one.
  *
  * pos is where the photograph is cut in its tile; posM (optional) is the cut on a
- * phone: round one's big tile is tall and narrow and shows about half the width, so
- * the room's chair, which sits to the right, is moved into it; round two's big tile is
- * full width on a phone, so only the height is cut, to the seat.
+ * phone: the treatment room's big tile is tall and narrow there and shows about half
+ * the width, so the chair, which sits to the right, is moved into it; the dental chair's
+ * big tile is full width on a phone (its set is turned a quarter), so only the height is
+ * cut, to the seat.
  */
 export const KLINIKK = {
   rom: { n: "01-treatment-room", w: 1440, h: 1920, pos: "50% 42%", posM: "82% 50%", alt: "Behandlingsrommet med tannlegestol, lampe og instrumenter" },
