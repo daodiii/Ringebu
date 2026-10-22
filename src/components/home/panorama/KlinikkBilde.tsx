@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import type { Bilde } from "./klinikk";
 import s from "./panorama.module.css";
 
@@ -20,7 +21,7 @@ export function KlinikkBilde({ b, sizes }: { b: Bilde; sizes: string }) {
       loading="eager"
       fetchPriority="low"
       decoding="async"
-      style={{ objectPosition: b.pos }}
+      style={{ "--pos": b.pos, "--pos-m": "posM" in b ? b.posM : b.pos } as CSSProperties}
     />
   );
 }

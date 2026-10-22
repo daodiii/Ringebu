@@ -201,6 +201,12 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: var(--pos);
+}
+@media (max-width: 899px) {
+  .ph {
+    object-position: var(--pos-m);
+  }
 }
 .stack {
   display: grid;
@@ -269,6 +275,16 @@
   }
   .slide {
     padding-top: calc(var(--nav) + var(--gap)); /* the photographs start under the nav */
+  }
+  /* round two, turned a quarter: the two equal photographs side by side on top, the big one
+     under them at the full width, so a phone shows all the width of the chair */
+  .slide2 {
+    grid-template-columns: 1fr;
+    grid-template-rows: 2fr 3fr;
+  }
+  .slide2 .stack {
+    grid-template-rows: none;
+    grid-template-columns: 1fr 1fr;
   }
   .slide1 {
     animation: slide-down var(--arr) var(--io) var(--t1) both;
