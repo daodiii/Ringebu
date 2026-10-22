@@ -14,10 +14,11 @@ import type { CSSProperties } from "react";
  * «Panorama». The front page opens on the whole valley, the view from the lookout
  * above Ringebu, edge to edge. After a moment the warm-white column (the clinic's
  * mark and name, the line under it, the two actions) slides in from the left and the
- * first three photographs of the clinic from the right, and they meet over it. A few
- * seconds on, a second round of photographs takes their place and stays. It happens
+ * first three photographs of the clinic from the right (the dental chair big, the
+ * X-ray and the hall beside it), and they meet over it. A few seconds on, a second set
+ * takes their place and stays (the treatment room big, the sign and the instruments). It happens
  * by itself, once; nobody has to scroll through it. How it moves, and why the second
- * round loads late, is in panorama.module.css and Slides.tsx.
+ * set loads late, is in panorama.module.css and Slides.tsx.
  *
  * On a phone the column is a panel at the bottom, in thumb reach, and the
  * photographs are above it.
@@ -57,27 +58,29 @@ export function Panorama() {
         </div>
       </div>
 
-      {/* ── The clinic: two rounds of photographs ── */}
+      {/* ── The clinic: two sets of photographs ── */}
       <div className={s.field}>
         <Slides
           holdDesk={5400}
           holdPhone={3800}
+          aClass={s.bigRight}
+          bClass={s.bigLeft}
           a={
-            <>
-              <Flis b={K.rom} sizes="(min-width: 900px) 40vw, 60vw" />
-              <div className={s.stack}>
-                <Flis b={K.skilt} sizes="(min-width: 900px) 30vw, 40vw" />
-                <Flis b={K.utstyr} sizes="(min-width: 900px) 30vw, 40vw" />
-              </div>
-            </>
-          }
-          b={
             <>
               <div className={s.stack}>
                 <Flis b={K.gang} sizes="(min-width: 900px) 30vw, 40vw" />
                 <Flis b={K.rontgen} sizes="(min-width: 900px) 30vw, 40vw" />
               </div>
               <Flis b={K.stol} sizes="(min-width: 900px) 40vw, 60vw" />
+            </>
+          }
+          b={
+            <>
+              <Flis b={K.rom} sizes="(min-width: 900px) 40vw, 60vw" />
+              <div className={s.stack}>
+                <Flis b={K.skilt} sizes="(min-width: 900px) 30vw, 40vw" />
+                <Flis b={K.utstyr} sizes="(min-width: 900px) 30vw, 40vw" />
+              </div>
             </>
           }
         />
