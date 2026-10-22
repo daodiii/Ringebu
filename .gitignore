@@ -55,3 +55,4 @@ venv/
 # 7.3MB raster logo source — kept local only; the recolored, web-sized
 # derivatives (logo-mark.png, logo-petrol.png) are committed and used by the site
 public/images/logo.png
+.taste-skill/
