@@ -1,5 +1,6 @@
 import { Sauene } from "@/components/home/Sauene";
 import type { Metadata } from "next";
+import { KlinikkBilder } from "@/components/informasjon/KlinikkBilder";
 import { Enga } from "@/components/informasjon/Enga";
 import { AVSNITT, TITTEL } from "@/components/informasjon/tekst";
 import { DELEBILDE } from "@/app/delebilde";
@@ -22,6 +23,7 @@ export default function OmOss() {
   return (
     <main>
       <Enga />
+      <KlinikkBilder />
       {/* Every page that ends with an invitation ends in the pasture */}
       <div className="senere">
         <Sauene />

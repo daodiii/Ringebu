@@ -1,0 +1,27 @@
+.galleri {
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding: var(--space-section) var(--container-px);
+  color: var(--color-text-primary);
+}
+
+.innledning { margin-bottom: clamp(28px, 4vw, 48px); }
+.overlinje { color: var(--color-text-secondary); font-size: 0.875rem; margin-bottom: 12px; }
+.innledning h2 { font-size: clamp(1.8rem, 4vw, 3rem); line-height: 1.15; letter-spacing: -0.035em; text-wrap: balance; }
+.bilder { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: var(--color-brass) transparent; background: var(--color-paper-warm); overscroll-behavior-x: contain; }
+.bilder figure { margin: 0; flex: 0 0 100%; min-width: 0; scroll-snap-align: start; scroll-snap-stop: always; }
+.bilder img { display: block; width: 100%; height: clamp(340px, 65vh, 720px); object-fit: contain; }
+.kontroller { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 18px; }
+.kontroller p { display: flex; gap: 18px; align-items: baseline; font-size: 0.9375rem; }
+.teller { color: var(--color-text-secondary); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.piler { display: flex; gap: 8px; }
+.piler button { width: 44px; height: 44px; border: 1px solid var(--color-rule); border-radius: 50%; font-size: 1.5rem; cursor: pointer; }
+.piler button:disabled { opacity: 0.3; cursor: default; }
+.piler button:hover:not(:disabled) { background: var(--color-petrol-mist); }
+.miniatyrer { display: flex; gap: 12px; overflow-x: auto; padding: 4px 4px 12px; }
+.miniatyrer button { flex: 0 0 clamp(72px, 12vw, 120px); padding: 3px; border: 2px solid transparent; cursor: pointer; opacity: 0.65; }
+.miniatyrer button[aria-pressed="true"] { border-color: var(--color-ink); opacity: 1; }
+.miniatyrer button:hover { opacity: 1; }
+.miniatyrer img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+.galleri button:focus-visible, .bilder:focus-visible { outline: 3px solid var(--color-brass); outline-offset: 3px; }
+@media (max-width: 559px) { .bilder img { height: min(65vh, 520px); } .kontroller p { gap: 10px; font-size: 0.8125rem; } }
