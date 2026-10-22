@@ -63,7 +63,13 @@ export default function Navbar() {
         <div className="mx-auto flex w-full max-w-[var(--container-max,1280px)] items-center justify-between px-[var(--container-px,24px)] py-4 lg:py-2.5">
           <Link
             href="/"
-            className="relative z-50 flex items-center gap-2.5 leading-none lg:gap-3"
+            // On the front page the hero's column already carries the mark and the name,
+            // so over the hero the nav's own is hidden (visibility, so it is out of the
+            // tab order too and the layout does not move) and comes back as the hero leaves.
+            className={cn(
+              "relative z-50 flex items-center gap-2.5 leading-none transition-[opacity,visibility] duration-500 lg:gap-3",
+              overHero && "invisible opacity-0"
+            )}
           >
             {/* The PNG this replaces had air round the mark; the vector is cut tight, so it is set smaller for the same size */}
             <Merke className="h-[34px] w-auto text-[var(--color-ink)] lg:h-[44px]" />
